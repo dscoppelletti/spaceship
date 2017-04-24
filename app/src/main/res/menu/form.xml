@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/cmd_ok"
+        android:title="@android:string/ok"
+        android:icon="@drawable/ic_done_menu" app:showAsAction="ifRoom" />
+    <item android:id="@+id/cmd_delete"
+        android:title="@string/it_scoppelletti_cmd_delete"
+        android:icon="@drawable/ic_delete_menu" app:showAsAction="never" />
+</menu>

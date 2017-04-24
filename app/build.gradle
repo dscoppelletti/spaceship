@@ -1,0 +1,54 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "it.scoppelletti.spaceship.sample"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ eventBusIndex : 'it.scoppelletti.spaceship.sample.MainEventBusIndex' ]
+            }
+        }
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            useProguard false
+            debuggable true
+        }
+        release {
+            minifyEnabled true
+            useProguard true
+            debuggable false
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    dataBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    compile project(':lib')
+    compile "com.android.support:appcompat-v7:${versionMap.android_support}"
+    compile "com.android.support:design:${versionMap.android_support}"
+    compile "com.android.support:support-annotations:${versionMap.android_support}"
+    compile "io.reactivex.rxjava2:rxandroid:${versionMap.rxandroid}"
+    compile "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"
+    compile "org.slf4j:slf4j-api:${versionMap.slf4j}"
+    compile "org.greenrobot:eventbus:${versionMap.eventbus}"
+    annotationProcessor "org.greenrobot:eventbus-annotation-processor:${versionMap.eventbus_apt}"
+    provided "org.projectlombok:lombok:${versionMap.lombok}"
+    annotationProcessor "org.projectlombok:lombok:${versionMap.lombok}"
+    apk "com.noveogroup.android:android-logger:${versionMap.android_logger}"
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+    <string name="cmd_listSection">List</string>
+    <string name="cmd_section2">Section 2</string>
+    <string name="cmd_section3">Section 3</string>
+    <string name="err_desc_required">The description is required.</string>
+    <string name="err_name_required">The name is required.</string>
+    <string name="fmt_desc">Description #%1$d</string>
+    <string name="fmt_name">Item #%1$d</string>
+    <string name="lbl_desc">Description</string>
+    <string name="lbl_formTab">Form</string>
+    <string name="lbl_name">Name</string>
+    <string name="lbl_tabbedActivity">Tabbed Activity</string>
+    <string name="msg_dataCreated">Data created.</string>
+    <string name="msg_dataDeleted">Data deleted.</string>
+    <string name="msg_dataDeleting">Do you want to delete the data?</string>
+    <string name="msg_dataUpdated">Data updated.</string>
+</resources>

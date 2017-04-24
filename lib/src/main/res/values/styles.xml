@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2015 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <eat-comment />
+    <!-- Root frame -->
+    <style name="it_scoppelletti_style_rootFrame">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    <!-- Content -->
+    <style name="it_scoppelletti_style_contentFrame">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    <!-- App Bar -->
+    <style name="it_scoppelletti_style_appBarLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="it_scoppelletti_style_collapsingAppBarLayout"
+        parent="it_scoppelletti_baseStyle_collapsingAppBarLayout">
+    </style>
+    <!-- Toolbar -->
+    <style name="it_scoppelletti_style_toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="popupTheme">@style/it_scoppelletti_theme_toolbarPopup</item>
+    </style>
+    <style name="it_scoppelletti_style_collapsingToolbar"
+        parent="it_scoppelletti_style_toolbar">
+        <item name="layout_collapseMode">pin</item>
+    </style>
+    <style name="it_scoppelletti_style_collapsingToolbarLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="contentScrim">?attr/colorPrimary</item>
+        <item name="layout_scrollFlags">scroll|exitUntilCollapsed</item>
+    </style>
+    <!-- Navigation Drawer -->
+    <style name="it_scoppelletti_style_drawerLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+    <style name="it_scoppelletti_style_navView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+    <!-- Coordinator layout -->
+    <style name="it_scoppelletti_style_coordinatorLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    <!-- Floating Action Button -->
+    <style name="it_scoppelletti_style_fab">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:clickable">true</item>
+    </style>
+    <!-- ProgressOverlay -->
+    <style name="it_scoppelletti_style_progressOverlay">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:background">#00000000</item>
+    </style>
+    <!-- List
+    http://www.google.com/design/spec/components/lists.html#lists-specs -->
+    <style name="it_scoppelletti_style_listItem_line1">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textAppearance">@style/it_scoppelletti_text_subheading</item>
+    </style>
+    <style name="it_scoppelletti_style_listItem_line2">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textAppearance">@style/it_scoppelletti_text_body1</item>
+    </style>
+    <style name="it_scoppelletti_style_listItem_line23">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">false</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textAppearance">@style/it_scoppelletti_text_body1</item>
+    </style>
+    <style name="it_scoppelletti_style_listItem_secondaryIcon">
+        <item name="android:layout_width">@dimen/it_scoppelletti_list_secondaryIcon_size</item>
+        <item name="android:layout_height">@dimen/it_scoppelletti_list_secondaryIcon_size</item>
+        <item name="android:tint">?android:attr/textColorSecondary</item>
+        <item name="android:clickable">true</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+    </style>
+</resources>

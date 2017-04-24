@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/it_scoppelletti_style_rootFrame">
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        style="@style/it_scoppelletti_style_drawerLayout">
+        <android.support.design.widget.CoordinatorLayout
+            style="@style/it_scoppelletti_style_coordinatorLayout">
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/app_bar_layout"
+                style="@style/it_scoppelletti_style_collapsingAppBarLayout"
+                android:theme="@style/it_scoppelletti_theme_appBarLayout"
+                android:layout_height="@dimen/it_scoppelletti_appBar_expandedHeight">
+                <android.support.design.widget.CollapsingToolbarLayout
+                    android:id="@+id/toolbar_layout"
+                    style="@style/it_scoppelletti_style_collapsingToolbarLayout">
+                    <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
+                        style="@style/it_scoppelletti_style_collapsingToolbar"/>
+                </android.support.design.widget.CollapsingToolbarLayout>
+            </android.support.design.widget.AppBarLayout>
+            <FrameLayout android:id="@+id/content_frame"
+                style="@style/it_scoppelletti_style_contentFrame"
+                app:layout_behavior="@string/it_scoppelletti_behavior_fabScrollAware">
+            </FrameLayout>
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                style="@style/it_scoppelletti_style_fab"
+                android:layout_margin="@dimen/it_scoppelletti_fab_margin"
+                android:layout_gravity="bottom|end"
+                app:srcCompat="@drawable/ic_add_white_24dp"
+                app:fabSize="normal" />
+        </android.support.design.widget.CoordinatorLayout>
+        <android.support.design.widget.NavigationView android:id="@+id/nav_view"
+            style="@style/it_scoppelletti_style_navView"
+            app:headerLayout="@layout/drawer_header"
+            app:menu="@menu/drawer" />
+    </android.support.v4.widget.DrawerLayout>
+    <it.scoppelletti.spaceship.widget.ProgressOverlay
+        android:id="@+id/progress_bar"
+        style="@style/it_scoppelletti_style_progressOverlay" />
+</FrameLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <it.scoppelletti.spaceship.bluetooth.preference.BluetoothDeviceListPreference
+        android:key="@string/pref_device" android:title="@string/lbl_device" />
+    <android.support.v7.preference.Preference
+        android:key="@string/pref_btConfig"
+        android:title="@string/it_scoppelletti_lbl_btConfig"
+        android:summary="@string/it_scoppelletti_msg_btConfig">
+        <intent android:action="android.settings.BLUETOOTH_SETTINGS" />
+    </android.support.v7.preference.Preference>
+</android.support.v7.preference.PreferenceScreen>

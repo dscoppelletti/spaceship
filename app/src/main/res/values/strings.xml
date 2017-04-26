@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+    <string name="cmd_print">Print</string>
+    <string name="err_bodyRequired">Text is required.</string>
+    <string name="err_generic">Generic error.</string>
+    <string name="err_printerBusy">Printer is busy.</string>
+    <string name="lbl_device">Device</string>
+    <string name="lbl_body">Text</string>
+    <string name="msg_printSent">Print sent.</string>
+</resources>

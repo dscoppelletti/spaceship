@@ -7,7 +7,7 @@ archivesBaseName = 'spaceship'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
 
     defaultConfig {
         minSdkVersion 16
@@ -61,11 +61,12 @@ spaceship {
 }
 
 dependencies {
-    compile "com.android.support:appcompat-v7:${versionMap.android_support}"
+    compile "com.android.support:appcompat-v7:25.3.1"
     compile "com.android.support:design:${versionMap.android_support}"
-    compile "com.android.support:support-annotations:${versionMap.android_support}"
+    compile "com.android.support:recyclerview-v7:${versionMap.android_support}"
     compile "com.android.support:preference-v7:${versionMap.android_support}"
     compile "com.android.support:preference-v14:${versionMap.android_support}"
+    compile "com.android.support:support-annotations:${versionMap.android_support}"
     compile "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"
     compile "org.greenrobot:eventbus:${versionMap.eventbus}"
     compile "org.slf4j:slf4j-api:${versionMap.slf4j}"

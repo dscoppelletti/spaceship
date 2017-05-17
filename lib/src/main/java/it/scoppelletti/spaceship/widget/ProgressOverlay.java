@@ -123,6 +123,11 @@ public final class ProgressOverlay extends CompoundControl {
             public void onAnimationStart(Animator animation) {
                 setVisibility(View.VISIBLE);
             }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                setRunning(false);
+            }
         });
 
         return anim;
@@ -161,6 +166,11 @@ public final class ProgressOverlay extends CompoundControl {
             @Override
             public void onAnimationEnd(Animator animation) {
                 setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                setRunning(true);
             }
         });
 
@@ -218,9 +228,14 @@ public final class ProgressOverlay extends CompoundControl {
             try {
                 myHideAnim.cancel();
             } catch (RuntimeException ex) {
+                // This is a problem, but I don't know what to do, yet.
                 myLogger.error("Failed to cancel animation.", ex);
             }
-        } else if (myShowAnim.isStarted() || getVisibility() == View.VISIBLE) {
+
+            return;
+        }
+
+        if (myShowAnim.isStarted() || getVisibility() == View.VISIBLE) {
             // Already shown
             return;
         }

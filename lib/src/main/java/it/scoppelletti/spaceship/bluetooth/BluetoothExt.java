@@ -83,7 +83,7 @@ public final class BluetoothExt {
         adapter = BluetoothAdapter.getDefaultAdapter();
         if (adapter == null) {
             throw new ApplicationException.Builder(
-                    R.string.it_scoppelletti_err_btNotSupported)
+                    R.string.it_scoppelletti_bluetooth_err_notSupported)
                     .build();
         }
 

@@ -65,13 +65,13 @@ public final class Printer implements Action, BluetoothAction {
             device = adapter.getRemoteDevice(myDeviceAddress);
         } catch (RuntimeException ex) {
             throw new ApplicationException.Builder(
-                    R.string.it_scoppelletti_err_btDeviceNotFound)
+                    R.string.it_scoppelletti_bluetooth_err_deviceNotFound)
                     .messageArguments(myDeviceAddress)
                     .cause(ex).build();
         }
         if (device == null) {
             throw new ApplicationException.Builder(
-                    R.string.it_scoppelletti_err_btDeviceNotFound)
+                    R.string.it_scoppelletti_bluetooth_err_deviceNotFound)
                     .messageArguments(myDeviceAddress).build();
         }
 
@@ -82,7 +82,7 @@ public final class Printer implements Action, BluetoothAction {
                     myServiceID);
         } catch (IOException ex) {
             throw new ApplicationException.Builder(
-                    R.string.it_scoppelletti_err_btCreateSocket)
+                    R.string.it_scoppelletti_bluetooth_err_createSocket)
                     .messageArguments(myDeviceName, myServiceID)
                     .cause(ex).build();
         }
@@ -102,7 +102,7 @@ public final class Printer implements Action, BluetoothAction {
             clientSocket.connect();
         } catch (IOException ex) {
             throw new ApplicationException.Builder(
-                    R.string.it_scoppelletti_err_btConnectToSocket)
+                    R.string.it_scoppelletti_bluetooth_err_connectToSocket)
                     .messageArguments(myDeviceName, myServiceID)
                     .cause(ex).build();
         }
@@ -115,7 +115,7 @@ public final class Printer implements Action, BluetoothAction {
             writer.flush();
         } catch (IOException ex) {
             throw new ApplicationException.Builder(
-                    R.string.it_scoppelletti_err_btWriteToSocket)
+                    R.string.it_scoppelletti_bluetooth_err_writeToSocket)
                     .messageArguments(myDeviceName, myServiceID)
                     .cause(ex).build();
         }
@@ -124,12 +124,12 @@ public final class Printer implements Action, BluetoothAction {
     @Override
     public void onDisabled() {
         throw new ApplicationException.Builder(
-                R.string.it_scoppelletti_err_btNotEnabled).build();
+                R.string.it_scoppelletti_bluetooth_err_notEnabled).build();
     }
 
     @Override
     public void onNotSupported() {
         throw new ApplicationException.Builder(
-                R.string.it_scoppelletti_err_btNotSupported).build();
+                R.string.it_scoppelletti_bluetooth_err_notSupported).build();
     }
 }

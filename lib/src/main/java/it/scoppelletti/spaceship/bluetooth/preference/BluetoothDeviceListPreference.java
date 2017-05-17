@@ -80,7 +80,7 @@ public final class BluetoothDeviceListPreference extends ListPreference {
         entry = getEntry();
         if (TextUtils.isEmpty(entry)) {
             setSummary(getContext().getString(
-                    R.string.it_scoppelletti_lbl_btNoDeviceSelected));
+                    R.string.it_scoppelletti_bluetooth_lbl_noDeviceSelected));
         } else {
             setSummary(entry);
         }
@@ -119,7 +119,7 @@ public final class BluetoothDeviceListPreference extends ListPreference {
                 entryValues = new CharSequence[1];
 
                 entries[0] = getContext().getText(
-                        R.string.it_scoppelletti_lbl_btNoDevicePaired);
+                        R.string.it_scoppelletti_bluetooth_lbl_noDevicePaired);
                 entryValues[0] = "";
             }
 
@@ -135,7 +135,7 @@ public final class BluetoothDeviceListPreference extends ListPreference {
             entryValues = new CharSequence[1];
 
             entries[0] = getContext().getText(
-                    R.string.it_scoppelletti_lbl_btNotEnabled);
+                    R.string.it_scoppelletti_bluetooth_lbl_notEnabled);
             entryValues[0] = "";
 
             setEntries(entries);
@@ -150,7 +150,7 @@ public final class BluetoothDeviceListPreference extends ListPreference {
             entryValues = new CharSequence[1];
 
             entries[0] = getContext().getText(
-                    R.string.it_scoppelletti_lbl_btNotSupported);
+                    R.string.it_scoppelletti_bluetooth_lbl_notSupported);
             entryValues[0] = "";
 
             setEntries(entries);

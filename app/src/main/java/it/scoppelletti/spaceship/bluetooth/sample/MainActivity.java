@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements
                     StringExt.EMPTY);
             if (TextUtils.isEmpty(deviceAddress)) {
                 throw new ApplicationException.Builder(
-                        R.string.it_scoppelletti_err_btNoDeviceSelected)
+                        R.string.it_scoppelletti_bluetooth_err_noDeviceSelected)
                         .build();
             }
 

@@ -5,8 +5,8 @@
         android:key="@string/pref_device" android:title="@string/lbl_device" />
     <android.support.v7.preference.Preference
         android:key="@string/pref_btConfig"
-        android:title="@string/it_scoppelletti_lbl_btConfig"
-        android:summary="@string/it_scoppelletti_msg_btConfig">
+        android:title="@string/it_scoppelletti_bluetooth_lbl_config"
+        android:summary="@string/it_scoppelletti_bluetooth_msg_config">
         <intent android:action="android.settings.BLUETOOTH_SETTINGS" />
     </android.support.v7.preference.Preference>
 </android.support.v7.preference.PreferenceScreen>

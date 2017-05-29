@@ -39,6 +39,7 @@ import it.scoppelletti.spaceship.bluetooth.sample.databinding.MainActivityBindin
 import it.scoppelletti.spaceship.rx.CompletableCoordinator;
 import it.scoppelletti.spaceship.rx.CompletableObserverFactory;
 import it.scoppelletti.spaceship.rx.ExponentialRetry;
+import it.scoppelletti.spaceship.rx.StartEvent;
 import it.scoppelletti.spaceship.types.StringExt;
 import it.scoppelletti.spaceship.widget.ProgressOverlay;
 import it.scoppelletti.spaceship.widget.SnackbarEvent;
@@ -234,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Subscribe
-    public void onPrintEvent(@NonNull PrintEvent event) {
+    public void onStartEvent(@NonNull StartEvent event) {
         myProgressBar.show();
     }
 
@@ -267,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements
 
         @Override
         protected void onStart() {
-            EventBus.getDefault().post(PrintEvent.getInstance());
+            EventBus.getDefault().post(StartEvent.getInstance());
         }
 
         @Override

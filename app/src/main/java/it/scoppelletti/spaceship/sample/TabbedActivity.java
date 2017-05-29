@@ -20,6 +20,8 @@ import it.scoppelletti.spaceship.app.ExceptionDialogFragment;
 import it.scoppelletti.spaceship.app.TitleAdapter;
 import it.scoppelletti.spaceship.app.UpNavigationCallbacks;
 import it.scoppelletti.spaceship.app.UpNavigationProvider;
+import it.scoppelletti.spaceship.rx.CompleteEvent;
+import it.scoppelletti.spaceship.rx.StartEvent;
 import it.scoppelletti.spaceship.sample.widget.DataPagerAdapter;
 import it.scoppelletti.spaceship.widget.ProgressOverlay;
 import it.scoppelletti.spaceship.widget.SnackbarEvent;
@@ -128,7 +130,7 @@ public final class TabbedActivity extends AppCompatActivity implements
     }
 
     @Subscribe
-    public void onDataAccessEvent(@NonNull DataAccessEvent event) {
+    public void onStartEvent(@NonNull StartEvent event) {
         myProgressBar.show();
     }
 
@@ -148,7 +150,7 @@ public final class TabbedActivity extends AppCompatActivity implements
     }
 
     @Subscribe
-    public void onDataReadyEvent(@NonNull DataReadyEvent event) {
+    public void onCompleteEvent(@NonNull CompleteEvent event) {
         myProgressBar.hide(new Runnable() {
 
             @Override

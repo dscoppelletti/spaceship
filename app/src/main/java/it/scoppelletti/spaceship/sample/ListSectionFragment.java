@@ -24,8 +24,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import it.scoppelletti.spaceship.ExceptionEvent;
+import it.scoppelletti.spaceship.rx.CompleteEvent;
 import it.scoppelletti.spaceship.rx.SingleCoordinator;
 import it.scoppelletti.spaceship.rx.SingleObserverFactory;
+import it.scoppelletti.spaceship.rx.StartEvent;
 import it.scoppelletti.spaceship.sample.data.DataForm;
 import it.scoppelletti.spaceship.sample.data.DataProvider;
 import it.scoppelletti.spaceship.sample.widget.DataListAdapter;
@@ -187,7 +189,7 @@ public final class ListSectionFragment extends Fragment {
 
         @Override
         protected void onStart() {
-            EventBus.getDefault().post(DataAccessEvent.getInstance());
+            EventBus.getDefault().post(StartEvent.getInstance());
         }
 
         @Override
@@ -199,7 +201,7 @@ public final class ListSectionFragment extends Fragment {
                 myPos = RecyclerView.NO_POSITION;
             }
 
-            EventBus.getDefault().post(DataReadyEvent.getInstance());
+            EventBus.getDefault().post(CompleteEvent.getInstance());
         }
 
         @Override

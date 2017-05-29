@@ -32,8 +32,10 @@ import it.scoppelletti.spaceship.app.DialogCloseEvent;
 import it.scoppelletti.spaceship.app.ConfirmDialogFragment;
 import it.scoppelletti.spaceship.rx.CompletableCoordinator;
 import it.scoppelletti.spaceship.rx.CompletableObserverFactory;
+import it.scoppelletti.spaceship.rx.CompleteEvent;
 import it.scoppelletti.spaceship.rx.SingleCoordinator;
 import it.scoppelletti.spaceship.rx.SingleObserverFactory;
+import it.scoppelletti.spaceship.rx.StartEvent;
 import it.scoppelletti.spaceship.sample.data.DataForm;
 import it.scoppelletti.spaceship.sample.data.DataProvider;
 import it.scoppelletti.spaceship.sample.databinding.FormFragmentBinding;
@@ -336,7 +338,7 @@ public final class FormTabFragment extends Fragment implements
 
         @Override
         protected void onStart() {
-            EventBus.getDefault().post(DataAccessEvent.getInstance());
+            EventBus.getDefault().post(StartEvent.getInstance());
         }
 
         @Override
@@ -358,13 +360,13 @@ public final class FormTabFragment extends Fragment implements
 
         @Override
         protected void onStart() {
-            EventBus.getDefault().post(DataAccessEvent.getInstance());
+            EventBus.getDefault().post(StartEvent.getInstance());
         }
 
         @Override
         public void onSuccess(@NonNull DataForm data) {
             myBinding.setForm(data);
-            EventBus.getDefault().post(DataReadyEvent.getInstance());
+            EventBus.getDefault().post(CompleteEvent.getInstance());
         }
 
         @Override
@@ -381,7 +383,7 @@ public final class FormTabFragment extends Fragment implements
 
         @Override
         protected void onStart() {
-            EventBus.getDefault().post(DataAccessEvent.getInstance());
+            EventBus.getDefault().post(StartEvent.getInstance());
         }
 
         @Override
@@ -403,7 +405,7 @@ public final class FormTabFragment extends Fragment implements
 
         @Override
         protected void onStart() {
-            EventBus.getDefault().post(DataAccessEvent.getInstance());
+            EventBus.getDefault().post(StartEvent.getInstance());
         }
 
         @Override

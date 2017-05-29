@@ -19,6 +19,8 @@ import it.scoppelletti.spaceship.app.DialogCloseEvent;
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment;
 import it.scoppelletti.spaceship.app.NavigationDrawer;
 import it.scoppelletti.spaceship.app.TitleAdapter;
+import it.scoppelletti.spaceship.rx.CompleteEvent;
+import it.scoppelletti.spaceship.rx.StartEvent;
 import it.scoppelletti.spaceship.widget.ProgressOverlay;
 
 public final class DrawerActivity extends AppCompatActivity implements
@@ -164,12 +166,12 @@ public final class DrawerActivity extends AppCompatActivity implements
     }
 
     @Subscribe
-    public void onDataAccessEvent(@NonNull DataAccessEvent event) {
+    public void onStartEvent(@NonNull StartEvent event) {
         myProgressBar.show();
     }
 
     @Subscribe
-    public void onDataReadyEvent(@NonNull DataReadyEvent event) {
+    public void onCompleteEvent(@NonNull CompleteEvent event) {
         myProgressBar.hide();
     }
 

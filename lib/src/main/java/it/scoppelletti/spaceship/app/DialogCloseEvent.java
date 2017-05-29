@@ -64,7 +64,7 @@ public final class DialogCloseEvent implements Parcelable {
     /**
      * Constructor.
      *
-     * @param in The parcel.
+     * @param in The input stream.
      */
     private DialogCloseEvent(Parcel in) {
         myReqCode = in.readInt();

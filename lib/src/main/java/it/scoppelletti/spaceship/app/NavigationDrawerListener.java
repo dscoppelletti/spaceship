@@ -70,7 +70,7 @@ final class NavigationDrawerListener extends ActionBarDrawerToggle {
     }
 
     /**
-     * Should be called by the namesake method of the drawer.
+     * Should be called by the like-named method of the drawer.
      *
      * @param savedInstanceState State of the activity. May be {@code null}.
      */

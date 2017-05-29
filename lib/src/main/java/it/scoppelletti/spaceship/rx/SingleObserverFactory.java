@@ -30,7 +30,7 @@ import io.reactivex.observers.DisposableSingleObserver;
  * new observer instance whenever it needs.</p>
  *
  * @param <T> Class of the items to observe.
- * @see       it.scoppelletti.spaceship.rx.ObservableCoordinator#subscribe(ObserverFactory)
+ * @see       it.scoppelletti.spaceship.rx.SingleCoordinator#subscribe(it.scoppelletti.spaceship.rx.SingleObserverFactory)
  * @since     1.0.0
  */
 public interface SingleObserverFactory<T> {

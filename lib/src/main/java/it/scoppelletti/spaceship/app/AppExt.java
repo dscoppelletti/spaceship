@@ -42,18 +42,22 @@ public final class AppExt {
     public static final String PROP_LEARNED = "it.scoppelletti.spaceship.1";
 
     /**
-     * Property indicating the title of an activity as a string resource ID.
+     * Property reporting the title of an activity as a string resource ID.
      */
     public static final String PROP_TITLE = "it.scoppelletti.spaceship.2";
 
     /**
-     * Fragment tag of the {@code ConfirmDialogFragment} fragment.
+     * Tag of the {@code ConfirmDialogFragment} fragment.
+     *
+     * @see it.scoppelletti.spaceship.app.ConfirmDialogFragment
      */
     public static final String TAG_CONFIRMDIALOG =
             "it.scoppelletti.spaceship.1";
 
     /**
-     * Fragment tag of the {@code ExceptionDialogFragment} fragment.
+     * Tag of the {@code ExceptionDialogFragment} fragment.
+     *
+     * @see it.scoppelletti.spaceship.app.ExceptionDialogFragment
      */
     public static final String TAG_EXCEPTIONDIALOG =
             "it.scoppelletti.spaceship.2";

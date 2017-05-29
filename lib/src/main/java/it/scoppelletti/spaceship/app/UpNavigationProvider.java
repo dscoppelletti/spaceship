@@ -57,7 +57,7 @@ public final class UpNavigationProvider {
     }
 
     /**
-     * Should be called by the namesake method of the activity.
+     * Should be called by the like-named method of the activity.
      *
      * @param savedInstanceState State of the activity. May be {@code null}.
      * @see   android.app.Activity#onCreate(android.os.Bundle)
@@ -72,7 +72,7 @@ public final class UpNavigationProvider {
     }
 
     /**
-     * Should be called by the namesake method of the activity.
+     * Should be called by the like-named method of the activity.
      *
      * <p>The {@code onPrepareSupportNavigateUpTaskStack} method of the activity
      * is called when the activity was started in a task that does not belong to
@@ -113,7 +113,7 @@ public final class UpNavigationProvider {
     }
 
     /**
-     * Should be called by the namesake method of the activity just before the
+     * Should be called by the like-named method of the activity just before the
      * default implementation.
      *
      * <p>The {@code supportNavigateUpTo} method of the activity is called when

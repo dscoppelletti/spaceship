@@ -94,7 +94,7 @@ public final class TitleAdapter {
     }
 
     /**
-     * Should be called by the namesake method of the activity.
+     * Should be called by the like-named method of the activity.
      *
      * @param savedInstanceState State of the activity. May be {@code null}.
      * @see   android.app.Activity#onPostCreate(android.os.Bundle)
@@ -112,7 +112,7 @@ public final class TitleAdapter {
     }
 
     /**
-     * Should be called by the namesake method of the activity.
+     * Should be called by the like-named method of the activity.
      *
      * @param outState State of the activity.
      * @see   android.app.Activity#onSaveInstanceState(android.os.Bundle)

@@ -92,7 +92,7 @@ public final class NavigationDrawer {
     }
 
     /**
-     * Should be called by the namesake method of the activity.
+     * Should be called by the like-named method of the activity.
      *
      * @param savedInstanceState The state of the activity. May be {@code null}.
      * @see   android.app.Activity#onCreate(android.os.Bundle)
@@ -133,7 +133,7 @@ public final class NavigationDrawer {
     }
 
     /**
-     * Should be called by the namesake method of the activity.
+     * Should be called by the like-named method of the activity.
      *
      * @param savedInstanceState State of the activity. May be {@code null}.
      * @see   android.app.Activity#onPostCreate(android.os.Bundle)
@@ -145,7 +145,7 @@ public final class NavigationDrawer {
     }
 
     /**
-     * Should be called by the namesake method of the activity. If it returns
+     * Should be called by the like-named method of the activity. If it returns
      * {@code true}, the calling method should return {@code true} and skip
      * further processing.
      *
@@ -163,7 +163,7 @@ public final class NavigationDrawer {
     }
 
     /**
-     * Should be called by the namesake method of the activity.
+     * Should be called by the like-named method of the activity.
      *
      * @param newConfig The new device configuration.
      * @see   android.app.Activity#onConfigurationChanged(android.content.res.Configuration)
@@ -175,7 +175,7 @@ public final class NavigationDrawer {
     }
 
     /**
-     * Should be called by the namesake method of the activity. If it returns
+     * Should be called by the like-named method of the activity. If it returns
      * {@code true}, the calling method should return {@code true} and skip
      * further processing.
      *

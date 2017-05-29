@@ -23,6 +23,10 @@
     <color name="colorPrimaryDark">#303F9F</color> <!-- 700 -->
     <!-- Accent: Pink -->
     <color name="colorAccent">#FF4081</color> <!-- A200 -->
+    <!-- Text primary -->
+    <color name="colorTextPrimary">@android:color/black</color>
+    <!-- Text primary inverse -->
+    <color name="colorTextPrimaryInverse">@android:color/white</color>
     <!-- http://www.google.com/design/spec/components/dividers.html#dividers-spec -->
     <color name="it_scoppelletti_divider">#1F000000</color> <!-- black 12% -->
     <!-- http://stackoverflow.com/questions/32070670 - August 18, 2015 -->

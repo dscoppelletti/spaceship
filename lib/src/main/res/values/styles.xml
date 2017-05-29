@@ -74,6 +74,18 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:clickable">true</item>
     </style>
+    <!-- Raised button
+    http://medium.com/google-developers/choosing-a-button-style-with-purpose-and-intent-35a945e228d3 - February 24, 2016 -->
+    <style name="it_scoppelletti_style_raisedButton"
+        parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
+        <item name="android:textColor">@drawable/it_scoppelletti_color_textprimaryinverse</item>
+    </style>
+    <style name="it_scoppelletti_style_secondaryRaisedButton"
+        parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
+        <item name="android:textColor">@drawable/it_scoppelletti_color_accent</item>
+    </style>
     <!-- ProgressOverlay -->
     <style name="it_scoppelletti_style_progressOverlay">
         <item name="android:layout_width">match_parent</item>
@@ -81,7 +93,7 @@
         <item name="android:fitsSystemWindows">true</item>
         <item name="android:clickable">true</item>
         <item name="android:visibility">gone</item>
-        <item name="android:background">#00000000</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
     <!-- List
     http://www.google.com/design/spec/components/lists.html#lists-specs -->

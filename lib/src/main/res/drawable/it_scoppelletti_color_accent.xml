@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
- * Copyright (C) 2015 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ * Copyright (C) 2017 Dario Scoppelletti, <http://www.scoppelletti.it/>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 -->
-<resources xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingTranslation">
-    <string name="app_name">Spaceship Library</string>
-    <item name="it_scoppelletti_alpha_disabled" format="float" type="dimen">0.3</item>
-    <item name="it_scoppelletti_alpha_opaque" format="float" type="dimen">1.0</item>
-    <string name="it_scoppelletti_behavior_fabScrollAware">it.scoppelletti.spaceship.widget.FabScrollAwareBehavior</string>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="true"
+        android:color="@color/colorAccent"
+        android:alpha="@dimen/it_scoppelletti_alpha_opaque" />
+    <item android:state_enabled="false"
+        android:color="@color/colorTextPrimary"
+        android:alpha="@dimen/it_scoppelletti_alpha_disabled" />
+</selector>

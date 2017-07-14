@@ -16,19 +16,27 @@
 -->
 <resources>
     <eat-comment />
-    <!-- http://www.google.com/design/spec/style/color.html -->
-    <!-- Primary: Indigo -->
-    <color name="colorPrimary">#3F51B5</color>  <!-- 500 -->
-    <color name="colorPrimaryLight">#C5CAE9</color> <!-- 100 -->
-    <color name="colorPrimaryDark">#303F9F</color> <!-- 700 -->
-    <!-- Accent: Pink -->
-    <color name="colorAccent">#FF4081</color> <!-- A200 -->
-    <!-- Text primary -->
-    <color name="colorTextPrimary">@android:color/black</color>
-    <!-- Text primary inverse -->
-    <color name="colorTextPrimaryInverse">@android:color/white</color>
-    <!-- http://www.google.com/design/spec/components/dividers.html#dividers-spec -->
-    <color name="it_scoppelletti_divider">#1F000000</color> <!-- black 12% -->
+    <!-- http://material.io/guidelines/style/color.html -->
+    <!-- Primary: Indigo (500, 100, 700) -->
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryLight">#C5CAE9</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <!-- Accent: Pink (A200, A100, A400) -->
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccentLight">#FF80AB</color>
+    <color name="colorAccentDark">#F50057</color>
+    <!-- Text on primary color -->
+    <color name="colorTextPrimary">#FFFFFF</color>
+    <!-- Text on accent color -->
+    <color name="colorTextAccent">#FFFFFF</color>
+    <!-- Divider (black 12%) -->
+    <color name="it_scoppelletti_divider">#1F000000</color>
+    <item name="it_scoppelletti_alpha_darkTextPrimary" format="float" type="dimen">0.87</item>
+    <item name="it_scoppelletti_alpha_darkTextSecondary" format="float" type="dimen">0.54</item>
+    <item name="it_scoppelletti_alpha_darkTextDisabled" format="float" type="dimen">0.38</item>
+    <item name="it_scoppelletti_alpha_lightTextPrimary" format="float" type="dimen">1.0</item>
+    <item name="it_scoppelletti_alpha_lightTextSecondary" format="float" type="dimen">0.7</item>
+    <item name="it_scoppelletti_alpha_lightTextDisabled" format="float" type="dimen">0.5</item>
     <!-- http://stackoverflow.com/questions/32070670 - August 18, 2015 -->
     <color name="preference_fallback_accent_color">@color/colorAccent</color>
 </resources>

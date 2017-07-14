@@ -16,9 +16,9 @@
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_enabled="true"
-        android:color="@color/colorTextPrimaryInverse"
-        android:alpha="@dimen/it_scoppelletti_alpha_opaque" />
+        android:color="@color/colorAccent"
+        android:alpha="@dimen/it_scoppelletti_alpha_darkTextPrimary" />
     <item android:state_enabled="false"
-        android:color="@color/colorTextPrimaryInverse"
-        android:alpha="@dimen/it_scoppelletti_alpha_disabled" />
+        android:color="@android:color/black"
+        android:alpha="@dimen/it_scoppelletti_alpha_darkTextDisabled" />
 </selector>

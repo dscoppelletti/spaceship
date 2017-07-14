@@ -39,9 +39,9 @@ import android.view.View;
  *        target="_top">Navigation with Back and Up</a>
  * @see   <a href="http://developer.android.com/training/implementing-navigation/nav-drawer.html"
  *        target="_top">Creating a Navigation Drawer</a>
- * @see   <a href="http://www.google.com/design/spec/layout/structure.html"
+ * @see   <a href="http://material.io/guidelines/layout/structure.html"
  *        target="_top">Layout &gt; Structure</a>
- * @see   <a href="http://www.google.com/design/spec/patterns/navigation-drawer.html"
+ * @see   <a href="http://material.io/guidelines/patterns/navigation-drawer.html"
  *        target="_top">Patterns &gt; Navigation drawer</a>
  * @since 1.0.0
  */

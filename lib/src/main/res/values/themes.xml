@@ -40,7 +40,7 @@
         parent="it_scoppelletti_theme_app">
         <item name="colorAccent">@android:color/white</item>
     </style>
-    <!-- http://medium.com/@JakobUlbrich/building-a-settings-screen-for-android-part-1-5959aa49337c#.29crbu6tt,
+    <!-- http://medium.com/@JakobUlbrich/building-a-settings-screen-for-android-part-1-5959aa49337c#.29crbu6tt
     May 28, 2016 -->
     <style name="it_scoppelletti_theme_preference"
         parent="@style/PreferenceThemeOverlay.v14.Material">

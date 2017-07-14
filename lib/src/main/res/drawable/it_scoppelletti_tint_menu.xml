@@ -15,10 +15,10 @@
  * limitations under the License.
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- http://material.google.com/style/icons.html
+    <!-- http://material.io/guidelines/style/color.html
     http://stackoverflow.com/questions/36741036 - April 20, 2016 -->
     <!-- Active on dark background - opacity: 100% -->
     <item android:color="#FFFFFFFF" android:state_enabled="true" />
-    <!-- Inactive on dark background - opacity: 30% -->
-    <item android:color="#4CFFFFFF" android:state_enabled="false" />
+    <!-- Inactive on dark background - opacity: 50% -->
+    <item android:color="#7FFFFFFF" android:state_enabled="false" />
 </selector>

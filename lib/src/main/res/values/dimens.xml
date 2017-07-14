@@ -16,7 +16,7 @@
 -->
 <resources>
     <eat-comment />
-    <!-- http://www.google.com/design/spec/layout/metrics-keylines.html#metrics-keylines-keylines-spacing -->
+    <!-- http://material.io/guidelines/layout/metrics-keylines.html#metrics-keylines-keylines-spacing -->
     <dimen name="it_scoppelletti_marginHorz">16dp</dimen>
     <dimen name="it_scoppelletti_marginVert">16dp</dimen>
     <dimen name="it_scoppelletti_spacingHorz">16dp</dimen>
@@ -26,16 +26,16 @@
     <dimen name="it_scoppelletti_fab_margin">16dp</dimen>
     <!-- Android Studio: Scrolling Activity Template -->
     <dimen name="it_scoppelletti_appBar_expandedHeight">180dp</dimen>
-    <!-- http://www.google.com/design/spec/components/buttons-floating-action-button.html -->
+    <!-- http://material.io/guidelines/components/dialogs.html#dialogs-specs -->
     <dimen name="it_scoppelletti_fab_normalSize">56dp</dimen>
     <dimen name="it_scoppelletti_fab_miniSize">40dp</dimen>
     <dimen name="it_scoppelletti_fabIcon_size">24dp</dimen>
     <!-- http://material.io/guidelines/components/dialogs.html#dialogs-specs -->
     <dimen name="it_scoppelletti_dialog_margin">24dp</dimen>
     <dimen name="it_scoppelletti_dialog_padding">20dp</dimen>
-    <!-- http://www.google.com/design/spec/components/dividers.html#dividers-spec -->
+    <!-- http://material.io/guidelines/components/dividers.html -->
     <dimen name="it_scoppelletti_divider_height">1dp</dimen>
-    <!-- http://www.google.com/design/spec/components/lists.html#lists-specs -->
+    <!-- http://material.io/guidelines/components/lists.html#lists-actions -->
     <dimen name="it_scoppelletti_list_singleLineItem_height">48dp</dimen>
     <dimen name="it_scoppelletti_list_singleLineItemWithIcon_height">56dp</dimen>
     <dimen name="it_scoppelletti_list_twoLineItem_height">56dp</dimen>

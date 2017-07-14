@@ -17,7 +17,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation">
     <string name="app_name">Spaceship Library</string>
-    <item name="it_scoppelletti_alpha_disabled" format="float" type="dimen">0.3</item>
-    <item name="it_scoppelletti_alpha_opaque" format="float" type="dimen">1.0</item>
     <string name="it_scoppelletti_behavior_fabScrollAware">it.scoppelletti.spaceship.widget.FabScrollAwareBehavior</string>
 </resources>

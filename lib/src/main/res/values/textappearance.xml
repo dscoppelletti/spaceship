@@ -16,7 +16,7 @@
 -->
 <resources>
     <eat-comment />
-    <!-- http://www.google.com/design/spec/style/typography.html#typography-styles -->
+    <!-- http://material.io/guidelines/style/typography.html#typography-typeface -->
     <!-- 112sp light -->
     <style name="it_scoppelletti_text_display4"
         parent="TextAppearance.AppCompat.Display4" />

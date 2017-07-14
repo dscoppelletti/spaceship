@@ -18,6 +18,8 @@ package it.scoppelletti.spaceship.databinding;
 
 /**
  * Operations on data binding.
+ *
+ * @since 1.0.0
  */
 public final class DataBindingExt {
 

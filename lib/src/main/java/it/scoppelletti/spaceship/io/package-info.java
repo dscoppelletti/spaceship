@@ -15,7 +15,8 @@
  */
 
 /**
- * <abbr title="Input/Output">I/O</abbr> operations.
+ * Provides for system input and output through data streams, serialization and
+ * the file system.
  *
  * @version 1.0.0
  */

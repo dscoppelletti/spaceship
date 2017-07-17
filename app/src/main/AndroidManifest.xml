@@ -9,12 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/it_scoppelletti_theme_app">
-        <activity android:name=".DrawerActivity"
+        <activity android:name=".SplashActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity android:name=".DrawerActivity"
+            android:label="@string/app_name">
         </activity>
         <activity android:name=".TabbedActivity"
             android:label="@string/lbl_tabbedActivity"

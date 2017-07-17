@@ -63,6 +63,14 @@ public final class AppExt {
             "it.scoppelletti.spaceship.2";
 
     /**
+     * Tag of the {@code SplashActivityData} fragment.
+     *
+     * @see it.scoppelletti.spaceship.app.SplashActivityData
+     */
+    public static final String TAG_SPLASHACTIVITYDATA =
+            "it.scoppelletti.spaceship.3";
+
+    /**
      * Private constructor for static class.
      */
     private AppExt() {

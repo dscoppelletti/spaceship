@@ -145,6 +145,11 @@ public final class ApplicationException extends RuntimeException {
 
     @Override
     public String getMessage() {
+        return toString();
+    }
+
+    @Override
+    public String toString() {
         int i, n;
         StringBuilder buf;
 

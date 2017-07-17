@@ -16,6 +16,8 @@
 
 package it.scoppelletti.spaceship.types;
 
+import android.support.annotation.Nullable;
+
 /**
  * Operations on strings.
  *
@@ -32,5 +34,42 @@ public final class StringExt {
      * Private constructor for static class.
      */
     private StringExt() {
+    }
+
+    /**
+     * Converts a string changing the first character of each word to the
+     * corresponding title-case character.
+     *
+     * @param  s The original string. May be {@code null}.
+     * @return   The converted string. May be {@code null}.
+     */
+    @Nullable
+    public static CharSequence toTitleCase(@Nullable CharSequence s) {
+        int i, n;
+        char c;
+        boolean cap;
+        StringBuilder buf;
+
+        if (s == null) {
+            return null;
+        }
+
+        cap = true;
+        n = s.length();
+        buf = new StringBuilder(n);
+        for (i = 0; i < n; i++) {
+            c = s.charAt(i);
+            if (Character.isSpaceChar(c)) {
+                cap = true;
+                buf.append(c);
+            } else if (cap) {
+                cap = false;
+                buf.append(Character.toTitleCase(c));
+            } else {
+                buf.append(c);
+            }
+        }
+
+        return buf.toString();
     }
 }

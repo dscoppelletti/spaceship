@@ -1,0 +1,31 @@
+# Ignored files
+
+# Private files
+local.properties
+
+# Log files
+*.log
+
+# Android
+*.apk
+*.ap_
+*.class
+*.dex
+
+# Gradle
+.gradle/
+build/
+/*/build/
+
+# Android Studio
+*.iml
+.externalNativeBuild
+.idea
+captures
+
+# Windows
+Thumbs.db
+
+# Mac
+.DS_Store
+

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="it_scoppelletti_cognito_err_challengeNotSupported">La fase di autenticazione %1$s non è supportata.</string>
+    <string name="it_scoppelletti_cognito_err_loginAlreadyInProgress">Il processo di autenticazione è già in esecuzione.</string>
+    <string name="it_scoppelletti_cognito_err_mfaNotSupported">L´autenticazione multi-fattore non è supportata.</string>
+    <string name="it_scoppelletti_cognito_err_pictureRequired">L´immagine è obbligatoria.</string>
+    <string name="it_scoppelletti_cognito_err_preferredUserCodeRequired">Il nome utente preferito è obbligatorio.</string>
+    <string name="it_scoppelletti_cognito_err_profileRequired">Il profilo è obbligatorio.</string>
+    <string name="it_scoppelletti_cognito_err_resetPasswordAlreadyInProgress">Il processo di ripristino della password è già in esecuzione.</string>
+    <string name="it_scoppelletti_cognito_err_verificationCodeRequired">Il codice di verifica è obbligatorio.</string>
+    <string name="it_scoppelletti_cognito_err_userAttributeRequired">L´attributo %1$s è obbligatorio.</string>
+    <string name="it_scoppelletti_cognito_lbl_picture">Immagine</string>
+    <string name="it_scoppelletti_cognito_lbl_preferredUserCode">Nome utente preferito</string>
+    <string name="it_scoppelletti_cognito_lbl_profile">Profilo</string>
+    <string name="it_scoppelletti_cognito_lbl_verificationCode">Codice di verifica</string>
+    <string name="it_scoppelletti_cognito_msg_newPassword">È necessario impostare una nuova password.</string>
+    <string name="it_scoppelletti_cognito_msg_verificationCode">Il codice di verifica per impostare una nuova password è stato inviato a %2$s via %1$s.</string>
+</resources>

@@ -59,21 +59,8 @@ public final class CompletableCoordinator {
     /**
      * Starts an observable task.
      *
-     * <p>The activity may connect the observable task when you want (for
-     * example, when a button has been clicked), but a
-     * {@code CompletableCoordinator} object can manage only one observable task
-     * at a time.<br />
-     * If an observer is already set, it subscribes to the observable task
-     * immediately, otherwise the subscription is postponed to when an observer
-     * will be set.</p>
-     *
      * @param  task The observable task.
-     * @return      The connection. The activity should collect the returned
-     *              connection in order to dispose it in the {@code onPause}
-     *              method.
-     * @see         #isRunning()
-     * @see         #subscribe(CompletableObserverFactory)
-     * @see         android.app.Activity#onPause()
+     * @return      The connection.
      */
     @NonNull
     public Disposable connect(@NonNull Completable task) {
@@ -105,21 +92,9 @@ public final class CompletableCoordinator {
     /**
      * Prepares the subscription to an observable task.
      *
-     * <p>The activity should be call the {@code subscribe} method in the
-     * {@code onResume} method. A {@code CompletableCoordinator} object can
-     * manage only one observer at a time.<br />
-     * If an observable task is already connected, the observer subscribes
-     * to the observable task immediately, otherwhise the subscription is
-     * postponed to when an observable task will be connected.</p>
-     *
      * @param  observerFactory The factory object for creating a new observer
      *                         instance.
-     * @return                 The subscription. The activity should collect the
-     *                         returned subscription in order to dispose it in
-     *                         the {@code onPause} method.
-     * @see                    #connect(io.reactivex.Completable)
-     * @see                    android.app.Activity#onResume()
-     * @see                    android.app.Activity#onPause()
+     * @return                 The subscription.
      */
     @NonNull
     public Disposable subscribe(

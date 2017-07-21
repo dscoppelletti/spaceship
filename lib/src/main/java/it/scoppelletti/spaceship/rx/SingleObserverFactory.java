@@ -22,13 +22,6 @@ import io.reactivex.observers.DisposableSingleObserver;
 /**
  * Creates a new observer instance.
  *
- * <p>To coordinate an observable source with the lifecycle of an activity, your
- * observer should be unsubscribed when the activity is paused and then
- * subscribed again when the activity is resumed; but when an observer is
- * disposed it cannot be used anymore, thus the {@code SingleCoordinator} class
- * makes use of an {@code SingleObserverFactory} interface in order to create a
- * new observer instance whenever it needs.</p>
- *
  * @param <T> Class of the items to observe.
  * @see       it.scoppelletti.spaceship.rx.SingleCoordinator#subscribe(it.scoppelletti.spaceship.rx.SingleObserverFactory)
  * @since     1.0.0

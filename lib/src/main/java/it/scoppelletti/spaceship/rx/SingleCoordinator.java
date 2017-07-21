@@ -59,28 +59,8 @@ public final class SingleCoordinator<T> {
     /**
      * Starts an observable source.
      *
-     * <p>The activity may connect the observable source when you want (for
-     * example, when a button has been clicked), but an
-     * {@code SingleCoordinator} object can manage only one observable source at
-     * a time.<br />
-     * If the observable source loads data for the initialization of the
-     * activity, the observable source should be connected in the
-     * {@code onCreate} method.<br />
-     * If an observer is already set, it subscribes to the observable source
-     * immediately, otherwise the subscription is postponed to when an observer
-     * will be set. The emitted result is not lost because the observable source
-     * is converted to an <i>hot</i> observable through by the {@code cache}
-     * method.</p>
-     *
      * @param  source The observable source.
-     * @return        The connection. The activity should collect the returned
-     *                connection in order to dispose it in the {@code onPause}
-     *                method.
-     * @see           #isRunning()
-     * @see           #subscribe(SingleObserverFactory)
-     * @see           android.app.Activity#onCreate(android.os.Bundle)
-     * @see           android.app.Activity#onPause()
-     * @see           io.reactivex.Single#cache()
+     * @return        The connection.
      */
     @NonNull
     public Disposable connect(@NonNull Single<T> source) {
@@ -112,26 +92,9 @@ public final class SingleCoordinator<T> {
     /**
      * Prepares the subscription to an observable source.
      *
-     * <p>The activity should be call the {@code subscribe} method in the
-     * {@code onResume} method. An {@code ObservableCoordinator} object can
-     * manage only one observer at a time.<br />
-     * If an observable source is already connected, the observer subscribes
-     * to the observable source immediately, otherwhise the subscription is
-     * postponed to when an observable source will be connected. If the activity
-     * is paused and then resumed, the observable source is not restarted and
-     * the emitted result is not lost because the observable source has been
-     * converted to an <i>hot</i> observable through by the {@code cache}
-     * method.</p>
-     *
      * @param  observerFactory The factory object for creating a new observer
      *                         instance.
-     * @return                 The subscription. The activity should collect the
-     *                         returned subscription in order to dispose it in
-     *                         the {@code onPause} method.
-     * @see                    #connect(io.reactivex.Single)
-     * @see                    android.app.Activity#onResume()
-     * @see                    android.app.Activity#onPause()
-     * @see                    io.reactivex.Single#cache()
+     * @return                 The subscription.
      */
     @NonNull
     public Disposable subscribe(

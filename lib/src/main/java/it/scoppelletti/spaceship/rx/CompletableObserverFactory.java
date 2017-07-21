@@ -22,13 +22,6 @@ import io.reactivex.observers.DisposableCompletableObserver;
 /**
  * Creates a new observer instance.
  *
- * <p>To coordinate an observable source with the lifecycle of an activity, your
- * observer should be unsubscribed when the activity is paused and then
- * subscribed again when the activity is resumed; but when an observer is
- * disposed it cannot be used anymore, thus the {@code CompletableCoordinator}
- * class makes use of an {@code CompletableObserverFactory} interface in order
- * to create a new observer instance whenever it needs.</p>
- *
  * @see   it.scoppelletti.spaceship.rx.CompletableCoordinator#subscribe(it.scoppelletti.spaceship.rx.CompletableObserverFactory)
  * @since 1.0.0
  */

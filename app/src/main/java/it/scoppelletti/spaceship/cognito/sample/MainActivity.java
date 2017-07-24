@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -15,6 +17,9 @@ import it.scoppelletti.spaceship.app.ExceptionDialogFragment;
 import it.scoppelletti.spaceship.app.NavigationDrawer;
 import it.scoppelletti.spaceship.app.TitleAdapter;
 import it.scoppelletti.spaceship.cognito.CognitoAdapter;
+import it.scoppelletti.spaceship.cognito.app.VerifyAttributeActivity;
+import it.scoppelletti.spaceship.cognito.data.SpaceshipUser;
+import it.scoppelletti.spaceship.cognito.data.UserAttribute;
 import it.scoppelletti.spaceship.widget.ProgressOverlay;
 
 public final class MainActivity extends AppCompatActivity implements
@@ -53,7 +58,22 @@ public final class MainActivity extends AppCompatActivity implements
 
     @Override
     protected void onResume() {
+        Menu menu;
+        MenuItem menuItem;
+        SpaceshipUser user;
+
         super.onResume();
+
+        user = CognitoAdapter.getInstance().getCurrentUser();
+        menu = myDrawer.getNavigationView().getMenu();
+        menuItem = menu.findItem(R.id.cmd_verifyEmail);
+        menuItem.setEnabled(user != null &&
+                !TextUtils.isEmpty(user.getEmail()) && !user.isEmailVerified());
+        menuItem = menu.findItem(R.id.cmd_verifyPhoneNumber);
+        menuItem.setEnabled(user != null &&
+                !TextUtils.isEmpty(user.getPhoneNumber()) &&
+                !user.isPhoneNumberVerified());
+
         EventBus.getDefault().register(this);
     }
 
@@ -100,6 +120,20 @@ public final class MainActivity extends AppCompatActivity implements
         myDrawer.closeDrawer();
 
         switch (item.getItemId()) {
+        case R.id.cmd_verifyEmail:
+            intent = new Intent(this, VerifyAttributeActivity.class);
+            intent.putExtra(CognitoAdapter.PROP_ATTRIBUTE,
+                    UserAttribute.ATTR_EMAIL);
+            startActivity(intent);
+            break;
+
+        case R.id.cmd_verifyPhoneNumber:
+            intent = new Intent(this, VerifyAttributeActivity.class);
+            intent.putExtra(CognitoAdapter.PROP_ATTRIBUTE,
+                    UserAttribute.ATTR_PHONENUMBER);
+            startActivity(intent);
+            break;
+
         case R.id.cmd_logout:
             CognitoAdapter.getInstance().logout();
             intent = new Intent(getApplicationContext(), LoginActivity.class);

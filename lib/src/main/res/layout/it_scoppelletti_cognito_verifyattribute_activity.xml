@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2017 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data class=".databinding.VerifyAttributeActivityBinding">
+        <import type="android.text.InputType" />
+        <variable name="form"
+            type="it.scoppelletti.spaceship.cognito.data.VerifyAttributeForm" />
+    </data>
+    <FrameLayout style="@style/it_scoppelletti_style_rootFrame">
+        <android.support.design.widget.CoordinatorLayout
+            style="@style/it_scoppelletti_style_coordinatorLayout"
+            android:fitsSystemWindows="true">
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/app_bar_layout"
+                style="@style/it_scoppelletti_style_appBarLayout"
+                android:theme="@style/it_scoppelletti_theme_appBarLayout">
+                <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
+                    style="@style/it_scoppelletti_style_toolbar"/>
+            </android.support.design.widget.AppBarLayout>
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/content_frame"
+                style="@style/it_scoppelletti_style_contentFrame"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                <LinearLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/it_scoppelletti_marginVert"
+                    android:layout_marginLeft="@dimen/it_scoppelletti_marginHorz"
+                    android:layout_marginRight="@dimen/it_scoppelletti_marginHorz"
+                    android:layout_marginTop="@dimen/it_scoppelletti_marginVert"
+                    android:orientation="vertical">
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/frm_attribute"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/it_scoppelletti_theme_textInputLayout"
+                        app:it_scoppelletti_enabled="@{false}">
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/txt_attribute"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            app:it_scoppelletti_enabled="@{false}"
+                            app:it_scoppelletti_inputType="@{InputType.TYPE_CLASS_TEXT}"/>
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/it_scoppelletti_theme_textInputLayout"
+                        app:it_scoppelletti_error="@{form.verificationCodeError}">
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/txt_verificationCode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/it_scoppelletti_cognito_lbl_verificationCode"
+                            android:imeOptions="actionDone"
+                            android:inputType="textVisiblePassword"
+                            android:maxLines="1"
+                            android:text="@={form.verificationCode}"
+                            app:it_scoppelletti_validator="@{form.verificationCodeValidator}"/>
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+        </android.support.design.widget.CoordinatorLayout>
+        <it.scoppelletti.spaceship.widget.ProgressOverlay
+            android:id="@+id/progress_bar"
+            style="@style/it_scoppelletti_style_progressOverlay" />
+    </FrameLayout>
+</layout>

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/cmd_verifyEmail"
+        android:title="@string/it_scoppelletti_cognito_cmd_verifyEmail" />
+    <item android:id="@+id/cmd_verifyPhoneNumber"
+        android:title="@string/it_scoppelletti_cognito_cmd_verifyPhoneNumber" />
     <item android:id="@+id/cmd_logout"
         android:title="@string/it_scoppelletti_cmd_logout" />
-    <item android:id="@+id/cmd_test"
-        android:title="@string/it_scoppelletti_cmd_list" />
 </menu>

@@ -221,7 +221,7 @@ public final class LoginForm extends BaseObservable implements Parcelable {
     }
 
     /**
-     * Validates this form for login process
+     * Validates this form for login process.
      *
      * @return Returns {@code true} if this form is valid, {@code false}
      *         otherwise.
@@ -240,7 +240,7 @@ public final class LoginForm extends BaseObservable implements Parcelable {
     }
 
     /**
-     * Validates this form for forgot password process
+     * Validates this form for forgot password process.
      *
      * @return Returns {@code true} if this form is valid, {@code false}
      *         otherwise.

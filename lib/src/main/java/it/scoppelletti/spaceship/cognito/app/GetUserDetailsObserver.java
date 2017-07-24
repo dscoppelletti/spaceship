@@ -16,60 +16,51 @@
 
 package it.scoppelletti.spaceship.cognito.app;
 
-import java.util.NoSuchElementException;
 import android.support.annotation.NonNull;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
 import io.reactivex.observers.DisposableSingleObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.greenrobot.eventbus.EventBus;
-import it.scoppelletti.spaceship.rx.CompleteEvent;
 import it.scoppelletti.spaceship.rx.SingleObserverFactory;
 
 /**
- * Observer for retrieving of the current user.
+ * Observer for loading the details of a user.
  */
 @Slf4j
-final class GetCurrentUserObserver extends
-        DisposableSingleObserver<CognitoUser> {
+final class GetUserDetailsObserver extends
+        DisposableSingleObserver<GetUserDetailsEvent> {
 
     /**
      * Sole constructor.
      */
-    private GetCurrentUserObserver() {
+    private GetUserDetailsObserver() {
     }
 
     /**
      * Creates a new factory object for creating instances of the
-     * {@code GetCurrentUserObserver} class.
+     * {@code GetUserDetailsObserver} class.
      *
      * @return The new object.
      */
     @NonNull
-    static SingleObserverFactory<CognitoUser> newFactory() {
-        return new SingleObserverFactory<CognitoUser>() {
+    static SingleObserverFactory<GetUserDetailsEvent> newFactory() {
+        return new SingleObserverFactory<GetUserDetailsEvent>() {
 
             @NonNull
             @Override
-            public DisposableSingleObserver<CognitoUser> create() {
-                return new GetCurrentUserObserver();
+            public DisposableSingleObserver<GetUserDetailsEvent> create() {
+                return new GetUserDetailsObserver();
             }
         };
     }
 
     @Override
-    public void onSuccess(@NonNull CognitoUser user) {
-        myLogger.debug("User {} is still logged.", user.getUserId());
-        EventBus.getDefault().post(user);
+    public void onSuccess(@NonNull GetUserDetailsEvent event) {
+        EventBus.getDefault().post(event);
     }
 
     @Override
     public void onError(@NonNull Throwable ex) {
-        if (ex instanceof NoSuchElementException) {
-            myLogger.debug("No user currently logged.");
-        } else {
-            myLogger.error("Failed to get the current user.", ex);
-        }
-
-        EventBus.getDefault().post(CompleteEvent.getInstance());
+        myLogger.error("Failed to load user details.", ex);
+        EventBus.getDefault().post(new GetUserDetailsEvent(null));
     }
 }

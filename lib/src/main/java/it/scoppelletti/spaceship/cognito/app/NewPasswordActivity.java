@@ -36,6 +36,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import it.scoppelletti.spaceship.app.AppExt;
 import it.scoppelletti.spaceship.cognito.CognitoAdapter;
 import it.scoppelletti.spaceship.cognito.R;
 import it.scoppelletti.spaceship.cognito.data.NewPasswordForm;
@@ -206,6 +207,8 @@ public final class NewPasswordActivity extends AppCompatActivity {
         Intent data;
         SecureString pwd;
         NewPasswordForm form;
+
+        AppExt.hideSoftKeyboard(this);
 
         form = myBinding.getForm();
         valid = form.validate();

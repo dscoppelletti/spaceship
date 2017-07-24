@@ -29,7 +29,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import it.scoppelletti.spaceship.cognito.R;
-import it.scoppelletti.spaceship.cognito.UserAttribute;
+import it.scoppelletti.spaceship.cognito.data.UserAttribute;
 import it.scoppelletti.spaceship.cognito.data.UserAttributeForm;
 import it.scoppelletti.spaceship.widget.CompoundControl;
 

@@ -14,39 +14,35 @@
  * limitations under the License.
  */
 
-package it.scoppelletti.spaceship.cognito;
+package it.scoppelletti.spaceship.cognito.app;
 
-import android.support.annotation.NonNull;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.NewPasswordContinuation;
+import android.support.annotation.Nullable;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserDetails;
 
 /**
- * Notifies that user should be prompted for a new password.
+ * Notify the loading of the details of a user.
  *
  * @since 1.0.0
  */
-public final class NewPasswordEvent {
-    private final NewPasswordContinuation myFlow;
+public final class GetUserDetailsEvent {
+    private final CognitoUserDetails myData;
 
     /**
      * Constructor.
      *
-     * @param flow State of the flow.
+     * @param data The data. May be {@code null}.
      */
-    public NewPasswordEvent(@NonNull NewPasswordContinuation flow) {
-        if (flow == null) {
-            throw new NullPointerException("Argument flow is null.");
-        }
-
-        myFlow = flow;
+    GetUserDetailsEvent(@Nullable CognitoUserDetails data) {
+        myData = data;
     }
 
     /**
-     * Gets the state of the flow.
+     * Gets the data.
      *
-     * @return The object.
+     * @return The object. May be {@code null}.
      */
-    @NonNull
-    public NewPasswordContinuation getFlow() {
-        return myFlow;
+    @Nullable
+    CognitoUserDetails getData() {
+        return myData;
     }
 }

@@ -17,33 +17,32 @@
 package it.scoppelletti.spaceship.cognito.app;
 
 import android.support.annotation.NonNull;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.CognitoIdentityProviderContinuation;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 
 /**
- * Continues a process.
+ * Response to a request for a new password.
  */
-final class ContinueObservable implements ObservableOnSubscribe<Object> {
-    private final CognitoIdentityProviderContinuation<?> myFlow;
+final class NewPasswordObservable implements ObservableOnSubscribe<Object> {
+    private final NewPasswordEvent myEvent;
 
     /**
      * Constructor.
      *
-     * @param flow State of the flow.
+     * @param event The event.
      */
-    ContinueObservable(@NonNull CognitoIdentityProviderContinuation<?> flow) {
-        if (flow == null) {
-            throw new NullPointerException("Argument flow is null.");
+    NewPasswordObservable(@NonNull NewPasswordEvent event) {
+        if (event == null) {
+            throw new NullPointerException("Argument event is null.");
         }
 
-        myFlow = flow;
+        myEvent = event;
     }
 
     @Override
     public void subscribe(@NonNull ObservableEmitter<Object> emitter) throws
             Exception {
-        ThreadLocalEmitter.getInstance().set(emitter);
-        myFlow.continueTask();
+        myEvent.getHandler().setEmitter(emitter);
+        myEvent.getFlow().continueTask();
     }
 }

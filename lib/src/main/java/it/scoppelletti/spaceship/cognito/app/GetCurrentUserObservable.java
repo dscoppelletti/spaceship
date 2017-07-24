@@ -18,18 +18,28 @@ package it.scoppelletti.spaceship.cognito.app;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
+import io.reactivex.Emitter;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import lombok.extern.slf4j.Slf4j;
 import it.scoppelletti.spaceship.cognito.CognitoAdapter;
-import it.scoppelletti.spaceship.cognito.LoginEvent;
 
 /**
  * Retrieves the current user.
  */
+@Slf4j
 final class GetCurrentUserObservable implements
-        ObservableOnSubscribe<LoginEvent> {
+        ObservableOnSubscribe<CognitoUser>, AuthenticationHandler {
+    private CognitoUser myUser;
+    private Emitter<CognitoUser> myEmitter;
 
     /**
      * Sole constructor.
@@ -38,12 +48,11 @@ final class GetCurrentUserObservable implements
     }
 
     @Override
-    public void subscribe(@NonNull ObservableEmitter<LoginEvent> emitter) throws
-            Exception {
+    public void subscribe(@NonNull ObservableEmitter<CognitoUser> emitter)
+            throws Exception {
         CognitoUser user;
         CognitoUserPool userPool;
         CognitoAdapter adapter;
-        GetCurrentUserHandler handler;
 
         adapter = CognitoAdapter.getInstance();
         userPool = adapter.getUserPool();
@@ -58,7 +67,43 @@ final class GetCurrentUserObservable implements
             return;
         }
 
-        handler = new GetCurrentUserHandler(user, emitter);
-        user.getSession(handler);
+        myUser = user;
+        myEmitter = emitter;
+        user.getSession(this);
+    }
+
+    @Override
+    public void onSuccess(CognitoUserSession userSession,
+            CognitoDevice newDevice) {
+        myLogger.debug("User {} is still logged.", myUser.getUserId());
+        myEmitter.onNext(myUser);
+        myEmitter.onComplete();
+    }
+
+    @Override
+    public void onFailure(Exception ex) {
+        myLogger.error(String.format("User %1$s is not logged anymore.",
+                myUser.getUserId()), ex);
+        myEmitter.onComplete();
+    }
+
+    @Override
+    public void getAuthenticationDetails(AuthenticationContinuation flow,
+            String userId) {
+        myLogger.debug("User {} is not logged anymore.", myUser.getUserId());
+        myEmitter.onComplete();
+    }
+
+    @Override
+    public void getMFACode(MultiFactorAuthenticationContinuation flow) {
+        myLogger.error("MFA not supported.");
+        myEmitter.onComplete();
+    }
+
+    @Override
+    public void authenticationChallenge(ChallengeContinuation flow) {
+        myLogger.debug("Will not respond to the challange {}.",
+                flow.getChallengeName());
+        myEmitter.onComplete();
     }
 }

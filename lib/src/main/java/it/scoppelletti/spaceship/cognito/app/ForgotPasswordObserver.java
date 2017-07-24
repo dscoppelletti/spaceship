@@ -17,69 +17,64 @@
 package it.scoppelletti.spaceship.cognito.app;
 
 import android.support.annotation.NonNull;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
+import android.support.design.widget.Snackbar;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ForgotPasswordContinuation;
 import io.reactivex.observers.DisposableSingleObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.greenrobot.eventbus.EventBus;
-import it.scoppelletti.spaceship.ApplicationException;
 import it.scoppelletti.spaceship.ExceptionEvent;
 import it.scoppelletti.spaceship.cognito.R;
 import it.scoppelletti.spaceship.rx.SingleObserverFactory;
+import it.scoppelletti.spaceship.widget.SnackbarEvent;
 
 /**
- * Observer for user authentication process.
+ * Observer for send verification code process.
  */
 @Slf4j
-final class LoginObserver extends DisposableSingleObserver<Object> {
+final class ForgotPasswordObserver extends
+        DisposableSingleObserver<ForgotPasswordContinuation> {
 
     /**
      * Sole constructor.
      */
-    private LoginObserver() {
+    private ForgotPasswordObserver() {
     }
 
     /**
      * Creates a new factory object for creating instances of the
-     * {@code LoginObserver} class.
+     * {@code ForgotPasswordObserver} class.
      *
      * @return The new object.
      */
     @NonNull
-    static SingleObserverFactory<Object> newFactory() {
-        return new SingleObserverFactory<Object>() {
+    static SingleObserverFactory<ForgotPasswordContinuation> newFactory() {
+        return new SingleObserverFactory<ForgotPasswordContinuation>() {
 
             @NonNull
             @Override
-            public DisposableSingleObserver<Object> create() {
-                return new LoginObserver();
+            public DisposableSingleObserver<ForgotPasswordContinuation>
+            create() {
+                return new ForgotPasswordObserver();
             }
         };
     }
 
     @Override
-    public void onSuccess(@NonNull Object obj) {
-        Throwable ex;
-
-        if (obj instanceof CognitoUser) {
-            myLogger.debug("Login succeeded.");
-            EventBus.getDefault().post(obj);
-        } else if (obj instanceof NewPasswordEvent) {
-            myLogger.debug("Requiring new password.");
-            EventBus.getDefault().post(obj);
-        } else {
-            myLogger.error("Event {} not supported.", obj);
-            ex = new ApplicationException.Builder(
-                    R.string.it_scoppelletti_cognito_err_challengeNotSupported)
-                    .messageArguments((obj == null) ? null : obj.getClass())
-                    .title(R.string.it_scoppelletti_cmd_login).build();
-            EventBus.getDefault().post(new ExceptionEvent(ex));
-        }
+    public void onSuccess(@NonNull ForgotPasswordContinuation event) {
+        myLogger.debug("Send verification code for resetting password " +
+                "succeeded.");
+        EventBus.getDefault().post(new SnackbarEvent(
+                R.string.it_scoppelletti_cognito_msg_verificationCode,
+                Snackbar.LENGTH_SHORT)
+                .messageArguments(event.getParameters().getDeliveryMedium(),
+                        event.getParameters().getDestination()));
     }
 
     @Override
     public void onError(@NonNull Throwable ex) {
-        myLogger.error("Login failed.", ex);
+        myLogger.error("Failed to send verification code for resetting " +
+                        "password.", ex);
         EventBus.getDefault().post(new ExceptionEvent(ex)
-                .title(R.string.it_scoppelletti_cmd_login));
+                .title(R.string.it_scoppelletti_cmd_forgotPassword));
     }
 }

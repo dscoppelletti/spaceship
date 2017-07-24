@@ -17,34 +17,20 @@
 package it.scoppelletti.spaceship.cognito;
 
 import android.support.annotation.NonNull;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
+import io.reactivex.Emitter;
 
 /**
- * Notifies that the login has been succeeded.
+ * Handles Amazon Cognito callbacks.
  *
- * @since 1.0.0
+ * @param <T> Class of the events.
+ * @since     1.0.0
  */
-public final class LoginEvent {
-    private final CognitoUser myUser;
+public interface CognitoHandler<T> {
 
     /**
-     * Constructor.
-     */
-    public LoginEvent(@NonNull CognitoUser user) {
-        if (user == null) {
-            throw new NullPointerException("Argument user is null.");
-        }
-
-        myUser = user;
-    }
-
-    /**
-     * Gets the user.
+     * Sets the {@code Emitter} interface.
      *
-     * @return The object.
+     * @param obj The object.
      */
-    @NonNull
-    public CognitoUser getUser() {
-        return myUser;
-    }
+    void setEmitter(@NonNull Emitter<T> obj);
 }

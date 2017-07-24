@@ -20,10 +20,10 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
 import com.amazonaws.regions.Regions;
 import lombok.extern.slf4j.Slf4j;
+import it.scoppelletti.spaceship.cognito.data.SpaceshipUser;
 import it.scoppelletti.spaceship.security.SecureString;
 
 /**
@@ -35,35 +35,36 @@ import it.scoppelletti.spaceship.security.SecureString;
 public final class CognitoAdapter {
 
     /**
-     * Property reporting the delivery medium through which the validation code
-     * was sent.
+     * Property reporting the attribute to verify.
      */
-    public static final String PROP_DELIVERYMEDIUM =
+    public static final String PROP_ATTRIBUTE =
             "it.scoppelletti.spaceship.cognito.1";
-
-    /**
-     * Property reporting the destination to which the validation code was sent.
-     */
-    public static final String PROP_DESTINATION =
-            "it.scoppelletti.spaceship.cognito.2";
 
     /**
      * Property reporting the new password.
      */
     public static final String PROP_PASSWORDNEW =
-            "it.scoppelletti.spaceship.cognito.3";
+            "it.scoppelletti.spaceship.cognito.2";
 
     /**
      * Property reporting the user attributes.
      */
     public static final String PROP_USERATTRIBUTES =
+            "it.scoppelletti.spaceship.cognito.3";
+
+    /**
+     * Property reporting the user code.
+     */
+    public static final String PROP_USERCODE =
             "it.scoppelletti.spaceship.cognito.4";
 
     /**
-     * Property reporting the validation code.
+     * Tag of the {@code ForgotPasswordActivityData} fragment.
+     *
+     * @see it.scoppelletti.spaceship.cognito.app.ForgotPasswordActivityData
      */
-    public static final String PROP_VERIFICATIONCODE =
-            "it.scoppelletti.spaceship.cognito.5";
+    public static final String TAG_FORGOTPASSWORDDATA =
+            "it.scoppelletti.spaceship.cognito.1";
 
     /**
      * Tag of the {@code LoginActivityData} fragment.
@@ -71,11 +72,27 @@ public final class CognitoAdapter {
      * @see it.scoppelletti.spaceship.cognito.app.LoginActivityData
      */
     public static final String TAG_LOGINDATA =
-            "it.scoppelletti.spaceship.cognito.1";
+            "it.scoppelletti.spaceship.cognito.2";
+
+    /**
+     * Tag of the {@code VerificationCodeDialogFragment} fragment.
+     *
+     * @see it.scoppelletti.spaceship.cognito.app.VerificationCodeDialogFragment
+     */
+    public static final String TAG_VERIFICATIONCODEDIALOG =
+            "it.scoppelletti.spaceship.cognito.3";
+
+    /**
+     * Tag of the {@code VerifyAttributeActivityData} fragment.
+     *
+     * @see it.scoppelletti.spaceship.cognito.app.VerifyAttributeActivityData
+     */
+    public static final String TAG_VERIFYATTRIBUTEDATA =
+            "it.scoppelletti.spaceship.cognito.4";
 
     private static CognitoAdapter myInstance;
     private final CognitoUserPool myUserPool;
-    private CognitoUser myCurrentUser;
+    private SpaceshipUser myCurrentUser;
 
     /**
      * Constructor.
@@ -119,28 +136,21 @@ public final class CognitoAdapter {
      * @return The object. May be {@code null}.
      */
     @Nullable
-    public CognitoUser getCurrentUser() {
+    public SpaceshipUser getCurrentUser() {
         return myCurrentUser;
     }
 
     /**
      * Sets the current user.
      *
-     * @param event The event.
+     * @param obj The object.
      */
-    public void setCurrentUser(@NonNull LoginEvent event) {
-        if (event == null) {
-            throw new NullPointerException("Argument event is null.");
+    public void setCurrentUser(@NonNull SpaceshipUser obj) {
+        if (obj == null) {
+            throw new NullPointerException("Argument obj is null.");
         }
 
-        myCurrentUser = event.getUser();
-    }
-
-    /**
-     * Resets the current user.
-     */
-    public void resetCurrentUser() {
-        myCurrentUser = null;
+        myCurrentUser = obj;
     }
 
     /**
@@ -152,7 +162,7 @@ public final class CognitoAdapter {
             return;
         }
 
-        myCurrentUser.signOut();
+        myCurrentUser.getUser().signOut();
         myCurrentUser = null;
     }
 

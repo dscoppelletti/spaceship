@@ -35,7 +35,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.TextView;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ForgotPasswordContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.NewPasswordContinuation;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -51,12 +51,10 @@ import it.scoppelletti.spaceship.app.ActivityResultHolder;
 import it.scoppelletti.spaceship.app.AppExt;
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment;
 import it.scoppelletti.spaceship.cognito.CognitoAdapter;
-import it.scoppelletti.spaceship.cognito.LoginEvent;
-import it.scoppelletti.spaceship.cognito.NewPasswordEvent;
 import it.scoppelletti.spaceship.cognito.R;
-import it.scoppelletti.spaceship.cognito.ResetPasswordEvent;
-import it.scoppelletti.spaceship.cognito.UserAttribute;
 import it.scoppelletti.spaceship.cognito.data.LoginForm;
+import it.scoppelletti.spaceship.cognito.data.SpaceshipUser;
+import it.scoppelletti.spaceship.cognito.data.UserAttribute;
 import it.scoppelletti.spaceship.cognito.data.UserAttributeForm;
 import it.scoppelletti.spaceship.cognito.databinding.LoginActivityBinding;
 import it.scoppelletti.spaceship.rx.CompleteEvent;
@@ -73,13 +71,10 @@ import it.scoppelletti.spaceship.widget.SnackbarEvent;
 @Slf4j
 public abstract class LoginActivityBase extends AppCompatActivity {
     private static final int REQ_NEWPASSWORD = 1;
-    private static final int REQ_RESETPASSWORD = 2;
     private static final String PROP_FORM = "1";
     private boolean myFirstRun;
     private ProgressOverlay myProgressBar;
     private LoginActivityBinding myBinding;
-    private NewPasswordContinuation myNewPwdFlow;
-    private ForgotPasswordContinuation myResetPwdFlow;
     private ActivityResultHolder myActivityResult;
     private CompositeDisposable myDisposables;
 
@@ -133,12 +128,12 @@ public abstract class LoginActivityBase extends AppCompatActivity {
             }
         });
 
-        cmd = (Button) findViewById(R.id.cmd_resetPassword);
+        cmd = (Button) findViewById(R.id.cmd_forgotPassword);
         cmd.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                onResetPasswordClick();
+                onForgotPasswordClick();
             }
         });
     }
@@ -147,14 +142,15 @@ public abstract class LoginActivityBase extends AppCompatActivity {
     protected void onResume() {
         Disposable subscription;
         LoginActivityData data;
-        SingleCoordinator<Object> loginCoordinator, resetPwdCoordinator;
-        SingleCoordinator<LoginEvent> currentUserCoordinator;
+        SingleCoordinator<Object> loginCoordinator;
+        SingleCoordinator<CognitoUser> currentUserCoordinator;
+        SingleCoordinator<GetUserDetailsEvent> userDetailCoordinator;
 
         super.onResume();
         EventBus.getDefault().register(this);
 
         data = AppExt.getOrCreateFragment(this, LoginActivityData.class,
-                CognitoAdapter.TAG_LOGINDATA);
+                LoginActivityData.TAG);
         loginCoordinator = data.getLoginCoordinator();
         subscription = loginCoordinator.subscribe(LoginObserver.newFactory());
         myDisposables.add(subscription);
@@ -164,9 +160,9 @@ public abstract class LoginActivityBase extends AppCompatActivity {
                 GetCurrentUserObserver.newFactory());
         myDisposables.add(subscription);
 
-        resetPwdCoordinator = data.getResetPasswordCoordinator();
-        subscription = resetPwdCoordinator.subscribe(
-                ResetPasswordObserver.newFactory());
+        userDetailCoordinator = data.getUserDetailsCoordinator();
+        subscription = userDetailCoordinator.subscribe(
+                GetUserDetailsObserver.newFactory());
         myDisposables.add(subscription);
 
         if (myActivityResult != null) {
@@ -230,11 +226,6 @@ public abstract class LoginActivityBase extends AppCompatActivity {
             onNewPasswordResult(myActivityResult.getResultCode(),
                     myActivityResult.getData());
             break;
-
-        case LoginActivityBase.REQ_RESETPASSWORD:
-            onResetPasswordResult(myActivityResult.getResultCode(),
-                    myActivityResult.getData());
-            break;
         }
     }
 
@@ -271,7 +262,7 @@ public abstract class LoginActivityBase extends AppCompatActivity {
      * @param event The event.
      */
     @Subscribe
-    public void onSnackbarEvent(final @NonNull SnackbarEvent event) {
+    public void onSnackbarEvent(@NonNull final SnackbarEvent event) {
         if (event == null) {
             throw new NullPointerException("Argument event is null.");
         }
@@ -291,7 +282,7 @@ public abstract class LoginActivityBase extends AppCompatActivity {
      * @param event The event.
      */
     @Subscribe
-    public void onExceptionEvent(final @NonNull ExceptionEvent event) {
+    public void onExceptionEvent(@NonNull final ExceptionEvent event) {
         myProgressBar.hide(new Runnable() {
 
             @Override
@@ -308,7 +299,7 @@ public abstract class LoginActivityBase extends AppCompatActivity {
      *
      * @param coordinator Coordinator.
      */
-    private void getCurrentUser(SingleCoordinator<LoginEvent> coordinator) {
+    private void getCurrentUser(SingleCoordinator<CognitoUser> coordinator) {
         Disposable connection;
         GetCurrentUserObservable process;
 
@@ -345,7 +336,7 @@ public abstract class LoginActivityBase extends AppCompatActivity {
         myProgressBar.show();
         try {
             coordinator = AppExt.getOrCreateFragment(this,
-                    LoginActivityData.class, CognitoAdapter.TAG_LOGINDATA)
+                    LoginActivityData.class, LoginActivityData.TAG)
                     .getLoginCoordinator();
             if (coordinator.isRunning()) {
                 throw new ApplicationException.Builder(
@@ -369,14 +360,67 @@ public abstract class LoginActivityBase extends AppCompatActivity {
     /**
      * Called when the login has been succeeded.
      *
+     * @param user The logged user.
+     */
+    @Subscribe
+    public void onLoginEvent(@NonNull CognitoUser user) {
+        Disposable connection;
+        LoginActivityData data;
+        GetUserDetailsObservable process;
+        SingleCoordinator<GetUserDetailsEvent> coordinator;
+
+        if (user == null) {
+            throw new NullPointerException("Argument user is null.");
+        }
+
+        data = AppExt.getOrCreateFragment(this,
+                LoginActivityData.class, LoginActivityData.TAG);
+        data.setPendingUser(user);
+
+        myProgressBar.show();
+        try {
+            coordinator = data.getUserDetailsCoordinator();
+            process = new GetUserDetailsObservable(user);
+            connection = coordinator.connect(Observable.create(process)
+                    .firstOrError()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread()));
+            myDisposables.add(connection);
+        } catch (RuntimeException ex) {
+            myLogger.error(String.format("Failed to load details of user %1$s.",
+                    user.getUserId()), ex);
+            onGetUserDetails(new GetUserDetailsEvent(null));
+        }
+    }
+
+    /**
+     * Called when the details of the logged user has been loaded.
+     *
      * @param event The event.
      */
     @Subscribe
-    public void onLoginEvent(@NonNull LoginEvent event) {
+    public void onGetUserDetails(@NonNull final GetUserDetailsEvent event) {
+        LoginActivityData data;
+        final CognitoUser user;
+
+        if (event == null) {
+            throw new NullPointerException("Argument event is null.");
+        }
+
+        data = AppExt.getOrCreateFragment(this,
+                LoginActivityData.class, LoginActivityData.TAG);
+        user = data.getPendingUser();
+        if (user == null) {
+            throw new NullPointerException("No pending user.");
+        }
+
+        data.setPendingUser(null);
         myProgressBar.hide(new Runnable() {
 
             @Override
             public void run() {
+                CognitoAdapter.getInstance().setCurrentUser(
+                        new SpaceshipUser(user, event.getData()));
                 onLoginSucceeded();
             }
         });
@@ -393,24 +437,27 @@ public abstract class LoginActivityBase extends AppCompatActivity {
      * @param event The event.
      */
     @Subscribe
-    public void onNewPasswordPrompt(final @NonNull NewPasswordEvent event) {
+    public void onNewPasswordPrompt(@NonNull final NewPasswordEvent event) {
+        LoginActivityData data;
+        final Intent intent;
+        final ArrayList<UserAttributeForm> attrList;
+
         if (event == null) {
             throw new NullPointerException("Argument event is null.");
         }
+
+        data = AppExt.getOrCreateFragment(this,
+                LoginActivityData.class, LoginActivityData.TAG);
+        data.setNewPasswordEvent(event);
+        attrList = getUserAttributes(event.getFlow());
+        intent = new Intent(this, NewPasswordActivity.class);
+        intent.putParcelableArrayListExtra(
+                CognitoAdapter.PROP_USERATTRIBUTES, attrList);
 
         myProgressBar.hide(new Runnable() {
 
             @Override
             public void run() {
-                Intent intent;
-                ArrayList<UserAttributeForm> attrList;
-
-                myNewPwdFlow = event.getFlow();
-                attrList = getUserAttributes(myNewPwdFlow);
-                intent = new Intent(LoginActivityBase.this,
-                        NewPasswordActivity.class);
-                intent.putParcelableArrayListExtra(
-                        CognitoAdapter.PROP_USERATTRIBUTES, attrList);
                 startActivityForResult(intent,
                         LoginActivityBase.REQ_NEWPASSWORD);
             }
@@ -474,6 +521,15 @@ public abstract class LoginActivityBase extends AppCompatActivity {
             }
         }
 
+        // - Amazon Cognito Indentity Provider 2.4.5
+        // I think user code should be preset
+        if (myBinding != null) {
+            attr = attrs.get(UserAttribute.ATTR_USERCODE);
+            if (attr != null && TextUtils.isEmpty(attr.getCurrentValue())) {
+                attr.setEditingValue(myBinding.getForm().getUserCode());
+            }
+        }
+
         return new ArrayList<>(attrs.values());
     }
 
@@ -486,16 +542,25 @@ public abstract class LoginActivityBase extends AppCompatActivity {
     private void onNewPasswordResult(int resultCode, Intent data) {
         SecureString pwd = null;
         Disposable connection;
-        ContinueObservable process;
+        LoginActivityData activityData;
+        NewPasswordEvent event;
+        NewPasswordObservable process;
+        NewPasswordContinuation flow;
         SingleCoordinator<Object> coordinator;
         byte[] buf = null;
 
+        activityData = AppExt.getOrCreateFragment(this,
+                LoginActivityData.class, LoginActivityData.TAG);
+
+        myProgressBar.show();
         try {
-            if (myNewPwdFlow == null) {
+            event = activityData.getNewPasswordEvent();
+            if (event == null) {
                 throw new NullPointerException(
-                        "No current flow for requesting new password.");
+                        "No pending request for new password.");
             }
 
+            flow = event.getFlow();
             buf = (resultCode == Activity.RESULT_OK) ?
                     data.getByteArrayExtra(CognitoAdapter.PROP_PASSWORDNEW) :
                     null;
@@ -507,16 +572,15 @@ public abstract class LoginActivityBase extends AppCompatActivity {
                         .build();
             }
 
-            updateUserAttributes(myNewPwdFlow,
+            updateUserAttributes(flow,
                     data.<UserAttributeForm>getParcelableArrayListExtra(
                     CognitoAdapter.PROP_USERATTRIBUTES));
 
             // Amazon Cognito uses immutable strings for passwords
-            myNewPwdFlow.setPassword(pwd.toString());
+            flow.setPassword(pwd.toString());
 
-            myProgressBar.show();
             coordinator = AppExt.getOrCreateFragment(this,
-                    LoginActivityData.class, CognitoAdapter.TAG_LOGINDATA)
+                    LoginActivityData.class, LoginActivityData.TAG)
                     .getLoginCoordinator();
             if (coordinator.isRunning()) {
                 throw new ApplicationException.Builder(
@@ -524,7 +588,7 @@ public abstract class LoginActivityBase extends AppCompatActivity {
                         .title(R.string.it_scoppelletti_cmd_login).build();
             }
 
-            process = new ContinueObservable(myNewPwdFlow);
+            process = new NewPasswordObservable(event);
             connection = coordinator.connect(Observable.create(process)
                     .firstOrError()
                     .subscribeOn(Schedulers.io())
@@ -534,7 +598,7 @@ public abstract class LoginActivityBase extends AppCompatActivity {
             EventBus.getDefault().post(new ExceptionEvent(ex)
                 .title(R.string.it_scoppelletti_cmd_login));
         } finally {
-            myNewPwdFlow = null;
+            activityData.setNewPasswordEvent(null);
             if (pwd != null) {
                 pwd.clear();
             }
@@ -571,13 +635,11 @@ public abstract class LoginActivityBase extends AppCompatActivity {
     }
 
     /**
-     * Performs the reset password process.
+     * Forgot password.
      */
-    private void onResetPasswordClick() {
+    private void onForgotPasswordClick() {
+        Intent intent;
         LoginForm form;
-        Disposable connection;
-        ResetPasswordObservable process;
-        SingleCoordinator<Object> coordinator;
 
         AppExt.hideSoftKeyboard(this);
 
@@ -586,132 +648,8 @@ public abstract class LoginActivityBase extends AppCompatActivity {
             return;
         }
 
-        myProgressBar.show();
-        try {
-            coordinator = AppExt.getOrCreateFragment(this,
-                    LoginActivityData.class, CognitoAdapter.TAG_LOGINDATA)
-                    .getResetPasswordCoordinator();
-            if (coordinator.isRunning()) {
-                throw new ApplicationException.Builder(
-                        R.string.it_scoppelletti_cognito_err_resetPasswordAlreadyInProgress)
-                        .title(R.string.it_scoppelletti_cmd_resetPassword).build();
-            }
-
-            process = new ResetPasswordObservable(form.getUserCode());
-            connection = coordinator.connect(Observable.create(process)
-                    .firstOrError()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread()));
-            myDisposables.add(connection);
-        } catch (RuntimeException ex) {
-            EventBus.getDefault().post(new ExceptionEvent(ex)
-                    .title(R.string.it_scoppelletti_cmd_resetPassword));
-        }
-    }
-
-    /**
-     * Prompts the user for the validation code and a new password.
-     *
-     * @param event The event.
-     */
-    @Subscribe
-    public void onResetPasswordPrompt(
-            final @NonNull ResetPasswordEvent event) {
-        if (event == null) {
-            throw new NullPointerException("Argument event is null.");
-        }
-
-        myProgressBar.hide(new Runnable() {
-
-            @Override
-            public void run() {
-                Intent intent;
-
-                myResetPwdFlow = event.getFlow();
-                intent = new Intent(LoginActivityBase.this,
-                        ResetPasswordActivity.class);
-                intent.putExtra(CognitoAdapter.PROP_DELIVERYMEDIUM,
-                        myResetPwdFlow.getParameters().getDeliveryMedium());
-                intent.putExtra(CognitoAdapter.PROP_DESTINATION,
-                        myResetPwdFlow.getParameters().getDestination());
-                startActivityForResult(intent,
-                        LoginActivityBase.REQ_RESETPASSWORD);
-            }
-        });
-    }
-
-    /**
-     * Handles the result of the reset password process.
-     *
-     * @param resultCode The result code.
-     * @param data       The result data.
-     */
-    private void onResetPasswordResult(int resultCode, Intent data) {
-        SecureString pwd = null;
-        SecureString checkCode = null;
-        Disposable connection;
-        ContinueObservable process;
-        SingleCoordinator<Object> coordinator;
-        byte[] buf = null;
-
-        try {
-            if (myResetPwdFlow == null) {
-                throw new NullPointerException(
-                        "No current flow for resetting password.");
-            }
-
-            buf = (resultCode == Activity.RESULT_OK) ?
-                    data.getByteArrayExtra(
-                            CognitoAdapter.PROP_VERIFICATIONCODE) : null;
-            checkCode = new SecureString(buf);
-            if (buf != null) {
-                Arrays.fill(buf, (byte) 0);
-                buf = null;
-            }
-
-            buf = (resultCode == Activity.RESULT_OK) ?
-                    data.getByteArrayExtra(CognitoAdapter.PROP_PASSWORDNEW) :
-                    null;
-            pwd = new SecureString(buf);
-
-            if (TextUtils.isEmpty(checkCode) || TextUtils.isEmpty(pwd)) {
-                throw new ApplicationException.Builder(
-                        R.string.it_scoppelletti_cognito_msg_newPassword)
-                        .build();
-            }
-
-            // Amazon Cognito uses immutable strings for passwords
-            myResetPwdFlow.setVerificationCode(checkCode.toString());
-            myResetPwdFlow.setPassword(pwd.toString());
-
-            myProgressBar.show();
-            coordinator = AppExt.getOrCreateFragment(this,
-                    LoginActivityData.class, CognitoAdapter.TAG_LOGINDATA)
-                    .getResetPasswordCoordinator();
-            if (coordinator.isRunning()) {
-                throw new ApplicationException.Builder(
-                        R.string.it_scoppelletti_cognito_err_resetPasswordAlreadyInProgress)
-                        .title(R.string.it_scoppelletti_cmd_resetPassword)
-                        .build();
-            }
-
-            process = new ContinueObservable(myResetPwdFlow);
-            connection = coordinator.connect(Observable.create(process)
-                    .firstOrError()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread()));
-            myDisposables.add(connection);
-        } catch (RuntimeException ex) {
-            EventBus.getDefault().post(new ExceptionEvent(ex)
-                    .title(R.string.it_scoppelletti_cmd_resetPassword));
-        } finally {
-            myResetPwdFlow = null;
-            if (pwd != null) {
-                pwd.clear();
-            }
-            if (buf != null) {
-                Arrays.fill(buf, (byte) 0);
-            }
-        }
+        intent = new Intent(this, ForgotPasswordActivity.class);
+        intent.putExtra(CognitoAdapter.PROP_USERCODE, form.getUserCode());
+        startActivity(intent);
     }
 }

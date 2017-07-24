@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package it.scoppelletti.spaceship.cognito;
+package it.scoppelletti.spaceship.cognito.data;
 
 /**
  * User attribute.

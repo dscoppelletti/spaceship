@@ -16,60 +16,55 @@
 
 package it.scoppelletti.spaceship.cognito.app;
 
-import java.util.NoSuchElementException;
 import android.support.annotation.NonNull;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
-import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.observers.DisposableCompletableObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.greenrobot.eventbus.EventBus;
+import it.scoppelletti.spaceship.ExceptionEvent;
+import it.scoppelletti.spaceship.cognito.R;
+import it.scoppelletti.spaceship.rx.CompletableObserverFactory;
 import it.scoppelletti.spaceship.rx.CompleteEvent;
-import it.scoppelletti.spaceship.rx.SingleObserverFactory;
 
 /**
- * Observer for retrieving of the current user.
+ * Observer for resetting password process.
  */
 @Slf4j
-final class GetCurrentUserObserver extends
-        DisposableSingleObserver<CognitoUser> {
+final class ConfirmPasswordObserver extends DisposableCompletableObserver {
 
     /**
      * Sole constructor.
      */
-    private GetCurrentUserObserver() {
+    private ConfirmPasswordObserver() {
     }
 
     /**
      * Creates a new factory object for creating instances of the
-     * {@code GetCurrentUserObserver} class.
+     * {@code ConfirmPasswordObserver} class.
      *
      * @return The new object.
      */
     @NonNull
-    static SingleObserverFactory<CognitoUser> newFactory() {
-        return new SingleObserverFactory<CognitoUser>() {
+    static CompletableObserverFactory newFactory() {
+        return new CompletableObserverFactory() {
 
             @NonNull
             @Override
-            public DisposableSingleObserver<CognitoUser> create() {
-                return new GetCurrentUserObserver();
+            public DisposableCompletableObserver create() {
+                return new ConfirmPasswordObserver();
             }
         };
     }
 
     @Override
-    public void onSuccess(@NonNull CognitoUser user) {
-        myLogger.debug("User {} is still logged.", user.getUserId());
-        EventBus.getDefault().post(user);
+    public void onComplete() {
+        myLogger.debug("Resetting password succeeded.");
+        EventBus.getDefault().post(CompleteEvent.getInstance());
     }
 
     @Override
     public void onError(@NonNull Throwable ex) {
-        if (ex instanceof NoSuchElementException) {
-            myLogger.debug("No user currently logged.");
-        } else {
-            myLogger.error("Failed to get the current user.", ex);
-        }
-
-        EventBus.getDefault().post(CompleteEvent.getInstance());
+        myLogger.error("Failed to reset password.", ex);
+        EventBus.getDefault().post(new ExceptionEvent(ex)
+                .title(R.string.it_scoppelletti_cmd_forgotPassword));
     }
 }

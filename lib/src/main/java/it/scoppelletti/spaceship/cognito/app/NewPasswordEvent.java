@@ -14,31 +14,38 @@
  * limitations under the License.
  */
 
-package it.scoppelletti.spaceship.cognito;
+package it.scoppelletti.spaceship.cognito.app;
 
 import android.support.annotation.NonNull;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ForgotPasswordContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.NewPasswordContinuation;
+import it.scoppelletti.spaceship.cognito.CognitoHandler;
 
 /**
- * Notifies that user should be prompted for the validation code and a new
- * password.
+ * Prompts the user for a new password.
  *
  * @since 1.0.0
  */
-public final class ResetPasswordEvent {
-    private final ForgotPasswordContinuation myFlow;
+public final class NewPasswordEvent {
+    private final NewPasswordContinuation myFlow;
+    private final CognitoHandler<Object> myHandler;
 
     /**
      * Constructor.
      *
-     * @param flow State of the flow.
+     * @param flow    State of the flow.
+     * @param handler The {@code CognitoHandler} interface.
      */
-    public ResetPasswordEvent(@NonNull ForgotPasswordContinuation flow) {
+    NewPasswordEvent(@NonNull NewPasswordContinuation flow,
+            @NonNull CognitoHandler<Object> handler) {
         if (flow == null) {
             throw new NullPointerException("Argument flow is null.");
         }
+        if (handler == null) {
+            throw new NullPointerException("Argument handler is null.");
+        }
 
         myFlow = flow;
+        myHandler = handler;
     }
 
     /**
@@ -47,7 +54,17 @@ public final class ResetPasswordEvent {
      * @return The object.
      */
     @NonNull
-    public ForgotPasswordContinuation getFlow() {
+    NewPasswordContinuation getFlow() {
         return myFlow;
+    }
+
+    /**
+     * Gets the {@code CognitoHandler} interface.
+     *
+     * @return The object.
+     */
+    @NonNull
+    CognitoHandler<Object> getHandler() {
+        return myHandler;
     }
 }

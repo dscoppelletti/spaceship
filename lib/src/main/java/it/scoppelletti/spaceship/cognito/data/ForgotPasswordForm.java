@@ -26,48 +26,48 @@ import it.scoppelletti.spaceship.cognito.R;
 import it.scoppelletti.spaceship.widget.EditTextValidator;
 
 /**
- * Reset password form.
+ * Forgot password form.
  *
  * @since 1.0.0
  */
-public final class ResetPasswordForm extends PasswordForm {
+public final class ForgotPasswordForm extends PasswordForm {
 
     /**
      * The {@code Parcelable} support.
      */
-    public static final Creator<ResetPasswordForm> CREATOR =
-            new Creator<ResetPasswordForm>() {
+    public static final Creator<ForgotPasswordForm> CREATOR =
+            new Creator<ForgotPasswordForm>() {
 
                 @Override
-                public ResetPasswordForm createFromParcel(Parcel in) {
-                    ResetPasswordForm obj;
+                public ForgotPasswordForm createFromParcel(Parcel in) {
+                    ForgotPasswordForm obj;
 
-                    obj = new ResetPasswordForm();
+                    obj = new ForgotPasswordForm();
                     obj.readFromParcel(in);
                     return obj;
                 }
 
                 @Override
-                public ResetPasswordForm[] newArray(int size) {
-                    return new ResetPasswordForm[size];
+                public ForgotPasswordForm[] newArray(int size) {
+                    return new ForgotPasswordForm[size];
                 }
             };
 
-    private final EditTextValidator myCheckCodeValidator;
-    private CharSequence myCheckCode;
-    private int myCheckCodeErr;
+    private final EditTextValidator myVerificationCodeValidator;
+    private CharSequence myVerificationCode;
+    private int myVerificationCodeErr;
 
     /**
      * Sole constructor.
      */
-    public ResetPasswordForm() {
+    public ForgotPasswordForm() {
         super();
 
-        myCheckCodeValidator = new EditTextValidator() {
+        myVerificationCodeValidator = new EditTextValidator() {
 
             @Override
             public boolean validate() {
-                if (TextUtils.isEmpty(myCheckCode)) {
+                if (TextUtils.isEmpty(myVerificationCode)) {
                     setVerificationCodeError(R.string.it_scoppelletti_cognito_err_verificationCodeRequired);
                     return false;
                 }
@@ -86,7 +86,7 @@ public final class ResetPasswordForm extends PasswordForm {
     @Bindable
     @Nullable
     public CharSequence getVerificationCode() {
-        return myCheckCode;
+        return myVerificationCode;
     }
 
     /**
@@ -95,12 +95,12 @@ public final class ResetPasswordForm extends PasswordForm {
      * @param value A value. May be {@code null}.
      */
     public void setVerificationCode(@Nullable CharSequence value) {
-        if (!TextUtils.equals(value, myCheckCode)) {
+        if (!TextUtils.equals(value, myVerificationCode)) {
             notifyPropertyChanged(BR.verificationCode);
-            myCheckCode = value;
+            myVerificationCode = value;
         }
 
-        myCheckCodeValidator.validate();
+        myVerificationCodeValidator.validate();
     }
 
     /**
@@ -110,7 +110,7 @@ public final class ResetPasswordForm extends PasswordForm {
      */
     @Bindable
     public int getVerificationCodeError() {
-        return myCheckCodeErr;
+        return myVerificationCodeErr;
     }
 
     /**
@@ -119,8 +119,8 @@ public final class ResetPasswordForm extends PasswordForm {
      * @param value A value as a string resource ID. May be {@code 0}.
      */
     public void setVerificationCodeError(int value) {
-        if (value != myCheckCodeErr) {
-            myCheckCodeErr = value;
+        if (value != myVerificationCodeErr) {
+            myVerificationCodeErr = value;
             notifyPropertyChanged(BR.verificationCodeError);
         }
     }
@@ -133,14 +133,14 @@ public final class ResetPasswordForm extends PasswordForm {
     @NonNull
     @Bindable
     public EditTextValidator getVerificationCodeValidator() {
-        return myCheckCodeValidator;
+        return myVerificationCodeValidator;
     }
 
     @Override
     public boolean validate() {
         boolean valid = true;
 
-        if (!myCheckCodeValidator.validate()) {
+        if (!myVerificationCodeValidator.validate()) {
             valid = false;
         }
         if (!super.validate()) {
@@ -157,15 +157,16 @@ public final class ResetPasswordForm extends PasswordForm {
 
     @Override
     protected void readFromParcel(Parcel in) {
-        myCheckCode = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(in);
-        myCheckCodeErr = in.readInt();
+        myVerificationCode = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(
+                in);
+        myVerificationCodeErr = in.readInt();
         super.readFromParcel(in);
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        TextUtils.writeToParcel(myCheckCode, dest, flags);
-        dest.writeInt(myCheckCodeErr);
+        TextUtils.writeToParcel(myVerificationCode, dest, flags);
+        dest.writeInt(myVerificationCodeErr);
         super.writeToParcel(dest, flags);
     }
 }

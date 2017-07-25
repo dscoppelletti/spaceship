@@ -96,8 +96,8 @@ final class ConfirmPasswordObservable implements
 
     @Override
     public void onFailure(Exception ex) {
-        myLogger.error(String.format("Failed to resetting password of the " +
-                        "user %1$s.", myUserCode), ex);
+        myLogger.error(String.format("Failed to reset password of the user " +
+                        "%1$s.", myUserCode), ex);
         myEmitter.onError(ex);
     }
 

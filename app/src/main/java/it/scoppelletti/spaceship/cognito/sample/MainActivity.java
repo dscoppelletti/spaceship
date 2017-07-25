@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import it.scoppelletti.spaceship.ExceptionEvent;
@@ -17,6 +19,7 @@ import it.scoppelletti.spaceship.app.ExceptionDialogFragment;
 import it.scoppelletti.spaceship.app.NavigationDrawer;
 import it.scoppelletti.spaceship.app.TitleAdapter;
 import it.scoppelletti.spaceship.cognito.CognitoAdapter;
+import it.scoppelletti.spaceship.cognito.app.ChangePasswordActivity;
 import it.scoppelletti.spaceship.cognito.app.VerifyAttributeActivity;
 import it.scoppelletti.spaceship.cognito.data.SpaceshipUser;
 import it.scoppelletti.spaceship.cognito.data.UserAttribute;
@@ -26,6 +29,7 @@ public final class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
     private NavigationDrawer myDrawer;
     private TitleAdapter myTitleAdapter;
+    private TextView myUserLabel;
     private ProgressOverlay myProgressBar;
 
     public MainActivity() {
@@ -33,6 +37,8 @@ public final class MainActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        View view;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
@@ -44,6 +50,9 @@ public final class MainActivity extends AppCompatActivity implements
 
         setSupportActionBar(myDrawer.getToolbar());
         myDrawer.onCreate(savedInstanceState);
+        view = myDrawer.getNavigationView().getHeaderView(0);
+        myUserLabel = (TextView) view.findViewById(R.id.lbl_user);
+
         myTitleAdapter = new TitleAdapter.Builder(this)
                 .toolbarLayoutId(R.id.toolbar_layout).build();
         myProgressBar = (ProgressOverlay) findViewById(R.id.progress_bar);
@@ -65,6 +74,10 @@ public final class MainActivity extends AppCompatActivity implements
         super.onResume();
 
         user = CognitoAdapter.getInstance().getCurrentUser();
+        if (user != null) {
+            myUserLabel.setText(user.getFullName());
+        }
+
         menu = myDrawer.getNavigationView().getMenu();
         menuItem = menu.findItem(R.id.cmd_verifyEmail);
         menuItem.setEnabled(user != null &&
@@ -120,6 +133,11 @@ public final class MainActivity extends AppCompatActivity implements
         myDrawer.closeDrawer();
 
         switch (item.getItemId()) {
+        case R.id.cmd_changePassword:
+            intent = new Intent(this, ChangePasswordActivity.class);
+            startActivity(intent);
+            break;
+
         case R.id.cmd_verifyEmail:
             intent = new Intent(this, VerifyAttributeActivity.class);
             intent.putExtra(CognitoAdapter.PROP_ATTRIBUTE,

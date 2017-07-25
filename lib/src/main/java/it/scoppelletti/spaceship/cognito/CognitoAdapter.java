@@ -59,12 +59,20 @@ public final class CognitoAdapter {
             "it.scoppelletti.spaceship.cognito.4";
 
     /**
+     * Tag of the {@code ChangePasswordActivityData} fragment.
+     *
+     * @see it.scoppelletti.spaceship.cognito.app.ChangePasswordActivityData
+     */
+    public static final String TAG_CHANGEPASSWORDDATA =
+            "it.scoppelletti.spaceship.cognito.1";
+
+    /**
      * Tag of the {@code ForgotPasswordActivityData} fragment.
      *
      * @see it.scoppelletti.spaceship.cognito.app.ForgotPasswordActivityData
      */
     public static final String TAG_FORGOTPASSWORDDATA =
-            "it.scoppelletti.spaceship.cognito.1";
+            "it.scoppelletti.spaceship.cognito.2";
 
     /**
      * Tag of the {@code LoginActivityData} fragment.
@@ -72,7 +80,7 @@ public final class CognitoAdapter {
      * @see it.scoppelletti.spaceship.cognito.app.LoginActivityData
      */
     public static final String TAG_LOGINDATA =
-            "it.scoppelletti.spaceship.cognito.2";
+            "it.scoppelletti.spaceship.cognito.3";
 
     /**
      * Tag of the {@code VerificationCodeDialogFragment} fragment.
@@ -80,7 +88,7 @@ public final class CognitoAdapter {
      * @see it.scoppelletti.spaceship.cognito.app.VerificationCodeDialogFragment
      */
     public static final String TAG_VERIFICATIONCODEDIALOG =
-            "it.scoppelletti.spaceship.cognito.3";
+            "it.scoppelletti.spaceship.cognito.4";
 
     /**
      * Tag of the {@code VerifyAttributeActivityData} fragment.
@@ -88,7 +96,7 @@ public final class CognitoAdapter {
      * @see it.scoppelletti.spaceship.cognito.app.VerifyAttributeActivityData
      */
     public static final String TAG_VERIFYATTRIBUTEDATA =
-            "it.scoppelletti.spaceship.cognito.4";
+            "it.scoppelletti.spaceship.cognito.5";
 
     private static CognitoAdapter myInstance;
     private final CognitoUserPool myUserPool;

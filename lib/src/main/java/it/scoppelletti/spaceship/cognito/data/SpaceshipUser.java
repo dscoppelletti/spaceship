@@ -119,11 +119,26 @@ public final class SpaceshipUser {
             buf.append(value);
         }
 
-        if (buf.length() == 0) {
-            return null;
+        if (buf.length() > 0) {
+            return buf.toString();
         }
 
-        return buf.toString();
+        value = getAttribute(UserAttribute.ATTR_NICKNAME);
+        if (!TextUtils.isEmpty(value)) {
+            return value;
+        }
+
+        value = getAttribute(UserAttribute.ATTR_PREFEREEDUSERCODE);
+        if (!TextUtils.isEmpty(value)) {
+            return value;
+        }
+
+        value = getAttribute(UserAttribute.ATTR_USERCODE);
+        if (!TextUtils.isEmpty(value)) {
+            return value;
+        }
+
+        return myUser.getUserId();
     }
 
     /**

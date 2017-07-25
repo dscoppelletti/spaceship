@@ -4,6 +4,7 @@
     <string name="it_scoppelletti_cognito_cmd_verifyEmail">Verifica email</string>
     <string name="it_scoppelletti_cognito_cmd_verifyPhoneNumber">Verifica numero di telefono</string>
     <string name="it_scoppelletti_cognito_err_challengeNotSupported">La fase di autenticazione %1$s non è supportata.</string>
+    <string name="it_scoppelletti_cognito_err_changePasswordAlreadyInProgress">Il processo di modifica della password è già in esecuzione.</string>
     <string name="it_scoppelletti_cognito_err_loginAlreadyInProgress">Il processo di autenticazione è già in esecuzione.</string>
     <string name="it_scoppelletti_cognito_err_mfaNotSupported">L´autenticazione multi-fattore non è supportata.</string>
     <string name="it_scoppelletti_cognito_err_pictureRequired">L´immagine è obbligatoria.</string>

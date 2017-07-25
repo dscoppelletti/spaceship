@@ -24,31 +24,29 @@ import it.scoppelletti.spaceship.rx.CompletableCoordinator;
 import it.scoppelletti.spaceship.rx.SingleCoordinator;
 
 /**
- * Data retained across activities for the resetting password process.
+ * Data retained across activities for the changing password process.
  *
- * @see   it.scoppelletti.spaceship.cognito.app.ForgotPasswordActivity
+ * @see   it.scoppelletti.spaceship.cognito.app.ChangePasswordActivity
  * @since 1.0.0
  */
-public final class ForgotPasswordActivityData extends Fragment {
+public final class ChangePasswordActivityData extends Fragment {
 
     /**
      * The fragment tag.
      */
-    public static final String TAG = CognitoAdapter.TAG_FORGOTPASSWORDDATA;
+    public static final String TAG = CognitoAdapter.TAG_CHANGEPASSWORDDATA;
 
     private CompletableCoordinator myPwdCoordinator;
-    private SingleCoordinator<ForgotPasswordContinuation>
-            myVerificationCodeCoordinator;
 
     /**
      * Sole constructor.
      */
-    public ForgotPasswordActivityData() {
+    public ChangePasswordActivityData() {
         setRetainInstance(true);
     }
 
     /**
-     * Gets the coordinator for resetting password.
+     * Gets the coordinator for changing password.
      *
      * @return The object.
      */
@@ -61,30 +59,11 @@ public final class ForgotPasswordActivityData extends Fragment {
         return myPwdCoordinator;
     }
 
-    /**
-     * Gets the coordinator for sending a verification code.
-     *
-     * @return The object.
-     */
-    @NonNull
-    SingleCoordinator<ForgotPasswordContinuation>
-    getVerificationCodeCoordinator() {
-        if (myVerificationCodeCoordinator == null) {
-            myVerificationCodeCoordinator = new SingleCoordinator<>();
-        }
-
-        return myVerificationCodeCoordinator;
-    }
-
     @Override
     public void onDestroy() {
         if (myPwdCoordinator != null) {
             myPwdCoordinator.onDestroy();
             myPwdCoordinator = null;
-        }
-        if (myVerificationCodeCoordinator != null) {
-            myVerificationCodeCoordinator.onDestroy();
-            myVerificationCodeCoordinator = null;
         }
 
         super.onDestroy();

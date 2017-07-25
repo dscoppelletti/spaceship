@@ -26,6 +26,8 @@
     <dimen name="it_scoppelletti_fab_margin">16dp</dimen>
     <!-- Android Studio: Scrolling Activity Template -->
     <dimen name="it_scoppelletti_appBar_expandedHeight">180dp</dimen>
+    <!-- Android Studio: Navigation Drawer Activity Template -->
+    <dimen name="it_scoppelletti_drawer_headerHeight">160dp</dimen>
     <!-- http://material.io/guidelines/components/dialogs.html#dialogs-specs -->
     <dimen name="it_scoppelletti_fab_normalSize">56dp</dimen>
     <dimen name="it_scoppelletti_fab_miniSize">40dp</dimen>

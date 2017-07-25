@@ -63,6 +63,11 @@
         <item name="android:layout_gravity">start</item>
         <item name="android:fitsSystemWindows">true</item>
     </style>
+    <style name="it_scoppelletti_style_drawerHeader">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/it_scoppelletti_drawer_headerHeight</item>
+        <item name="android:background">@drawable/it_scoppelletti_drawer_header</item>
+    </style>
     <!-- Coordinator layout -->
     <style name="it_scoppelletti_style_coordinatorLayout">
         <item name="android:layout_width">match_parent</item>

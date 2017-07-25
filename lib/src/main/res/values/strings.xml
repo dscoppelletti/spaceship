@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="it_scoppelletti_cmd_changePassword">Change password</string>
     <string name="it_scoppelletti_cmd_delete">Delete</string>
     <string name="it_scoppelletti_cmd_drawerOpen">Open navigation drawer</string>
     <string name="it_scoppelletti_cmd_drawerClose">Close navigation drawer</string>
@@ -38,11 +39,13 @@
     <string name="it_scoppelletti_lbl_name">Name</string>
     <string name="it_scoppelletti_lbl_nickname">Nickname</string>
     <string name="it_scoppelletti_lbl_password">Password</string>
-    <string name="it_scoppelletti_lbl_passwordNew">New password</string>
     <string name="it_scoppelletti_lbl_passwordConfirm">Password confirm</string>
+    <string name="it_scoppelletti_lbl_passwordNew">New password</string>
+    <string name="it_scoppelletti_lbl_passwordOld">Current password</string>
     <string name="it_scoppelletti_lbl_phoneNumber">Phone number</string>
     <string name="it_scoppelletti_lbl_surname">Surname</string>
     <string name="it_scoppelletti_lbl_timeZone">Time-zone</string>
     <string name="it_scoppelletti_lbl_userCode">User name</string>
     <string name="it_scoppelletti_lbl_website">Website</string>
+    <string name="it_scoppelletti_msg_changePassword">Password has been changed.</string>
 </resources>

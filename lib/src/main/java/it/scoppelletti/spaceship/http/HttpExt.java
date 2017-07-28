@@ -36,9 +36,20 @@ import it.scoppelletti.spaceship.io.IOExt;
 public final class HttpExt {
 
     /**
+     * Header reporting the client application name and version.
+     */
+    public static final String HEADER_APPL = "X-scoppelletti-appl";
+
+    /**
      * Header {@code Accept-Language}.
      */
     public static final String HEADER_LOCALE = "Accept-Language";
+
+    /**
+     * Header reporting the client <abbr title="Operative Syteme">OS</abbr> name
+     * and version.
+     */
+    public static final String HEADER_OS = "X-scoppelletti-os";
 
     /**
      * Private constructor for static class.

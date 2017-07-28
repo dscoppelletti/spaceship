@@ -19,41 +19,94 @@ package it.scoppelletti.spaceship.http;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.StringTokenizer;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+import it.scoppelletti.spaceship.ApplicationException;
 import it.scoppelletti.spaceship.types.StringExt;
 
 /**
- * Sets the {@code Accept-Language} header in HTTP requests.
+ * Decores an HTTP request with infos describing the client.
  *
  * @since 1.0.0
  */
-public final class LocaleInterceptor implements Interceptor {
+public final class ClientInterceptor implements Interceptor {
+    private static final char LANG_SEP = '-';
+    private static final char VALUE_SEP = ';';
     private static final String LANG_UND = "und";
     private static final String LOCALE_SEP = "_";
-    private static final char TAG_SEP = '-';
+    private static final String OS_NAME = "android";
+    private final Context myCtx;
 
     /**
      * Sole constructor.
+     *
+     * @param ctx The context.
      */
-    public LocaleInterceptor() {
+    public ClientInterceptor(@NonNull Context ctx) {
+        if (ctx == null) {
+            throw new NullPointerException("Argument ctx is null.");
+        }
+
+        myCtx = ctx.getApplicationContext();
     }
 
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request newReq, originalReq;
 
-
         originalReq = chain.request();
         newReq = originalReq.newBuilder()
+                .header(HttpExt.HEADER_OS, getOS())
+                .header(HttpExt.HEADER_APPL, getAppl())
                 .header(HttpExt.HEADER_LOCALE, toLanguageTag(
                         Locale.getDefault()))
                 .build();
 
         return chain.proceed(newReq);
+    }
+
+    /**
+     * Returns the OS name and version.
+     *
+     * @return The value.
+     */
+    private String getOS() {
+        return new StringBuilder(ClientInterceptor.OS_NAME)
+                .append(ClientInterceptor.VALUE_SEP)
+                .append(Build.VERSION.SDK_INT).toString();
+    }
+
+    /**
+     * Returns the application name and version.
+     *
+     * @return The value.
+     */
+    private String getAppl() {
+        String name;
+        PackageInfo packageInfo;
+        PackageManager packageMgr;
+
+        name = myCtx.getPackageName();
+        packageMgr = myCtx.getPackageManager();
+        try {
+            packageInfo = packageMgr.getPackageInfo(name, 0);
+        } catch (PackageManager.NameNotFoundException ex) {
+            throw new ApplicationException.Builder(
+                    R.string.it_scoppelletti_err_packageNotFound)
+                    .messageArguments(name)
+                    .cause(ex).build();
+        }
+
+        return new StringBuilder(name)
+                .append(ClientInterceptor.VALUE_SEP)
+                .append(packageInfo.versionCode).toString();
     }
 
     /**
@@ -77,7 +130,7 @@ public final class LocaleInterceptor implements Interceptor {
         buf = new StringBuilder();
         s = locale.getLanguage();
         if (TextUtils.isEmpty(s)) {
-            buf.append(LocaleInterceptor.LANG_UND);
+            buf.append(ClientInterceptor.LANG_UND);
         } else {
             buf.append(s.toLowerCase());
         }
@@ -85,7 +138,7 @@ public final class LocaleInterceptor implements Interceptor {
         s = locale.getScript();
         if (!TextUtils.isEmpty(s)) {
             if (s.length() > 0) {
-                buf.append(LocaleInterceptor.TAG_SEP);
+                buf.append(ClientInterceptor.LANG_SEP);
             }
 
             buf.append(StringExt.toTitleCase(s));
@@ -94,7 +147,7 @@ public final class LocaleInterceptor implements Interceptor {
         s = locale.getCountry();
         if (!TextUtils.isEmpty(s)) {
             if (s.length() > 0) {
-                buf.append(LocaleInterceptor.TAG_SEP);
+                buf.append(ClientInterceptor.LANG_SEP);
             }
 
             buf.append(s.toUpperCase());
@@ -102,10 +155,10 @@ public final class LocaleInterceptor implements Interceptor {
 
         s = locale.getVariant();
         if (!TextUtils.isEmpty(s)) {
-            tokens = new StringTokenizer(s, LocaleInterceptor.LOCALE_SEP);
+            tokens = new StringTokenizer(s, ClientInterceptor.LOCALE_SEP);
             while (tokens.hasMoreTokens()) {
                 if (s.length() > 0) {
-                    buf.append(LocaleInterceptor.TAG_SEP);
+                    buf.append(ClientInterceptor.LANG_SEP);
                 }
 
                 buf.append(s.toLowerCase());

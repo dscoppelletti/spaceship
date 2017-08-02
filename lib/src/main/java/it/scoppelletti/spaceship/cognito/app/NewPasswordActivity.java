@@ -24,7 +24,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -65,7 +64,6 @@ public final class NewPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Toolbar toolbar;
-        ActionBar actionBar;
         NewPasswordForm form;
 
         super.onCreate(savedInstanceState);
@@ -73,11 +71,8 @@ public final class NewPasswordActivity extends AppCompatActivity {
                 R.layout.it_scoppelletti_cognito_newpassword_activity);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_close_menu);
         setSupportActionBar(toolbar);
-
-        actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
 
         if (savedInstanceState == null) {
             form = new NewPasswordForm();

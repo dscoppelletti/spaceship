@@ -10,6 +10,6 @@
         android:layout_marginBottom="@dimen/it_scoppelletti_marginVert"
         android:layout_gravity="bottom"
         android:ellipsize="end"
-        android:textAppearance="@style/it_scoppelletti_text_headline"
+        android:textAppearance="@style/it_scoppelletti_text_body2"
         android:textColor="@color/colorTextAccent" />
 </FrameLayout>

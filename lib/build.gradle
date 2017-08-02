@@ -61,7 +61,7 @@ spaceship {
 }
 
 dependencies {
-    compile "com.android.support:appcompat-v7:25.3.1"
+    compile "com.android.support:appcompat-v7:${versionMap.android_support}"
     compile "com.android.support:design:${versionMap.android_support}"
     compile "com.android.support:recyclerview-v7:${versionMap.android_support}"
     compile "com.android.support:preference-v7:${versionMap.android_support}"

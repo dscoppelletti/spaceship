@@ -40,7 +40,7 @@
         parent="TextAppearance.AppCompat.Subhead" />
     <!-- 14sp medium -->
     <style name="it_scoppelletti_text_body2"
-        parent="TextAppearance.AppCompat.Body1" />
+        parent="TextAppearance.AppCompat.Body2" />
     <!-- 14sp regular -->
     <style name="it_scoppelletti_text_body1"
         parent="TextAppearance.AppCompat.Body1" />

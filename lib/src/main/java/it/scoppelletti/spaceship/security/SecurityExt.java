@@ -17,7 +17,6 @@
 package it.scoppelletti.spaceship.security;
 
 import java.security.SecureRandom;
-import java.util.Random;
 import android.support.annotation.NonNull;
 
 /**
@@ -39,7 +38,7 @@ public final class SecurityExt {
      * @return The object.
      */
     @NonNull
-    public static Random getCSRNG() {
+    public static SecureRandom getCSRNG() {
         return SecurityExt.SecureRandomHolder.myRNG;
     }
 
@@ -47,6 +46,6 @@ public final class SecurityExt {
      * On-demand initialization that does not need synchronization.
      */
     private static final class SecureRandomHolder {
-        static final Random myRNG = new SecureRandom();
+        static final SecureRandom myRNG = new SecureRandom();
     }
 }

@@ -18,6 +18,7 @@
     <eat-comment />
     <!-- http://material.io/guidelines/layout/metrics-keylines.html#metrics-keylines-keylines-spacing -->
     <dimen name="it_scoppelletti_marginHorz">24dp</dimen>
-    <dimen name="it_scoppelletti_appBar_height">64dp</dimen>
     <dimen name="it_scoppelletti_fab_margin">24dp</dimen>
+    <!-- http://material.io/guidelines/layout/structure.html#structure-app-bar -->
+    <dimen name="it_scoppelletti_appBar_height">64dp</dimen>
 </resources>

@@ -28,7 +28,7 @@
                 style="@style/it_scoppelletti_style_fab"
                 android:layout_margin="@dimen/it_scoppelletti_fab_margin"
                 android:layout_gravity="bottom|end"
-                app:srcCompat="@drawable/ic_add_white_24dp"
+                app:srcCompat="@drawable/ic_add_menu"
                 app:fabSize="normal" />
         </android.support.design.widget.CoordinatorLayout>
         <android.support.design.widget.NavigationView android:id="@+id/nav_view"

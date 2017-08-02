@@ -23,10 +23,12 @@
     <string name="it_scoppelletti_err_middleNameRequired">Il secondo nome è obbligatorio.</string>
     <string name="it_scoppelletti_err_nameRequired">Il nome è obbligatorio.</string>
     <string name="it_scoppelletti_err_nicknameRequired">Il soprannome è obbligatorio.</string>
+    <string name="it_scoppelletti_err_packageNotFound">Il pacchetto %1$s non esiste.</string>
     <string name="it_scoppelletti_err_passwordNotMatch">Le due password devono coincidere.</string>
     <string name="it_scoppelletti_err_passwordRequired">La password è obbligatoria.</string>
     <string name="it_scoppelletti_err_userCodeRequired">Il nome utente è obbligatorio.</string>
     <string name="it_scoppelletti_err_phoneNumberRequired">Il numero di telefono è obbligatorio.</string>
+    <string name="it_scoppelletti_err_security">Problema di sicurezza.</string>
     <string name="it_scoppelletti_err_surnameRequired">Il cognome è obbligatorio.</string>
     <string name="it_scoppelletti_err_timeZoneRequired">Il fuso orario è obbligatorio.</string>
     <string name="it_scoppelletti_err_websiteRequired">Il sito Web è obbligatorio.</string>

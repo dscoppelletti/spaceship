@@ -23,9 +23,11 @@
     <string name="it_scoppelletti_err_middleNameRequired">Middle name is required.</string>
     <string name="it_scoppelletti_err_nameRequired">Name is required.</string>
     <string name="it_scoppelletti_err_nicknameRequired">Nickname is required.</string>
+    <string name="it_scoppelletti_err_packageNotFound">Package %1$s not found.</string>
     <string name="it_scoppelletti_err_passwordNotMatch">Passwords do not match.</string>
     <string name="it_scoppelletti_err_passwordRequired">Password is required.</string>
     <string name="it_scoppelletti_err_phoneNumberRequired">Phone number is required.</string>
+    <string name="it_scoppelletti_err_security">Security failure.</string>
     <string name="it_scoppelletti_err_surnameRequired">Surname is required.</string>
     <string name="it_scoppelletti_err_timeZoneRequired">Time-zone is required.</string>
     <string name="it_scoppelletti_err_userCodeRequired">User name is required.</string>

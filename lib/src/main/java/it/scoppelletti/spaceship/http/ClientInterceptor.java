@@ -29,10 +29,9 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 import it.scoppelletti.spaceship.ApplicationException;
-import it.scoppelletti.spaceship.types.StringExt;
 
 /**
- * Decores an HTTP request with infos describing the client.
+ * Decorates an HTTP request with infos describing the client.
  *
  * @since 1.0.0
  */
@@ -133,15 +132,6 @@ public final class ClientInterceptor implements Interceptor {
             buf.append(ClientInterceptor.LANG_UND);
         } else {
             buf.append(s.toLowerCase());
-        }
-
-        s = locale.getScript();
-        if (!TextUtils.isEmpty(s)) {
-            if (s.length() > 0) {
-                buf.append(ClientInterceptor.LANG_SEP);
-            }
-
-            buf.append(StringExt.toTitleCase(s));
         }
 
         s = locale.getCountry();

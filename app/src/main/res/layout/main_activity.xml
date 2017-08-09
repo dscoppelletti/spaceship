@@ -22,14 +22,6 @@
             style="@style/it_scoppelletti_style_contentFrame"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
         </android.support.v4.widget.NestedScrollView>
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            style="@style/it_scoppelletti_style_fab"
-            android:layout_margin="@dimen/it_scoppelletti_fab_margin"
-            app:fabSize="normal"
-            app:layout_anchor="@id/app_bar_layout"
-            app:layout_anchorGravity="bottom|end"
-            app:srcCompat="@drawable/ic_network_check_white_24dp"/>
     </android.support.design.widget.CoordinatorLayout>
 </FrameLayout>
 

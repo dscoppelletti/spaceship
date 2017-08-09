@@ -11,6 +11,11 @@ android {
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        if (project.hasProperty('service.url')) {
+            buildConfigField 'String', 'SERVICE_URL', '"' + project.property('service.url') + '"'
+        } else {
+            buildConfigField 'String', 'SERVICE_URL', '"N/A"'
+        }
     }
     buildTypes {
         debug {
@@ -34,6 +39,11 @@ dependencies {
     compile project(':lib')
     compile "com.android.support:appcompat-v7:25.3.1"
     compile "com.android.support:support-annotations:${versionMap.android_support}"
+    compile "com.squareup.okhttp3:okhttp:${versionMap.okhttp}"
+    compile "com.squareup.retrofit2:converter-scalars:${versionMap.retrofit}"
+    compile "com.squareup.retrofit2:retrofit:${versionMap.retrofit}"
+    compile "io.reactivex.rxjava2:rxandroid:${versionMap.rxandroid}"
+    compile "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"
     provided "org.projectlombok:lombok:${versionMap.lombok}"
     annotationProcessor "org.projectlombok:lombok:${versionMap.lombok}"
     apk "com.noveogroup.android:android-logger:${versionMap.android_logger}"

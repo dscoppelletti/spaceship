@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation">
-    <string name="network_connected">Network is connected.</string>
-    <string name="network_notConnected">Network is not connected.</string>
+    <string name="cmd_network_check">Network check</string>
+    <string name="cmd_http">HTTP</string>
+    <string name="msg_network_connected">Network is connected.</string>
+    <string name="msg_network_notConnected">Network is not connected.</string>
 </resources>

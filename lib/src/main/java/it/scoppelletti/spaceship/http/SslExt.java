@@ -24,6 +24,7 @@ import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;
 import javax.net.ssl.KeyManager;
@@ -93,7 +94,7 @@ public final class SslExt {
 
         try {
             ctx = SSLContext.getInstance(SslExt.SSL_PROTOCOL);
-            ctx.init(kms, tms, SecurityExt.getCSRNG());
+            ctx.init(kms, tms, null);
         } catch (KeyManagementException|NoSuchAlgorithmException ex) {
             throw new ApplicationException.Builder(
                     R.string.it_scoppelletti_err_security)
@@ -103,6 +104,67 @@ public final class SslExt {
         return ctx;
     }
 
+// TODO - http://github.com/square/okhttp/issues/3519 - August 11, 2017
+//    /**
+//     * Loads a PEM certificate to use as authentication credentials to present
+//     * to the server.
+//     *
+//     * @param  in Input stream.
+//     * @return    The {@code KeyManager} object.
+//     */
+//    @NonNull
+//    public static X509KeyManager loadKeyManager(@NonNull InputStream in) {
+//        int i;
+//        KeyStore ks;
+//        KeyManagerFactory kmFactory;
+//        CertificateFactory certFactory;
+//        Collection<? extends Certificate> certs;
+//        char[] pwd = null;
+//        KeyManager[] kms;
+//
+//        if (in == null) {
+//            throw new NullPointerException("Argument in is null.");
+//        }
+//
+//        try {
+//            certFactory = CertificateFactory.getInstance(SslExt.CERT_TYPE);
+//            certs = certFactory.generateCertificates(in);
+//            if (certs.isEmpty()) {
+//                throw new IllegalArgumentException(
+//                        "Set of client certificates is empty.");
+//            }
+//
+//            ks = KeyStore.getInstance(SslExt.KEYSTORE_TYPE);
+//            pwd = SslExt.generatePassword(SslExt.PASSWORD_LEN);
+//            ks.load(null, pwd);
+//
+//            i = 0;
+//            for (Certificate cert : certs) {
+//                ks.setCertificateEntry(Integer.toString(i), cert);
+//                i++;
+//            }
+//
+//            kmFactory = KeyManagerFactory.getInstance(SslExt.KEYMANAGER_ALG);
+//            kmFactory.init(ks, pwd);
+//        } catch (GeneralSecurityException|IOException ex) {
+//            throw new ApplicationException.Builder(
+//                    R.string.it_scoppelletti_err_security)
+//                    .cause(ex).build();
+//        } finally {
+//            if (pwd !=  null) {
+//                Arrays.fill(pwd, '\0');
+//            }
+//        }
+//
+//        kms = kmFactory.getKeyManagers();
+//        if (kms.length != 1 || !(kms[0] instanceof X509KeyManager)) {
+//            throw new IllegalStateException(
+//                    "Unexpected default key managers.");
+//        }
+//
+//        return (X509KeyManager) kms[0];
+//    }
+
     /**
      * Loads a PEM certificate to use as a trusted authority for signing server
      * certificates.
@@ -111,13 +173,18 @@ public final class SslExt {
      * @return    The {@code TrustManager} object.
      */
     @NonNull
-    public static X509TrustManager loadTrustManager(InputStream in) {
+    public static X509TrustManager loadTrustManager(@NonNull InputStream in) {
         int i;
         KeyStore ks;
         TrustManagerFactory tmFactory;
         CertificateFactory certFactory;
         Collection<? extends Certificate> certs;
+        char[] pwd = null;
         TrustManager[] tms;
+
+        if (in == null) {
+            throw new NullPointerException("Argument in is null.");
+        }
 
         try {
             certFactory = CertificateFactory.getInstance(SslExt.CERT_TYPE);
@@ -128,7 +195,8 @@ public final class SslExt {
             }
 
             ks = KeyStore.getInstance(SslExt.KEYSTORE_TYPE);
-            ks.load(null, SslExt.generatePassword(SslExt.PASSWORD_LEN));
+            pwd = SslExt.generatePassword(SslExt.PASSWORD_LEN);
+            ks.load(null, pwd);
 
             i = 0;
             for (Certificate cert : certs) {
@@ -142,6 +210,10 @@ public final class SslExt {
             throw new ApplicationException.Builder(
                     R.string.it_scoppelletti_err_security)
                     .cause(ex).build();
+        } finally {
+            if (pwd !=  null) {
+                Arrays.fill(pwd, '\0');
+            }
         }
 
         tms = tmFactory.getTrustManagers();

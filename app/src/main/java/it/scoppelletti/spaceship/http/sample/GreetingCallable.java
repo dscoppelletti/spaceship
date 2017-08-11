@@ -3,6 +3,7 @@ package it.scoppelletti.spaceship.http.sample;
 import java.io.InputStream;
 import java.util.concurrent.Callable;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.X509KeyManager;
 import javax.net.ssl.X509TrustManager;
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -46,9 +47,19 @@ final class GreetingCallable implements Callable<String> {
         OkHttpClient httpClient;
         AssetManager assetMgr;
         SSLContext sslCtx;
+        X509KeyManager km;
         X509TrustManager tm;
 
-        assetMgr = myCtx.getAssets();
+          assetMgr = myCtx.getAssets();
+// TODO - http://github.com/square/okhttp/issues/3519 - August 11, 2017
+//        in = assetMgr.open("client.pem");
+//        try {
+//            km = SslExt.loadKeyManager(in);
+//        } finally {
+//            in = IOExt.close(in);
+//        }
+        km = null;
+
         in = assetMgr.open("ca.pem");
         try {
             tm = SslExt.loadTrustManager(in);
@@ -56,7 +67,7 @@ final class GreetingCallable implements Callable<String> {
             in = IOExt.close(in);
         }
 
-        sslCtx = SslExt.newContext(null, tm);
+        sslCtx = SslExt.newContext(km, tm);
 
         httpClient = new OkHttpClient.Builder()
                 .addInterceptor(new ClientInterceptor(myCtx))

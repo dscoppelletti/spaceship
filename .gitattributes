@@ -3,6 +3,7 @@
 app/gradle.properties filter=git-crypt diff=git-crypt
 app/src/main/assets/ca.pem filter=git-crypt diff=git-crypt
 app/src/main/assets/client.pem filter=git-crypt diff=git-crypt
+app/src/main/assets/clientkey.pem filter=git-crypt diff=git-crypt
 .gitignore export-ignore
 .gitattributes export-ignore
 

@@ -22,6 +22,8 @@ ext.versionMap = [
         android_logger : '1.3.5',
         android_support : '25.4.0',
         gson : '2.7',
+        hamcrest : '1.3',
+        junit : '4.12',
         lombok : '1.16.18',
         okhttp : '3.8.0',
         retrofit : '2.3.0',

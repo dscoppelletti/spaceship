@@ -41,6 +41,11 @@ public final class HttpExt {
     public static final String HEADER_APPL = "X-scoppelletti-appl";
 
     /**
+     * Header {@code Authorization}.
+     */
+    public static final String HEADER_AUTH = "Authorization";
+
+    /**
      * Header {@code Accept-Language}.
      */
     public static final String HEADER_LOCALE = "Accept-Language";

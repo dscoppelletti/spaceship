@@ -69,4 +69,7 @@ dependencies {
     compile "it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}"
     provided "org.projectlombok:lombok:${versionMap.lombok}"
     annotationProcessor "org.projectlombok:lombok:${versionMap.lombok}"
+    testCompile "junit:junit:${versionMap.junit}"
+    testCompile "org.hamcrest:hamcrest-all:${versionMap.hamcrest}"
+    testCompile "org.slf4j:slf4j-simple:${versionMap.slf4j}"
 }

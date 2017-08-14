@@ -42,7 +42,8 @@ final class GreetingCallable implements Callable<String> {
     }
 
     private GreetingService createClient() throws Exception {
-        InputStream in;
+        InputStream certIn = null;
+        InputStream keyIn = null;
         Retrofit retrofit;
         OkHttpClient httpClient;
         AssetManager assetMgr;
@@ -50,21 +51,21 @@ final class GreetingCallable implements Callable<String> {
         X509KeyManager km;
         X509TrustManager tm;
 
-          assetMgr = myCtx.getAssets();
-// TODO - http://github.com/square/okhttp/issues/3519 - August 11, 2017
-//        in = assetMgr.open("client.pem");
-//        try {
-//            km = SslExt.loadKeyManager(in);
-//        } finally {
-//            in = IOExt.close(in);
-//        }
-        km = null;
-
-        in = assetMgr.open("ca.pem");
+        assetMgr = myCtx.getAssets();
         try {
-            tm = SslExt.loadTrustManager(in);
+            keyIn = assetMgr.open("clientkey.pem");
+            certIn = assetMgr.open("client.pem");
+            km = SslExt.loadKeyManager(keyIn, certIn);
         } finally {
-            in = IOExt.close(in);
+            keyIn = IOExt.close(keyIn);
+            certIn = IOExt.close(certIn);
+        }
+
+        try {
+            certIn = assetMgr.open("ca.pem");
+            tm = SslExt.loadTrustManager(certIn);
+        } finally {
+            certIn = IOExt.close(certIn);
         }
 
         sslCtx = SslExt.newContext(km, tm);

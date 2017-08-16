@@ -19,12 +19,13 @@ package it.scoppelletti.spaceship.cognito;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.WorkerThread;
 import android.text.TextUtils;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
 import com.amazonaws.regions.Regions;
 import lombok.extern.slf4j.Slf4j;
 import it.scoppelletti.spaceship.cognito.data.SpaceshipUser;
-import it.scoppelletti.spaceship.security.SecureString;
 
 /**
  * Adapter for Amazon Cognito SDK.
@@ -41,25 +42,31 @@ public final class CognitoAdapter {
             "it.scoppelletti.spaceship.cognito.1";
 
     /**
+     * Property indicating that logout has been required.
+     */
+    public static final String PROP_LOGOUT =
+            "it.scoppelletti.spaceship.cognito.2";
+
+    /**
      * Property reporting the new password.
      */
     public static final String PROP_PASSWORDNEW =
-            "it.scoppelletti.spaceship.cognito.2";
+            "it.scoppelletti.spaceship.cognito.3";
 
     /**
      * Property reporting the user attributes.
      */
     public static final String PROP_USERATTRIBUTES =
-            "it.scoppelletti.spaceship.cognito.3";
+            "it.scoppelletti.spaceship.cognito.4";
 
     /**
      * Property reporting the user code.
      */
     public static final String PROP_USERCODE =
-            "it.scoppelletti.spaceship.cognito.4";
+            "it.scoppelletti.spaceship.cognito.5";
 
     /**
-     * Tag of the {@code ChangePasswordActivityData} fragment.
+     * Tag of {@code ChangePasswordActivityData} fragment.
      *
      * @see it.scoppelletti.spaceship.cognito.app.ChangePasswordActivityData
      */
@@ -67,7 +74,7 @@ public final class CognitoAdapter {
             "it.scoppelletti.spaceship.cognito.1";
 
     /**
-     * Tag of the {@code ForgotPasswordActivityData} fragment.
+     * Tag of {@code ForgotPasswordActivityData} fragment.
      *
      * @see it.scoppelletti.spaceship.cognito.app.ForgotPasswordActivityData
      */
@@ -75,7 +82,7 @@ public final class CognitoAdapter {
             "it.scoppelletti.spaceship.cognito.2";
 
     /**
-     * Tag of the {@code LoginActivityData} fragment.
+     * Tag of {@code LoginActivityData} fragment.
      *
      * @see it.scoppelletti.spaceship.cognito.app.LoginActivityData
      */
@@ -83,7 +90,7 @@ public final class CognitoAdapter {
             "it.scoppelletti.spaceship.cognito.3";
 
     /**
-     * Tag of the {@code VerificationCodeDialogFragment} fragment.
+     * Tag of {@code VerificationCodeDialogFragment} fragment.
      *
      * @see it.scoppelletti.spaceship.cognito.app.VerificationCodeDialogFragment
      */
@@ -91,16 +98,16 @@ public final class CognitoAdapter {
             "it.scoppelletti.spaceship.cognito.4";
 
     /**
-     * Tag of the {@code VerifyAttributeActivityData} fragment.
+     * Tag of {@code VerifyAttributeActivityData} fragment.
      *
      * @see it.scoppelletti.spaceship.cognito.app.VerifyAttributeActivityData
      */
     public static final String TAG_VERIFYATTRIBUTEDATA =
             "it.scoppelletti.spaceship.cognito.5";
 
-    private static CognitoAdapter myInstance;
+    private static volatile CognitoAdapter myInstance;
     private final CognitoUserPool myUserPool;
-    private SpaceshipUser myCurrentUser;
+    private volatile SpaceshipUser myCurrentUser;
 
     /**
      * Constructor.
@@ -108,10 +115,8 @@ public final class CognitoAdapter {
      * @param builder The instance builder.
      */
     private CognitoAdapter(CognitoAdapter.Builder builder) {
-        // Amazon Cognito uses immutable string for client secret
         myUserPool = new CognitoUserPool(builder.myCtx, builder.myPoolId,
-                builder.myClientId, builder.myClientSecret.toString(),
-                builder.myRegion);
+                builder.myClientId, builder.myClientSecret, builder.myRegion);
     }
 
     /**
@@ -121,11 +126,14 @@ public final class CognitoAdapter {
      */
     @NonNull
     public static CognitoAdapter getInstance() {
-        if (myInstance == null) {
+        CognitoAdapter adapter;
+
+        adapter = myInstance;
+        if (adapter == null) {
             throw new NullPointerException("CognitoAdapter instance not set.");
         }
 
-        return myInstance;
+        return adapter;
     }
 
     /**
@@ -164,14 +172,39 @@ public final class CognitoAdapter {
     /**
      * Logout the current user.
      */
+    @WorkerThread
     public void logout() {
-        if (myCurrentUser == null)  {
+        SpaceshipUser user;
+
+        user = myCurrentUser;
+        if (user == null)  {
             myLogger.warn("No user currently logged.");
             return;
         }
 
-        myCurrentUser.getUser().signOut();
+        user.getUser().signOut();
         myCurrentUser = null;
+    }
+
+    /**
+     * Returns a valid session.
+     *
+     * @return The object.
+     */
+    @NonNull
+    @WorkerThread
+    public CognitoUserSession getSession() {
+        SpaceshipUser user;
+        GetSessionHandler handler;
+
+        user = myCurrentUser;
+        if (user == null)  {
+            throw new NullPointerException("No user currenty logged.");
+        }
+
+        handler = new GetSessionHandler();
+        user.getUser().getSession(handler);
+        return handler.getSession();
     }
 
     /**
@@ -183,7 +216,7 @@ public final class CognitoAdapter {
         private final Context myCtx;
         private String myPoolId;
         private String myClientId;
-        private SecureString myClientSecret;
+        private String myClientSecret;
         private Regions myRegion;
 
         /**
@@ -238,8 +271,7 @@ public final class CognitoAdapter {
          * @return       This object.
          */
         @NonNull
-        public CognitoAdapter.Builder clientSecret(
-                @NonNull SecureString value) {
+        public CognitoAdapter.Builder clientSecret(@NonNull String value) {
             if (TextUtils.isEmpty(value)) {
                 throw new NullPointerException("Argument value is null.");
             }
@@ -271,7 +303,10 @@ public final class CognitoAdapter {
          */
         @NonNull
         public CognitoAdapter build() {
-            if (myInstance != null) {
+            CognitoAdapter adapter;
+
+            adapter = myInstance;
+            if (adapter != null) {
                 throw new IllegalStateException(
                         "CognitoAdapter instance already set.");
             }
@@ -290,9 +325,9 @@ public final class CognitoAdapter {
                 throw new NullPointerException("Property region is null.");
             }
 
-            myInstance = new CognitoAdapter(this);
-            myClientSecret.clear();
-            return myInstance;
+            adapter = new CognitoAdapter(this);
+            myInstance = adapter;
+            return adapter;
         }
     }
 }

@@ -42,7 +42,6 @@ import it.scoppelletti.spaceship.cognito.data.NewPasswordForm;
 import it.scoppelletti.spaceship.cognito.data.UserAttributeForm;
 import it.scoppelletti.spaceship.cognito.databinding.NewPasswordActivityBinding;
 import it.scoppelletti.spaceship.cognito.widget.UserAttributeView;
-import it.scoppelletti.spaceship.security.SecureString;
 
 /**
  * Activity to prompt the user for a new password.
@@ -200,7 +199,6 @@ public final class NewPasswordActivity extends AppCompatActivity {
     private void onDoneClick() {
         boolean valid;
         Intent data;
-        SecureString pwd;
         NewPasswordForm form;
 
         AppExt.hideSoftKeyboard(this);
@@ -219,22 +217,16 @@ public final class NewPasswordActivity extends AppCompatActivity {
             return;
         }
 
-        pwd = new SecureString(form.getPasswordNew());
+        data = new Intent();
+        data.putExtra(CognitoAdapter.PROP_PASSWORDNEW, form.getPasswordNew());
 
-        try {
-            data = new Intent();
-            data.putExtra(CognitoAdapter.PROP_PASSWORDNEW, pwd.toByteArray());
-
-            if (myAttrList != null) {
-                data.putParcelableArrayListExtra(
-                        CognitoAdapter.PROP_USERATTRIBUTES, myAttrList);
-            }
-
-            setResult(Activity.RESULT_OK, data);
-            finish();
-        } finally {
-            pwd.clear();
+        if (myAttrList != null) {
+            data.putParcelableArrayListExtra(
+                    CognitoAdapter.PROP_USERATTRIBUTES, myAttrList);
         }
+
+        setResult(Activity.RESULT_OK, data);
+        finish();
     }
 
     /**

@@ -1,5 +1,6 @@
 package it.scoppelletti.spaceship.cognito.sample;
 
+import java.util.concurrent.Callable;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -12,9 +13,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import it.scoppelletti.spaceship.ApplicationException;
 import it.scoppelletti.spaceship.ExceptionEvent;
+import it.scoppelletti.spaceship.app.AppExt;
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment;
 import it.scoppelletti.spaceship.app.NavigationDrawer;
 import it.scoppelletti.spaceship.app.TitleAdapter;
@@ -23,6 +32,8 @@ import it.scoppelletti.spaceship.cognito.app.ChangePasswordActivity;
 import it.scoppelletti.spaceship.cognito.app.VerifyAttributeActivity;
 import it.scoppelletti.spaceship.cognito.data.SpaceshipUser;
 import it.scoppelletti.spaceship.cognito.data.UserAttribute;
+import it.scoppelletti.spaceship.rx.CompleteEvent;
+import it.scoppelletti.spaceship.rx.SingleCoordinator;
 import it.scoppelletti.spaceship.widget.ProgressOverlay;
 
 public final class MainActivity extends AppCompatActivity implements
@@ -31,6 +42,7 @@ public final class MainActivity extends AppCompatActivity implements
     private TitleAdapter myTitleAdapter;
     private TextView myUserLabel;
     private ProgressOverlay myProgressBar;
+    private CompositeDisposable myDisposables;
 
     public MainActivity() {
     }
@@ -56,6 +68,7 @@ public final class MainActivity extends AppCompatActivity implements
         myTitleAdapter = new TitleAdapter.Builder(this)
                 .toolbarLayoutId(R.id.toolbar_layout).build();
         myProgressBar = (ProgressOverlay) findViewById(R.id.progress_bar);
+        myDisposables = new CompositeDisposable();
     }
 
     @Override
@@ -69,7 +82,9 @@ public final class MainActivity extends AppCompatActivity implements
     protected void onResume() {
         Menu menu;
         MenuItem menuItem;
+        Disposable subscription;
         SpaceshipUser user;
+        SingleCoordinator<CognitoUserSession> coordinator;
 
         super.onResume();
 
@@ -88,10 +103,19 @@ public final class MainActivity extends AppCompatActivity implements
                 !user.isPhoneNumberVerified());
 
         EventBus.getDefault().register(this);
+
+        coordinator = AppExt.getOrCreateFragment(this,
+                MainActivityData.class, MainActivityData.TAG)
+                .getSessionCoordinator();
+        subscription = coordinator.subscribe(GetSessionObserver.newFactory());
+        myDisposables.add(subscription);
     }
 
     @Override
     protected void onPause() {
+        myDisposables.dispose();
+        myDisposables = new CompositeDisposable();
+
         EventBus.getDefault().unregister(this);
         super.onPause();
     }
@@ -152,15 +176,24 @@ public final class MainActivity extends AppCompatActivity implements
             startActivity(intent);
             break;
 
+        case R.id.cmd_getSession:
+            onGetSessionClick();
+            break;
+
         case R.id.cmd_logout:
-            CognitoAdapter.getInstance().logout();
             intent = new Intent(getApplicationContext(), LoginActivity.class);
+            intent.putExtra(CognitoAdapter.PROP_LOGOUT, true);
             startActivity(intent);
             finish();
             break;
         }
 
         return false;
+    }
+
+    @Subscribe
+    public void onCompleteEvent(@NonNull CompleteEvent event) {
+        myProgressBar.hide();
     }
 
     @Subscribe
@@ -173,5 +206,39 @@ public final class MainActivity extends AppCompatActivity implements
                         .exceptionEvent(event).show();
             }
         });
+    }
+
+    private void onGetSessionClick() {
+        Disposable connection;
+        Callable<CognitoUserSession> process;
+        SingleCoordinator<CognitoUserSession> coordinator;
+
+        myProgressBar.show();
+        try {
+            coordinator = AppExt.getOrCreateFragment(this,
+                    MainActivityData.class, MainActivityData.TAG)
+                    .getSessionCoordinator();
+            if (coordinator.isRunning()) {
+                throw new ApplicationException.Builder(
+                        R.string.err_getSessionAlreadyInProgress)
+                        .title(R.string.cmd_getSession).build();
+            }
+
+            process = new Callable<CognitoUserSession>() {
+
+                @Override
+                public CognitoUserSession call() throws Exception {
+                    return CognitoAdapter.getInstance().getSession();
+                }
+            };
+
+            connection = coordinator.connect(Single.fromCallable(process)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread()));
+            myDisposables.add(connection);
+        } catch (RuntimeException ex) {
+            EventBus.getDefault().post(new ExceptionEvent(ex)
+                    .title(R.string.cmd_getSession));
+        }
     }
 }

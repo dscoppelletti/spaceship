@@ -23,7 +23,6 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHa
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import lombok.extern.slf4j.Slf4j;
-import it.scoppelletti.spaceship.security.SecureString;
 
 /**
  * Verify an attribute.
@@ -33,7 +32,7 @@ final class VerifyAttributeObservable implements
         ObservableOnSubscribe<Object>, GenericHandler {
     private final CognitoUser myUser;
     private final String myAttr;
-    private final SecureString myVerificationCode;
+    private final String myVerificationCode;
     private ObservableEmitter<Object> myEmitter;
     private boolean myFailed;
 
@@ -45,7 +44,7 @@ final class VerifyAttributeObservable implements
      * @param verificationCode The verification code.
      */
     VerifyAttributeObservable(@NonNull CognitoUser user, @NonNull String attr,
-            @NonNull SecureString verificationCode) {
+            @NonNull String verificationCode) {
         if (user == null) {
             throw new NullPointerException("Argument user is null.");
         }
@@ -67,19 +66,12 @@ final class VerifyAttributeObservable implements
             Exception {
         myEmitter = emitter;
         myFailed = false;
+        myUser.verifyAttribute(myAttr, myVerificationCode, this);
 
-        try {
-            // Amazon Cognito uses immutable strings for passwords
-            myUser.verifyAttribute(myAttr, myVerificationCode.toString(), this);
-
-            // - http://github.com/aws/aws-sdk-android/issues/266
-            //   March 20, 2017
-            // onSuccess callback is missing from verifyAttribute function
-            if (!myFailed) {
-                onSuccess();
-            }
-        } finally {
-            myVerificationCode.clear();
+        // - http://github.com/aws/aws-sdk-android/issues/266 - March 20, 2017
+        // onSuccess callback is missing from verifyAttribute function
+        if (!myFailed) {
+            onSuccess();
         }
     }
 

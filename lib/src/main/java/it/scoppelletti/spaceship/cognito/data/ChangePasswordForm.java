@@ -54,7 +54,7 @@ public final class ChangePasswordForm extends PasswordForm {
             };
 
     private final EditTextValidator myPwdOldValidator;
-    private CharSequence myPwdOld;
+    private String myPwdOld;
     private int myPwdOldErr;
 
     /**
@@ -85,7 +85,7 @@ public final class ChangePasswordForm extends PasswordForm {
      */
     @Bindable
     @Nullable
-    public CharSequence getPasswordOld() {
+    public String getPasswordOld() {
         return myPwdOld;
     }
 
@@ -94,7 +94,7 @@ public final class ChangePasswordForm extends PasswordForm {
      *
      * @param value A value. May be {@code null}.
      */
-    public void setPasswordOld(@Nullable CharSequence value) {
+    public void setPasswordOld(@Nullable String value) {
         if (!TextUtils.equals(value, myPwdOld)) {
             notifyPropertyChanged(BR.passwordOld);
             myPwdOld = value;
@@ -157,14 +157,14 @@ public final class ChangePasswordForm extends PasswordForm {
 
     @Override
     protected void readFromParcel(Parcel in) {
-        myPwdOld = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(in);
+        myPwdOld = in.readString();
         myPwdOldErr = in.readInt();
         super.readFromParcel(in);
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        TextUtils.writeToParcel(myPwdOld, dest, flags);
+        dest.writeString(myPwdOld);
         dest.writeInt(myPwdOldErr);
         super.writeToParcel(dest, flags);
     }

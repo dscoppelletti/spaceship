@@ -57,7 +57,6 @@ import it.scoppelletti.spaceship.cognito.databinding.VerifyAttributeActivityBind
 import it.scoppelletti.spaceship.rx.CompletableCoordinator;
 import it.scoppelletti.spaceship.rx.CompleteEvent;
 import it.scoppelletti.spaceship.rx.SingleCoordinator;
-import it.scoppelletti.spaceship.security.SecureString;
 import it.scoppelletti.spaceship.widget.ProgressOverlay;
 import it.scoppelletti.spaceship.widget.SnackbarEvent;
 
@@ -161,7 +160,7 @@ public final class VerifyAttributeActivity extends AppCompatActivity {
             myTitleAdapter.setTitle(
                     R.string.it_scoppelletti_cognito_cmd_verifyPhoneNumber);
             myBinding.frmAttribute.setHint(getString(
-                    R.string.it_scoppelletti_lbl_email));
+                    R.string.it_scoppelletti_lbl_phoneNumber));
             myBinding.txtAttribute.setText(myUser.getPhoneNumber());
             break;
         }
@@ -333,7 +332,6 @@ public final class VerifyAttributeActivity extends AppCompatActivity {
         Disposable connection;
         CompletableCoordinator coordinator;
         VerifyAttributeObservable process;
-        SecureString verificationCode = null;
         VerifyAttributeForm form;
 
         AppExt.hideSoftKeyboard(this);
@@ -355,19 +353,14 @@ public final class VerifyAttributeActivity extends AppCompatActivity {
                         .build();
             }
 
-            verificationCode = new SecureString(form.getVerificationCode());
             process = new VerifyAttributeObservable(myUser.getUser(), myAttr,
-                    verificationCode);
+                    form.getVerificationCode());
             connection = coordinator.connect(Observable.create(process)
                     .ignoreElements()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread()));
             myDisposables.add(connection);
         } catch (RuntimeException ex) {
-            if (verificationCode != null) {
-                verificationCode.clear();
-            }
-
             EventBus.getDefault().post(new ExceptionEvent(ex)
                     .title(VerifyAttributeActivity.getTitleId(myAttr)));
         }

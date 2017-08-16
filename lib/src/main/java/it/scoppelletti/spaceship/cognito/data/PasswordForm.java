@@ -36,9 +36,9 @@ public abstract class PasswordForm extends BaseObservable implements
         Parcelable {
     private final EditTextValidator myPwdNewValidator;
     private final EditTextValidator myPwdConfirmValidator;
-    private CharSequence myPwdNew;
+    private String myPwdNew;
     private int myPwdNewErr;
-    private CharSequence myPwdConfirm;
+    private String myPwdConfirm;
     private int myPwdConfirmErr;
 
     /**
@@ -81,7 +81,7 @@ public abstract class PasswordForm extends BaseObservable implements
      */
     @Bindable
     @Nullable
-    public CharSequence getPasswordNew() {
+    public String getPasswordNew() {
         return myPwdNew;
     }
 
@@ -90,7 +90,7 @@ public abstract class PasswordForm extends BaseObservable implements
      *
      * @param value A value. May be {@code null}.
      */
-    public void setPasswordNew(@Nullable CharSequence value) {
+    public void setPasswordNew(@Nullable String value) {
         if (!TextUtils.equals(value, myPwdNew)) {
             notifyPropertyChanged(BR.passwordNew);
             myPwdNew = value;
@@ -139,7 +139,7 @@ public abstract class PasswordForm extends BaseObservable implements
      */
     @Bindable
     @Nullable
-    public CharSequence getPasswordConfirm() {
+    public String getPasswordConfirm() {
         return myPwdConfirm;
     }
 
@@ -148,7 +148,7 @@ public abstract class PasswordForm extends BaseObservable implements
      *
      * @param value A value. May be {@code null}.
      */
-    public void setPasswordConfirm(@Nullable CharSequence value) {
+    public void setPasswordConfirm(@Nullable String value) {
         if (!TextUtils.equals(value, myPwdConfirm)) {
             notifyPropertyChanged(BR.passwordConfirm);
             myPwdConfirm = value;
@@ -230,17 +230,17 @@ public abstract class PasswordForm extends BaseObservable implements
      * @param in The input stream.
      */
     protected void readFromParcel(Parcel in) {
-        myPwdNew = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(in);
+        myPwdNew = in.readString();
         myPwdNewErr = in.readInt();
-        myPwdConfirm = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(in);
+        myPwdConfirm = in.readString();
         myPwdConfirmErr = in.readInt();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        TextUtils.writeToParcel(myPwdNew, dest, flags);
+        dest.writeString(myPwdNew);
         dest.writeInt(myPwdNewErr);
-        TextUtils.writeToParcel(myPwdConfirm, dest, flags);
+        dest.writeString(myPwdConfirm);
         dest.writeInt(myPwdConfirmErr);
     }
 }

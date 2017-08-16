@@ -21,6 +21,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
 import it.scoppelletti.spaceship.cognito.CognitoAdapter;
+import it.scoppelletti.spaceship.rx.CompletableCoordinator;
+import it.scoppelletti.spaceship.rx.MaybeCoordinator;
 import it.scoppelletti.spaceship.rx.SingleCoordinator;
 
 /**
@@ -39,8 +41,9 @@ public final class LoginActivityData extends Fragment {
     private CognitoUser myPendingUser;
     private NewPasswordEvent myNewPwdEvent;
     private SingleCoordinator<Object> myLoginCoordinator;
-    private SingleCoordinator<CognitoUser> myCurrentUserCoordinator;
+    private MaybeCoordinator<CognitoUser> myCurrentUserCoordinator;
     private SingleCoordinator<GetUserDetailsEvent> myUserDetailsCoordinator;
+    private CompletableCoordinator myLogoutCoordinator;
 
     /**
      * Sole constructor.
@@ -107,9 +110,9 @@ public final class LoginActivityData extends Fragment {
      * @return The object.
      */
     @NonNull
-    SingleCoordinator<CognitoUser> getCurrentUserCoordinator() {
+    MaybeCoordinator<CognitoUser> getCurrentUserCoordinator() {
         if (myCurrentUserCoordinator == null) {
-            myCurrentUserCoordinator = new SingleCoordinator<>();
+            myCurrentUserCoordinator = new MaybeCoordinator<>();
         }
 
         return myCurrentUserCoordinator;
@@ -127,6 +130,20 @@ public final class LoginActivityData extends Fragment {
         }
 
         return myUserDetailsCoordinator;
+    }
+
+    /**
+     * Gets the coordinator for retrieving the detail of the current user.
+     *
+     * @return The object.
+     */
+    @NonNull
+    CompletableCoordinator getLogoutCoordinator() {
+        if (myLogoutCoordinator == null) {
+            myLogoutCoordinator = new CompletableCoordinator();
+        }
+
+        return myLogoutCoordinator;
     }
 
     @Override

@@ -39,6 +39,7 @@ android {
 }
 
 spaceship {
+    url 'http://github.com/dscoppelletti/spaceship-cognito'
     developer {
         name 'Dario Scoppelletti'
         email 'dario@scoppelletti.it'
@@ -46,7 +47,6 @@ spaceship {
     }
     copyright '2017'
     pom {
-        url 'http://github.com/dscoppelletti/spaceship-cognito'
         licenses {
             license {
                 name 'The Apache License, Version 2.0'

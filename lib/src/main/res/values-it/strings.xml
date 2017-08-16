@@ -12,6 +12,7 @@
     <string name="it_scoppelletti_cognito_err_profileRequired">Il profilo è obbligatorio.</string>
     <string name="it_scoppelletti_cognito_err_resetPasswordAlreadyInProgress">Il processo di ripristino della password è già in esecuzione.</string>
     <string name="it_scoppelletti_cognito_err_sendVerificationCodeAlreadyInProgress">Il processo di invio del codice di verifica è già in esecuzione.</string>
+    <string name="it_scoppelletti_cognito_err_getSessionFailed">L´acquisizione della sessione è fallita.</string>
     <string name="it_scoppelletti_cognito_err_userAttributeRequired">L´attributo %1$s è obbligatorio.</string>
     <string name="it_scoppelletti_cognito_err_verificationCodeRequired">Il codice di verifica è obbligatorio.</string>
     <string name="it_scoppelletti_cognito_err_verifyAttributeAlreadyInProgress">Il processo di verifica dell´attributo è già in esecuzione.</string>

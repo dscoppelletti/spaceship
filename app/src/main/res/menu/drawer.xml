@@ -6,6 +6,8 @@
         android:title="@string/it_scoppelletti_cognito_cmd_verifyEmail" />
     <item android:id="@+id/cmd_verifyPhoneNumber"
         android:title="@string/it_scoppelletti_cognito_cmd_verifyPhoneNumber" />
+    <item android:id="@+id/cmd_getSession"
+        android:title="@string/cmd_getSession" />
     <item android:id="@+id/cmd_logout"
         android:title="@string/it_scoppelletti_cmd_logout" />
 </menu>

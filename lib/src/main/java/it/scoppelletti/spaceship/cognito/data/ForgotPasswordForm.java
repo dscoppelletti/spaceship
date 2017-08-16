@@ -54,7 +54,7 @@ public final class ForgotPasswordForm extends PasswordForm {
             };
 
     private final EditTextValidator myVerificationCodeValidator;
-    private CharSequence myVerificationCode;
+    private String myVerificationCode;
     private int myVerificationCodeErr;
 
     /**
@@ -85,7 +85,7 @@ public final class ForgotPasswordForm extends PasswordForm {
      */
     @Bindable
     @Nullable
-    public CharSequence getVerificationCode() {
+    public String getVerificationCode() {
         return myVerificationCode;
     }
 
@@ -94,7 +94,7 @@ public final class ForgotPasswordForm extends PasswordForm {
      *
      * @param value A value. May be {@code null}.
      */
-    public void setVerificationCode(@Nullable CharSequence value) {
+    public void setVerificationCode(@Nullable String value) {
         if (!TextUtils.equals(value, myVerificationCode)) {
             notifyPropertyChanged(BR.verificationCode);
             myVerificationCode = value;
@@ -157,15 +157,14 @@ public final class ForgotPasswordForm extends PasswordForm {
 
     @Override
     protected void readFromParcel(Parcel in) {
-        myVerificationCode = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(
-                in);
+        myVerificationCode = in.readString();
         myVerificationCodeErr = in.readInt();
         super.readFromParcel(in);
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        TextUtils.writeToParcel(myVerificationCode, dest, flags);
+        dest.writeString(myVerificationCode);
         dest.writeInt(myVerificationCodeErr);
         super.writeToParcel(dest, flags);
     }

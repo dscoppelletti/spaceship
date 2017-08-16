@@ -53,7 +53,6 @@ import it.scoppelletti.spaceship.cognito.databinding.ForgotPasswordActivityBindi
 import it.scoppelletti.spaceship.rx.CompletableCoordinator;
 import it.scoppelletti.spaceship.rx.CompleteEvent;
 import it.scoppelletti.spaceship.rx.SingleCoordinator;
-import it.scoppelletti.spaceship.security.SecureString;
 import it.scoppelletti.spaceship.widget.ProgressOverlay;
 import it.scoppelletti.spaceship.widget.SnackbarEvent;
 
@@ -239,8 +238,6 @@ public final class ForgotPasswordActivity extends AppCompatActivity {
         Disposable connection;
         CompletableCoordinator coordinator;
         ConfirmPasswordObservable process;
-        SecureString pwd = null;
-        SecureString verificationCode = null;
         ForgotPasswordForm form;
 
         AppExt.hideSoftKeyboard(this);
@@ -262,23 +259,14 @@ public final class ForgotPasswordActivity extends AppCompatActivity {
                         .build();
             }
 
-            pwd = new SecureString(form.getPasswordNew());
-            verificationCode = new SecureString(form.getVerificationCode());
-            process = new ConfirmPasswordObservable(myUserCode, pwd,
-                    verificationCode);
+            process = new ConfirmPasswordObservable(myUserCode,
+                    form.getPasswordNew(), form.getVerificationCode());
             connection = coordinator.connect(Observable.create(process)
                     .ignoreElements()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread()));
             myDisposables.add(connection);
         } catch (RuntimeException ex) {
-            if (pwd != null) {
-                pwd.clear();
-            }
-            if (verificationCode != null) {
-                verificationCode.clear();
-            }
-
             EventBus.getDefault().post(new ExceptionEvent(ex)
                     .title(R.string.it_scoppelletti_cmd_forgotPassword));
         }

@@ -17,7 +17,6 @@
 package it.scoppelletti.spaceship.cognito.app;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +36,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.NewPasswordContinuation;
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -57,9 +57,10 @@ import it.scoppelletti.spaceship.cognito.data.SpaceshipUser;
 import it.scoppelletti.spaceship.cognito.data.UserAttribute;
 import it.scoppelletti.spaceship.cognito.data.UserAttributeForm;
 import it.scoppelletti.spaceship.cognito.databinding.LoginActivityBinding;
+import it.scoppelletti.spaceship.rx.CompletableCoordinator;
 import it.scoppelletti.spaceship.rx.CompleteEvent;
+import it.scoppelletti.spaceship.rx.MaybeCoordinator;
 import it.scoppelletti.spaceship.rx.SingleCoordinator;
-import it.scoppelletti.spaceship.security.SecureString;
 import it.scoppelletti.spaceship.widget.ProgressOverlay;
 import it.scoppelletti.spaceship.widget.SnackbarEvent;
 
@@ -70,9 +71,11 @@ import it.scoppelletti.spaceship.widget.SnackbarEvent;
  */
 @Slf4j
 public abstract class LoginActivityBase extends AppCompatActivity {
+    private static final int ACTION_GETCURRENTUSER = 1;
+    private static final int ACTION_LOGOUT = 2;
     private static final int REQ_NEWPASSWORD = 1;
     private static final String PROP_FORM = "1";
-    private boolean myFirstRun;
+    private int myFirstRun;
     private ProgressOverlay myProgressBar;
     private LoginActivityBinding myBinding;
     private ActivityResultHolder myActivityResult;
@@ -100,10 +103,16 @@ public abstract class LoginActivityBase extends AppCompatActivity {
         myProgressBar = (ProgressOverlay) findViewById(R.id.progress_bar);
 
         if (savedInstanceState == null) {
-            myFirstRun = true;
+            if (getIntent().getBooleanExtra(CognitoAdapter.PROP_LOGOUT,
+                    false)) {
+                myFirstRun = LoginActivityBase.ACTION_LOGOUT;
+            } else {
+                myFirstRun = LoginActivityBase.ACTION_GETCURRENTUSER;
+            }
+
             form = new LoginForm();
         } else {
-            myFirstRun = false;
+            myFirstRun = 0;
             form = savedInstanceState.getParcelable(
                     LoginActivityBase.PROP_FORM);
         }
@@ -143,8 +152,9 @@ public abstract class LoginActivityBase extends AppCompatActivity {
         Disposable subscription;
         LoginActivityData data;
         SingleCoordinator<Object> loginCoordinator;
-        SingleCoordinator<CognitoUser> currentUserCoordinator;
+        MaybeCoordinator<CognitoUser> currentUserCoordinator;
         SingleCoordinator<GetUserDetailsEvent> userDetailCoordinator;
+        CompletableCoordinator logoutCoordinator;
 
         super.onResume();
         EventBus.getDefault().register(this);
@@ -165,6 +175,10 @@ public abstract class LoginActivityBase extends AppCompatActivity {
                 GetUserDetailsObserver.newFactory());
         myDisposables.add(subscription);
 
+        logoutCoordinator = data.getLogoutCoordinator();
+        subscription = logoutCoordinator.subscribe(LogoutObserver.newFactory());
+        myDisposables.add(subscription);
+
         if (myActivityResult != null) {
             try {
                 onActivityResult();
@@ -176,12 +190,18 @@ public abstract class LoginActivityBase extends AppCompatActivity {
             return;
         }
 
-        if (myFirstRun) {
-            try {
+        try {
+            switch (myFirstRun) {
+            case LoginActivityBase.ACTION_GETCURRENTUSER:
                 getCurrentUser(currentUserCoordinator);
-            } finally {
-                myFirstRun = false;
+                break;
+
+            case LoginActivityBase.ACTION_LOGOUT:
+                logout(logoutCoordinator);
+                break;
             }
+        } finally {
+            myFirstRun = 0;
         }
     }
 
@@ -299,7 +319,7 @@ public abstract class LoginActivityBase extends AppCompatActivity {
      *
      * @param coordinator Coordinator.
      */
-    private void getCurrentUser(SingleCoordinator<CognitoUser> coordinator) {
+    private void getCurrentUser(MaybeCoordinator<CognitoUser> coordinator) {
         Disposable connection;
         GetCurrentUserObservable process;
 
@@ -307,13 +327,42 @@ public abstract class LoginActivityBase extends AppCompatActivity {
         try {
             process = new GetCurrentUserObservable();
             connection = coordinator.connect(Observable.create(process)
-                    .firstOrError()
+                    .firstElement()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread()));
             myDisposables.add(connection);
         } catch (RuntimeException ex) {
             myProgressBar.hide();
             myLogger.error("Failed to get the current user.", ex);
+        }
+    }
+
+    /**
+     * Performs the logout process.
+     *
+     * @param coordinator Coordinator.
+     */
+    private void logout(CompletableCoordinator coordinator) {
+        Runnable process;
+        Disposable connection;
+
+        myProgressBar.show();
+        try {
+            process = new Runnable() {
+
+                @Override
+                public void run() {
+                    CognitoAdapter.getInstance().logout();
+                }
+            };
+
+            connection = coordinator.connect(Completable.fromRunnable(process)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread()));
+            myDisposables.add(connection);
+        } catch (RuntimeException ex) {
+            myProgressBar.hide();
+            myLogger.error("Failed to logout.", ex);
         }
     }
 
@@ -345,7 +394,7 @@ public abstract class LoginActivityBase extends AppCompatActivity {
             }
 
             process = new LoginObservable(form.getUserCode(),
-                    new SecureString(form.getPassword()));
+                    form.getPassword());
             connection = coordinator.connect(Observable.create(process)
                     .firstOrError()
                     .subscribeOn(Schedulers.io())
@@ -540,14 +589,13 @@ public abstract class LoginActivityBase extends AppCompatActivity {
      * @param data       The result data.
      */
     private void onNewPasswordResult(int resultCode, Intent data) {
-        SecureString pwd = null;
+        String pwd;
         Disposable connection;
         LoginActivityData activityData;
         NewPasswordEvent event;
         NewPasswordObservable process;
         NewPasswordContinuation flow;
         SingleCoordinator<Object> coordinator;
-        byte[] buf = null;
 
         activityData = AppExt.getOrCreateFragment(this,
                 LoginActivityData.class, LoginActivityData.TAG);
@@ -561,11 +609,9 @@ public abstract class LoginActivityBase extends AppCompatActivity {
             }
 
             flow = event.getFlow();
-            buf = (resultCode == Activity.RESULT_OK) ?
-                    data.getByteArrayExtra(CognitoAdapter.PROP_PASSWORDNEW) :
+            pwd = (resultCode == Activity.RESULT_OK) ?
+                    data.getStringExtra(CognitoAdapter.PROP_PASSWORDNEW) :
                     null;
-            pwd = new SecureString(buf);
-
             if (TextUtils.isEmpty(pwd)) {
                 throw new ApplicationException.Builder(
                         R.string.it_scoppelletti_cognito_msg_newPassword)
@@ -575,9 +621,7 @@ public abstract class LoginActivityBase extends AppCompatActivity {
             updateUserAttributes(flow,
                     data.<UserAttributeForm>getParcelableArrayListExtra(
                     CognitoAdapter.PROP_USERATTRIBUTES));
-
-            // Amazon Cognito uses immutable strings for passwords
-            flow.setPassword(pwd.toString());
+            flow.setPassword(pwd);
 
             coordinator = AppExt.getOrCreateFragment(this,
                     LoginActivityData.class, LoginActivityData.TAG)
@@ -599,12 +643,6 @@ public abstract class LoginActivityBase extends AppCompatActivity {
                 .title(R.string.it_scoppelletti_cmd_login));
         } finally {
             activityData.setNewPasswordEvent(null);
-            if (pwd != null) {
-                pwd.clear();
-            }
-            if (buf != null) {
-                Arrays.fill(buf, (byte) 0);
-            }
         }
     }
 

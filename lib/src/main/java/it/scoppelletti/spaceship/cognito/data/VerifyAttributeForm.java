@@ -53,7 +53,7 @@ public final class VerifyAttributeForm extends BaseObservable implements
     };
 
     private final EditTextValidator myCheckCodeValidator;
-    private CharSequence myCheckCode;
+    private String myCheckCode;
     private int myCheckCodeErr;
 
     /**
@@ -85,7 +85,7 @@ public final class VerifyAttributeForm extends BaseObservable implements
     private VerifyAttributeForm(Parcel in) {
         this();
 
-        myCheckCode = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(in);
+        myCheckCode = in.readString();
         myCheckCodeErr = in.readInt();
     }
 
@@ -96,7 +96,7 @@ public final class VerifyAttributeForm extends BaseObservable implements
      */
     @Bindable
     @Nullable
-    public CharSequence getVerificationCode() {
+    public String getVerificationCode() {
         return myCheckCode;
     }
 
@@ -105,7 +105,7 @@ public final class VerifyAttributeForm extends BaseObservable implements
      *
      * @param value A value. May be {@code null}.
      */
-    public void setVerificationCode(@Nullable CharSequence value) {
+    public void setVerificationCode(@Nullable String value) {
         if (!TextUtils.equals(value, myCheckCode)) {
             notifyPropertyChanged(BR.verificationCode);
             myCheckCode = value;
@@ -164,7 +164,7 @@ public final class VerifyAttributeForm extends BaseObservable implements
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        TextUtils.writeToParcel(myCheckCode, dest, flags);
+        dest.writeString(myCheckCode);
         dest.writeInt(myCheckCodeErr);
     }
 }

@@ -23,7 +23,6 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHa
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import lombok.extern.slf4j.Slf4j;
-import it.scoppelletti.spaceship.security.SecureString;
 
 /**
  * Changes the password of a user.
@@ -32,8 +31,8 @@ import it.scoppelletti.spaceship.security.SecureString;
 final class ChangePasswordObservable implements
         ObservableOnSubscribe<Object>, GenericHandler {
     private final CognitoUser myUser;
-    private final SecureString myPwdOld;
-    private final SecureString myPwdNew;
+    private final String myPwdOld;
+    private final String myPwdNew;
     private ObservableEmitter<Object> myEmitter;
 
     /**
@@ -44,8 +43,7 @@ final class ChangePasswordObservable implements
      * @param passwordNew The new password.
      */
     ChangePasswordObservable(@NonNull CognitoUser user,
-            @NonNull SecureString passwordOld,
-            @NonNull SecureString passwordNew) {
+            @NonNull String passwordOld, @NonNull String passwordNew) {
         if (user == null) {
             throw new NullPointerException("Argument user is null.");
         }
@@ -65,15 +63,7 @@ final class ChangePasswordObservable implements
     public void subscribe(@NonNull ObservableEmitter<Object> emitter)
             throws Exception {
         myEmitter = emitter;
-
-        try {
-            // Amazon Cognito uses immutable strings for passwords
-            myUser.changePassword(myPwdOld.toString(), myPwdNew.toString(),
-                    this);
-        } finally {
-            myPwdOld.clear();
-            myPwdNew.clear();
-        }
+        myUser.changePassword(myPwdOld, myPwdNew, this);
     }
 
     @Override

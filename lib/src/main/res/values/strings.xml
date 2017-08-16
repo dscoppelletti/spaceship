@@ -12,6 +12,7 @@
     <string name="it_scoppelletti_cognito_err_profileRequired">Profile is required.</string>
     <string name="it_scoppelletti_cognito_err_resetPasswordAlreadyInProgress">Reset password already in progress.</string>
     <string name="it_scoppelletti_cognito_err_sendVerificationCodeAlreadyInProgress">Send verification code already in progress.</string>
+    <string name="it_scoppelletti_cognito_err_getSessionFailed">Failed to get session.</string>
     <string name="it_scoppelletti_cognito_err_userAttributeRequired">The %1$s attribute is required.</string>
     <string name="it_scoppelletti_cognito_err_verificationCodeRequired">Verification code is required.</string>
     <string name="it_scoppelletti_cognito_err_verifyAttributeAlreadyInProgress">Verify attribute already in progress.</string>

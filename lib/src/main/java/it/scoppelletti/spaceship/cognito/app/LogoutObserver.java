@@ -17,24 +17,22 @@
 package it.scoppelletti.spaceship.cognito.app;
 
 import android.support.annotation.NonNull;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
-import io.reactivex.observers.DisposableMaybeObserver;
+import io.reactivex.observers.DisposableCompletableObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.greenrobot.eventbus.EventBus;
+import it.scoppelletti.spaceship.rx.CompletableObserverFactory;
 import it.scoppelletti.spaceship.rx.CompleteEvent;
-import it.scoppelletti.spaceship.rx.MaybeObserverFactory;
 
 /**
- * Observer for retrieving of the current user.
+ * Observer for logout process.
  */
 @Slf4j
-final class GetCurrentUserObserver extends
-        DisposableMaybeObserver<CognitoUser> {
+final class LogoutObserver extends DisposableCompletableObserver {
 
     /**
      * Sole constructor.
      */
-    private GetCurrentUserObserver() {
+    private LogoutObserver() {
     }
 
     /**
@@ -44,32 +42,26 @@ final class GetCurrentUserObserver extends
      * @return The new object.
      */
     @NonNull
-    static MaybeObserverFactory<CognitoUser> newFactory() {
-        return new MaybeObserverFactory<CognitoUser>() {
+    static CompletableObserverFactory newFactory() {
+        return new CompletableObserverFactory() {
 
             @NonNull
             @Override
-            public DisposableMaybeObserver<CognitoUser> create() {
-                return new GetCurrentUserObserver();
+            public DisposableCompletableObserver create() {
+                return new LogoutObserver();
             }
         };
     }
 
     @Override
-    public void onSuccess(@NonNull CognitoUser user) {
-        myLogger.debug("User {} is still logged.", user.getUserId());
-        EventBus.getDefault().post(user);
-    }
-
-    @Override
     public void onComplete() {
-        myLogger.debug("No user currently logged.");
+        myLogger.debug("Logout succeeded.");
         EventBus.getDefault().post(CompleteEvent.getInstance());
     }
 
     @Override
     public void onError(@NonNull Throwable ex) {
-        myLogger.error("Failed to get the current user.", ex);
+        myLogger.error("Failed to logout.", ex);
         EventBus.getDefault().post(CompleteEvent.getInstance());
     }
 }

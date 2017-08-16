@@ -37,7 +37,6 @@ import it.scoppelletti.spaceship.ApplicationException;
 import it.scoppelletti.spaceship.cognito.CognitoAdapter;
 import it.scoppelletti.spaceship.cognito.CognitoHandler;
 import it.scoppelletti.spaceship.cognito.R;
-import it.scoppelletti.spaceship.security.SecureString;
 
 /**
  * User authentication process.
@@ -46,7 +45,7 @@ import it.scoppelletti.spaceship.security.SecureString;
 final class LoginObservable implements ObservableOnSubscribe<Object>,
         CognitoHandler<Object>, AuthenticationHandler {
     private final CognitoUser myUser;
-    private final SecureString myPwd;
+    private final String myPwd;
     private Emitter<Object> myEmitter;
 
     /**
@@ -55,7 +54,7 @@ final class LoginObservable implements ObservableOnSubscribe<Object>,
      * @param userCode The user code.
      * @param pwd      The password.
      */
-    LoginObservable(@NonNull String userCode, @NonNull SecureString pwd) {
+    LoginObservable(@NonNull String userCode, @NonNull String pwd) {
         CognitoUserPool userPool;
 
         if (TextUtils.isEmpty(userCode)) {
@@ -90,7 +89,6 @@ final class LoginObservable implements ObservableOnSubscribe<Object>,
     public void onSuccess(CognitoUserSession userSession,
             CognitoDevice newDevice) {
         myLogger.debug("Login succeeded.");
-        myPwd.clear();
         myEmitter.onNext(myUser);
         myEmitter.onComplete();
     }
@@ -98,7 +96,6 @@ final class LoginObservable implements ObservableOnSubscribe<Object>,
     @Override
     public void onFailure(Exception ex) {
         myLogger.error("Login failed.", ex);
-        myPwd.clear();
         myEmitter.onError(ex);
     }
 
@@ -107,9 +104,7 @@ final class LoginObservable implements ObservableOnSubscribe<Object>,
             String userId) {
         AuthenticationDetails details;
 
-        // Amazon Cognito uses immutable strings for passwords
-        details = new AuthenticationDetails(userId, myPwd.toString(), null);
-        myPwd.clear();
+        details = new AuthenticationDetails(userId, myPwd, null);
         flow.setAuthenticationDetails(details);
         flow.continueTask();
     }
@@ -122,7 +117,6 @@ final class LoginObservable implements ObservableOnSubscribe<Object>,
         ex = new ApplicationException.Builder(
                 R.string.it_scoppelletti_cognito_err_mfaNotSupported)
                 .title(R.string.it_scoppelletti_cmd_login).build();
-        myPwd.clear();
         myEmitter.onError(ex);
     }
 
@@ -141,7 +135,6 @@ final class LoginObservable implements ObservableOnSubscribe<Object>,
         default:
             myLogger.error("Challenge {} not supported.",
                     flow.getChallengeName());
-            myPwd.clear();
             ex = new ApplicationException.Builder(
                     R.string.it_scoppelletti_cognito_err_challengeNotSupported)
                     .messageArguments(flow.getChallengeName())

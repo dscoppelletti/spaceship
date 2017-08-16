@@ -54,7 +54,7 @@ public final class LoginForm extends BaseObservable implements Parcelable {
     private final EditTextValidator myPwdValidator;
     private String myUserCode;
     private int myUserCodeErr;
-    private CharSequence myPwd;
+    private String myPwd;
     private int myPwdErr;
 
     /**
@@ -100,7 +100,7 @@ public final class LoginForm extends BaseObservable implements Parcelable {
 
         myUserCode = in.readString();
         myUserCodeErr = in.readInt();
-        myPwd = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(in);
+        myPwd = in.readString();
         myPwdErr = in.readInt();
     }
 
@@ -169,7 +169,7 @@ public final class LoginForm extends BaseObservable implements Parcelable {
      */
     @Bindable
     @Nullable
-    public CharSequence getPassword() {
+    public String getPassword() {
         return myPwd;
     }
 
@@ -178,7 +178,7 @@ public final class LoginForm extends BaseObservable implements Parcelable {
      *
      * @param value A value. May be {@code null}.
      */
-    public void setPassword(@Nullable CharSequence value) {
+    public void setPassword(@Nullable String value) {
         if (!TextUtils.equals(value, myPwd)) {
             notifyPropertyChanged(BR.password);
             myPwd = value;
@@ -259,7 +259,7 @@ public final class LoginForm extends BaseObservable implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(myUserCode);
         dest.writeInt(myUserCodeErr);
-        TextUtils.writeToParcel(myPwd, dest, 0);
+        dest.writeString(myPwd);
         dest.writeInt(myPwdErr);
     }
 }

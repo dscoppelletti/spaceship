@@ -48,7 +48,6 @@ import it.scoppelletti.spaceship.cognito.data.SpaceshipUser;
 import it.scoppelletti.spaceship.cognito.databinding.ChangePasswordActivityBinding;
 import it.scoppelletti.spaceship.rx.CompletableCoordinator;
 import it.scoppelletti.spaceship.rx.CompleteEvent;
-import it.scoppelletti.spaceship.security.SecureString;
 import it.scoppelletti.spaceship.widget.ProgressOverlay;
 import it.scoppelletti.spaceship.widget.SnackbarEvent;
 
@@ -210,8 +209,6 @@ public final class ChangePasswordActivity extends AppCompatActivity {
         Disposable connection;
         CompletableCoordinator coordinator;
         ChangePasswordObservable process;
-        SecureString pwdOld = null;
-        SecureString pwdNew = null;
         ChangePasswordForm form;
 
         AppExt.hideSoftKeyboard(this);
@@ -233,23 +230,15 @@ public final class ChangePasswordActivity extends AppCompatActivity {
                         .build();
             }
 
-            pwdOld = new SecureString(form.getPasswordOld());
-            pwdNew = new SecureString(form.getPasswordNew());
-            process = new ChangePasswordObservable(CognitoAdapter.getInstance()
-                    .getCurrentUser().getUser(), pwdOld, pwdNew);
+            process = new ChangePasswordObservable(
+                    CognitoAdapter.getInstance().getCurrentUser().getUser(),
+                    form.getPasswordOld(), form.getPasswordNew());
             connection = coordinator.connect(Observable.create(process)
                     .ignoreElements()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread()));
             myDisposables.add(connection);
         } catch (RuntimeException ex) {
-            if (pwdOld != null) {
-                pwdOld.clear();
-            }
-            if (pwdNew != null) {
-                pwdNew.clear();
-            }
-
             EventBus.getDefault().post(new ExceptionEvent(ex)
                     .title(R.string.it_scoppelletti_cmd_changePassword));
         }

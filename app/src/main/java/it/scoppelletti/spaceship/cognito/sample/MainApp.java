@@ -5,10 +5,12 @@ import android.content.Context;
 import com.amazonaws.regions.Regions;
 import org.greenrobot.eventbus.EventBus;
 import it.scoppelletti.spaceship.cognito.CognitoAdapter;
-import it.scoppelletti.spaceship.security.SecureString;
 
 public final class MainApp extends Application {
-    
+
+    public static final String TAG_MAINACTIVITYDATA =
+            "it.scoppelletti.spaceship.cognito.sample.1";
+
     @Override
     public void onCreate() {
         Context ctx;
@@ -27,7 +29,7 @@ public final class MainApp extends Application {
         new CognitoAdapter.Builder(ctx)
                 .poolId(BuildConfig.POOL_ID)
                 .clientId(BuildConfig.CLIENT_ID)
-                .clientSecret(new SecureString(BuildConfig.CLIENT_SECRET))
+                .clientSecret(BuildConfig.CLIENT_SECRET)
                 .region(Regions.EU_WEST_1).build();
     }
 }

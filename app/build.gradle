@@ -16,24 +16,21 @@ android {
                 arguments = [ eventBusIndex : 'it.scoppelletti.spaceship.cognito.sample.MainEventBusIndex' ]
             }
         }
-        if (project.hasProperty('it.scoppelletti.spaceship.cognito.poolId')) {
-            buildConfigField 'String', 'POOL_ID', '"' +
-                    project.property('it.scoppelletti.spaceship.cognito.poolId') +
-                    '"'
+        if (project.hasProperty('cognito.poolId')) {
+            buildConfigField 'String', 'POOL_ID',
+                    '"' + project.property('cognito.poolId') + '"'
         } else {
             buildConfigField 'String', 'POOL_ID', '"N/D"'
         }
-        if (project.hasProperty('it.scoppelletti.spaceship.cognito.clientId')) {
-            buildConfigField 'String', 'CLIENT_ID', '"' +
-                    project.property('it.scoppelletti.spaceship.cognito.clientId') +
-                    '"'
+        if (project.hasProperty('cognito.clientId')) {
+            buildConfigField 'String', 'CLIENT_ID',
+                    '"' + project.property('cognito.clientId') + '"'
         } else {
             buildConfigField 'String', 'CLIENT_ID', '"N/D"'
         }
-        if (project.hasProperty('it.scoppelletti.spaceship.cognito.clientSecret')) {
-            buildConfigField 'String', 'CLIENT_SECRET', '"' +
-                    project.property('it.scoppelletti.spaceship.cognito.clientSecret') +
-                    '"'
+        if (project.hasProperty('cognito.clientSecret')) {
+            buildConfigField 'String', 'CLIENT_SECRET',
+                    '"' + project.property('cognito.clientSecret') + '"'
         } else {
             buildConfigField 'String', 'CLIENT_SECRET', '"N/D"'
         }
@@ -69,5 +66,7 @@ dependencies {
     annotationProcessor "org.greenrobot:eventbus-annotation-processor:${versionMap.eventbus_apt}"
     compile "org.slf4j:slf4j-api:${versionMap.slf4j}"
     compile "it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}"
+    provided "org.projectlombok:lombok:${versionMap.lombok}"
+    annotationProcessor "org.projectlombok:lombok:${versionMap.lombok}"
     apk "com.noveogroup.android:android-logger:${versionMap.android_logger}"
 }

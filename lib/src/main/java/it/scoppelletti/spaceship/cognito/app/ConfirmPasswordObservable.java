@@ -28,7 +28,6 @@ import lombok.extern.slf4j.Slf4j;
 import it.scoppelletti.spaceship.ApplicationException;
 import it.scoppelletti.spaceship.cognito.CognitoAdapter;
 import it.scoppelletti.spaceship.cognito.R;
-import it.scoppelletti.spaceship.security.SecureString;
 
 /**
  * Resets the password of a user.
@@ -37,8 +36,8 @@ import it.scoppelletti.spaceship.security.SecureString;
 final class ConfirmPasswordObservable implements
         ObservableOnSubscribe<Object>, ForgotPasswordHandler {
     private final String myUserCode;
-    private final SecureString myVerificationCode;
-    private final SecureString myPwd;
+    private final String myVerificationCode;
+    private final String myPwd;
     private ObservableEmitter<Object> myEmitter;
 
     /**
@@ -49,16 +48,15 @@ final class ConfirmPasswordObservable implements
      * @param verificationCode The verification code.
      */
     ConfirmPasswordObservable(@NonNull String userCode,
-            @NonNull SecureString password,
-            @NonNull SecureString verificationCode) {
+            @NonNull String password, @NonNull String verificationCode) {
         if (TextUtils.isEmpty(userCode)) {
             throw new NullPointerException("Argument userCode is null.");
         }
-        if (TextUtils.isEmpty(verificationCode)) {
-            throw new NullPointerException("Argument verificationCode is null.");
-        }
         if (TextUtils.isEmpty(password)) {
             throw new NullPointerException("Argument password is null.");
+        }
+        if (TextUtils.isEmpty(verificationCode)) {
+            throw new NullPointerException("Argument verificationCode is null.");
         }
 
         myUserCode = userCode;
@@ -75,16 +73,7 @@ final class ConfirmPasswordObservable implements
         userPool = CognitoAdapter.getInstance().getUserPool();
         user = userPool.getUser(myUserCode);
         myEmitter = emitter;
-
-        try {
-            // Amazon Cognito uses immutable strings for passwords
-            user.confirmPassword(myVerificationCode.toString(), myPwd
-                            .toString(),
-                    this);
-        } finally {
-            myPwd.clear();
-            myVerificationCode.clear();
-        }
+        user.confirmPassword(myVerificationCode, myPwd, this);
     }
 
     @Override
@@ -96,8 +85,8 @@ final class ConfirmPasswordObservable implements
 
     @Override
     public void onFailure(Exception ex) {
-        myLogger.error(String.format("Failed to reset password of the user " +
-                        "%1$s.", myUserCode), ex);
+        myLogger.error(String.format(
+                "Failed to reset password of the user %1$s.", myUserCode), ex);
         myEmitter.onError(ex);
     }
 

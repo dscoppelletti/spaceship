@@ -66,7 +66,7 @@ public final class CognitoAdapter {
             "it.scoppelletti.spaceship.cognito.5";
 
     /**
-     * Tag of {@code ChangePasswordActivityData} fragment.
+     * Tag of the {@code ChangePasswordActivityData} fragment.
      *
      * @see it.scoppelletti.spaceship.cognito.app.ChangePasswordActivityData
      */
@@ -74,7 +74,7 @@ public final class CognitoAdapter {
             "it.scoppelletti.spaceship.cognito.1";
 
     /**
-     * Tag of {@code ForgotPasswordActivityData} fragment.
+     * Tag of the {@code ForgotPasswordActivityData} fragment.
      *
      * @see it.scoppelletti.spaceship.cognito.app.ForgotPasswordActivityData
      */
@@ -82,7 +82,7 @@ public final class CognitoAdapter {
             "it.scoppelletti.spaceship.cognito.2";
 
     /**
-     * Tag of {@code LoginActivityData} fragment.
+     * Tag of the {@code LoginActivityData} fragment.
      *
      * @see it.scoppelletti.spaceship.cognito.app.LoginActivityData
      */
@@ -90,7 +90,7 @@ public final class CognitoAdapter {
             "it.scoppelletti.spaceship.cognito.3";
 
     /**
-     * Tag of {@code VerificationCodeDialogFragment} fragment.
+     * Tag of the {@code VerificationCodeDialogFragment} fragment.
      *
      * @see it.scoppelletti.spaceship.cognito.app.VerificationCodeDialogFragment
      */
@@ -98,7 +98,7 @@ public final class CognitoAdapter {
             "it.scoppelletti.spaceship.cognito.4";
 
     /**
-     * Tag of {@code VerifyAttributeActivityData} fragment.
+     * Tag of the {@code VerifyAttributeActivityData} fragment.
      *
      * @see it.scoppelletti.spaceship.cognito.app.VerifyAttributeActivityData
      */

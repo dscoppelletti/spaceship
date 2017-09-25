@@ -280,17 +280,17 @@ public final class UserAttributeView extends CompoundControl {
 
         case UserAttribute.ATTR_PICTURE:
             // Use a picker
-            inputType = InputType.TYPE_CLASS_TEXT;
+            inputType = InputType.TYPE_CLASS_TEXT |
+                    InputType.TYPE_TEXT_VARIATION_URI;
             break;
 
         case UserAttribute.ATTR_PREFEREEDUSERCODE:
-            // What is it?
             inputType = InputType.TYPE_CLASS_TEXT;
             break;
 
         case UserAttribute.ATTR_PROFILE:
-            // What is it?
-            inputType = InputType.TYPE_CLASS_TEXT;
+            inputType = InputType.TYPE_CLASS_TEXT |
+                    InputType.TYPE_TEXT_VARIATION_URI;
             break;
 
         case UserAttribute.ATTR_SURNAME:

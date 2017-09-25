@@ -80,17 +80,18 @@ public final class UserAttribute {
             "phone_number_verified";
 
     /**
-     * Attribute reporting the picture.
+     * Attribute reporting the URL of the picture.
      */
     public static final String ATTR_PICTURE = "picture";
 
     /**
-     * Attribute reporting the preferred user code.
+     * Attribute reporting the shorthand name by which the user wishes to be
+     * referred.
      */
     public static final String ATTR_PREFEREEDUSERCODE = "preferred_username";
 
     /**
-     * Attribute reporting the profile.
+     * Attribute reporting the URL of the profile page.
      */
     public static final String ATTR_PROFILE = "profile";
 
@@ -115,7 +116,7 @@ public final class UserAttribute {
     public static final String ATTR_USERCODE = "name";
 
     /**
-     * Attribute reporting the website.
+     * Attribute reporting the URL of the website.
      */
     public static final String ATTR_WEBSITE = "website";
 

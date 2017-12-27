@@ -25,6 +25,7 @@ import io.reactivex.Emitter;
  * @param <T> Class of the events.
  * @since     1.0.0
  */
+@FunctionalInterface
 public interface CognitoHandler<T> {
 
     /**

@@ -28,11 +28,11 @@ import it.scoppelletti.spaceship.cognito.R;
 import it.scoppelletti.spaceship.widget.EditTextValidator;
 
 /**
- * Password form.
+ * Password view-model.
  *
  * @since 1.0.0
  */
-public abstract class PasswordForm extends BaseObservable implements
+public abstract class PasswordViewModel extends BaseObservable implements
         Parcelable {
     private final EditTextValidator myPwdNewValidator;
     private final EditTextValidator myPwdConfirmValidator;
@@ -44,33 +44,25 @@ public abstract class PasswordForm extends BaseObservable implements
     /**
      * Sole constructor.
      */
-    protected PasswordForm() {
-        myPwdNewValidator = new EditTextValidator() {
-
-            @Override
-            public boolean validate() {
-                if (TextUtils.isEmpty(myPwdNew)) {
-                    setPasswordNewError(R.string.it_scoppelletti_err_passwordRequired);
-                    return false;
-                }
-
-                setPasswordNewError(0);
-                return true;
+    protected PasswordViewModel() {
+        myPwdNewValidator = () -> {
+            if (TextUtils.isEmpty(myPwdNew)) {
+                setPasswordNewError(R.string.it_scoppelletti_err_passwordRequired);
+                return false;
             }
+
+            setPasswordNewError(0);
+            return true;
         };
 
-        myPwdConfirmValidator = new EditTextValidator() {
-
-            @Override
-            public boolean validate() {
-                if (TextUtils.isEmpty(myPwdConfirm)) {
-                    setPasswordConfirmError(R.string.it_scoppelletti_err_passwordRequired);
-                    return false;
-                }
-
-                setPasswordConfirmError(0);
-                return true;
+        myPwdConfirmValidator = () -> {
+            if (TextUtils.isEmpty(myPwdConfirm)) {
+                setPasswordConfirmError(R.string.it_scoppelletti_err_passwordRequired);
+                return false;
             }
+
+            setPasswordConfirmError(0);
+            return true;
         };
     }
 
@@ -191,9 +183,9 @@ public abstract class PasswordForm extends BaseObservable implements
     }
 
     /**
-     * Validates this form.
+     * Validates this model.
      *
-     * @return Returns {@code true} if this form is valid, {@code false}
+     * @return Returns {@code true} if this model is valid, {@code false}
      *         otherwise.
      */
     public boolean validate() {

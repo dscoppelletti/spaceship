@@ -25,15 +25,11 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.KeyEvent;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.TextView;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.NewPasswordContinuation;
 import io.reactivex.Completable;
@@ -52,10 +48,10 @@ import it.scoppelletti.spaceship.app.AppExt;
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment;
 import it.scoppelletti.spaceship.cognito.CognitoAdapter;
 import it.scoppelletti.spaceship.cognito.R;
-import it.scoppelletti.spaceship.cognito.data.LoginForm;
+import it.scoppelletti.spaceship.cognito.data.LoginViewModel;
 import it.scoppelletti.spaceship.cognito.data.SpaceshipUser;
 import it.scoppelletti.spaceship.cognito.data.UserAttribute;
-import it.scoppelletti.spaceship.cognito.data.UserAttributeForm;
+import it.scoppelletti.spaceship.cognito.data.UserAttributeViewModel;
 import it.scoppelletti.spaceship.cognito.databinding.LoginActivityBinding;
 import it.scoppelletti.spaceship.rx.CompletableCoordinator;
 import it.scoppelletti.spaceship.rx.CompleteEvent;
@@ -74,7 +70,7 @@ public abstract class LoginActivityBase extends AppCompatActivity {
     private static final int ACTION_GETCURRENTUSER = 1;
     private static final int ACTION_LOGOUT = 2;
     private static final int REQ_NEWPASSWORD = 1;
-    private static final String PROP_FORM = "1";
+    private static final String PROP_MODEL = "1";
     private int myFirstRun;
     private ProgressOverlay myProgressBar;
     private LoginActivityBinding myBinding;
@@ -91,16 +87,16 @@ public abstract class LoginActivityBase extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Button cmd;
         Toolbar toolbar;
-        LoginForm form;
+        LoginViewModel model;
 
         super.onCreate(savedInstanceState);
         myBinding = DataBindingUtil.setContentView(this,
                 R.layout.it_scoppelletti_cognito_login_activity);
         myDisposables = new CompositeDisposable();
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        myProgressBar = (ProgressOverlay) findViewById(R.id.progress_bar);
+        myProgressBar = findViewById(R.id.progress_bar);
 
         if (savedInstanceState == null) {
             if (getIntent().getBooleanExtra(CognitoAdapter.PROP_LOGOUT,
@@ -110,41 +106,23 @@ public abstract class LoginActivityBase extends AppCompatActivity {
                 myFirstRun = LoginActivityBase.ACTION_GETCURRENTUSER;
             }
 
-            form = new LoginForm();
+            model = new LoginViewModel();
         } else {
             myFirstRun = 0;
-            form = savedInstanceState.getParcelable(
-                    LoginActivityBase.PROP_FORM);
+            model = savedInstanceState.getParcelable(
+                    LoginActivityBase.PROP_MODEL);
         }
 
-        myBinding.setForm(form);
+        myBinding.setModel(model);
         myBinding.txtPassword.setOnEditorActionListener(
-                new TextView.OnEditorActionListener() {
+                (view, actionId, event) ->
+                        LoginActivityBase.this.onEditorAction(actionId));
 
-                    @Override
-                    public boolean onEditorAction(@NonNull TextView view,
-                            int actionId, @Nullable KeyEvent event) {
-                        return LoginActivityBase.this.onEditorAction(actionId);
-                    }
-                });
+        cmd = findViewById(R.id.cmd_login);
+        cmd.setOnClickListener((view) -> onLoginClick());
 
-        cmd = (Button) findViewById(R.id.cmd_login);
-        cmd.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                onLoginClick();
-            }
-        });
-
-        cmd = (Button) findViewById(R.id.cmd_forgotPassword);
-        cmd.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                onForgotPasswordClick();
-            }
-        });
+        cmd = findViewById(R.id.cmd_forgotPassword);
+        cmd.setOnClickListener((view) -> onForgotPasswordClick());
     }
 
     @Override
@@ -162,21 +140,21 @@ public abstract class LoginActivityBase extends AppCompatActivity {
         data = AppExt.getOrCreateFragment(this, LoginActivityData.class,
                 LoginActivityData.TAG);
         loginCoordinator = data.getLoginCoordinator();
-        subscription = loginCoordinator.subscribe(LoginObserver.newFactory());
+        subscription = loginCoordinator.subscribe(() -> new LoginObserver());
         myDisposables.add(subscription);
 
         currentUserCoordinator = data.getCurrentUserCoordinator();
-        subscription = currentUserCoordinator.subscribe(
-                GetCurrentUserObserver.newFactory());
+        subscription = currentUserCoordinator.subscribe(() ->
+                        new GetCurrentUserObserver());
         myDisposables.add(subscription);
 
         userDetailCoordinator = data.getUserDetailsCoordinator();
-        subscription = userDetailCoordinator.subscribe(
-                GetUserDetailsObserver.newFactory());
+        subscription = userDetailCoordinator.subscribe(() ->
+                        new GetUserDetailsObserver());
         myDisposables.add(subscription);
 
         logoutCoordinator = data.getLogoutCoordinator();
-        subscription = logoutCoordinator.subscribe(LogoutObserver.newFactory());
+        subscription = logoutCoordinator.subscribe(() -> new LogoutObserver());
         myDisposables.add(subscription);
 
         if (myActivityResult != null) {
@@ -216,14 +194,14 @@ public abstract class LoginActivityBase extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        LoginForm form;
+        LoginViewModel model;
 
         super.onSaveInstanceState(outState);
 
         if (myBinding != null) {
-            form = myBinding.getForm();
-            if (form != null) {
-                outState.putParcelable(LoginActivityBase.PROP_FORM, form);
+            model = myBinding.getModel();
+            if (model != null) {
+                outState.putParcelable(LoginActivityBase.PROP_MODEL, model);
             }
         }
     }
@@ -287,13 +265,7 @@ public abstract class LoginActivityBase extends AppCompatActivity {
             throw new NullPointerException("Argument event is null.");
         }
 
-        myProgressBar.hide(new Runnable() {
-
-            @Override
-            public void run() {
-                event.show(myBinding.contentFrame);
-            }
-        });
+        myProgressBar.hide(() -> event.show(myBinding.contentFrame));
     }
 
     /**
@@ -303,15 +275,10 @@ public abstract class LoginActivityBase extends AppCompatActivity {
      */
     @Subscribe
     public void onExceptionEvent(@NonNull final ExceptionEvent event) {
-        myProgressBar.hide(new Runnable() {
-
-            @Override
-            public void run() {
+        myProgressBar.hide(() ->
                 new ExceptionDialogFragment.Builder(LoginActivityBase.this)
                         .exceptionEvent(event)
-                        .show();
-            }
-        });
+                        .show());
     }
 
     /**
@@ -343,20 +310,12 @@ public abstract class LoginActivityBase extends AppCompatActivity {
      * @param coordinator Coordinator.
      */
     private void logout(CompletableCoordinator coordinator) {
-        Runnable process;
         Disposable connection;
 
         myProgressBar.show();
         try {
-            process = new Runnable() {
-
-                @Override
-                public void run() {
-                    CognitoAdapter.getInstance().logout();
-                }
-            };
-
-            connection = coordinator.connect(Completable.fromRunnable(process)
+            connection = coordinator.connect(Completable.fromRunnable(() ->
+                    CognitoAdapter.getInstance().logout())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread()));
             myDisposables.add(connection);
@@ -370,15 +329,15 @@ public abstract class LoginActivityBase extends AppCompatActivity {
      * Performs the login process.
      */
     private void onLoginClick() {
-        LoginForm form;
+        LoginViewModel model;
         Disposable connection;
         LoginObservable process;
         SingleCoordinator<Object> coordinator;
 
         AppExt.hideSoftKeyboard(this);
 
-        form = myBinding.getForm();
-        if (!form.validateLogin()) {
+        model = myBinding.getModel();
+        if (!model.validateLogin()) {
             return;
         }
 
@@ -393,8 +352,8 @@ public abstract class LoginActivityBase extends AppCompatActivity {
                         .title(R.string.it_scoppelletti_cmd_login).build();
             }
 
-            process = new LoginObservable(form.getUserCode(),
-                    form.getPassword());
+            process = new LoginObservable(model.getUserCode(),
+                    model.getPassword());
             connection = coordinator.connect(Observable.create(process)
                     .firstOrError()
                     .subscribeOn(Schedulers.io())
@@ -464,14 +423,10 @@ public abstract class LoginActivityBase extends AppCompatActivity {
         }
 
         data.setPendingUser(null);
-        myProgressBar.hide(new Runnable() {
-
-            @Override
-            public void run() {
-                CognitoAdapter.getInstance().setCurrentUser(
-                        new SpaceshipUser(user, event.getData()));
-                onLoginSucceeded();
-            }
+        myProgressBar.hide(() -> {
+            CognitoAdapter.getInstance().setCurrentUser(
+                    new SpaceshipUser(user, event.getData()));
+            onLoginSucceeded();
         });
     }
 
@@ -489,7 +444,7 @@ public abstract class LoginActivityBase extends AppCompatActivity {
     public void onNewPasswordPrompt(@NonNull final NewPasswordEvent event) {
         LoginActivityData data;
         final Intent intent;
-        final ArrayList<UserAttributeForm> attrList;
+        final ArrayList<UserAttributeViewModel> attrList;
 
         if (event == null) {
             throw new NullPointerException("Argument event is null.");
@@ -502,15 +457,8 @@ public abstract class LoginActivityBase extends AppCompatActivity {
         intent = new Intent(this, NewPasswordActivity.class);
         intent.putParcelableArrayListExtra(
                 CognitoAdapter.PROP_USERATTRIBUTES, attrList);
-
-        myProgressBar.hide(new Runnable() {
-
-            @Override
-            public void run() {
-                startActivityForResult(intent,
-                        LoginActivityBase.REQ_NEWPASSWORD);
-            }
-        });
+        myProgressBar.hide(() -> startActivityForResult(intent,
+                LoginActivityBase.REQ_NEWPASSWORD));
     }
 
     /**
@@ -519,13 +467,13 @@ public abstract class LoginActivityBase extends AppCompatActivity {
      * @param  flow State of the flow.
      * @return      The collection.
      */
-    private ArrayList<UserAttributeForm> getUserAttributes(
+    private ArrayList<UserAttributeViewModel> getUserAttributes(
             NewPasswordContinuation flow) {
         int currCount, reqCount;
-        UserAttributeForm attr;
+        UserAttributeViewModel attr;
         List<String> reqAttrs;
         Map<String, String> currAttrs;
-        Map<String, UserAttributeForm> attrs;
+        Map<String, UserAttributeViewModel> attrs;
 
         reqAttrs = flow.getRequiredAttributes();
         reqCount = (reqAttrs == null) ? 0 : reqAttrs.size();
@@ -541,7 +489,7 @@ public abstract class LoginActivityBase extends AppCompatActivity {
             // Required attributes
             for (String key : reqAttrs) {
                 myLogger.debug("required attribute: {}", key);
-                attr = new UserAttributeForm(key, true);
+                attr = new UserAttributeViewModel(key, true);
                 attrs.put(key, attr);
             }
         }
@@ -562,7 +510,7 @@ public abstract class LoginActivityBase extends AppCompatActivity {
 
                 attr = attrs.get(key);
                 if (attr == null) {
-                    attr = new UserAttributeForm(key, false);
+                    attr = new UserAttributeViewModel(key, false);
                     attrs.put(key, attr);
                 }
 
@@ -575,7 +523,7 @@ public abstract class LoginActivityBase extends AppCompatActivity {
         if (myBinding != null) {
             attr = attrs.get(UserAttribute.ATTR_USERCODE);
             if (attr != null && TextUtils.isEmpty(attr.getCurrentValue())) {
-                attr.setEditingValue(myBinding.getForm().getUserCode());
+                attr.setEditingValue(myBinding.getModel().getUserCode());
             }
         }
 
@@ -618,8 +566,7 @@ public abstract class LoginActivityBase extends AppCompatActivity {
                         .build();
             }
 
-            updateUserAttributes(flow,
-                    data.<UserAttributeForm>getParcelableArrayListExtra(
+            updateUserAttributes(flow, data.getParcelableArrayListExtra(
                     CognitoAdapter.PROP_USERATTRIBUTES));
             flow.setPassword(pwd);
 
@@ -653,14 +600,14 @@ public abstract class LoginActivityBase extends AppCompatActivity {
      * @param attrs User attributes.
      */
     private void updateUserAttributes(NewPasswordContinuation flow,
-            List<UserAttributeForm> attrs) {
+            List<UserAttributeViewModel> attrs) {
         String key, value;
 
         if (attrs == null || attrs.isEmpty()) {
              return;
         }
 
-        for (UserAttributeForm form : attrs) {
+        for (UserAttributeViewModel form : attrs) {
             value = form.getEditingValue();
             if (!TextUtils.equals(value, form.getCurrentValue())) {
                 key = form.getKey();
@@ -677,17 +624,17 @@ public abstract class LoginActivityBase extends AppCompatActivity {
      */
     private void onForgotPasswordClick() {
         Intent intent;
-        LoginForm form;
+        LoginViewModel model;
 
         AppExt.hideSoftKeyboard(this);
 
-        form = myBinding.getForm();
-        if (!form.validateForgotPassword()) {
+        model = myBinding.getModel();
+        if (!model.validateForgotPassword()) {
             return;
         }
 
         intent = new Intent(this, ForgotPasswordActivity.class);
-        intent.putExtra(CognitoAdapter.PROP_USERCODE, form.getUserCode());
+        intent.putExtra(CognitoAdapter.PROP_USERCODE, model.getUserCode());
         startActivity(intent);
     }
 }

@@ -24,7 +24,6 @@ import org.greenrobot.eventbus.EventBus;
 import it.scoppelletti.spaceship.ApplicationException;
 import it.scoppelletti.spaceship.ExceptionEvent;
 import it.scoppelletti.spaceship.cognito.R;
-import it.scoppelletti.spaceship.rx.SingleObserverFactory;
 
 /**
  * Observer for user authentication process.
@@ -35,25 +34,7 @@ final class LoginObserver extends DisposableSingleObserver<Object> {
     /**
      * Sole constructor.
      */
-    private LoginObserver() {
-    }
-
-    /**
-     * Creates a new factory object for creating instances of the
-     * {@code LoginObserver} class.
-     *
-     * @return The new object.
-     */
-    @NonNull
-    static SingleObserverFactory<Object> newFactory() {
-        return new SingleObserverFactory<Object>() {
-
-            @NonNull
-            @Override
-            public DisposableSingleObserver<Object> create() {
-                return new LoginObserver();
-            }
-        };
+    LoginObserver() {
     }
 
     @Override

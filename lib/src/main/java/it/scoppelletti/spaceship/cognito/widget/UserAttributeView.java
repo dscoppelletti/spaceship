@@ -30,7 +30,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import it.scoppelletti.spaceship.cognito.R;
 import it.scoppelletti.spaceship.cognito.data.UserAttribute;
-import it.scoppelletti.spaceship.cognito.data.UserAttributeForm;
+import it.scoppelletti.spaceship.cognito.data.UserAttributeViewModel;
 import it.scoppelletti.spaceship.widget.CompoundControl;
 
 /**
@@ -78,8 +78,8 @@ public final class UserAttributeView extends CompoundControl {
                 false);
         addView(view);
 
-        myLabelView = (TextView) view.findViewById(R.id.lbl_value);
-        myValueView = (TextInputLayout) view.findViewById(R.id.txt_value);
+        myLabelView = view.findViewById(R.id.lbl_value);
+        myValueView = view.findViewById(R.id.txt_value);
     }
 
     @Override
@@ -91,23 +91,23 @@ public final class UserAttributeView extends CompoundControl {
     }
 
     /**
-     * Binds a user attribute form.
+     * Binds a user attribute model.
      *
-     * @param form The form.
+     * @param model The model.
      */
-    public void bind(@NonNull UserAttributeForm form) {
+    public void bind(@NonNull UserAttributeViewModel model) {
         int label;
         String err, key;
         EditText valueView;
 
-        if (form == null) {
-            throw new NullPointerException("Argument form is null.");
+        if (model == null) {
+            throw new NullPointerException("Argument model is null.");
         }
         if (myValidator != null) {
             throw new IllegalStateException("Control already bound.");
         }
 
-        key = form.getKey();
+        key = model.getKey();
         label = getLabel(key);
         if (label < 0) {
             myLabelView.setText(key);
@@ -117,11 +117,11 @@ public final class UserAttributeView extends CompoundControl {
 
         valueView = myValueView.getEditText();
         valueView.setInputType(getInputType(key));
-        valueView.setText(form.getEditingValue());
-        myValidator = new UserAttributeValidator(getContext(), form,
+        valueView.setText(model.getEditingValue());
+        myValidator = new UserAttributeValidator(getContext(), model,
                 myValueView);
 
-        err = form.getError();
+        err = model.getError();
         if (TextUtils.isEmpty(err)) {
             myValueView.setErrorEnabled(false);
             myValueView.setError(null);
@@ -132,9 +132,9 @@ public final class UserAttributeView extends CompoundControl {
     }
 
     /**
-     * Validates the form.
+     * Validates the model.
      *
-     * @return Returns {@code true} if the form is valid, {@code false}
+     * @return Returns {@code true} if the model is valid, {@code false}
      *         otherwise.
      */
     public boolean validate() {

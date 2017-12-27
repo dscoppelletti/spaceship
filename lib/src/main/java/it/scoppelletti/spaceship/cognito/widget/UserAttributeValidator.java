@@ -26,40 +26,41 @@ import android.view.View;
 import android.widget.EditText;
 import it.scoppelletti.spaceship.cognito.R;
 import it.scoppelletti.spaceship.cognito.data.UserAttribute;
-import it.scoppelletti.spaceship.cognito.data.UserAttributeForm;
+import it.scoppelletti.spaceship.cognito.data.UserAttributeViewModel;
 
 /**
- * Validator for a user attribute form.
+ * Validator for a user attribute model.
  */
 final class UserAttributeValidator implements TextWatcher,
         View.OnFocusChangeListener {
     private final Context myCtx;
-    private final UserAttributeForm myForm;
+    private final UserAttributeViewModel myModel;
     private final TextInputLayout myControl;
 
     /**
      * Constructor.
      *
      * @param ctx     The context.
-     * @param form    The form.
+     * @param model   The model.
      * @param control The control.
      */
     UserAttributeValidator(@NonNull Context ctx,
-            @NonNull UserAttributeForm form, @NonNull TextInputLayout control) {
+            @NonNull UserAttributeViewModel model,
+            @NonNull TextInputLayout control) {
         EditText view;
 
         if (ctx == null) {
             throw new NullPointerException("Argument ctx is null.");
         }
-        if (form == null) {
-            throw new NullPointerException("Argument data is null.");
+        if (model == null) {
+            throw new NullPointerException("Argument model is null.");
         }
         if (control == null) {
             throw new NullPointerException("Argument control is null.");
         }
 
         myCtx = ctx;
-        myForm = form;
+        myModel = model;
         myControl = control;
         view = myControl.getEditText();
         view.setOnFocusChangeListener(this);
@@ -67,9 +68,9 @@ final class UserAttributeValidator implements TextWatcher,
     }
 
     /**
-     * Validates the form.
+     * Validates the model.
      *
-     * @return Return {@code true} if the form is valid, {@code false}
+     * @return Return {@code true} if the model is valid, {@code false}
      *         otherwise.
      */
     boolean validate() {
@@ -86,11 +87,11 @@ final class UserAttributeValidator implements TextWatcher,
     private boolean validate(CharSequence value) {
         String err;
 
-        if (myForm.isRequired() && TextUtils.isEmpty(value)) {
+        if (myModel.isRequired() && TextUtils.isEmpty(value)) {
             myControl.setErrorEnabled(true);
-            err = getRequiredError(myForm.getKey());
+            err = getRequiredError(myModel.getKey());
             myControl.setError(err);
-            myForm.setError(err);
+            myModel.setError(err);
             return false;
         }
 
@@ -100,7 +101,7 @@ final class UserAttributeValidator implements TextWatcher,
 
         myControl.setErrorEnabled(false);
         myControl.setError(null);
-        myForm.setError(null);
+        myModel.setError(null);
         return true;
     }
 
@@ -117,7 +118,7 @@ final class UserAttributeValidator implements TextWatcher,
 
     @Override
     public void afterTextChanged(Editable s) {
-        myForm.setEditingValue(s.toString());
+        myModel.setEditingValue(s.toString());
     }
 
     @Override

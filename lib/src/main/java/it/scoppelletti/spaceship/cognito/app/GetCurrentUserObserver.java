@@ -22,7 +22,6 @@ import io.reactivex.observers.DisposableMaybeObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.greenrobot.eventbus.EventBus;
 import it.scoppelletti.spaceship.rx.CompleteEvent;
-import it.scoppelletti.spaceship.rx.MaybeObserverFactory;
 
 /**
  * Observer for retrieving of the current user.
@@ -34,25 +33,7 @@ final class GetCurrentUserObserver extends
     /**
      * Sole constructor.
      */
-    private GetCurrentUserObserver() {
-    }
-
-    /**
-     * Creates a new factory object for creating instances of the
-     * {@code GetCurrentUserObserver} class.
-     *
-     * @return The new object.
-     */
-    @NonNull
-    static MaybeObserverFactory<CognitoUser> newFactory() {
-        return new MaybeObserverFactory<CognitoUser>() {
-
-            @NonNull
-            @Override
-            public DisposableMaybeObserver<CognitoUser> create() {
-                return new GetCurrentUserObserver();
-            }
-        };
+    GetCurrentUserObserver() {
     }
 
     @Override

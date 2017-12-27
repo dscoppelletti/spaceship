@@ -27,13 +27,10 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserCodeDeliveryDetails;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -52,7 +49,7 @@ import it.scoppelletti.spaceship.cognito.CognitoAdapter;
 import it.scoppelletti.spaceship.cognito.R;
 import it.scoppelletti.spaceship.cognito.data.SpaceshipUser;
 import it.scoppelletti.spaceship.cognito.data.UserAttribute;
-import it.scoppelletti.spaceship.cognito.data.VerifyAttributeForm;
+import it.scoppelletti.spaceship.cognito.data.VerifyAttributeViewModel;
 import it.scoppelletti.spaceship.cognito.databinding.VerifyAttributeActivityBinding;
 import it.scoppelletti.spaceship.rx.CompletableCoordinator;
 import it.scoppelletti.spaceship.rx.CompleteEvent;
@@ -67,7 +64,7 @@ import it.scoppelletti.spaceship.widget.SnackbarEvent;
  */
 public final class VerifyAttributeActivity extends AppCompatActivity {
     private static final int REQ_SEND = 1;
-    private static final String PROP_FORM = "1";
+    private static final String PROP_MODEL = "1";
     private String myAttr;
     private boolean myFirstRun;
     private SpaceshipUser myUser;
@@ -85,14 +82,14 @@ public final class VerifyAttributeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Toolbar toolbar;
-        VerifyAttributeForm form;
+        VerifyAttributeViewModel model;
 
         super.onCreate(savedInstanceState);
         myBinding = DataBindingUtil.setContentView(this,
                 R.layout.it_scoppelletti_cognito_verifyattribute_activity);
         myDisposables = new CompositeDisposable();
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_close_menu);
         setSupportActionBar(toolbar);
 
@@ -112,34 +109,21 @@ public final class VerifyAttributeActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             myFirstRun = true;
-            form = new VerifyAttributeForm();
+            model = new VerifyAttributeViewModel();
         } else {
             myFirstRun = false;
-            form = savedInstanceState.getParcelable(
-                    VerifyAttributeActivity.PROP_FORM);
+            model = savedInstanceState.getParcelable(
+                    VerifyAttributeActivity.PROP_MODEL);
         }
 
-        myProgressBar = (ProgressOverlay) findViewById(R.id.progress_bar);
+        myProgressBar = findViewById(R.id.progress_bar);
 
-        myBinding.setForm(form);
+        myBinding.setModel(model);
         myBinding.txtVerificationCode.setOnEditorActionListener(
-                new TextView.OnEditorActionListener() {
+                (view, actionId, event) ->
+                        VerifyAttributeActivity.this.onEditorAction(actionId));
 
-                    @Override
-                    public boolean onEditorAction(@NonNull TextView view,
-                            int actionId, @Nullable KeyEvent event) {
-                        return VerifyAttributeActivity.this.onEditorAction(
-                                actionId);
-                    }
-                });
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                onCancelClick();
-            }
-        });
+        toolbar.setNavigationOnClickListener((view) -> onCancelClick());
     }
 
     @Override
@@ -209,13 +193,13 @@ public final class VerifyAttributeActivity extends AppCompatActivity {
                 VerifyAttributeActivityData.class,
                 VerifyAttributeActivityData.TAG);
         verifyCoordinator = data.getVerifyCoordinator();
-        subscription = verifyCoordinator.subscribe(
-                VerifyAttributeObserver.newFactory(myAttr));
+        subscription = verifyCoordinator.subscribe(() ->
+                        new VerifyAttributeObserver(myAttr));
         myDisposables.add(subscription);
 
         verificationCodeCoordinator = data.getVerificationCodeCoordinator();
-        subscription = verificationCodeCoordinator.subscribe(
-                VerificationCodeObserver.newFactory(myAttr));
+        subscription = verificationCodeCoordinator.subscribe(() ->
+                new VerificationCodeObserver(myAttr));
         myDisposables.add(subscription);
 
         if (myFirstRun) {
@@ -242,15 +226,16 @@ public final class VerifyAttributeActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        VerifyAttributeForm form;
+        VerifyAttributeViewModel model;
 
         super.onSaveInstanceState(outState);
         myTitleAdapter.onSaveInstanceState(outState);
 
         if (myBinding != null) {
-            form = myBinding.getForm();
-            if (form != null) {
-                outState.putParcelable(VerifyAttributeActivity.PROP_FORM, form);
+            model = myBinding.getModel();
+            if (model != null) {
+                outState.putParcelable(VerifyAttributeActivity.PROP_MODEL,
+                        model);
             }
         }
     }
@@ -332,12 +317,12 @@ public final class VerifyAttributeActivity extends AppCompatActivity {
         Disposable connection;
         CompletableCoordinator coordinator;
         VerifyAttributeObservable process;
-        VerifyAttributeForm form;
+        VerifyAttributeViewModel model;
 
         AppExt.hideSoftKeyboard(this);
 
-        form = myBinding.getForm();
-        if (!form.validate()) {
+        model = myBinding.getModel();
+        if (!model.validate()) {
             return;
         }
 
@@ -354,7 +339,7 @@ public final class VerifyAttributeActivity extends AppCompatActivity {
             }
 
             process = new VerifyAttributeObservable(myUser.getUser(), myAttr,
-                    form.getVerificationCode());
+                    model.getVerificationCode());
             connection = coordinator.connect(Observable.create(process)
                     .ignoreElements()
                     .subscribeOn(Schedulers.io())
@@ -397,22 +382,16 @@ public final class VerifyAttributeActivity extends AppCompatActivity {
 
         supportInvalidateOptionsMenu();
 
-        myProgressBar.hide(new Runnable() {
+        myProgressBar.hide(() -> Snackbar.make(myBinding.contentFrame, msgId,
+                Snackbar.LENGTH_SHORT)
+                .addCallback(new Snackbar.Callback() {
 
-            @Override
-            public void run() {
-                Snackbar.make(myBinding.contentFrame, msgId,
-                        Snackbar.LENGTH_SHORT)
-                        .addCallback(new Snackbar.Callback() {
-
-                            @Override
-                            public void onDismissed(Snackbar transientBottomBar,
-                                    int event) {
-                                VerifyAttributeActivity.this.onCancelClick();
-                            }
-                        }).show();
-            }
-        });
+                    @Override
+                    public void onDismissed(Snackbar transientBottomBar,
+                            int event) {
+                        VerifyAttributeActivity.this.onCancelClick();
+                    }
+                }).show());
     }
 
     /**
@@ -435,13 +414,7 @@ public final class VerifyAttributeActivity extends AppCompatActivity {
             throw new NullPointerException("Argument event is null.");
         }
 
-        myProgressBar.hide(new Runnable() {
-
-            @Override
-            public void run() {
-                event.show(myBinding.contentFrame);
-            }
-        });
+        myProgressBar.hide(() -> event.show(myBinding.contentFrame));
     }
 
     /**
@@ -451,16 +424,10 @@ public final class VerifyAttributeActivity extends AppCompatActivity {
      */
     @Subscribe
     public void onExceptionEvent(@NonNull final ExceptionEvent event) {
-        myProgressBar.hide(new Runnable() {
-
-            @Override
-            public void run() {
-                new ExceptionDialogFragment.Builder(
-                        VerifyAttributeActivity.this)
-                        .exceptionEvent(event)
-                        .show();
-            }
-        });
+        myProgressBar.hide(() -> new ExceptionDialogFragment.Builder(
+                VerifyAttributeActivity.this)
+                .exceptionEvent(event)
+                .show());
     }
 
     /**

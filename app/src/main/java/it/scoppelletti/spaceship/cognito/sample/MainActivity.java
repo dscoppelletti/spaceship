@@ -1,6 +1,5 @@
 package it.scoppelletti.spaceship.cognito.sample;
 
-import java.util.concurrent.Callable;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -63,11 +62,11 @@ public final class MainActivity extends AppCompatActivity implements
         setSupportActionBar(myDrawer.getToolbar());
         myDrawer.onCreate(savedInstanceState);
         view = myDrawer.getNavigationView().getHeaderView(0);
-        myUserLabel = (TextView) view.findViewById(R.id.lbl_user);
+        myUserLabel = view.findViewById(R.id.lbl_user);
 
         myTitleAdapter = new TitleAdapter.Builder(this)
                 .toolbarLayoutId(R.id.toolbar_layout).build();
-        myProgressBar = (ProgressOverlay) findViewById(R.id.progress_bar);
+        myProgressBar = findViewById(R.id.progress_bar);
         myDisposables = new CompositeDisposable();
     }
 
@@ -107,7 +106,7 @@ public final class MainActivity extends AppCompatActivity implements
         coordinator = AppExt.getOrCreateFragment(this,
                 MainActivityData.class, MainActivityData.TAG)
                 .getSessionCoordinator();
-        subscription = coordinator.subscribe(GetSessionObserver.newFactory());
+        subscription = coordinator.subscribe(() -> new GetSessionObserver());
         myDisposables.add(subscription);
     }
 
@@ -198,19 +197,13 @@ public final class MainActivity extends AppCompatActivity implements
 
     @Subscribe
     public void onExceptionEvent(final @NonNull ExceptionEvent event) {
-        myProgressBar.hide(new Runnable() {
-
-            @Override
-            public void run() {
+        myProgressBar.hide(() ->
                 new ExceptionDialogFragment.Builder(MainActivity.this)
-                        .exceptionEvent(event).show();
-            }
-        });
+                        .exceptionEvent(event).show());
     }
 
     private void onGetSessionClick() {
         Disposable connection;
-        Callable<CognitoUserSession> process;
         SingleCoordinator<CognitoUserSession> coordinator;
 
         myProgressBar.show();
@@ -224,15 +217,8 @@ public final class MainActivity extends AppCompatActivity implements
                         .title(R.string.cmd_getSession).build();
             }
 
-            process = new Callable<CognitoUserSession>() {
-
-                @Override
-                public CognitoUserSession call() throws Exception {
-                    return CognitoAdapter.getInstance().getSession();
-                }
-            };
-
-            connection = coordinator.connect(Single.fromCallable(process)
+            connection = coordinator.connect(Single.fromCallable(
+                    () -> CognitoAdapter.getInstance().getSession())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread()));
             myDisposables.add(connection);

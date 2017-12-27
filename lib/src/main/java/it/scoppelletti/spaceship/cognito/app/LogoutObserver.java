@@ -20,7 +20,6 @@ import android.support.annotation.NonNull;
 import io.reactivex.observers.DisposableCompletableObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.greenrobot.eventbus.EventBus;
-import it.scoppelletti.spaceship.rx.CompletableObserverFactory;
 import it.scoppelletti.spaceship.rx.CompleteEvent;
 
 /**
@@ -32,25 +31,7 @@ final class LogoutObserver extends DisposableCompletableObserver {
     /**
      * Sole constructor.
      */
-    private LogoutObserver() {
-    }
-
-    /**
-     * Creates a new factory object for creating instances of the
-     * {@code GetCurrentUserObserver} class.
-     *
-     * @return The new object.
-     */
-    @NonNull
-    static CompletableObserverFactory newFactory() {
-        return new CompletableObserverFactory() {
-
-            @NonNull
-            @Override
-            public DisposableCompletableObserver create() {
-                return new LogoutObserver();
-            }
-        };
+    LogoutObserver() {
     }
 
     @Override

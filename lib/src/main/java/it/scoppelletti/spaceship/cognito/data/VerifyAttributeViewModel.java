@@ -28,27 +28,27 @@ import it.scoppelletti.spaceship.cognito.R;
 import it.scoppelletti.spaceship.widget.EditTextValidator;
 
 /**
- * Verify attribute form.
+ * Verify attribute view-model.
  *
  * @since 1.0.0
  */
-public final class VerifyAttributeForm extends BaseObservable implements
+public final class VerifyAttributeViewModel extends BaseObservable implements
         Parcelable {
 
     /**
      * The {@code Parcelable} support.
      */
-    public static final Creator<VerifyAttributeForm> CREATOR =
-            new Creator<VerifyAttributeForm>() {
+    public static final Creator<VerifyAttributeViewModel> CREATOR =
+            new Creator<VerifyAttributeViewModel>() {
 
         @Override
-        public VerifyAttributeForm createFromParcel(Parcel in) {
-            return new VerifyAttributeForm(in);
+        public VerifyAttributeViewModel createFromParcel(Parcel in) {
+            return new VerifyAttributeViewModel(in);
         }
 
         @Override
-        public VerifyAttributeForm[] newArray(int size) {
-            return new VerifyAttributeForm[size];
+        public VerifyAttributeViewModel[] newArray(int size) {
+            return new VerifyAttributeViewModel[size];
         }
     };
 
@@ -59,21 +59,17 @@ public final class VerifyAttributeForm extends BaseObservable implements
     /**
      * Sole constructor.
      */
-    public VerifyAttributeForm() {
+    public VerifyAttributeViewModel() {
         super();
 
-        myCheckCodeValidator = new EditTextValidator() {
-
-            @Override
-            public boolean validate() {
-                if (TextUtils.isEmpty(myCheckCode)) {
-                    setVerificationCodeError(R.string.it_scoppelletti_cognito_err_verificationCodeRequired);
-                    return false;
-                }
-
-                setVerificationCodeError(0);
-                return true;
+        myCheckCodeValidator = () -> {
+            if (TextUtils.isEmpty(myCheckCode)) {
+                setVerificationCodeError(R.string.it_scoppelletti_cognito_err_verificationCodeRequired);
+                return false;
             }
+
+            setVerificationCodeError(0);
+            return true;
         };
     }
 
@@ -82,7 +78,7 @@ public final class VerifyAttributeForm extends BaseObservable implements
      *
      * @param in The input stream.
      */
-    private VerifyAttributeForm(Parcel in) {
+    private VerifyAttributeViewModel(Parcel in) {
         this();
 
         myCheckCode = in.readString();
@@ -148,9 +144,9 @@ public final class VerifyAttributeForm extends BaseObservable implements
     }
 
     /**
-     * Validates this form.
+     * Validates this model.
      *
-     * @return Returns {@code true} if this form is valid, {@code false}
+     * @return Returns {@code true} if this model is valid, {@code false}
      *         otherwise.
      */
     public boolean validate() {

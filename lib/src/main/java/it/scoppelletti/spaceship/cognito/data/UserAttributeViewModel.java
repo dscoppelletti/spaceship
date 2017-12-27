@@ -23,26 +23,26 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 /**
- * User attribute form.
+ * User attribute view-model.
  *
  * @since 1.0.0
  */
-public final class UserAttributeForm implements Parcelable {
+public final class UserAttributeViewModel implements Parcelable {
 
     /**
      * The {@code Parcelable} support.
      */
-    public static final Creator<UserAttributeForm> CREATOR =
-            new Creator<UserAttributeForm>() {
+    public static final Creator<UserAttributeViewModel> CREATOR =
+            new Creator<UserAttributeViewModel>() {
 
         @Override
-        public UserAttributeForm createFromParcel(Parcel in) {
-            return new UserAttributeForm(in);
+        public UserAttributeViewModel createFromParcel(Parcel in) {
+            return new UserAttributeViewModel(in);
         }
 
         @Override
-        public UserAttributeForm[] newArray(int size) {
-            return new UserAttributeForm[size];
+        public UserAttributeViewModel[] newArray(int size) {
+            return new UserAttributeViewModel[size];
         }
     };
 
@@ -58,7 +58,7 @@ public final class UserAttributeForm implements Parcelable {
      * @param key      The key.
      * @param required Whether the attribute is required.
      */
-    public UserAttributeForm(@NonNull  String key, boolean required) {
+    public UserAttributeViewModel(@NonNull  String key, boolean required) {
         if (TextUtils.isEmpty(key)) {
             throw new NullPointerException("Argument key is null.");
         }
@@ -72,7 +72,7 @@ public final class UserAttributeForm implements Parcelable {
      *
      * @param in The input stream.
      */
-    private UserAttributeForm(Parcel in) {
+    private UserAttributeViewModel(Parcel in) {
         myKey = in.readString();
         myRequired = (in.readInt() != 0);
         myCurrentValue = in.readString();

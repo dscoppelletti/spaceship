@@ -26,121 +26,117 @@ import it.scoppelletti.spaceship.cognito.R;
 import it.scoppelletti.spaceship.widget.EditTextValidator;
 
 /**
- * Change password form.
+ * Forgot password view-model.
  *
  * @since 1.0.0
  */
-public final class ChangePasswordForm extends PasswordForm {
+public final class ForgotPasswordViewModel extends PasswordViewModel {
 
     /**
-     * {@code Parcelable} support.
+     * The {@code Parcelable} support.
      */
-    public static final Creator<ChangePasswordForm> CREATOR =
-            new Creator<ChangePasswordForm>() {
+    public static final Creator<ForgotPasswordViewModel> CREATOR =
+            new Creator<ForgotPasswordViewModel>() {
 
                 @Override
-                public ChangePasswordForm createFromParcel(Parcel in) {
-                    ChangePasswordForm obj;
+                public ForgotPasswordViewModel createFromParcel(Parcel in) {
+                    ForgotPasswordViewModel obj;
 
-                    obj = new ChangePasswordForm();
+                    obj = new ForgotPasswordViewModel();
                     obj.readFromParcel(in);
                     return obj;
                 }
 
                 @Override
-                public ChangePasswordForm[] newArray(int size) {
-                    return new ChangePasswordForm[size];
+                public ForgotPasswordViewModel[] newArray(int size) {
+                    return new ForgotPasswordViewModel[size];
                 }
             };
 
-    private final EditTextValidator myPwdOldValidator;
-    private String myPwdOld;
-    private int myPwdOldErr;
+    private final EditTextValidator myVerificationCodeValidator;
+    private String myVerificationCode;
+    private int myVerificationCodeErr;
 
     /**
      * Sole constructor.
      */
-    public ChangePasswordForm() {
+    public ForgotPasswordViewModel() {
         super();
 
-        myPwdOldValidator = new EditTextValidator() {
-
-            @Override
-            public boolean validate() {
-                if (TextUtils.isEmpty(myPwdOld)) {
-                    setPasswordOldError(R.string.it_scoppelletti_err_passwordRequired);
-                    return false;
-                }
-
-                setPasswordOldError(0);
-                return true;
+        myVerificationCodeValidator = () -> {
+            if (TextUtils.isEmpty(myVerificationCode)) {
+                setVerificationCodeError(R.string.it_scoppelletti_cognito_err_verificationCodeRequired);
+                return false;
             }
+
+            setVerificationCodeError(0);
+            return true;
         };
     }
 
     /**
-     * Gets the old password.
+     * Gets the verification code.
      *
      * @return The value. May be {@code null}.
      */
     @Bindable
     @Nullable
-    public String getPasswordOld() {
-        return myPwdOld;
+    public String getVerificationCode() {
+        return myVerificationCode;
     }
 
     /**
-     * Sets the old password.
+     * Sets the verification code.
      *
      * @param value A value. May be {@code null}.
      */
-    public void setPasswordOld(@Nullable String value) {
-        if (!TextUtils.equals(value, myPwdOld)) {
-            notifyPropertyChanged(BR.passwordOld);
-            myPwdOld = value;
+    public void setVerificationCode(@Nullable String value) {
+        if (!TextUtils.equals(value, myVerificationCode)) {
+            notifyPropertyChanged(BR.verificationCode);
+            myVerificationCode = value;
         }
 
-        myPwdOldValidator.validate();
+        myVerificationCodeValidator.validate();
     }
 
     /**
-     * Gets the error message about the old password.
+     * Gets the error message about the verification code.
      *
      * @return The value as a string resource ID. May be {@code 0}.
      */
     @Bindable
-    public final int getPasswordOldError() {
-        return myPwdOldErr;
+    public int getVerificationCodeError() {
+        return myVerificationCodeErr;
     }
 
     /**
-     * Sets the error message about the old password.
+     * Sets the error message about the verification code.
      *
      * @param value A value as a string resource ID. May be {@code 0}.
      */
-    public void setPasswordOldError(int value) {
-        if (value != myPwdOldErr) {
-            myPwdOldErr = value;
-            notifyPropertyChanged(BR.passwordOldError);
+    public void setVerificationCodeError(int value) {
+        if (value != myVerificationCodeErr) {
+            myVerificationCodeErr = value;
+            notifyPropertyChanged(BR.verificationCodeError);
         }
     }
 
     /**
-     * Gets the old password validator.
+     * Gets the verification code validator.
      *
      * @return The object.
      */
     @NonNull
     @Bindable
-    public EditTextValidator getPasswordOldValidator() {
-        return myPwdOldValidator;
+    public EditTextValidator getVerificationCodeValidator() {
+        return myVerificationCodeValidator;
     }
 
     @Override
     public boolean validate() {
         boolean valid = true;
 
-        if (!myPwdOldValidator.validate()) {
+        if (!myVerificationCodeValidator.validate()) {
             valid = false;
         }
         if (!super.validate()) {
@@ -157,15 +153,15 @@ public final class ChangePasswordForm extends PasswordForm {
 
     @Override
     protected void readFromParcel(Parcel in) {
-        myPwdOld = in.readString();
-        myPwdOldErr = in.readInt();
+        myVerificationCode = in.readString();
+        myVerificationCodeErr = in.readInt();
         super.readFromParcel(in);
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(myPwdOld);
-        dest.writeInt(myPwdOldErr);
+        dest.writeString(myVerificationCode);
+        dest.writeInt(myVerificationCodeErr);
         super.writeToParcel(dest, flags);
     }
 }

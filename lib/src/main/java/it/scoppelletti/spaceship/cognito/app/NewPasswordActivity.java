@@ -23,23 +23,19 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import it.scoppelletti.spaceship.app.AppExt;
 import it.scoppelletti.spaceship.cognito.CognitoAdapter;
 import it.scoppelletti.spaceship.cognito.R;
-import it.scoppelletti.spaceship.cognito.data.NewPasswordForm;
-import it.scoppelletti.spaceship.cognito.data.UserAttributeForm;
+import it.scoppelletti.spaceship.cognito.data.NewPasswordViewModel;
+import it.scoppelletti.spaceship.cognito.data.UserAttributeViewModel;
 import it.scoppelletti.spaceship.cognito.databinding.NewPasswordActivityBinding;
 import it.scoppelletti.spaceship.cognito.widget.UserAttributeView;
 
@@ -49,9 +45,9 @@ import it.scoppelletti.spaceship.cognito.widget.UserAttributeView;
  * @since 1.0.0
  */
 public final class NewPasswordActivity extends AppCompatActivity {
-    private static final String PROP_FORM = "1";
+    private static final String PROP_MODEL = "1";
     private NewPasswordActivityBinding myBinding;
-    private ArrayList<UserAttributeForm> myAttrList;
+    private ArrayList<UserAttributeViewModel> myAttrList;
     private List<UserAttributeView> myAttrViews;
 
     /**
@@ -63,38 +59,31 @@ public final class NewPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Toolbar toolbar;
-        NewPasswordForm form;
+        NewPasswordViewModel model;
 
         super.onCreate(savedInstanceState);
         myBinding = DataBindingUtil.setContentView(this,
                 R.layout.it_scoppelletti_cognito_newpassword_activity);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_close_menu);
         setSupportActionBar(toolbar);
 
         if (savedInstanceState == null) {
-            form = new NewPasswordForm();
+            model = new NewPasswordViewModel();
             myAttrList = getIntent().getParcelableArrayListExtra(
                     CognitoAdapter.PROP_USERATTRIBUTES);
         } else {
-            form = savedInstanceState.getParcelable(
-                    NewPasswordActivity.PROP_FORM);
+            model = savedInstanceState.getParcelable(
+                    NewPasswordActivity.PROP_MODEL);
             myAttrList = savedInstanceState.getParcelableArrayList(
                     CognitoAdapter.PROP_USERATTRIBUTES);
         }
 
-        myBinding.setForm(form);
+        myBinding.setModel(model);
         myBinding.txtPasswordConfirm.setOnEditorActionListener(
-                new TextView.OnEditorActionListener() {
-
-                    @Override
-                    public boolean onEditorAction(@NonNull TextView view,
-                            int actionId, @Nullable KeyEvent event) {
-                        return NewPasswordActivity.this.onEditorAction(
-                                actionId);
-                    }
-                });
+                (view, actionId, event) ->
+                        NewPasswordActivity.this.onEditorAction(actionId));
 
         if (myAttrList == null || myAttrList.isEmpty()) {
             myAttrViews = null;
@@ -102,13 +91,7 @@ public final class NewPasswordActivity extends AppCompatActivity {
             bindAttrs();
         }
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                onCancelClick();
-            }
-        });
+        toolbar.setNavigationOnClickListener((view) -> onCancelClick());
     }
 
     /**
@@ -120,9 +103,9 @@ public final class NewPasswordActivity extends AppCompatActivity {
         LinearLayout.LayoutParams layout;
 
         myAttrViews = new ArrayList<>();
-        parent = (ViewGroup) findViewById(R.id.form_frame);
+        parent = findViewById(R.id.form_frame);
 
-        for (UserAttributeForm form : myAttrList) {
+        for (UserAttributeViewModel form : myAttrList) {
             view = new UserAttributeView(this);
             layout = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -135,14 +118,14 @@ public final class NewPasswordActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        NewPasswordForm form;
+        NewPasswordViewModel model;
 
         super.onSaveInstanceState(outState);
 
         if (myBinding != null) {
-            form = myBinding.getForm();
-            if (form != null) {
-                outState.putParcelable(NewPasswordActivity.PROP_FORM, form);
+            model = myBinding.getModel();
+            if (model != null) {
+                outState.putParcelable(NewPasswordActivity.PROP_MODEL, model);
             }
         }
 
@@ -199,12 +182,12 @@ public final class NewPasswordActivity extends AppCompatActivity {
     private void onDoneClick() {
         boolean valid;
         Intent data;
-        NewPasswordForm form;
+        NewPasswordViewModel model;
 
         AppExt.hideSoftKeyboard(this);
 
-        form = myBinding.getForm();
-        valid = form.validate();
+        model = myBinding.getModel();
+        valid = model.validate();
 
         if (myAttrViews != null) {
             for (UserAttributeView view : myAttrViews) {
@@ -218,7 +201,7 @@ public final class NewPasswordActivity extends AppCompatActivity {
         }
 
         data = new Intent();
-        data.putExtra(CognitoAdapter.PROP_PASSWORDNEW, form.getPasswordNew());
+        data.putExtra(CognitoAdapter.PROP_PASSWORDNEW, model.getPasswordNew());
 
         if (myAttrList != null) {
             data.putParcelableArrayListExtra(

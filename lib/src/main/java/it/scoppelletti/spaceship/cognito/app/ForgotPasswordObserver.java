@@ -24,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.greenrobot.eventbus.EventBus;
 import it.scoppelletti.spaceship.ExceptionEvent;
 import it.scoppelletti.spaceship.cognito.R;
-import it.scoppelletti.spaceship.rx.SingleObserverFactory;
 import it.scoppelletti.spaceship.widget.SnackbarEvent;
 
 /**
@@ -37,26 +36,7 @@ final class ForgotPasswordObserver extends
     /**
      * Sole constructor.
      */
-    private ForgotPasswordObserver() {
-    }
-
-    /**
-     * Creates a new factory object for creating instances of the
-     * {@code ForgotPasswordObserver} class.
-     *
-     * @return The new object.
-     */
-    @NonNull
-    static SingleObserverFactory<ForgotPasswordContinuation> newFactory() {
-        return new SingleObserverFactory<ForgotPasswordContinuation>() {
-
-            @NonNull
-            @Override
-            public DisposableSingleObserver<ForgotPasswordContinuation>
-            create() {
-                return new ForgotPasswordObserver();
-            }
-        };
+    ForgotPasswordObserver() {
     }
 
     @Override

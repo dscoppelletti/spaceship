@@ -20,19 +20,15 @@ import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ForgotPasswordContinuation;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -48,7 +44,7 @@ import it.scoppelletti.spaceship.app.DialogCloseEvent;
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment;
 import it.scoppelletti.spaceship.cognito.CognitoAdapter;
 import it.scoppelletti.spaceship.cognito.R;
-import it.scoppelletti.spaceship.cognito.data.ForgotPasswordForm;
+import it.scoppelletti.spaceship.cognito.data.ForgotPasswordViewModel;
 import it.scoppelletti.spaceship.cognito.databinding.ForgotPasswordActivityBinding;
 import it.scoppelletti.spaceship.rx.CompletableCoordinator;
 import it.scoppelletti.spaceship.rx.CompleteEvent;
@@ -63,7 +59,7 @@ import it.scoppelletti.spaceship.widget.SnackbarEvent;
  */
 public final class ForgotPasswordActivity extends AppCompatActivity {
     private static final int REQ_SEND = 1;
-    private static final String PROP_FORM = "1";
+    private static final String PROP_MODEL = "1";
     private String myUserCode;
     private boolean myFirstRun;
     private ProgressOverlay myProgressBar;
@@ -79,14 +75,14 @@ public final class ForgotPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Toolbar toolbar;
-        ForgotPasswordForm form;
+        ForgotPasswordViewModel model;
 
         super.onCreate(savedInstanceState);
         myBinding = DataBindingUtil.setContentView(this,
                 R.layout.it_scoppelletti_cognito_forgotpassword_activity);
         myDisposables = new CompositeDisposable();
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_close_menu);
         setSupportActionBar(toolbar);
 
@@ -98,35 +94,22 @@ public final class ForgotPasswordActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             myFirstRun = true;
-            form = new ForgotPasswordForm();
+            model = new ForgotPasswordViewModel();
         } else {
             myFirstRun = false;
-            form = savedInstanceState.getParcelable(
-                    ForgotPasswordActivity.PROP_FORM);
+            model = savedInstanceState.getParcelable(
+                    ForgotPasswordActivity.PROP_MODEL);
         }
 
-        myProgressBar = (ProgressOverlay) findViewById(R.id.progress_bar);
+        myProgressBar = findViewById(R.id.progress_bar);
 
-        myBinding.setForm(form);
+        myBinding.setModel(model);
         myBinding.txtName.setText(myUserCode);
         myBinding.txtPasswordConfirm.setOnEditorActionListener(
-                new TextView.OnEditorActionListener() {
+                (view, actionId, event) ->
+                        ForgotPasswordActivity.this.onEditorAction(actionId));
 
-                    @Override
-                    public boolean onEditorAction(@NonNull TextView view,
-                            int actionId, @Nullable KeyEvent event) {
-                        return ForgotPasswordActivity.this.onEditorAction(
-                                actionId);
-                    }
-                });
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                onCancelClick();
-            }
-        });
+        toolbar.setNavigationOnClickListener((view) -> onCancelClick());
     }
 
     @Override
@@ -145,13 +128,13 @@ public final class ForgotPasswordActivity extends AppCompatActivity {
                 ForgotPasswordActivityData.class,
                 ForgotPasswordActivityData.TAG);
         pwdCoordinator = data.getPasswordCoordinator();
-        subscription = pwdCoordinator.subscribe(
-                ConfirmPasswordObserver.newFactory());
+        subscription = pwdCoordinator.subscribe(() ->
+                        new ConfirmPasswordObserver());
         myDisposables.add(subscription);
 
         verificationCodeCoordinator = data.getVerificationCodeCoordinator();
-        subscription = verificationCodeCoordinator.subscribe(
-                ForgotPasswordObserver.newFactory());
+        subscription = verificationCodeCoordinator.subscribe(() ->
+                        new ForgotPasswordObserver());
         myDisposables.add(subscription);
 
         if (myFirstRun) {
@@ -178,14 +161,15 @@ public final class ForgotPasswordActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        ForgotPasswordForm form;
+        ForgotPasswordViewModel model;
 
         super.onSaveInstanceState(outState);
 
         if (myBinding != null) {
-            form = myBinding.getForm();
-            if (form != null) {
-                outState.putParcelable(ForgotPasswordActivity.PROP_FORM, form);
+            model = myBinding.getModel();
+            if (model != null) {
+                outState.putParcelable(ForgotPasswordActivity.PROP_MODEL,
+                        model);
             }
         }
     }
@@ -238,12 +222,12 @@ public final class ForgotPasswordActivity extends AppCompatActivity {
         Disposable connection;
         CompletableCoordinator coordinator;
         ConfirmPasswordObservable process;
-        ForgotPasswordForm form;
+        ForgotPasswordViewModel model;
 
         AppExt.hideSoftKeyboard(this);
 
-        form = myBinding.getForm();
-        if (!form.validate()) {
+        model = myBinding.getModel();
+        if (!model.validate()) {
             return;
         }
 
@@ -260,7 +244,7 @@ public final class ForgotPasswordActivity extends AppCompatActivity {
             }
 
             process = new ConfirmPasswordObservable(myUserCode,
-                    form.getPasswordNew(), form.getVerificationCode());
+                    model.getPasswordNew(), model.getVerificationCode());
             connection = coordinator.connect(Observable.create(process)
                     .ignoreElements()
                     .subscribeOn(Schedulers.io())
@@ -279,10 +263,7 @@ public final class ForgotPasswordActivity extends AppCompatActivity {
      */
     @Subscribe
     public void onComplete(CompleteEvent event) {
-        myProgressBar.hide(new Runnable() {
-
-            @Override
-            public void run() {
+        myProgressBar.hide(() ->
                 Snackbar.make(myBinding.contentFrame,
                         R.string.it_scoppelletti_cognito_msg_resetPassword,
                         Snackbar.LENGTH_SHORT)
@@ -293,9 +274,7 @@ public final class ForgotPasswordActivity extends AppCompatActivity {
                                     int event) {
                                 ForgotPasswordActivity.this.onCancelClick();
                             }
-                        }).show();
-            }
-        });
+                        }).show());
     }
 
     /**
@@ -318,13 +297,7 @@ public final class ForgotPasswordActivity extends AppCompatActivity {
             throw new NullPointerException("Argument event is null.");
         }
 
-        myProgressBar.hide(new Runnable() {
-
-            @Override
-            public void run() {
-                event.show(myBinding.contentFrame);
-            }
-        });
+        myProgressBar.hide(() -> event.show(myBinding.contentFrame));
     }
 
     /**
@@ -334,15 +307,10 @@ public final class ForgotPasswordActivity extends AppCompatActivity {
      */
     @Subscribe
     public void onExceptionEvent(@NonNull final ExceptionEvent event) {
-        myProgressBar.hide(new Runnable() {
-
-            @Override
-            public void run() {
+        myProgressBar.hide(() ->
                 new ExceptionDialogFragment.Builder(ForgotPasswordActivity.this)
                         .exceptionEvent(event)
-                        .show();
-            }
-        });
+                        .show());
     }
 
     /**

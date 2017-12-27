@@ -25,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.greenrobot.eventbus.EventBus;
 import it.scoppelletti.spaceship.ExceptionEvent;
 import it.scoppelletti.spaceship.cognito.R;
-import it.scoppelletti.spaceship.rx.SingleObserverFactory;
 import it.scoppelletti.spaceship.widget.SnackbarEvent;
 
 /**
@@ -41,33 +40,12 @@ final class VerificationCodeObserver extends
      *
      * @param attr Attribute to verify.
      */
-    private VerificationCodeObserver(String attr) {
-        myAttr = attr;
-    }
-
-    /**
-     * Creates a new factory object for creating instances of the
-     * {@code VerificationCodeObserver} class.
-     *
-     * @param  attr Attribute to verify.
-     * @return      The new object.
-     */
-    @NonNull
-    static SingleObserverFactory<CognitoUserCodeDeliveryDetails> newFactory(
-            @NonNull final String attr) {
+    VerificationCodeObserver(String attr) {
         if (TextUtils.isEmpty(attr)) {
             throw new NullPointerException("Argument attr is null.");
         }
 
-        return new SingleObserverFactory<CognitoUserCodeDeliveryDetails>() {
-
-            @NonNull
-            @Override
-            public DisposableSingleObserver<CognitoUserCodeDeliveryDetails>
-            create() {
-                return new VerificationCodeObserver(attr);
-            }
-        };
+        myAttr = attr;
     }
 
     @Override

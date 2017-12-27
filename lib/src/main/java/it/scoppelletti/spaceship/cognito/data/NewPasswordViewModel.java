@@ -19,37 +19,37 @@ package it.scoppelletti.spaceship.cognito.data;
 import android.os.Parcel;
 
 /**
- * New password form.
+ * New password view-model.
  *
  * @since 1.0.0
  */
-public final class NewPasswordForm extends PasswordForm {
+public final class NewPasswordViewModel extends PasswordViewModel {
 
     /**
      * The {@code Parcelable} support.
      */
-    public static final Creator<NewPasswordForm> CREATOR =
-            new Creator<NewPasswordForm>() {
+    public static final Creator<NewPasswordViewModel> CREATOR =
+            new Creator<NewPasswordViewModel>() {
 
                 @Override
-                public NewPasswordForm createFromParcel(Parcel in) {
-                    NewPasswordForm obj;
+                public NewPasswordViewModel createFromParcel(Parcel in) {
+                    NewPasswordViewModel obj;
 
-                    obj = new NewPasswordForm();
+                    obj = new NewPasswordViewModel();
                     obj.readFromParcel(in);
                     return obj;
                 }
 
                 @Override
-                public NewPasswordForm[] newArray(int size) {
-                    return new NewPasswordForm[size];
+                public NewPasswordViewModel[] newArray(int size) {
+                    return new NewPasswordViewModel[size];
                 }
             };
 
     /**
      * Sole constructor.
      */
-    public NewPasswordForm() {
+    public NewPasswordViewModel() {
         super();
     }
 }

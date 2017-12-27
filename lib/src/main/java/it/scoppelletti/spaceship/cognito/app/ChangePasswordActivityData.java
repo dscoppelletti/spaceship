@@ -18,10 +18,8 @@ package it.scoppelletti.spaceship.cognito.app;
 
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ForgotPasswordContinuation;
 import it.scoppelletti.spaceship.cognito.CognitoAdapter;
 import it.scoppelletti.spaceship.rx.CompletableCoordinator;
-import it.scoppelletti.spaceship.rx.SingleCoordinator;
 
 /**
  * Data retained across activities for the changing password process.

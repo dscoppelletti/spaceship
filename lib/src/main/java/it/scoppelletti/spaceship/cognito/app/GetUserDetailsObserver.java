@@ -32,25 +32,7 @@ final class GetUserDetailsObserver extends
     /**
      * Sole constructor.
      */
-    private GetUserDetailsObserver() {
-    }
-
-    /**
-     * Creates a new factory object for creating instances of the
-     * {@code GetUserDetailsObserver} class.
-     *
-     * @return The new object.
-     */
-    @NonNull
-    static SingleObserverFactory<GetUserDetailsEvent> newFactory() {
-        return new SingleObserverFactory<GetUserDetailsEvent>() {
-
-            @NonNull
-            @Override
-            public DisposableSingleObserver<GetUserDetailsEvent> create() {
-                return new GetUserDetailsObserver();
-            }
-        };
+    GetUserDetailsObserver() {
     }
 
     @Override

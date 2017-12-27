@@ -17,12 +17,10 @@
 package it.scoppelletti.spaceship.cognito.app;
 
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import io.reactivex.observers.DisposableCompletableObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.greenrobot.eventbus.EventBus;
 import it.scoppelletti.spaceship.ExceptionEvent;
-import it.scoppelletti.spaceship.rx.CompletableObserverFactory;
 import it.scoppelletti.spaceship.rx.CompleteEvent;
 
 /**
@@ -37,31 +35,8 @@ final class VerifyAttributeObserver extends DisposableCompletableObserver {
      *
      * @param attr Attribute to verify.
      */
-    private VerifyAttributeObserver(String attr) {
+    VerifyAttributeObserver(String attr) {
         myAttr = attr;
-    }
-
-    /**
-     * Creates a new factory object for creating instances of the
-     * {@code VerificationCodeObserver} class.
-     *
-     * @param  attr Attribute to verify.
-     * @return      The new object.
-     */
-    @NonNull
-    static CompletableObserverFactory newFactory(@NonNull final String attr) {
-        if (TextUtils.isEmpty(attr)) {
-            throw new NullPointerException("Argument attr is null.");
-        }
-
-        return new CompletableObserverFactory() {
-
-            @NonNull
-            @Override
-            public DisposableCompletableObserver create() {
-                return new VerifyAttributeObserver(attr);
-            }
-        };
     }
 
     @Override

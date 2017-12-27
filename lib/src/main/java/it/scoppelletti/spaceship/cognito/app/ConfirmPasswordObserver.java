@@ -22,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.greenrobot.eventbus.EventBus;
 import it.scoppelletti.spaceship.ExceptionEvent;
 import it.scoppelletti.spaceship.cognito.R;
-import it.scoppelletti.spaceship.rx.CompletableObserverFactory;
 import it.scoppelletti.spaceship.rx.CompleteEvent;
 
 /**
@@ -34,25 +33,7 @@ final class ConfirmPasswordObserver extends DisposableCompletableObserver {
     /**
      * Sole constructor.
      */
-    private ConfirmPasswordObserver() {
-    }
-
-    /**
-     * Creates a new factory object for creating instances of the
-     * {@code ConfirmPasswordObserver} class.
-     *
-     * @return The new object.
-     */
-    @NonNull
-    static CompletableObserverFactory newFactory() {
-        return new CompletableObserverFactory() {
-
-            @NonNull
-            @Override
-            public DisposableCompletableObserver create() {
-                return new ConfirmPasswordObserver();
-            }
-        };
+    ConfirmPasswordObserver() {
     }
 
     @Override

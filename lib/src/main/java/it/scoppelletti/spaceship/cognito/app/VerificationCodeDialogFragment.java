@@ -86,16 +86,9 @@ public final class VerificationCodeDialogFragment extends
                 .setTitle(titleId)
                 .setItems(
                         R.array.it_scoppelletti_cognito_array_verificationCode,
-                        new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                    int which) {
-                                post((which == 0) ?
-                                        DialogInterface.BUTTON_POSITIVE :
-                                        DialogInterface.BUTTON_NEGATIVE);
-                            }
-                        });
+                        (dialog, which) -> post((which == 0) ?
+                                DialogInterface.BUTTON_POSITIVE :
+                                DialogInterface.BUTTON_NEGATIVE));
 
         return builder.create();
     }

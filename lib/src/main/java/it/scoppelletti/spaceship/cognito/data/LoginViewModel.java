@@ -28,25 +28,25 @@ import it.scoppelletti.spaceship.cognito.R;
 import it.scoppelletti.spaceship.widget.EditTextValidator;
 
 /**
- * Login form.
+ * Login view-model.
  *
  * @since 1.0.0
  */
-public final class LoginForm extends BaseObservable implements Parcelable {
+public final class LoginViewModel extends BaseObservable implements Parcelable {
 
     /**
      * The {@code Parcelable} support.
      */
-    public static final Creator<LoginForm> CREATOR = new Creator<LoginForm>() {
+    public static final Creator<LoginViewModel> CREATOR = new Creator<LoginViewModel>() {
 
         @Override
-        public LoginForm createFromParcel(Parcel in) {
-            return new LoginForm(in);
+        public LoginViewModel createFromParcel(Parcel in) {
+            return new LoginViewModel(in);
         }
 
         @Override
-        public LoginForm[] newArray(int size) {
-            return new LoginForm[size];
+        public LoginViewModel[] newArray(int size) {
+            return new LoginViewModel[size];
         }
     };
 
@@ -60,33 +60,25 @@ public final class LoginForm extends BaseObservable implements Parcelable {
     /**
      * Sole constructor.
      */
-    public LoginForm() {
-        myUserCodeValidator = new EditTextValidator() {
-
-            @Override
-            public boolean validate() {
-                if (TextUtils.isEmpty(myUserCode)) {
-                    setUserCodeError(R.string.it_scoppelletti_err_userCodeRequired);
-                    return false;
-                }
-
-                setUserCodeError(0);
-                return true;
+    public LoginViewModel() {
+        myUserCodeValidator = () -> {
+            if (TextUtils.isEmpty(myUserCode)) {
+                setUserCodeError(R.string.it_scoppelletti_err_userCodeRequired);
+                return false;
             }
+
+            setUserCodeError(0);
+            return true;
         };
 
-        myPwdValidator = new EditTextValidator() {
-
-            @Override
-            public boolean validate() {
-                if (TextUtils.isEmpty(myPwd)) {
-                    setPasswordError(R.string.it_scoppelletti_err_passwordRequired);
-                    return false;
-                }
-
-                setPasswordError(0);
-                return true;
+        myPwdValidator = () -> {
+            if (TextUtils.isEmpty(myPwd)) {
+                setPasswordError(R.string.it_scoppelletti_err_passwordRequired);
+                return false;
             }
+
+            setPasswordError(0);
+            return true;
         };
     }
 
@@ -95,7 +87,7 @@ public final class LoginForm extends BaseObservable implements Parcelable {
      *
      * @param in The input stream.
      */
-    private LoginForm(Parcel in) {
+    private LoginViewModel(Parcel in) {
         this();
 
         myUserCode = in.readString();
@@ -221,9 +213,9 @@ public final class LoginForm extends BaseObservable implements Parcelable {
     }
 
     /**
-     * Validates this form for login process.
+     * Validates this model for login process.
      *
-     * @return Returns {@code true} if this form is valid, {@code false}
+     * @return Returns {@code true} if this model is valid, {@code false}
      *         otherwise.
      */
     public boolean validateLogin() {
@@ -240,9 +232,9 @@ public final class LoginForm extends BaseObservable implements Parcelable {
     }
 
     /**
-     * Validates this form for forgot password process.
+     * Validates this model for forgot password process.
      *
-     * @return Returns {@code true} if this form is valid, {@code false}
+     * @return Returns {@code true} if this model is valid, {@code false}
      *         otherwise.
      */
     public boolean validateForgotPassword() {

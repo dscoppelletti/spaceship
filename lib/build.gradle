@@ -6,12 +6,11 @@ description 'Spaceship Library for HTTP'
 archivesBaseName = 'spaceship-http'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "26.0.0"
-
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -29,12 +28,13 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
 spaceship {
+    url 'http://github.com/dscoppelletti/spaceship-http'
     developer {
         name 'Dario Scoppelletti'
         email 'dario@scoppelletti.it'
@@ -42,7 +42,6 @@ spaceship {
     }
     copyright '2017'
     pom {
-        url 'http://github.com/dscoppelletti/spaceship-http'
         licenses {
             license {
                 name 'The Apache License, Version 2.0'
@@ -58,18 +57,16 @@ spaceship {
 }
 
 dependencies {
-    compile "com.android.support:appcompat-v7:25.3.1"
-    compile "com.android.support:support-annotations:${versionMap.android_support}"
-    compile "com.google.code.gson:gson:${versionMap.gson}"
-    compile "com.squareup.okhttp3:okhttp:${versionMap.okhttp}"
-    compile "com.squareup.retrofit2:retrofit:${versionMap.retrofit}"
-    compile "com.squareup.retrofit2:adapter-rxjava2:${versionMap.retrofit}"
-    compile "com.squareup.retrofit2:converter-gson:${versionMap.retrofit}"
-    compile "org.slf4j:slf4j-api:${versionMap.slf4j}"
-    compile "it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}"
-    provided "org.projectlombok:lombok:${versionMap.lombok}"
+    implementation "com.google.code.gson:gson:${versionMap.gson}"
+    implementation "com.squareup.okhttp3:okhttp:${versionMap.okhttp}"
+    implementation "com.squareup.retrofit2:retrofit:${versionMap.retrofit}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${versionMap.retrofit}"
+    implementation "com.squareup.retrofit2:converter-gson:${versionMap.retrofit}"
+    implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
+    implementation "it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}"
+    compileOnly "org.projectlombok:lombok:${versionMap.lombok}"
     annotationProcessor "org.projectlombok:lombok:${versionMap.lombok}"
-    testCompile "junit:junit:${versionMap.junit}"
-    testCompile "org.hamcrest:hamcrest-all:${versionMap.hamcrest}"
-    testCompile "org.slf4j:slf4j-simple:${versionMap.slf4j}"
+    testImplementation "junit:junit:${versionMap.junit}"
+    testImplementation "org.hamcrest:hamcrest-all:${versionMap.hamcrest}"
+    testImplementation "org.slf4j:slf4j-simple:${versionMap.slf4j}"
 }

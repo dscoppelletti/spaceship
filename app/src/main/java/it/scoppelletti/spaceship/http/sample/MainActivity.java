@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main_activity);
         myDisposables = new CompositeDisposable();
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         myContentFrame = findViewById(R.id.content_frame);
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         coordinator = AppExt.getOrCreateFragment(this,
                 MainActivityData.class, MainActivityData.TAG)
                 .getGreetingCoordinator();
-        subscription = coordinator.subscribe(GreetingObserver.newFactory());
+        subscription = coordinator.subscribe(() -> new GreetingObserver());
 
         myDisposables.add(subscription);
     }

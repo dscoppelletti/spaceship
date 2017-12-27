@@ -25,6 +25,7 @@ import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
+import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Arrays;
 import java.util.Collection;
@@ -197,8 +198,8 @@ public final class SslExt {
     private static PrivateKey loadPrivateKey(InputStream in) {
         int n;
         PrivateKey key;
+        KeySpec keySpec;
         KeyFactory keyFactory;
-        PKCS8EncodedKeySpec keySpec;
         InputStream decoder, pemFilter;
         ByteArrayOutputStream out = null;
         byte[] buf = null;

@@ -45,14 +45,14 @@ public final class TabbedActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tabbed_activity);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         myTitleAdapter = new TitleAdapter.Builder(this).build();
         myNavProvider = new UpNavigationProvider.Builder(this)
                 .callbacks(this).build();
         myNavProvider.onCreate(savedInstanceState);
-        myProgressBar = (ProgressOverlay) findViewById(R.id.progress_bar);
+        myProgressBar = findViewById(R.id.progress_bar);
 
         if (savedInstanceState == null) {
             intent = getIntent();
@@ -63,10 +63,10 @@ public final class TabbedActivity extends AppCompatActivity implements
 
         pagerAdapter = new DataPagerAdapter(this, getSupportFragmentManager(),
                 myDataId);
-        myViewPager = (ViewPager) findViewById(R.id.view_pager);
+        myViewPager = findViewById(R.id.view_pager);
         myViewPager.setAdapter(pagerAdapter);
 
-        myTabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        myTabLayout = findViewById(R.id.tab_layout);
         myTabLayout.setupWithViewPager(myViewPager);
     }
 
@@ -136,66 +136,43 @@ public final class TabbedActivity extends AppCompatActivity implements
 
     @Subscribe
     public void onDataCreateEvent(@NonNull final DataCreateEvent event) {
-        myProgressBar.hide(new Runnable() {
-
-            @Override
-            public void run() {
-                myDataId = event.getId();
-                myTitleAdapter.setTitle(R.string.it_scoppelletti_cmd_edit);
-                supportInvalidateOptionsMenu();
-                Snackbar.make(myViewPager, R.string.msg_dataCreated,
-                        Snackbar.LENGTH_SHORT).show();
-            }
+        myProgressBar.hide(() -> {
+            myDataId = event.getId();
+            myTitleAdapter.setTitle(R.string.it_scoppelletti_cmd_edit);
+            supportInvalidateOptionsMenu();
+            Snackbar.make(myViewPager, R.string.msg_dataCreated,
+                    Snackbar.LENGTH_SHORT).show();
         });
     }
 
     @Subscribe
     public void onCompleteEvent(@NonNull CompleteEvent event) {
-        myProgressBar.hide(new Runnable() {
-
-            @Override
-            public void run() {
-                supportInvalidateOptionsMenu();
-            }
-        });
+        myProgressBar.hide(() -> supportInvalidateOptionsMenu());
     }
 
     @Subscribe
     public void onDataDeleteEvent(@NonNull DataDeleteEvent event) {
-        myProgressBar.hide(new Runnable() {
-
-            @Override
-            public void run() {
-                supportInvalidateOptionsMenu();
-                Snackbar.make(myViewPager, R.string.msg_dataDeleted,
-                        Snackbar.LENGTH_SHORT)
-                        .addCallback(navigateUp()).show();
-            }
+        myProgressBar.hide(() -> {
+            supportInvalidateOptionsMenu();
+            Snackbar.make(myViewPager, R.string.msg_dataDeleted,
+                    Snackbar.LENGTH_SHORT)
+                    .addCallback(navigateUp()).show();
         });
     }
 
     @Subscribe
     public void onSnackbarEvent(final @NonNull SnackbarEvent event) {
-        myProgressBar.hide(new Runnable() {
-
-            @Override
-            public void run() {
-                supportInvalidateOptionsMenu();
-                event.show(myViewPager);
-            }
+        myProgressBar.hide(() -> {
+            supportInvalidateOptionsMenu();
+            event.show(myViewPager);
         });
     }
 
     @Subscribe
     public void onExceptionEvent(final @NonNull ExceptionEvent event) {
-        myProgressBar.hide(new Runnable() {
-
-            @Override
-            public void run() {
+        myProgressBar.hide(() ->
                 new ExceptionDialogFragment.Builder(TabbedActivity.this)
-                        .exceptionEvent(event).show();
-            }
-        });
+                        .exceptionEvent(event).show());
     }
 
     @Subscribe

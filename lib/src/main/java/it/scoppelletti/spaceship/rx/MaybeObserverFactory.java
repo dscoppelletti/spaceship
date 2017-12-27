@@ -26,6 +26,7 @@ import io.reactivex.observers.DisposableMaybeObserver;
  * @see       it.scoppelletti.spaceship.rx.MaybeCoordinator#subscribe(it.scoppelletti.spaceship.rx.MaybeObserverFactory)
  * @since     1.0.0
  */
+@FunctionalInterface
 public interface MaybeObserverFactory<T> {
 
     /**

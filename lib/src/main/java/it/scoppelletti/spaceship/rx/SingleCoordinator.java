@@ -22,7 +22,6 @@ import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
-import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableSingleObserver;
 import lombok.extern.slf4j.Slf4j;
 
@@ -74,8 +73,9 @@ public final class SingleCoordinator<T> {
         }
 
         mySource = source.cache();
-        myConnection = mySource.subscribe(newOnSuccessObserver(),
-                newOnErrorObserver());
+        myConnection = mySource.subscribe((t) ->
+                        myLogger.debug("Task completed."),
+                (ex) -> myLogger.error("Task failed.", ex));
         if (myObserverFactory == null) {
             myLogger.debug("Observable source started but not subscribed.");
             return Disposables.empty();
@@ -119,7 +119,11 @@ public final class SingleCoordinator<T> {
             myLogger.debug("Observer subscribed.");
         }
 
-        subscriptions.add(newOnDisposeObserver());
+        subscriptions.add(Disposables.fromRunnable(() -> {
+            myLogger.debug("Subscription canceled.");
+            myObserverFactory = null;
+        }));
+
         return subscriptions;
     }
 
@@ -132,36 +136,6 @@ public final class SingleCoordinator<T> {
             myConnection = null;
             myLogger.trace("Observerable connection destroyed.");
         }
-    }
-
-    /**
-     * Creates an observer for the success of the observable source.
-     *
-     * @return The new object.
-     */
-    private Consumer<T> newOnSuccessObserver() {
-        return new Consumer<T>() {
-
-            @Override
-            public void accept(@NonNull T t) throws Exception {
-                myLogger.debug("Task completed.");
-            }
-        };
-    }
-
-    /**
-     * Creates an observer for the failure of the observable source.
-     *
-     * @return The new object.
-     */
-    private Consumer<Throwable> newOnErrorObserver() {
-        return new Consumer<Throwable>() {
-
-            @Override
-            public void accept(@NonNull Throwable ex) throws Exception {
-                myLogger.error("Task failed.", ex);
-            }
-        };
     }
 
     /**
@@ -194,21 +168,5 @@ public final class SingleCoordinator<T> {
             myConnection.dispose();
             myConnection = null;
         }
-    }
-
-    /**
-     * Create an observer for the canceling of the subscription.
-     *
-     * @return The new object.
-     */
-    private Disposable newOnDisposeObserver() {
-        return Disposables.fromRunnable(new Runnable() {
-
-            @Override
-            public void run() {
-                myLogger.debug("Subscription canceled.");
-                myObserverFactory = null;
-            }
-        });
     }
 }

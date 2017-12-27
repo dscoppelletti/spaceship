@@ -24,7 +24,7 @@ public final class DataProvider {
     private DataProvider() {
     }
 
-    public static Single<DataForm> create(@NonNull DataForm data) {
+    public static Single<DataViewModel> create(@NonNull DataViewModel data) {
         if (data == null) {
             throw new NullPointerException("Argument data is null.");
         }
@@ -33,7 +33,7 @@ public final class DataProvider {
                 .delay(DataProvider.DELAY, TimeUnit.MILLISECONDS);
     }
 
-    public static Single<DataForm> read(@NonNull Context ctx, long id) {
+    public static Single<DataViewModel> read(@NonNull Context ctx, long id) {
         if (ctx == null) {
             throw new NullPointerException("Argument ctx is null.");
         }
@@ -43,7 +43,7 @@ public final class DataProvider {
                 .map(new DataProvider.Reader(ctx.getApplicationContext()));
     }
 
-    public static Single<DataForm> update(@NonNull DataForm data) {
+    public static Single<DataViewModel> update(@NonNull DataViewModel data) {
         if (data == null) {
             throw new NullPointerException("Argument data is null.");
         }
@@ -57,7 +57,7 @@ public final class DataProvider {
                 .delay(DataProvider.DELAY, TimeUnit.MILLISECONDS);
     }
 
-    public static Single<List<DataForm>> list(@NonNull Context ctx) {
+    public static Single<List<DataViewModel>> list(@NonNull Context ctx) {
         if (ctx == null) {
             throw new NullPointerException("Argument ctx is null.");
         }
@@ -68,18 +68,18 @@ public final class DataProvider {
                 .toList();
     }
 
-    private static final class Creator implements Callable<DataForm> {
-        private DataForm myData;
+    private static final class Creator implements Callable<DataViewModel> {
+        private DataViewModel myData;
 
-        Creator(DataForm data) {
+        Creator(DataViewModel data) {
             myData = data;
         }
 
         @Override
-        public DataForm call() throws Exception {
-            DataForm form;
+        public DataViewModel call() throws Exception {
+            DataViewModel form;
 
-            form = new DataForm();
+            form = new DataViewModel();
             form.setId(myIdGenerator.incrementAndGet());
             form.setName(myData.getName());
             form.setDesc(myData.getDesc());
@@ -91,7 +91,7 @@ public final class DataProvider {
         }
     }
 
-    private static final class Reader implements Function<Integer, DataForm> {
+    private static final class Reader implements Function<Integer, DataViewModel> {
         private final Context myCtx;
 
         Reader(Context ctx) {
@@ -99,11 +99,11 @@ public final class DataProvider {
         }
 
         @Override
-        public DataForm apply(Integer id) throws Exception {
-            DataForm form;
+        public DataViewModel apply(Integer id) throws Exception {
+            DataViewModel form;
 
             myLogger.trace("Read {}.", id);
-            form = new DataForm();
+            form = new DataViewModel();
             form.setId(id);
             form.setName(myCtx.getResources().getString(R.string.fmt_name, id));
             form.setDesc(myCtx.getResources().getString(R.string.fmt_desc, id));
@@ -114,18 +114,18 @@ public final class DataProvider {
         }
     }
 
-    private static final class Updater implements Callable<DataForm> {
-        private DataForm myData;
+    private static final class Updater implements Callable<DataViewModel> {
+        private DataViewModel myData;
 
-        Updater(DataForm data) {
+        Updater(DataViewModel data) {
             myData = data;
         }
 
         @Override
-        public DataForm call() throws Exception {
-            DataForm form;
+        public DataViewModel call() throws Exception {
+            DataViewModel form;
 
-            form = new DataForm();
+            form = new DataViewModel();
             form.setId(myData.getId());
             form.setName(myData.getName());
             form.setDesc(myData.getDesc());

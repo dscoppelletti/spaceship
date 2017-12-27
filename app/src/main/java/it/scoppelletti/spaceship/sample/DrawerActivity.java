@@ -52,16 +52,11 @@ public final class DrawerActivity extends AppCompatActivity implements
         myDrawer.onCreate(savedInstanceState);
         myTitleAdapter = new TitleAdapter.Builder(this)
             .toolbarLayoutId(R.id.toolbar_layout).build();
-        myProgressBar = (ProgressOverlay) findViewById(R.id.progress_bar);
+        myProgressBar = findViewById(R.id.progress_bar);
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post(DataNewEvent.getInstance());
-            }
-        });
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener((view) ->
+                EventBus.getDefault().post(DataNewEvent.getInstance()));
     }
 
     @Override
@@ -177,14 +172,9 @@ public final class DrawerActivity extends AppCompatActivity implements
 
     @Subscribe
     public void onExceptionEvent(final @NonNull ExceptionEvent event) {
-        myProgressBar.hide(new Runnable() {
-
-            @Override
-            public void run() {
+        myProgressBar.hide(() ->
                 new ExceptionDialogFragment.Builder(DrawerActivity.this)
-                        .exceptionEvent(event).show();
-            }
-        });
+                        .exceptionEvent(event).show());
     }
 
     @Subscribe

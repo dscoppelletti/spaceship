@@ -63,21 +63,21 @@ public final class FabScrollAwareBehavior extends
     public boolean onStartNestedScroll(
             @Nullable CoordinatorLayout coordinatorLayout,
             @Nullable View child, @Nullable View directTargetChild,
-            @Nullable View target, int nestedScrollAxes) {
-        return (nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL) ||
+            @Nullable View target, int axes, int type) {
+        return (axes == ViewCompat.SCROLL_AXIS_VERTICAL) ||
                 super.onStartNestedScroll(coordinatorLayout, child,
-                        directTargetChild, target, nestedScrollAxes);
+                        directTargetChild, target, axes, type);
     }
 
     @Override
     public void onNestedScroll(@Nullable CoordinatorLayout coordinatorLayout,
             @Nullable View child, @Nullable View target, int dxConsumed,
-            int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
+            int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type) {
         FloatingActionButton fab;
         List<View> deps;
 
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed,
-                dyConsumed, dxUnconsumed, dyUnconsumed);
+                dyConsumed, dxUnconsumed, dyUnconsumed, type);
 
         if (dyConsumed > 0) {
             deps = coordinatorLayout.getDependencies(child);

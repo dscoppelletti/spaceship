@@ -1,8 +1,8 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="RtlHardcoded">
+    tools:ignore="KeyboardInaccessibleWidget,RtlHardcoded">
     <data>
-        <variable name="item" type="it.scoppelletti.spaceship.sample.data.DataForm" />
+        <variable name="model" type="it.scoppelletti.spaceship.sample.data.DataViewModel" />
     </data>
     <LinearLayout android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
@@ -10,13 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/it_scoppelletti_list_twoLineItem_height"
         android:orientation="vertical"
-        android:onClick="@{item.onEditClick}"
+        android:onClick="@{model::onEditClick}"
         android:paddingLeft="@dimen/it_scoppelletti_marginHorz"
         android:paddingRight="@dimen/it_scoppelletti_marginHorz">
-        <TextView android:text="@{item.name}"
+        <TextView android:text="@{model.name}"
             android:layout_width="match_parent"
             style="@style/it_scoppelletti_style_listItem_line1" />
-        <TextView android:text="@{item.desc}"
+        <TextView android:text="@{model.desc}"
             android:layout_width="match_parent"
             style="@style/it_scoppelletti_style_listItem_line2" />
     </LinearLayout>

@@ -67,25 +67,20 @@ public final class ExponentialRetry implements
     @Override
     public Publisher<?> apply(@NonNull Flowable<? extends Throwable>  handler)
             throws Exception {
-        return handler.flatMap(new Function<Throwable, Flowable<?>>() {
+        return handler.flatMap((ex) -> {
+            Flowable<?> ret;
 
-            @NonNull
-            @Override
-            public Flowable<?> apply(@NonNull Throwable ex) {
-                Flowable<?> ret;
-
-                myRetryCount++;
-                if (myRetryCount < myRetryMax) {
-                    myLogger.error(String.format(Locale.ENGLISH, "Retry #%1$d.",
-                            myRetryCount), ex);
-                    ret = Flowable.timer(myRetryDelay, TimeUnit.SECONDS);
-                    myRetryDelay *= 2;
-                } else {
-                    ret = Flowable.error(ex);
-                }
-
-                return ret;
+            myRetryCount++;
+            if (myRetryCount < myRetryMax) {
+                myLogger.error(String.format(Locale.ENGLISH, "Retry #%1$d.",
+                        myRetryCount), ex);
+                ret = Flowable.timer(myRetryDelay, TimeUnit.SECONDS);
+                myRetryDelay *= 2;
+            } else {
+                ret = Flowable.error(ex);
             }
+
+            return ret;
         });
     }
 }

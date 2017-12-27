@@ -6,13 +6,13 @@ import android.support.v4.app.FragmentActivity;
 import it.scoppelletti.spaceship.app.AppExt;
 import it.scoppelletti.spaceship.rx.CompletableCoordinator;
 import it.scoppelletti.spaceship.rx.SingleCoordinator;
-import it.scoppelletti.spaceship.sample.data.DataForm;
+import it.scoppelletti.spaceship.sample.data.DataViewModel;
 
 public final class TabbedActivityData extends Fragment {
     public static final String TAG = MainApp.TAG_TABBEDACTIVITYDATA;
-    private SingleCoordinator<DataForm> myCreator;
-    private SingleCoordinator<DataForm> myReader;
-    private SingleCoordinator<DataForm> myUpdater;
+    private SingleCoordinator<DataViewModel> myCreator;
+    private SingleCoordinator<DataViewModel> myReader;
+    private SingleCoordinator<DataViewModel> myUpdater;
     private CompletableCoordinator myDeleter;
 
     public TabbedActivityData() {
@@ -31,7 +31,7 @@ public final class TabbedActivityData extends Fragment {
     }
 
     @NonNull
-    public SingleCoordinator<DataForm> getCreator() {
+    public SingleCoordinator<DataViewModel> getCreator() {
         if (myCreator == null) {
             myCreator = new SingleCoordinator<>();
         }
@@ -40,7 +40,7 @@ public final class TabbedActivityData extends Fragment {
     }
 
     @NonNull
-    public SingleCoordinator<DataForm> getReader() {
+    public SingleCoordinator<DataViewModel> getReader() {
         if (myReader == null) {
             myReader = new SingleCoordinator<>();
         }
@@ -49,7 +49,7 @@ public final class TabbedActivityData extends Fragment {
     }
 
     @NonNull
-    public SingleCoordinator<DataForm> getUpdater() {
+    public SingleCoordinator<DataViewModel> getUpdater() {
         if (myUpdater == null) {
             myUpdater = new SingleCoordinator<>();
         }

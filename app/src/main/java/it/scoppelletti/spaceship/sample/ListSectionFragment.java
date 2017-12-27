@@ -26,9 +26,8 @@ import org.greenrobot.eventbus.Subscribe;
 import it.scoppelletti.spaceship.ExceptionEvent;
 import it.scoppelletti.spaceship.rx.CompleteEvent;
 import it.scoppelletti.spaceship.rx.SingleCoordinator;
-import it.scoppelletti.spaceship.rx.SingleObserverFactory;
 import it.scoppelletti.spaceship.rx.StartEvent;
-import it.scoppelletti.spaceship.sample.data.DataForm;
+import it.scoppelletti.spaceship.sample.data.DataViewModel;
 import it.scoppelletti.spaceship.sample.data.DataProvider;
 import it.scoppelletti.spaceship.sample.widget.DataListAdapter;
 
@@ -36,11 +35,14 @@ import it.scoppelletti.spaceship.sample.widget.DataListAdapter;
 public final class ListSectionFragment extends Fragment {
     public static final String TAG = MainApp.TAG_LISTSECTION;
     private int myPos;
-    private List<DataForm> myList;
+    private List<DataViewModel> myList;
     private DataListAdapter myAdapter;
     private RecyclerView myListView;
     private LinearLayoutManager myListLayout;
     private CompositeDisposable myDisposables;
+
+    public ListSectionFragment() {
+    }
 
     @NonNull
     public static ListSectionFragment newInstance() {
@@ -78,7 +80,7 @@ public final class ListSectionFragment extends Fragment {
 
         view = getView();
         ctx = getActivity();
-        myListView = (RecyclerView) view.findViewById(R.id.list_view);
+        myListView = view.findViewById(R.id.list_view);
         myListLayout = new LinearLayoutManager(ctx);
         myListView.setLayoutManager(myListLayout);
         itemDeco = new DividerItemDecoration(ctx,
@@ -95,8 +97,8 @@ public final class ListSectionFragment extends Fragment {
 
     private void listData() {
         Disposable connection;
-        Single<List<DataForm>> lister;
-        SingleCoordinator<List<DataForm>> coordinator;
+        Single<List<DataViewModel>> lister;
+        SingleCoordinator<List<DataViewModel>> coordinator;
 
         coordinator = DrawerActivityData.getInstance(getActivity()).getLister();
         if (coordinator.isRunning()) {
@@ -113,22 +115,14 @@ public final class ListSectionFragment extends Fragment {
     @Override
     public void onResume() {
         Disposable subscription;
-        SingleCoordinator<List<DataForm>> coordinator;
+        SingleCoordinator<List<DataViewModel>> coordinator;
 
         super.onResume();
         EventBus.getDefault().register(this);
 
         coordinator = DrawerActivityData.getInstance(getActivity()).getLister();
-        subscription = coordinator.subscribe(
-                new SingleObserverFactory<List<DataForm>>() {
-
-                    @NonNull
-                    @Override
-                    public DisposableSingleObserver<List<DataForm>> create() {
-                        return new ListSectionFragment.ListObserver();
-                    }
-        });
-
+        subscription = coordinator.subscribe(() ->
+                new ListSectionFragment.ListObserver());
         myDisposables.add(subscription);
     }
 
@@ -185,7 +179,7 @@ public final class ListSectionFragment extends Fragment {
     }
 
     private final class ListObserver extends
-            DisposableSingleObserver<List<DataForm>> {
+            DisposableSingleObserver<List<DataViewModel>> {
 
         @Override
         protected void onStart() {
@@ -193,7 +187,7 @@ public final class ListSectionFragment extends Fragment {
         }
 
         @Override
-        public void onSuccess(@NonNull List<DataForm> list) {
+        public void onSuccess(@NonNull List<DataViewModel> list) {
             myList = list;
             myAdapter.changeData(myList);
             if (myPos != RecyclerView.NO_POSITION) {

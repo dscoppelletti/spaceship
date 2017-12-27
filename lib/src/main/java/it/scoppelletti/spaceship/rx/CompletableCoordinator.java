@@ -22,8 +22,6 @@ import io.reactivex.Completable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableCompletableObserver;
 import lombok.extern.slf4j.Slf4j;
 
@@ -74,8 +72,8 @@ public final class CompletableCoordinator {
         }
 
         myTask = task.cache();
-        myConnection = myTask.subscribe(newOnSuccessObserver(),
-                newOnErrorObserver());
+        myConnection = myTask.subscribe(() -> myLogger.debug("Task completed."),
+                (ex) -> myLogger.error("Task failed.", ex));
         if (myObserverFactory == null) {
             myLogger.debug("Task started but not subscribed.");
             return Disposables.empty();
@@ -118,7 +116,11 @@ public final class CompletableCoordinator {
             myLogger.debug("Observer subscribed.");
         }
 
-        subscriptions.add(newOnDisposeObserver());
+        subscriptions.add(Disposables.fromRunnable(() -> {
+            myLogger.debug("Subscription canceled.");
+            myObserverFactory = null;
+        }));
+
         return subscriptions;
     }
 
@@ -131,36 +133,6 @@ public final class CompletableCoordinator {
             myConnection = null;
             myLogger.debug("Task connection destroyed.");
         }
-    }
-
-    /**
-     * Creates an observer for the success of the observable task.
-     *
-     * @return The new object.
-     */
-    private Action newOnSuccessObserver() {
-        return new Action() {
-
-            @Override
-            public void run() throws Exception {
-                myLogger.debug("Task completed.");
-            }
-        };
-    }
-
-    /**
-     * Creates an observer for the failure of the observable task.
-     *
-     * @return The new object.
-     */
-    private Consumer<Throwable> newOnErrorObserver() {
-        return new Consumer<Throwable>() {
-
-            @Override
-            public void accept(@NonNull Throwable ex) throws Exception {
-                myLogger.error("Task failed.", ex);
-            }
-        };
     }
 
     /**
@@ -193,21 +165,5 @@ public final class CompletableCoordinator {
             myConnection.dispose();
             myConnection = null;
         }
-    }
-
-    /**
-     * Create an observer for the canceling of the subscription.
-     *
-     * @return The new object.
-     */
-    private Disposable newOnDisposeObserver() {
-        return Disposables.fromRunnable(new Runnable() {
-
-            @Override
-            public void run() {
-                myLogger.debug("Subscription canceled.");
-                myObserverFactory = null;
-            }
-        });
     }
 }

@@ -6,11 +6,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import it.scoppelletti.spaceship.app.AppExt;
 import it.scoppelletti.spaceship.rx.SingleCoordinator;
-import it.scoppelletti.spaceship.sample.data.DataForm;
+import it.scoppelletti.spaceship.sample.data.DataViewModel;
 
 public final class DrawerActivityData extends Fragment {
     public static final String TAG = MainApp.TAG_DRAWERACTIVITYDATA;
-    private SingleCoordinator<List<DataForm>> myLister;
+    private SingleCoordinator<List<DataViewModel>> myLister;
 
     public DrawerActivityData() {
         setRetainInstance(true);
@@ -28,7 +28,7 @@ public final class DrawerActivityData extends Fragment {
     }
 
     @NonNull
-    public SingleCoordinator<List<DataForm>> getLister() {
+    public SingleCoordinator<List<DataViewModel>> getLister() {
         if (myLister == null) {
             myLister = new SingleCoordinator<>();
         }

@@ -6,12 +6,11 @@ description 'Spaceship Library'
 archivesBaseName = 'spaceship'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "26.0.0"
-
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -29,8 +28,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     dataBinding {
         enabled = true
@@ -38,6 +37,7 @@ android {
 }
 
 spaceship {
+    url 'http://github.com/dscoppelletti/spaceship'
     developer {
         name 'Dario Scoppelletti'
         email 'dario@scoppelletti.it'
@@ -45,7 +45,6 @@ spaceship {
     }
     copyright '2013-2017'
     pom {
-        url 'http://github.com/dscoppelletti/spaceship'
         licenses {
             license {
                 name 'The Apache License, Version 2.0'
@@ -61,16 +60,16 @@ spaceship {
 }
 
 dependencies {
-    compile "com.android.support:appcompat-v7:${versionMap.android_support}"
-    compile "com.android.support:design:${versionMap.android_support}"
-    compile "com.android.support:recyclerview-v7:${versionMap.android_support}"
-    compile "com.android.support:preference-v7:${versionMap.android_support}"
-    compile "com.android.support:preference-v14:${versionMap.android_support}"
-    compile "com.android.support:support-annotations:${versionMap.android_support}"
-    compile "io.reactivex.rxjava2:rxandroid:${versionMap.rxandroid}"
-    compile "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"
-    compile "org.greenrobot:eventbus:${versionMap.eventbus}"
-    compile "org.slf4j:slf4j-api:${versionMap.slf4j}"
-    provided "org.projectlombok:lombok:${versionMap.lombok}"
+    api "com.android.support:appcompat-v7:${versionMap.android_support}"
+    api "com.android.support:design:${versionMap.android_support}"
+    api "com.android.support:support-annotations:${versionMap.android_support}"
+    implementation "com.android.support:recyclerview-v7:${versionMap.android_support}"
+    implementation "com.android.support:preference-v7:${versionMap.android_support}"
+    implementation "com.android.support:preference-v14:${versionMap.android_support}"
+    implementation "io.reactivex.rxjava2:rxandroid:${versionMap.rxandroid}"
+    implementation "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"
+    implementation "org.greenrobot:eventbus:${versionMap.eventbus}"
+    implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
+    compileOnly "org.projectlombok:lombok:${versionMap.lombok}"
     annotationProcessor "org.projectlombok:lombok:${versionMap.lombok}"
 }

@@ -54,7 +54,7 @@ public final class TitleAdapter {
         myActivity = builder.myActivity;
 
         if (builder.myToolbarLayoutId != View.NO_ID) {
-            myToolbarLayout = (CollapsingToolbarLayout) myActivity.findViewById(
+            myToolbarLayout = myActivity.findViewById(
                     builder.myToolbarLayoutId);
             if (myToolbarLayout == null) {
                 throw new NullPointerException(String.format(Locale.ENGLISH,

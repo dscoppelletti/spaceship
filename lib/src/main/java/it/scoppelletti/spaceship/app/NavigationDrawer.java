@@ -63,14 +63,14 @@ public final class NavigationDrawer {
     private NavigationDrawer(NavigationDrawer.Builder builder) {
         myActivity = (AppCompatActivity) builder.myActivity;
 
-        myLayout = (DrawerLayout) myActivity.findViewById(builder.myLayoutId);
+        myLayout = myActivity.findViewById(builder.myLayoutId);
         if (myLayout == null) {
             throw new NullPointerException(String.format(Locale.ENGLISH,
                     "No DrawerLayout widget with identifier %1$d.",
                     builder.myLayoutId));
         }
 
-        myView = (NavigationView) myActivity.findViewById(builder.myViewId);
+        myView = myActivity.findViewById(builder.myViewId);
         if (myView == null) {
             throw new NullPointerException(String.format(Locale.ENGLISH,
                     "No NavigationView widget with identifier %1$d.",
@@ -78,7 +78,7 @@ public final class NavigationDrawer {
         }
 
         if (builder.myToolbarId != View.NO_ID) {
-            myToolbar = (Toolbar) myActivity.findViewById(builder.myToolbarId);
+            myToolbar = myActivity.findViewById(builder.myToolbarId);
             if (myToolbar == null) {
                 throw new NullPointerException(String.format(Locale.ENGLISH,
                         "No Toolbar widget with identifier %1$d.",

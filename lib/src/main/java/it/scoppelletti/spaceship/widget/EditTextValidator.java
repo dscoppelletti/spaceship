@@ -22,6 +22,7 @@ package it.scoppelletti.spaceship.widget;
  * @see   it.scoppelletti.spaceship.databinding.TextInputLayoutAdapter#setValidator(android.support.design.widget.TextInputEditText, it.scoppelletti.spaceship.widget.EditTextValidator)
  * @since 1.0.0
  */
+@FunctionalInterface
 public interface EditTextValidator {
 
     /**

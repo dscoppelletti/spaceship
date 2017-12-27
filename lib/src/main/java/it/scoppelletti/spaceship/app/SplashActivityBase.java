@@ -76,8 +76,8 @@ public abstract class SplashActivityBase extends AppCompatActivity {
         data = AppExt.getOrCreateFragment(this, SplashActivityData.class,
                 SplashActivityData.TAG);
         coordinator = data.getSplashCoordinator();
-        subscription = coordinator.subscribe(
-                SplashActivityObserver.newFactory());
+        subscription = coordinator.subscribe(() ->
+                new SplashActivityObserver());
         myDisposables.add(subscription);
 
         if (myFirstRun) {

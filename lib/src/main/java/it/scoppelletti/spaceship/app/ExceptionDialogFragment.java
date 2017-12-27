@@ -112,15 +112,8 @@ public final class ExceptionDialogFragment extends AppCompatDialogFragment {
         builder = new AlertDialog.Builder(activity)
                 .setTitle(titleId)
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setNegativeButton(android.R.string.cancel,
-                        new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                    int which) {
-                                post();
-                            }
-                        });
+                .setNegativeButton(android.R.string.cancel, (dialog, which) ->
+                        post());
 
         setMessage(activity, builder, args, ex);
 

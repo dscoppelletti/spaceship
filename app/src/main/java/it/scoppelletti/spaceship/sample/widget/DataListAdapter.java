@@ -6,12 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import it.scoppelletti.spaceship.databinding.BindingViewHolder;
-import it.scoppelletti.spaceship.sample.data.DataForm;
+import it.scoppelletti.spaceship.sample.data.DataViewModel;
 import it.scoppelletti.spaceship.sample.databinding.DataItemBinding;
 
 public class DataListAdapter extends RecyclerView.Adapter<
         BindingViewHolder<DataItemBinding>> {
-    private List<DataForm> myData;
+    private List<DataViewModel> myData;
 
     public DataListAdapter() {
         setHasStableIds(true);
@@ -31,7 +31,7 @@ public class DataListAdapter extends RecyclerView.Adapter<
         return myData.get(position).getId();
     }
 
-    public void changeData(@Nullable List<DataForm> data) {
+    public void changeData(@Nullable List<DataViewModel> data) {
         if (data != myData) {
             myData = data;
             notifyDataSetChanged();
@@ -56,13 +56,13 @@ public class DataListAdapter extends RecyclerView.Adapter<
             return;
         }
 
-        holder.getBinding().setItem(myData.get(position));
+        holder.getBinding().setModel(myData.get(position));
         holder.getBinding().executePendingBindings();
     }
 
     @Override
     public void onViewRecycled(BindingViewHolder<DataItemBinding> holder) {
-        holder.getBinding().setItem(null);
+        holder.getBinding().setModel(null);
         holder.getBinding().executePendingBindings();
     }
 }

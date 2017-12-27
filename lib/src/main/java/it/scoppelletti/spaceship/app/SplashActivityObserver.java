@@ -22,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.greenrobot.eventbus.EventBus;
 import it.scoppelletti.spaceship.R;
 import it.scoppelletti.spaceship.ExceptionEvent;
-import it.scoppelletti.spaceship.rx.CompletableObserverFactory;
 import it.scoppelletti.spaceship.rx.CompleteEvent;
 
 /**
@@ -32,27 +31,9 @@ import it.scoppelletti.spaceship.rx.CompleteEvent;
 final class SplashActivityObserver extends DisposableCompletableObserver {
 
     /**
-     * Private constructor.
+     * Sole constructor.
      */
-    private SplashActivityObserver() {
-    }
-
-    /**
-     * Creates a new factory object for creating instances of the
-     * {@code SplashActivityObserver} class.
-     *
-     * @return The new object.
-     */
-    @NonNull
-    static CompletableObserverFactory newFactory() {
-        return new CompletableObserverFactory() {
-
-            @NonNull
-            @Override
-            public DisposableCompletableObserver create() {
-                return new SplashActivityObserver();
-            }
-        };
+    SplashActivityObserver() {
     }
 
     @Override

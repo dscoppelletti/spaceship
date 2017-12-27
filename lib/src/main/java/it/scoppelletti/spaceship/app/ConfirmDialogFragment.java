@@ -107,24 +107,10 @@ public final class ConfirmDialogFragment extends AppCompatDialogFragment {
 
         builder = new AlertDialog.Builder(activity)
                 .setTitle(titleId)
-                .setPositiveButton(positiveId,
-                        new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                    int which) {
-                                post(DialogInterface.BUTTON_POSITIVE);
-                            }
-                        })
-                .setNegativeButton(negativeId,
-                        new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                    int which) {
-                                post(DialogInterface.BUTTON_NEGATIVE);
-                            }
-                        });
+                .setPositiveButton(positiveId, (dialog, which) ->
+                        post(DialogInterface.BUTTON_POSITIVE))
+                .setNegativeButton(negativeId, (dialog, which) ->
+                        post(DialogInterface.BUTTON_NEGATIVE));
 
         setMessage(builder, args);
 

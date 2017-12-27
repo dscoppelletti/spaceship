@@ -26,6 +26,7 @@ import io.reactivex.observers.DisposableSingleObserver;
  * @see       it.scoppelletti.spaceship.rx.SingleCoordinator#subscribe(it.scoppelletti.spaceship.rx.SingleObserverFactory)
  * @since     1.0.0
  */
+@FunctionalInterface
 public interface SingleObserverFactory<T> {
 
     /**

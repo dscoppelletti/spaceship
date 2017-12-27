@@ -15,7 +15,7 @@ import it.scoppelletti.spaceship.sample.DataEditEvent;
 import it.scoppelletti.spaceship.sample.R;
 import it.scoppelletti.spaceship.widget.EditTextValidator;
 
-public final class DataForm extends BaseObservable implements Parcelable {
+public final class DataViewModel extends BaseObservable implements Parcelable {
     private final EditTextValidator myDescValidator;
     private final EditTextValidator myNameValidator;
     private long myId;
@@ -26,53 +26,45 @@ public final class DataForm extends BaseObservable implements Parcelable {
     private boolean myNewData;
     private boolean myChanged;
 
-    public static final Creator<DataForm> CREATOR = new Creator<DataForm>() {
+    public static final Creator<DataViewModel> CREATOR = new Creator<DataViewModel>() {
 
         @Override
-        public DataForm createFromParcel(Parcel in) {
-            return new DataForm(in);
+        public DataViewModel createFromParcel(Parcel in) {
+            return new DataViewModel(in);
         }
 
         @Override
-        public DataForm[] newArray(int size) {
-            return new DataForm[size];
+        public DataViewModel[] newArray(int size) {
+            return new DataViewModel[size];
         }
     };
 
-    public DataForm() {
-        myNameValidator = new EditTextValidator() {
-
-            @Override
-            public boolean validate() {
-                if (TextUtils.isEmpty(myName)) {
-                    setNameError(R.string.err_name_required);
-                    return false;
-                }
-
-                setNameError(0);
-                return true;
+    public DataViewModel() {
+        myNameValidator = () -> {
+            if (TextUtils.isEmpty(myName)) {
+                setNameError(R.string.err_name_required);
+                return false;
             }
+
+            setNameError(0);
+            return true;
         };
 
-        myDescValidator = new EditTextValidator() {
-
-            @Override
-            public boolean validate() {
-                if (TextUtils.isEmpty(myDesc)) {
-                    setDescError(R.string.err_desc_required);
-                    return false;
-                }
-
-                setDescError(0);
-                return true;
+        myDescValidator = () -> {
+            if (TextUtils.isEmpty(myDesc)) {
+                setDescError(R.string.err_desc_required);
+                return false;
             }
+
+            setDescError(0);
+            return true;
         };
 
         myNewData = true;
         myChanged = false;
     }
 
-    private DataForm(Parcel in) {
+    private DataViewModel(Parcel in) {
         this();
 
         myId = in.readLong();

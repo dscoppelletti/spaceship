@@ -25,6 +25,7 @@ import io.reactivex.observers.DisposableCompletableObserver;
  * @see   it.scoppelletti.spaceship.rx.CompletableCoordinator#subscribe(it.scoppelletti.spaceship.rx.CompletableObserverFactory)
  * @since 1.0.0
  */
+@FunctionalInterface
 public interface CompletableObserverFactory {
 
     /**

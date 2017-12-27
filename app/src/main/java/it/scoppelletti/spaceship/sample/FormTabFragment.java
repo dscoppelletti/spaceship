@@ -28,15 +28,13 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import it.scoppelletti.spaceship.ExceptionEvent;
 import it.scoppelletti.spaceship.app.AppExt;
-import it.scoppelletti.spaceship.app.DialogCloseEvent;
 import it.scoppelletti.spaceship.app.ConfirmDialogFragment;
+import it.scoppelletti.spaceship.app.DialogCloseEvent;
 import it.scoppelletti.spaceship.rx.CompletableCoordinator;
-import it.scoppelletti.spaceship.rx.CompletableObserverFactory;
 import it.scoppelletti.spaceship.rx.CompleteEvent;
 import it.scoppelletti.spaceship.rx.SingleCoordinator;
-import it.scoppelletti.spaceship.rx.SingleObserverFactory;
 import it.scoppelletti.spaceship.rx.StartEvent;
-import it.scoppelletti.spaceship.sample.data.DataForm;
+import it.scoppelletti.spaceship.sample.data.DataViewModel;
 import it.scoppelletti.spaceship.sample.data.DataProvider;
 import it.scoppelletti.spaceship.sample.databinding.FormFragmentBinding;
 import it.scoppelletti.spaceship.widget.SnackbarEvent;
@@ -79,7 +77,7 @@ public final class FormTabFragment extends Fragment implements
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         long dataId;
         Bundle args;
-        DataForm form;
+        DataViewModel form;
 
         super.onActivityCreated(savedInstanceState);
         myDisposables = new CompositeDisposable();
@@ -88,7 +86,7 @@ public final class FormTabFragment extends Fragment implements
             args = getArguments();
             dataId = args.getLong(MainApp.PROP_DATAID, -1);
             if (dataId < 0) {
-                form = new DataForm();
+                form = new DataViewModel();
                 form.setNewData(true);
             } else {
                 form = null;
@@ -98,7 +96,7 @@ public final class FormTabFragment extends Fragment implements
         }
 
         if (form != null) {
-            myBinding.setForm(form);
+            myBinding.setModel(form);
         }
 
         myBinding.txtName.setOnEditorActionListener(this);
@@ -109,8 +107,8 @@ public final class FormTabFragment extends Fragment implements
         long dataId;
         Bundle args;
         Disposable connection;
-        Single<DataForm> reader;
-        SingleCoordinator<DataForm> coordinator;
+        Single<DataViewModel> reader;
+        SingleCoordinator<DataViewModel> coordinator;
 
         coordinator = fragment.getReader();
         if (coordinator.isRunning()) {
@@ -130,68 +128,36 @@ public final class FormTabFragment extends Fragment implements
         Disposable subscription;
         TabbedActivityData fragment;
         CompletableCoordinator completableCoordinator;
-        SingleCoordinator<DataForm> singleCoordinator;
+        SingleCoordinator<DataViewModel> singleCoordinator;
 
         super.onResume();
         EventBus.getDefault().register(this);
 
         fragment = TabbedActivityData.getInstance(getActivity());
 
-        if (myBinding != null && myBinding.getForm() == null) {
+        if (myBinding != null && myBinding.getModel() == null) {
             readData(fragment);
         }
 
         singleCoordinator = fragment.getCreator();
-        subscription = singleCoordinator.subscribe(
-                new SingleObserverFactory<DataForm>() {
-
-                    @NonNull
-                    @Override
-                    public DisposableSingleObserver<DataForm> create() {
-                        return new FormTabFragment.CreateObserver();
-                    }
-                });
-
+        subscription = singleCoordinator.subscribe(() ->
+                new FormTabFragment.CreateObserver());
         myDisposables.add(subscription);
 
         singleCoordinator = fragment.getReader();
-        subscription = singleCoordinator.subscribe(
-                new SingleObserverFactory<DataForm>() {
-
-                    @NonNull
-                    @Override
-                    public DisposableSingleObserver<DataForm> create() {
-                        return new FormTabFragment.ReadObserver();
-                    }
-                });
-
+        subscription = singleCoordinator.subscribe(() ->
+                new FormTabFragment.ReadObserver());
         myDisposables.add(subscription);
 
         singleCoordinator = fragment.getUpdater();
-        subscription = singleCoordinator.subscribe(
-                new SingleObserverFactory<DataForm>() {
-
-                    @NonNull
-                    @Override
-                    public DisposableSingleObserver<DataForm> create() {
-                        return new FormTabFragment.UpdateObserver();
-                    }
-                });
-
+        subscription = singleCoordinator.subscribe(() ->
+                new FormTabFragment.UpdateObserver());
         myDisposables.add(subscription);
 
         completableCoordinator = fragment.getDeleter();
-        subscription = completableCoordinator.subscribe(
-                new CompletableObserverFactory() {
-
-                    @NonNull
-                    @Override
-                    public DisposableCompletableObserver create() {
-                        return new FormTabFragment.DeleteObserver();
-                    }
-                });
-
-        myDisposables.add(subscription);
+        subscription = completableCoordinator.subscribe(() ->
+                new FormTabFragment.DeleteObserver());
+          myDisposables.add(subscription);
     }
 
     @Override
@@ -205,12 +171,12 @@ public final class FormTabFragment extends Fragment implements
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        DataForm form;
+        DataViewModel form;
 
         super.onSaveInstanceState(outState);
 
         if (myBinding != null) {
-            form = myBinding.getForm();
+            form = myBinding.getModel();
             if (form != null) {
                 outState.putParcelable(FormTabFragment.PROP_FORM, form);
             }
@@ -225,11 +191,11 @@ public final class FormTabFragment extends Fragment implements
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         MenuItem menuItem;
-        DataForm form;
+        DataViewModel form;
 
         super.onPrepareOptionsMenu(menu);
 
-        form = (myBinding == null) ? null : myBinding.getForm();
+        form = (myBinding == null) ? null : myBinding.getModel();
         menuItem = menu.findItem(R.id.cmd_ok);
         menuItem.setEnabled(form != null && (form.isNewData() ||
                 form.isChanged()));
@@ -268,15 +234,15 @@ public final class FormTabFragment extends Fragment implements
 
     private void onDoneClick() {
         boolean valid;
-        DataForm data;
+        DataViewModel data;
         Disposable connection;
-        Single<DataForm> saver;
+        Single<DataViewModel> saver;
         TabbedActivityData fragment;
-        SingleCoordinator<DataForm> coordinator;
+        SingleCoordinator<DataViewModel> coordinator;
 
         AppExt.hideSoftKeyboard(getActivity());
 
-        data = myBinding.getForm();
+        data = myBinding.getModel();
 
         valid = data.getNameValidator().validate();
         valid = valid && data.getDescValidator().validate();
@@ -310,7 +276,7 @@ public final class FormTabFragment extends Fragment implements
 
     @Subscribe
     public void onDelete(@NonNull DialogCloseEvent event) {
-        DataForm data;
+        DataViewModel data;
         Disposable connection;
         Completable deleter;
         CompletableCoordinator coordinator;
@@ -326,7 +292,7 @@ public final class FormTabFragment extends Fragment implements
             return;
         }
 
-        data = myBinding.getForm();
+        data = myBinding.getModel();
         deleter = DataProvider.delete(data.getId());
         connection = coordinator.connect(deleter.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()));
@@ -334,7 +300,7 @@ public final class FormTabFragment extends Fragment implements
     }
 
     private final class CreateObserver extends
-            DisposableSingleObserver<DataForm> {
+            DisposableSingleObserver<DataViewModel> {
 
         @Override
         protected void onStart() {
@@ -342,8 +308,8 @@ public final class FormTabFragment extends Fragment implements
         }
 
         @Override
-        public void onSuccess(@NonNull DataForm data) {
-            myBinding.setForm(data);
+        public void onSuccess(@NonNull DataViewModel data) {
+            myBinding.setModel(data);
             EventBus.getDefault().post(new DataCreateEvent(data.getId()));
         }
 
@@ -356,7 +322,7 @@ public final class FormTabFragment extends Fragment implements
     }
 
     private final class ReadObserver extends
-            DisposableSingleObserver<DataForm> {
+            DisposableSingleObserver<DataViewModel> {
 
         @Override
         protected void onStart() {
@@ -364,8 +330,8 @@ public final class FormTabFragment extends Fragment implements
         }
 
         @Override
-        public void onSuccess(@NonNull DataForm data) {
-            myBinding.setForm(data);
+        public void onSuccess(@NonNull DataViewModel data) {
+            myBinding.setModel(data);
             EventBus.getDefault().post(CompleteEvent.getInstance());
         }
 
@@ -379,7 +345,7 @@ public final class FormTabFragment extends Fragment implements
     }
 
     private final class UpdateObserver extends
-            DisposableSingleObserver<DataForm> {
+            DisposableSingleObserver<DataViewModel> {
 
         @Override
         protected void onStart() {
@@ -387,8 +353,8 @@ public final class FormTabFragment extends Fragment implements
         }
 
         @Override
-        public void onSuccess(@NonNull DataForm data) {
-            myBinding.setForm(data);
+        public void onSuccess(@NonNull DataViewModel data) {
+            myBinding.setModel(data);
             EventBus.getDefault().post(new SnackbarEvent(
                     R.string.msg_dataUpdated, Snackbar.LENGTH_SHORT));
         }

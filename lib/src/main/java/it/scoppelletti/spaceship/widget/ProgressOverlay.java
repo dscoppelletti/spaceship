@@ -101,20 +101,16 @@ public final class ProgressOverlay extends CompoundControl {
         anim.setStartDelay(ProgressOverlay.DELAY);
         anim.setDuration(ProgressOverlay.DURATION);
 
-        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        anim.addUpdateListener((animation) -> {
+            int color;
+            float f;
 
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                int color;
-                float f;
+            f = animation.getAnimatedFraction();
+            myIndicator.setScaleX(f);
+            myIndicator.setScaleY(f);
 
-                f = animation.getAnimatedFraction();
-                myIndicator.setScaleX(f);
-                myIndicator.setScaleY(f);
-
-                color = Color.argb((int) animation.getAnimatedValue(), 0, 0, 0);
-                setBackgroundColor(color);
-            }
+            color = Color.argb((int) animation.getAnimatedValue(), 0, 0, 0);
+            setBackgroundColor(color);
         });
 
         anim.addListener(new AnimatorListenerAdapter() {
@@ -145,20 +141,16 @@ public final class ProgressOverlay extends CompoundControl {
                 ProgressOverlay.ALPHA_GONE);
         anim.setDuration(ProgressOverlay.DURATION);
 
-        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        anim.addUpdateListener((animation) -> {
+            int color;
+            float f;
 
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                int color;
-                float f;
+            f = 1.0f - animation.getAnimatedFraction();
+            myIndicator.setScaleX(f);
+            myIndicator.setScaleY(f);
 
-                f = 1.0f - animation.getAnimatedFraction();
-                myIndicator.setScaleX(f);
-                myIndicator.setScaleY(f);
-
-                color = Color.argb((int) animation.getAnimatedValue(), 0, 0, 0);
-                setBackgroundColor(color);
-            }
+            color = Color.argb((int) animation.getAnimatedValue(), 0, 0, 0);
+            setBackgroundColor(color);
         });
 
         anim.addListener(new AnimatorListenerAdapter() {

@@ -11,18 +11,18 @@ import it.scoppelletti.spaceship.bluetooth.sample.BR;
 import it.scoppelletti.spaceship.bluetooth.sample.R;
 import it.scoppelletti.spaceship.widget.EditTextValidator;
 
-public final class PrintForm extends BaseObservable implements Parcelable {
+public final class PrintViewModel extends BaseObservable implements Parcelable {
 
-    public static final Creator<PrintForm> CREATOR = new Creator<PrintForm>() {
+    public static final Creator<PrintViewModel> CREATOR = new Creator<PrintViewModel>() {
 
         @Override
-        public PrintForm createFromParcel(Parcel in) {
-            return new PrintForm(in);
+        public PrintViewModel createFromParcel(Parcel in) {
+            return new PrintViewModel(in);
         }
 
         @Override
-        public PrintForm[] newArray(int size) {
-            return new PrintForm[size];
+        public PrintViewModel[] newArray(int size) {
+            return new PrintViewModel[size];
         }
     };
 
@@ -30,23 +30,19 @@ public final class PrintForm extends BaseObservable implements Parcelable {
     private String myBody;
     private int myBodyErr;
 
-    public PrintForm() {
-        myBodyValidator = new EditTextValidator() {
-
-            @Override
-            public boolean validate() {
-                if (TextUtils.isEmpty(myBody)) {
-                    setBodyError(R.string.err_bodyRequired);
-                    return false;
-                }
-
-                setBodyError(0);
-                return true;
+    public PrintViewModel() {
+        myBodyValidator = () -> {
+            if (TextUtils.isEmpty(myBody)) {
+                setBodyError(R.string.err_bodyRequired);
+                return false;
             }
+
+            setBodyError(0);
+            return true;
         };
     }
 
-    private PrintForm(Parcel in) {
+    private PrintViewModel(Parcel in) {
         this();
 
         myBody = in.readString();

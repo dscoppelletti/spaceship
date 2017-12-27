@@ -2,8 +2,8 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <variable name="form"
-            type="it.scoppelletti.spaceship.bluetooth.sample.data.PrintForm" />
+        <variable name="model"
+            type="it.scoppelletti.spaceship.bluetooth.sample.data.PrintViewModel" />
     </data>
     <FrameLayout style="@style/it_scoppelletti_style_rootFrame">
         <android.support.design.widget.CoordinatorLayout
@@ -27,7 +27,7 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:it_scoppelletti_error="@{form.bodyError}"
+                    app:it_scoppelletti_error="@{model.bodyError}"
                     android:layout_marginLeft="@dimen/it_scoppelletti_marginHorz"
                     android:layout_marginRight="@dimen/it_scoppelletti_marginHorz"
                     android:layout_marginTop="@dimen/it_scoppelletti_marginVert"
@@ -37,10 +37,10 @@
                         android:id="@+id/txt_body"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@={form.body}"
+                        android:text="@={model.body}"
                         android:hint="@string/lbl_body"
                         android:inputType="text|textMultiLine|textImeMultiLine"
-                        app:it_scoppelletti_validator="@{form.bodyValidator}"
+                        app:it_scoppelletti_validator="@{model.bodyValidator}"
                         android:imeOptions="actionDone" />
                 </android.support.design.widget.TextInputLayout>
             </android.support.v4.widget.NestedScrollView>

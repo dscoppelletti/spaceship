@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "26.0.0"
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "it.scoppelletti.spaceship.bluetooth.sample"
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -33,25 +33,22 @@ android {
         enabled = true
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
-    compile project(':lib')
-    compile "com.android.support:appcompat-v7:${versionMap.android_support}"
-    compile "com.android.support:design:${versionMap.android_support}"
-    compile "com.android.support:preference-v7:${versionMap.android_support}"
-    compile "com.android.support:preference-v14:${versionMap.android_support}"
-    compile "com.android.support:support-annotations:${versionMap.android_support}"
-    compile "io.reactivex.rxjava2:rxandroid:${versionMap.rxandroid}"
-    compile "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"
-    compile "org.slf4j:slf4j-api:${versionMap.slf4j}"
-    compile "org.greenrobot:eventbus:${versionMap.eventbus}"
+    implementation project(':lib')
+    implementation "com.android.support:preference-v7:${versionMap.android_support}"
+    implementation "com.android.support:preference-v14:${versionMap.android_support}"
+    implementation "io.reactivex.rxjava2:rxandroid:${versionMap.rxandroid}"
+    implementation "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"
+    implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
+    implementation "org.greenrobot:eventbus:${versionMap.eventbus}"
     annotationProcessor "org.greenrobot:eventbus-annotation-processor:${versionMap.eventbus_apt}"
-    compile "it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}"
-    provided "org.projectlombok:lombok:${versionMap.lombok}"
+    implementation "it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}"
+    compileOnly "org.projectlombok:lombok:${versionMap.lombok}"
     annotationProcessor "org.projectlombok:lombok:${versionMap.lombok}"
-    apk "com.noveogroup.android:android-logger:${versionMap.android_logger}"
+    runtimeOnly "com.noveogroup.android:android-logger:${versionMap.android_logger}"
 }

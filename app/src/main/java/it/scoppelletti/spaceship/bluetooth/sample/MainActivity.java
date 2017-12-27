@@ -17,7 +17,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import io.reactivex.Completable;
@@ -33,11 +32,10 @@ import it.scoppelletti.spaceship.ExceptionEvent;
 import it.scoppelletti.spaceship.app.AppExt;
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment;
 import it.scoppelletti.spaceship.bluetooth.BluetoothExt;
-import it.scoppelletti.spaceship.bluetooth.sample.data.PrintForm;
+import it.scoppelletti.spaceship.bluetooth.sample.data.PrintViewModel;
 import it.scoppelletti.spaceship.bluetooth.sample.data.Printer;
 import it.scoppelletti.spaceship.bluetooth.sample.databinding.MainActivityBinding;
 import it.scoppelletti.spaceship.rx.CompletableCoordinator;
-import it.scoppelletti.spaceship.rx.CompletableObserverFactory;
 import it.scoppelletti.spaceship.rx.ExponentialRetry;
 import it.scoppelletti.spaceship.rx.StartEvent;
 import it.scoppelletti.spaceship.types.StringExt;
@@ -46,7 +44,7 @@ import it.scoppelletti.spaceship.widget.SnackbarEvent;
 
 public class MainActivity extends AppCompatActivity implements
         TextView.OnEditorActionListener {
-    private static final String PROP_FORM = "1";
+    private static final String PROP_MODEL = "1";
     private static final int REQ_PRINT = 1;
     private ProgressOverlay myProgressBar;
     private MainActivityBinding myBinding;
@@ -58,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Toolbar toolbar;
-        PrintForm form;
+        PrintViewModel model;
         FloatingActionButton fab;
 
         super.onCreate(savedInstanceState);
@@ -66,27 +64,21 @@ public class MainActivity extends AppCompatActivity implements
                 R.layout.main_activity);
         myDisposables = new CompositeDisposable();
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        myProgressBar = (ProgressOverlay) findViewById(R.id.progress_bar);
+        myProgressBar = findViewById(R.id.progress_bar);
 
         if (savedInstanceState == null) {
-            form = new PrintForm();
+            model = new PrintViewModel();
         } else {
-            form = savedInstanceState.getParcelable(MainActivity.PROP_FORM);
+            model = savedInstanceState.getParcelable(MainActivity.PROP_MODEL);
         }
 
-        myBinding.setForm(form);
+        myBinding.setModel(model);
         myBinding.txtBody.setOnEditorActionListener(this);
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                onPrintClick();
-            }
-        });
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener((view) -> onPrintClick());
     }
 
     @Override
@@ -100,14 +92,8 @@ public class MainActivity extends AppCompatActivity implements
         coordinator = AppExt.getOrCreateFragment(this,
                 MainActivityData.class, MainActivityData.TAG)
                 .getPrinter();
-        subscription = coordinator.subscribe(new CompletableObserverFactory() {
-
-            @NonNull
-            @Override
-            public DisposableCompletableObserver create() {
-                return new MainActivity.PrintObserver();
-            }
-        });
+        subscription = coordinator.subscribe(() ->
+                new MainActivity.PrintObserver());
 
         myDisposables.add(subscription);
     }
@@ -123,14 +109,14 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        PrintForm form;
+        PrintViewModel model;
 
         super.onSaveInstanceState(outState);
 
         if (myBinding != null) {
-            form = myBinding.getForm();
-            if (form != null) {
-                outState.putParcelable(MainActivity.PROP_FORM, form);
+            model = myBinding.getModel();
+            if (model != null) {
+                outState.putParcelable(MainActivity.PROP_MODEL, model);
             }
         }
     }
@@ -188,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void onPrintClick() {
         String deviceAddress;
-        PrintForm form;
+        PrintViewModel model;
         Disposable connection;
         Completable printer;
         SharedPreferences prefs;
@@ -196,8 +182,8 @@ public class MainActivity extends AppCompatActivity implements
 
         AppExt.hideSoftKeyboard(this);
 
-        form = myBinding.getForm();
-        if (!form.getBodyValidator().validate()) {
+        model = myBinding.getModel();
+        if (!model.getBodyValidator().validate()) {
             return;
         }
 
@@ -223,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements
                         .build();
             }
 
-            printer = Printer.newInstance(this, deviceAddress, form.getBody());
+            printer = Printer.newInstance(this, deviceAddress, model.getBody());
             connection = coordinator.connect(
                     printer.retryWhen(new ExponentialRetry(3))
                         .subscribeOn(Schedulers.io())
@@ -241,26 +227,15 @@ public class MainActivity extends AppCompatActivity implements
 
     @Subscribe
     public void onSnackbarEvent(final @NonNull SnackbarEvent event) {
-        myProgressBar.hide(new Runnable() {
-
-            @Override
-            public void run() {
-                event.show(myBinding.txtBody);
-            }
-        });
+        myProgressBar.hide(() -> event.show(myBinding.txtBody));
     }
 
     @Subscribe
     public void onExceptionEvent(final @NonNull ExceptionEvent event) {
-        myProgressBar.hide(new Runnable() {
-
-            @Override
-            public void run() {
+        myProgressBar.hide(() ->
                 new ExceptionDialogFragment.Builder(MainActivity.this)
                         .exceptionEvent(event)
-                        .show();
-            }
-        });
+                        .show());
     }
 
     private static final class PrintObserver extends

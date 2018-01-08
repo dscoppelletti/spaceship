@@ -29,7 +29,7 @@ import android.view.ViewGroup;
  * Extended {@code FragmentPagerAdapter}.
  *
  * @see   <a href="http://guides.codepath.com/android/ViewPager-with-FragmentPagerAdapter#access-fragment-instances"
- *        target="_top">ViewPager with FragmentPagerAdapter &gt; Access Fragment
+ *        target="_blank">ViewPager with FragmentPagerAdapter &gt; Access Fragment
  *        Instances</a>
  * @since 1.0.0
  */

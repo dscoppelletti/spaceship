@@ -32,9 +32,9 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @see   android.support.v7.app.AppCompatActivity#onSupportNavigateUp()
  * @see   <a href="http://developer.android.com/design/patterns/navigation.html"
- *        target="_top">Navigation with Back and Up</a>
+ *        target="_blank">Navigation with Back and Up</a>
  * @see   <a href="http://developer.android.com/training/implementing-navigation/ancestral.html"
- *        target="_top">Providing Up Navigation</a>
+ *        target="_blank">Providing Up Navigation</a>
  * @since 1.0.0
  */
 @Slf4j

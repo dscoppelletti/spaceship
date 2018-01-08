@@ -32,10 +32,10 @@ import android.view.View;
  * vertical-scrolling widget.
  *
  * @see   <a href="http://github.com/codepath/android_guides/wiki/Floating-Action-Buttons"
- *        target="_top">Floating Action Buttons &gt; Animating the Floating
+ *        target="_blank">Floating Action Buttons &gt; Animating the Floating
  *        Action Button</a>
  *        <a href="http://github.com/ianhanniballake/cheesesquare/tree/scroll_aware_fab"
- *        target="_top">Demos the new Android Design library</a>
+ *        target="_blank">Demos the new Android Design library</a>
  * @since 1.0.0
  */
 public final class FabScrollAwareBehavior extends

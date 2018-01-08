@@ -264,7 +264,7 @@ public final class ConfirmDialogFragment extends AppCompatDialogFragment {
          * @param  obj The object. May be {@code null}.
          * @return     This object.
          * @see        <a href="http://greenrobot.org/eventbus"
-         *             target="_top">EventBus: Events for Android</a>
+         *             target="_blank">EventBus: Events for Android</a>
          */
         @NonNull
         public ConfirmDialogFragment.Builder closeEvent(

@@ -25,8 +25,8 @@ import android.support.annotation.Nullable;
  *
  * @see   android.app.Activity#onActivityResult(int, int, android.content.Intent)
  * @see   android.app.Activity#startActivityForResult(android.content.Intent, int)
- * @see   <a href="http://stackoverflow.com/questions/4253118" target="_top">Is
- *        onResume() called before onActivityResult()?</a>
+ * @see   <a href="http://stackoverflow.com/questions/4253118"
+ *        target="_blank">Is onResume() called before onActivityResult()?</a>
  * @since 1.0.0
  */
 public final class ActivityResultHolder {

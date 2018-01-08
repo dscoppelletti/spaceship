@@ -18,8 +18,8 @@
  * Reactive programming.
  *
  * @see     <a href="http://github.com/dscoppelletti/spaceship/wiki/Reactive-programming"
- *          target="_top">Reactive programming</a>
- * @see     <a href="http://reactivex.io" target="_top">ReactiveX</a>
+ *          target="_blank">Reactive programming</a>
+ * @see     <a href="http://reactivex.io" target="_blank">ReactiveX</a>
  * @version 1.0.0
  */
 package it.scoppelletti.spaceship.rx;

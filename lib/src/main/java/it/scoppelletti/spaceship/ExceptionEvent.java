@@ -33,8 +33,8 @@ import android.support.annotation.StringRes;
  * &#125;
  * </pre></blockquote>
  *
- * @see  <a href="http://greenrobot.org/eventbus" target="_top">EventBus: Events
- *       for Android</a>
+ * @see  <a href="http://greenrobot.org/eventbus" target="_blank">EventBus:
+ *       Events for Android</a>
  * @since 1.0.0
  */
 public final class ExceptionEvent {

@@ -95,7 +95,7 @@ public final class SnackbarEvent {
      *
      * @param view The view to find a parent from.
      * @see        <a href="http://greenrobot.org/eventbus"
-     *             target="_top">EventBus: Events for Android</a>
+     *             target="_blank">EventBus: Events for Android</a>
      */
     public void show(@NonNull View view) {
         String msg;

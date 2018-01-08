@@ -18,7 +18,7 @@
  * Client <abbr title="HyperText Transfer Protocol">HTTP</abbr> communication
  * <abbr title="Application Programming Interface">API</abbr>.
  *
- * @see <a href="http://square.github.io/retrofit" target="_top">Retrofit</a>
+ * @see <a href="http://square.github.io/retrofit" target="_blank">Retrofit</a>
  * @version 1.0.0
  */
 package it.scoppelletti.spaceship.http;

@@ -192,8 +192,8 @@ public final class SslExt {
      * @param  in Input stream.
      * @return    The key.
      * @see       <a href="http://stackoverflow.com/questions/11787571"
-     *            target="_top">How to read .pem file to get private and public
-     *            key</a>
+     *            target="_blank">How to read .pem file to get private and
+     *            public key</a>
      */
     private static PrivateKey loadPrivateKey(InputStream in) {
         int n;

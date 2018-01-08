@@ -114,8 +114,8 @@ public final class HttpExt {
      *              Network errors.
      * @throws      java.lang.RuntimeException
      *              Unexpected errors.
-     * @see <a href="http://projects.spring.io/spring-boot" target="_top">Spring
-     *      Boot</a>
+     * @see         <a href="http://projects.spring.io/spring-boot"
+     *              target="_blank">Spring Boot</a>
      */
     @NonNull
     public static <R> Response<R> execute(@NonNull Call<R> call) throws

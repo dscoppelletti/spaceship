@@ -17,7 +17,7 @@
 /**
  * Amazon Cognito integration.
  *
- * @see     <a href="http://aws.amazon.com/cognito" target="_top">Amazon
+ * @see     <a href="http://aws.amazon.com/cognito" target="_blank">Amazon
  *          Cognito</a>
  * @version 1.0.0
  */

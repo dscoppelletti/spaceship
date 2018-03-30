@@ -38,6 +38,7 @@ android {
 dependencies {
     implementation project(':lib')
     implementation "com.squareup.okhttp3:okhttp:${versionMap.okhttp}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${versionMap.retrofit}"
     implementation "com.squareup.retrofit2:converter-scalars:${versionMap.retrofit}"
     implementation "com.squareup.retrofit2:retrofit:${versionMap.retrofit}"
     implementation "io.reactivex.rxjava2:rxandroid:${versionMap.rxandroid}"

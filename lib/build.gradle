@@ -59,9 +59,8 @@ spaceship {
 dependencies {
     implementation "com.google.code.gson:gson:${versionMap.gson}"
     implementation "com.squareup.okhttp3:okhttp:${versionMap.okhttp}"
-    implementation "com.squareup.retrofit2:retrofit:${versionMap.retrofit}"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:${versionMap.retrofit}"
     implementation "com.squareup.retrofit2:converter-gson:${versionMap.retrofit}"
+    implementation "com.squareup.retrofit2:retrofit:${versionMap.retrofit}"
     implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
     implementation "it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}"
     compileOnly "org.projectlombok:lombok:${versionMap.lombok}"

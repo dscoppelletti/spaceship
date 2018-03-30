@@ -44,7 +44,7 @@ public final class ClientInterceptor implements Interceptor {
     private final Context myCtx;
 
     /**
-     * Sole constructor.
+     * Constructor.
      *
      * @param ctx The context.
      */

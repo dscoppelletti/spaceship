@@ -1,0 +1,72 @@
+apply plugin: 'com.android.library'
+apply plugin: 'it.scoppelletti.spaceship.library'
+
+group 'it.scoppelletti.spaceship'
+description 'Spaceship Library for Amazon Cognito'
+archivesBaseName = 'spaceship-cognito'
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            consumerProguardFiles 'proguard-rules.pro'
+            debuggable false
+        }
+        debug {
+            minifyEnabled false
+            debuggable true
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+spaceship {
+    url 'http://github.com/dscoppelletti/spaceship-cognito'
+    developer {
+        name 'Dario Scoppelletti'
+        email 'dario@scoppelletti.it'
+        url 'http://www.scoppelletti.it'
+    }
+    copyright '2017'
+    pom {
+        licenses {
+            license {
+                name 'The Apache License, Version 2.0'
+                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            }
+        }
+        scm {
+            connection 'scm:git:git@github.com:dscoppelletti/spaceship-cognito.git'
+            developerConnection 'scm:git:git@github.com:dscoppelletti/spaceship-cognito.git'
+            url 'git@github.com:dscoppelletti/spaceship-cognito.git'
+        }
+    }
+}
+
+dependencies {
+    api "com.amazonaws:aws-android-sdk-cognitoidentityprovider:${versionMap.aws}"
+    api "com.amazonaws:aws-android-sdk-core:${versionMap.aws}"
+    implementation "io.reactivex.rxjava2:rxandroid:${versionMap.rxandroid}"
+    implementation "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"
+    implementation "org.greenrobot:eventbus:${versionMap.eventbus}"
+    implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
+    implementation "it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}"
+    compileOnly "org.projectlombok:lombok:${versionMap.lombok}"
+    annotationProcessor "org.projectlombok:lombok:${versionMap.lombok}"
+}

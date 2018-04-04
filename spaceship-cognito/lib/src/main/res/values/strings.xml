@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="it_scoppelletti_cognito_cmd_sendVerificationCode">Send me a verification code</string>
+    <string name="it_scoppelletti_cognito_cmd_verifyEmail">Verify email</string>
+    <string name="it_scoppelletti_cognito_cmd_verifyPhoneNumber">Verify phone number</string>
+    <string name="it_scoppelletti_cognito_err_challengeNotSupported">Challenge type %1$s is not supported.</string>
+    <string name="it_scoppelletti_cognito_err_changePasswordAlreadyInProgress">Change password already in progress.</string>
+    <string name="it_scoppelletti_cognito_err_loginAlreadyInProgress">Login already in progress.</string>
+    <string name="it_scoppelletti_cognito_err_mfaNotSupported">Multi-factor authentication is not supported.</string>
+    <string name="it_scoppelletti_cognito_err_pictureRequired">Picture is required.</string>
+    <string name="it_scoppelletti_cognito_err_preferredUserCodeRequired">Preferred user name is required.</string>
+    <string name="it_scoppelletti_cognito_err_profileRequired">Profile is required.</string>
+    <string name="it_scoppelletti_cognito_err_resetPasswordAlreadyInProgress">Reset password already in progress.</string>
+    <string name="it_scoppelletti_cognito_err_sendVerificationCodeAlreadyInProgress">Send verification code already in progress.</string>
+    <string name="it_scoppelletti_cognito_err_getSessionFailed">Failed to get session.</string>
+    <string name="it_scoppelletti_cognito_err_userAttributeRequired">The %1$s attribute is required.</string>
+    <string name="it_scoppelletti_cognito_err_verificationCodeRequired">Verification code is required.</string>
+    <string name="it_scoppelletti_cognito_err_verifyAttributeAlreadyInProgress">Verify attribute already in progress.</string>
+    <string name="it_scoppelletti_cognito_lbl_haveVerificationCode">I have a verification code</string>
+    <string name="it_scoppelletti_cognito_lbl_picture">Picture</string>
+    <string name="it_scoppelletti_cognito_lbl_preferredUserCode">Preferred user name</string>
+    <string name="it_scoppelletti_cognito_lbl_profile">Profile</string>
+    <string name="it_scoppelletti_cognito_lbl_verificationCode">Verification code</string>
+    <string name="it_scoppelletti_cognito_msg_emailVerified">Email has been verified.</string>
+    <string name="it_scoppelletti_cognito_msg_newPassword">You are required to set a new password.</string>
+    <string name="it_scoppelletti_cognito_msg_phoneNumberVerified">Phone number has been verified.</string>
+    <string name="it_scoppelletti_cognito_msg_resetPassword">Password has been reset.</string>
+    <string name="it_scoppelletti_cognito_msg_verificationCode">Verification code was sent to %2$s via %1$s.</string>
+</resources>

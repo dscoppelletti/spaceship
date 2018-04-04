@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/it_scoppelletti_style_drawerHeader">
+    <TextView android:id="@+id/lbl_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/it_scoppelletti_marginHorz"
+        android:layout_marginRight="@dimen/it_scoppelletti_marginHorz"
+        android:layout_marginTop="@dimen/it_scoppelletti_marginVert"
+        android:layout_marginBottom="@dimen/it_scoppelletti_marginVert"
+        android:layout_gravity="bottom"
+        android:ellipsize="end"
+        android:textAppearance="@style/it_scoppelletti_text_body2"
+        android:textColor="@color/colorTextAccent" />
+</FrameLayout>

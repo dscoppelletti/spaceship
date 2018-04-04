@@ -1,0 +1,68 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
+    defaultConfig {
+        applicationId "it.scoppelletti.spaceship.cognito.sample"
+        minSdkVersion 16
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ eventBusIndex : 'it.scoppelletti.spaceship.cognito.sample.MainEventBusIndex' ]
+            }
+        }
+        if (project.hasProperty('cognito.poolId')) {
+            buildConfigField 'String', 'POOL_ID',
+                    '"' + project.property('cognito.poolId') + '"'
+        } else {
+            buildConfigField 'String', 'POOL_ID', '"N/D"'
+        }
+        if (project.hasProperty('cognito.clientId')) {
+            buildConfigField 'String', 'CLIENT_ID',
+                    '"' + project.property('cognito.clientId') + '"'
+        } else {
+            buildConfigField 'String', 'CLIENT_ID', '"N/D"'
+        }
+        if (project.hasProperty('cognito.clientSecret')) {
+            buildConfigField 'String', 'CLIENT_SECRET',
+                    '"' + project.property('cognito.clientSecret') + '"'
+        } else {
+            buildConfigField 'String', 'CLIENT_SECRET', '"N/D"'
+        }
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            useProguard false
+            debuggable true
+        }
+        release {
+            minifyEnabled false
+            useProguard false
+            debuggable false
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation project(':lib')
+    implementation "org.greenrobot:eventbus:${versionMap.eventbus}"
+    annotationProcessor "org.greenrobot:eventbus-annotation-processor:${versionMap.eventbus_apt}"
+    implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
+    implementation "it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}"
+    compileOnly "org.projectlombok:lombok:${versionMap.lombok}"
+    annotationProcessor "org.projectlombok:lombok:${versionMap.lombok}"
+    runtimeOnly "com.noveogroup.android:android-logger:${versionMap.android_logger}"
+}

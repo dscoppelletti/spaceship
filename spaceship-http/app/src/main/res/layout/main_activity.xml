@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/it_scoppelletti_style_rootFrame">
+    <android.support.design.widget.CoordinatorLayout
+        style="@style/it_scoppelletti_style_coordinatorLayout"
+        android:fitsSystemWindows="true">
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar_layout"
+            style="@style/it_scoppelletti_style_collapsingAppBarLayout"
+            android:layout_height="@dimen/it_scoppelletti_appBar_expandedHeight"
+            android:theme="@style/it_scoppelletti_theme_appBarLayout">
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/toolbar_layout"
+                style="@style/it_scoppelletti_style_collapsingToolbarLayout">
+                <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
+                    style="@style/it_scoppelletti_style_collapsingToolbar"/>
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/content_frame"
+            style="@style/it_scoppelletti_style_contentFrame"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.design.widget.CoordinatorLayout>
+</FrameLayout>
+

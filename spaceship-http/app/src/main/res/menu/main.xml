@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/cmd_http"
+        android:title="@string/cmd_http"
+        android:icon="@drawable/ic_http_menu"
+        app:showAsAction="never" />
+    <item android:id="@+id/cmd_network_check"
+        android:title="@string/cmd_network_check"
+        android:icon="@drawable/ic_network_check_menu"
+        app:showAsAction="never" />
+</menu>

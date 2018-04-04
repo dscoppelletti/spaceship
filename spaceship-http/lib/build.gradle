@@ -1,0 +1,71 @@
+apply plugin: 'com.android.library'
+apply plugin: 'it.scoppelletti.spaceship.library'
+
+group 'it.scoppelletti.spaceship'
+description 'Spaceship Library for HTTP'
+archivesBaseName = 'spaceship-http'
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            consumerProguardFiles 'proguard-rules.pro'
+            debuggable false
+        }
+        debug {
+            minifyEnabled false
+            debuggable true
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+spaceship {
+    url 'http://github.com/dscoppelletti/spaceship-http'
+    developer {
+        name 'Dario Scoppelletti'
+        email 'dario@scoppelletti.it'
+        url 'http://www.scoppelletti.it'
+    }
+    copyright '2017'
+    pom {
+        licenses {
+            license {
+                name 'The Apache License, Version 2.0'
+                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            }
+        }
+        scm {
+            connection 'scm:git:git@github.com:dscoppelletti/spaceship-http.git'
+            developerConnection 'scm:git:git@github.com:dscoppelletti/spaceship-http.git'
+            url 'git@github.com:dscoppelletti/spaceship-http.git'
+        }
+    }
+}
+
+dependencies {
+    implementation "com.google.code.gson:gson:${versionMap.gson}"
+    implementation "com.squareup.okhttp3:okhttp:${versionMap.okhttp}"
+    implementation "com.squareup.retrofit2:converter-gson:${versionMap.retrofit}"
+    implementation "com.squareup.retrofit2:retrofit:${versionMap.retrofit}"
+    implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
+    implementation "it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}"
+    compileOnly "org.projectlombok:lombok:${versionMap.lombok}"
+    annotationProcessor "org.projectlombok:lombok:${versionMap.lombok}"
+    testImplementation "junit:junit:${versionMap.junit}"
+    testImplementation "org.hamcrest:hamcrest-all:${versionMap.hamcrest}"
+    testImplementation "org.slf4j:slf4j-simple:${versionMap.slf4j}"
+}

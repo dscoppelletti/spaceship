@@ -1,0 +1,50 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
+    defaultConfig {
+        applicationId "it.scoppelletti.spaceship.http.sample"
+        minSdkVersion 16
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+        if (project.hasProperty('service.url')) {
+            buildConfigField 'String', 'SERVICE_URL', '"' + project.property('service.url') + '"'
+        } else {
+            buildConfigField 'String', 'SERVICE_URL', '"N/A"'
+        }
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            useProguard false
+            debuggable true
+        }
+        release {
+            minifyEnabled false
+            useProguard false
+            debuggable false
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation project(':lib')
+    implementation "com.squareup.okhttp3:okhttp:${versionMap.okhttp}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${versionMap.retrofit}"
+    implementation "com.squareup.retrofit2:converter-scalars:${versionMap.retrofit}"
+    implementation "com.squareup.retrofit2:retrofit:${versionMap.retrofit}"
+    implementation "io.reactivex.rxjava2:rxandroid:${versionMap.rxandroid}"
+    implementation "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"
+    compileOnly "org.projectlombok:lombok:${versionMap.lombok}"
+    annotationProcessor "org.projectlombok:lombok:${versionMap.lombok}"
+    implementation "it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}"
+    runtimeOnly "com.noveogroup.android:android-logger:${versionMap.android_logger}"
+}

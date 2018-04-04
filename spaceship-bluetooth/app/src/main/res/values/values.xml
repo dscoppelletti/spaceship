@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation,TypographyDashes">
+    <eat-comment />
+    <string name="pref_btConfig">pref_btConfig</string>
+    <string name="pref_device">pref_device</string>
+    <!-- Well-known SPP UUID
+    http://developer.android.com/reference/android/bluetooth/BluetoothDevice.html#createRfcommSocketToServiceRecord(java.util.UUID) -->
+    <string name="service_key">00001101-0000-1000-8000-00805F9B34FB</string>
+</resources>

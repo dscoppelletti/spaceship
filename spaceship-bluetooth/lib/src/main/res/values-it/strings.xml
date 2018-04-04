@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="it_scoppelletti_bluetooth_err_connectToSocket">Fallita la connessione al servizio %2$s del dispositivo %1$s.</string>
+    <string name="it_scoppelletti_bluetooth_err_createSocket">Fallita la creazione della connessione al dispositivo %1$s per il servizio %2$s.</string>
+    <string name="it_scoppelletti_bluetooth_err_deviceNotFound">Il dispositivo %1$s non è raggiungibile.</string>
+    <string name="it_scoppelletti_bluetooth_err_noDeviceSelected">Nessun dispositivo selezionato.</string>
+    <string name="it_scoppelletti_bluetooth_err_notSupported">Bluetooth non supportato.</string>
+    <string name="it_scoppelletti_bluetooth_err_notEnabled">Bluetooth non abilitato.</string>
+    <string name="it_scoppelletti_bluetooth_err_writeToSocket">Fallita la scrittura sul servizio %2$s del dispositivo %1$s.</string>
+    <string name="it_scoppelletti_bluetooth_lbl_config">Impostazioni Bluetooth</string>
+    <string name="it_scoppelletti_bluetooth_lbl_noDevicePaired">Nessun dispositivo accoppiato</string>
+    <string name="it_scoppelletti_bluetooth_lbl_noDeviceSelected">Nessun dispositivo selezionato</string>
+    <string name="it_scoppelletti_bluetooth_lbl_notSupported">Bluetooth non supportato</string>
+    <string name="it_scoppelletti_bluetooth_lbl_notEnabled">Bluetooth non abilitato</string>
+    <string name="it_scoppelletti_bluetooth_msg_config">Se il tuo dispositivo non è accoppiato, puoi impostare la configurazione Bluetooth da qui.</string>
+</resources>

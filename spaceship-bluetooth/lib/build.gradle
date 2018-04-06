@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'it.scoppelletti.spaceship.library'
+apply from: '../../gradle-plugins/library.gradle'
 
 group 'it.scoppelletti.spaceship'
 description 'Spaceship Library for Bluetooth'
@@ -37,26 +37,7 @@ android {
 }
 
 spaceship {
-    url 'http://github.com/dscoppelletti/spaceship-bluetooth'
-    developer {
-        name 'Dario Scoppelletti'
-        email 'dario@scoppelletti.it'
-        url 'http://www.scoppelletti.it'
-    }
     copyright '2013-2017'
-    pom {
-        licenses {
-            license {
-                name 'The Apache License, Version 2.0'
-                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-            }
-        }
-        scm {
-            connection 'scm:git:git@github.com:dscoppelletti/spaceship-bluetooth.git'
-            developerConnection 'scm:git:git@github.com:dscoppelletti/spaceship-bluetooth.git'
-            url 'git@github.com:dscoppelletti/spaceship-bluetooth.git'
-        }
-    }
 }
 
 dependencies {

@@ -1,0 +1,329 @@
+/*
+ * Copyright (C) 2016-2018 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ 
+import java.util.Collections
+import org.gradle.api.plugins.BasePlugin
+import org.gradle.external.javadoc.JavadocMemberLevel
+
+apply plugin: 'maven'
+
+class LibraryPlugin implements Plugin<Project> {
+    static final String PROP_DEVREPOURL = 'it.scoppelletti.tools.devRepoUrl'
+    
+    void apply(Project project) {
+        def devRepoUrl = null
+        if (project.hasProperty(PROP_DEVREPOURL)) {
+            devRepoUrl = project.property(PROP_DEVREPOURL)
+            project.logger.info('Property {}={}', PROP_DEVREPOURL, devRepoUrl)
+        } else {
+            project.logger.info('Property {} not set', PROP_DEVREPOURL)
+        }
+        
+        def androidExt = project.android
+        def libExt = project.extensions.create('spaceship', LibraryExtension,
+            project, androidExt)
+        
+        androidExt.libraryVariants.all({ variant ->
+            def tools = new LibraryTools(project, variant, androidExt, libExt)
+            tools.generateMetainf()
+            tools.generateJavadoc()
+            tools.packageSources()
+            tools.packageJavadoc()
+            
+            if (devRepoUrl) {
+                tools.artifacts()
+                tools.upload(devRepoUrl)
+            }
+        })
+        
+        project.afterEvaluate({ prj ->
+			// - Android Plugin for Gradle 2.1.0
+			// Excludes LICENSE, LICENSE.txt, NOTICE, NOTICE.txt,
+			// META-INF/LICENSE, META-INF/LICENSE.txt, META-INF/NOTICE,
+			// META-INF/NOTICE.txt.
+            androidExt.packagingOptions.setExcludes(Collections.emptySet());
+        })
+    }
+}
+
+class Developer {
+    String name = 'Dario Scoppelletti'
+    String email = 'dario@scoppelletti.it'
+    String url = 'http://www.scoppelletti.it'
+}
+
+class LibraryExtension {
+    final Project project
+    final Object androidExt
+    final Developer developer
+    String url = 'http://github.com/dscoppelletti/spaceship'
+    String copyright
+    
+    LibraryExtension(Project project, Object androidExt) {
+        this.project = project
+        this.androidExt = androidExt
+        this.developer = new Developer()
+    }
+    
+    String getDescription() {
+        if (project.description) {
+            return project.description
+        }
+        
+        return project.name
+    }
+    
+    String getVersion() {
+        def ver = androidExt.defaultConfig.versionName
+        if (ver) {
+            return ver
+        }
+        
+        return project.version.toString()
+    }
+    
+    String getCopyrightNotice() {
+        return "${copyright} ${developer.name}, <a href=\"${developer.url}\" " +
+            "target=\"_top\">${developer.url}</a>"
+    }
+}
+
+class LibraryTaskNames {
+    final String generateJavadoc
+    final String generateMetainf
+    final String generateSources
+    final String packageJavadoc
+    final String packageLibrary
+    final String packageSources
+    final String transformJavaRes
+    final String upload;
+    
+    LibraryTaskNames(Object variant) {
+        def varName = variant.name.capitalize()
+        
+        this.generateJavadoc = "generate${varName}Javadoc"
+        this.generateMetainf = "generate${varName}Metainf"
+        this.generateSources = "generate${varName}Sources"
+        this.packageJavadoc = "package${varName}Javadoc"
+        this.packageLibrary = "bundle${varName}"
+        this.packageSources = "package${varName}Sources"
+        this.transformJavaRes =
+            "transformResourcesWithMergeJavaResFor${varName}"
+        this.upload = "upload${varName}"
+    }
+}
+
+class LibraryTools {
+    static final String API_ANDROID = 'http://d.android.com/reference'
+    static final String API_JAVA = 'http://docs.oracle.com/javase/8/docs/api'
+    static final String CLASSIFIER_JAVADOC = 'javadoc'
+    static final String CLASSIFIER_SOURCES = 'sources'
+    final Project project
+    final Object variant
+    final Object androidExt
+    final LibraryExtension libExt
+    final LibraryTaskNames taskNames
+    
+    LibraryTools(Project project, Object variant, Object androidExt,
+            LibraryExtension libExt)
+    {
+        this.project = project
+        this.variant = variant
+        this.androidExt = androidExt
+        this.libExt = libExt
+        this.taskNames = new LibraryTaskNames(variant)
+    }
+    
+    void generateMetainf() {
+        def metainfTask = project.task(taskNames.generateMetainf, type: Copy,
+                overwrite: true, group: BasePlugin.BUILD_GROUP) {
+            description "Generate META-INF for ${variant.name}."
+            into project.file("${project.buildDir}/intermediates/" +
+                "sourceFolderJavaResources/${variant.name}/META-INF")
+            from project.file("${project.rootDir}/..")
+            include 'LICENSE'
+            rename 'LICENSE', 'LICENSE.txt'
+            
+            doLast {
+                def f = project.file("${destinationDir}/NOTICE.txt")
+                f.text = "${libExt.description}\n" +
+                    "Copyright(C) ${libExt.copyright} " +
+                    "${libExt.developer.name}, " +
+                    "<${libExt.developer.url}/>\n"
+            }
+        }
+        
+        // http://stackoverflow.com/questions/34306200 - December 16, 2015
+        def transformJavaResTask = project.tasks[taskNames.transformJavaRes]
+        transformJavaResTask.dependsOn(metainfTask)    
+    }
+    
+    void generateJavadoc() {
+        def javadocTask = project.task(taskNames.generateJavadoc, type: Javadoc,
+                overwrite: true, group: BasePlugin.BUILD_GROUP) {
+            description "Generate Javadoc for ${variant.name}."
+            
+            def compiler = variant.javaCompiler
+            def aptOutDir = project.file("${project.buildDir}/generated/" +
+                "source/apt/${variant.dirName}")
+            
+            title "${libExt.description}, version ${libExt.version}<br />" +
+                "API Reference"
+            source compiler.source.plus(project.fileTree(aptOutDir))
+            setClasspath(compiler.classpath.plus(project.files(
+                androidExt.bootClasspath)))
+            failOnError false
+            verbose false
+            
+            def headerUrl = "<a href=\"${libExt.url}\" target=\"_top\">" +
+                "${libExt.description}</a><br />version ${libExt.version}"
+            def docDir = "${androidExt.sdkDirectory}/docs/reference"
+            
+            options {
+                author false
+                bottom "<span class=\"it-scoppelletti-bottom\">Copyright " +
+                    "&copy; ${libExt.copyrightNotice}</span>"
+                breakIterator false
+                charSet 'utf-8'
+                docEncoding 'utf-8'
+                header headerUrl
+                footer headerUrl
+                links API_JAVA
+                linksOffline API_ANDROID, docDir
+                linkSource false
+                setMemberLevel(JavadocMemberLevel.PROTECTED)
+                noDeprecated false
+                noDeprecatedList true
+                noIndex true
+                noHelp true
+                noNavBar false
+                noQualifiers 'all'
+                noTimestamp true
+                noTree true
+                source "${androidExt.compileOptions.sourceCompatibility}"
+                tags 'attr:X'
+                setUse(true)
+                version true
+                windowTitle libExt.description
+                
+                // I have not found a better way for disabling Javadoc Lint
+                optionFiles project.file('../../gradle-plugins/lint.options')
+            }
+            
+            doLast {
+                def stylesheetFile = project.file(
+                    "${destinationDir}/stylesheet.css")
+                def appendFile = project.file(
+                    '../../gradle-plugins/javadoc.css')
+                stylesheetFile << appendFile.text
+            }
+        }
+        
+        javadocTask.dependsOn(taskNames.packageLibrary)
+    }
+    
+    void packageSources() {
+        def jarTask = project.task(taskNames.packageSources, type: Jar,
+                overwrite: true, group: BasePlugin.UPLOAD_GROUP) {
+            description "Packages sources for ${variant.name}."
+            
+            def compiler = variant.javaCompiler
+            
+            classifier CLASSIFIER_SOURCES
+            from compiler.source
+        }
+        
+        jarTask.dependsOn(taskNames.generateSources)
+    }
+    
+    void packageJavadoc() {
+        def javadocTask = project.tasks[taskNames.generateJavadoc]
+        def jarTask = project.task(taskNames.packageJavadoc, type: Jar,
+                overwrite: true, group: BasePlugin.UPLOAD_GROUP) {
+            description "Packages Javadoc for ${variant.name}."
+            
+            def compiler = variant.javaCompiler
+            
+            classifier CLASSIFIER_JAVADOC
+            from javadocTask.destinationDir
+        }
+    
+        jarTask.dependsOn(javadocTask)
+    }
+    
+    void upload(String devRepoUrl) {
+        // - Android Plugin for Gradle 2.1.0
+    	// The Android plug-in overloads the install task and remaps it to, for
+    	// example, "installDebugAndroidTest"; such tasks try to install the App
+    	// into a connected device.
+    	// I have to define my install task, thus I define one task for each
+    	// variant.
+    	//
+    	// - Gradle 2.10
+    	// I would like to install in local Maven repository, but the pom.xml
+        // file doesn't include the dependencies, thus I deploy in a development
+        // Maven repository (anyway usually in local disk).
+        
+        def uploadTask = project.task(taskNames.upload, type: Upload,
+                overwrite: true, group: BasePlugin.UPLOAD_GROUP) {
+            description "Installs the ${variant.name} artifacts into the " +
+				"development Maven repository."
+                
+            configuration = project.configurations[variant.name]
+            repositories.mavenDeployer {
+				pom.project {
+					version libExt.version
+					description libExt.description
+					url libExt.url
+					inceptionYear libExt.copyright
+					developers {
+						developer {
+							name libExt.developer.name
+							email libExt.developer.email
+							url libExt.developer.url
+						}
+					}
+                    licenses {
+                        license {
+                            name 'The Apache License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    scm {
+                         connection 'scm:git:git@github.com:dscoppelletti/spaceship.git'
+                         developerConnection 'scm:git:git@github.com:dscoppelletti/spaceship.git'
+                         url 'git@github.com:dscoppelletti/spaceship.git'
+                    }                   
+				}
+				repository(url: devRepoUrl)
+			}
+        }
+    }
+    
+    void artifacts() {
+        def cfgName = variant.name
+        project.configurations.maybeCreate(cfgName)
+        
+        project.artifacts.add(cfgName, project.tasks[taskNames.packageLibrary])
+        project.artifacts.add(cfgName, project.tasks[taskNames.packageSources])
+        project.artifacts.add(cfgName, project.tasks[taskNames.packageJavadoc])
+    }
+}
+
+// - Gradle User Guide, ver 4.4
+// The plugin is not visible outside the build script
+apply plugin: LibraryPlugin
+

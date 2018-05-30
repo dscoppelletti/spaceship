@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+    <string name="cmd_section1">Section 1</string>
+    <string name="cmd_section2">Section 2</string>
+    <string name="cmd_section3">Section 3</string>
+    <string name="err_code_duplicate">An item with code %1$s already exists.</string>
+    <string name="err_code_required">The code is required.</string>
+    <string name="err_desc_required">The description in required.</string>
+    <string name="err_item_notfound">No item with id %1$ found.</string>
+    <string name="lbl_code">Code</string>
+    <string name="lbl_desc">Description</string>
+    <string name="lbl_tabbedActivity">Tabbed Activity</string>
+    <string name="lbl_tab1">Tab 1</string>
+    <string name="lbl_tab2">Tab 2</string>
+    <string name="lbl_tab3">Tab 3</string>
+    <string name="msg_created">Item created.</string>
+    <string name="msg_deleted">Item deleted.</string>
+    <string name="msg_deleting">The item will be deleted.</string>
+    <string name="msg_updated">Item updated.</string>
+</resources>

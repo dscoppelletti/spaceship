@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2016 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <eat-comment />
+    <style name="it_scoppelletti_text_display4"
+        parent="android:TextAppearance.Material.Display4" />
+    <style name="it_scoppelletti_text_display3"
+        parent="android:TextAppearance.Material.Display3" />
+    <style name="it_scoppelletti_text_display2"
+        parent="android:TextAppearance.Material.Display2" />
+    <style name="it_scoppelletti_text_display1"
+        parent="android:TextAppearance.Material.Display1" />
+    <style name="it_scoppelletti_text_headline"
+        parent="android:TextAppearance.Material.Headline" />
+    <style name="it_scoppelletti_text_title"
+        parent="android:TextAppearance.Material.Title" />
+    <style name="it_scoppelletti_text_subheading"
+        parent="android:TextAppearance.Material.Subhead" />
+    <style name="it_scoppelletti_text_body2"
+        parent="android:TextAppearance.Material.Body2" />
+    <style name="it_scoppelletti_text_body1"
+        parent="android:TextAppearance.Material.Body1" />
+    <style name="it_scoppelletti_text_caption"
+        parent="android:TextAppearance.Material.Caption" />
+    <style name="it_scoppelletti_text_button"
+        parent="android:TextAppearance.Material.Button" />
+</resources>

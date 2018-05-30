@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="KeyboardInaccessibleWidget,RtlHardcoded"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:gravity="center_vertical"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/it_scoppelletti_list_twoLineItem_height"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/it_scoppelletti_marginHorz"
+    android:paddingRight="@dimen/it_scoppelletti_marginHorz"
+    tools:context=".widget.ItemListAdapter">
+    <TextView android:id="@+id/txtCode"
+        android:layout_width="match_parent"
+        style="@style/it_scoppelletti_style_listItem_line1" />
+    <TextView android:id="@+id/txtDesc"
+        android:layout_width="match_parent"
+        style="@style/it_scoppelletti_style_listItem_line2" />
+</LinearLayout>
+

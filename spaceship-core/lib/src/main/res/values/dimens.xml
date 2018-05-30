@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2015 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources>
+    <eat-comment />
+    <!-- http://material.io/guidelines/layout/metrics-keylines.html#metrics-keylines-keylines-spacing -->
+    <dimen name="it_scoppelletti_marginHorz">16dp</dimen>
+    <dimen name="it_scoppelletti_marginVert">16dp</dimen>
+    <dimen name="it_scoppelletti_spacingHorz">16dp</dimen>
+    <dimen name="it_scoppelletti_spacingVert">8dp</dimen>
+    <dimen name="it_scoppelletti_statusBar_height">24dp</dimen>
+    <dimen name="it_scoppelletti_fab_margin">16dp</dimen>
+    <!-- http://material.io/guidelines/layout/structure.html#structure-app-bar -->
+    <dimen name="it_scoppelletti_appBar_height">56dp</dimen>
+    <dimen name="it_scoppelletti_appBar_expandedHeight">128dp</dimen>
+    <!-- http://material.io/guidelines/layout/structure.html#structure-side-nav -->
+    <!-- Side nav: width = screen width - 56dp; max width = 320dp;
+    header heigth = 320 / 16 * 9 = 180 -->
+    <dimen name="it_scoppelletti_drawer_headerHeight">180dp</dimen>
+    <!-- http://material.io/guidelines/components/dialogs.html#dialogs-specs -->
+    <dimen name="it_scoppelletti_fab_normalSize">56dp</dimen>
+    <dimen name="it_scoppelletti_fab_miniSize">40dp</dimen>
+    <dimen name="it_scoppelletti_fabIcon_size">24dp</dimen>
+    <!-- http://material.io/guidelines/components/dialogs.html#dialogs-specs -->
+    <dimen name="it_scoppelletti_dialog_margin">24dp</dimen>
+    <dimen name="it_scoppelletti_dialog_padding">20dp</dimen>
+    <!-- http://material.io/guidelines/components/dividers.html -->
+    <dimen name="it_scoppelletti_divider_height">1dp</dimen>
+    <!-- http://material.io/guidelines/components/lists.html#lists-actions -->
+    <dimen name="it_scoppelletti_list_singleLineItem_height">48dp</dimen>
+    <dimen name="it_scoppelletti_list_singleLineItemWithIcon_height">56dp</dimen>
+    <dimen name="it_scoppelletti_list_twoLineItem_height">56dp</dimen>
+    <dimen name="it_scoppelletti_list_twoLineItemWithIcon_height">72dp</dimen>
+    <dimen name="it_scoppelletti_list_threeLineItem_height">88dp</dimen>
+    <dimen name="it_scoppelletti_list_secondaryIcon_size">24dp</dimen>
+</resources>

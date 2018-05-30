@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="it_scoppelletti_cmd_delete">Delete</string>
+    <string name="it_scoppelletti_cmd_drawerClose">Close navigation drawer</string>
+    <string name="it_scoppelletti_cmd_drawerOpen">Open navigation drawer</string>
+    <string name="it_scoppelletti_cmd_edit">Edit</string>
+    <string name="it_scoppelletti_cmd_exit">Exit</string>
+    <string name="it_scoppelletti_cmd_list">List</string>
+    <string name="it_scoppelletti_cmd_new">New</string>
+    <string name="it_scoppelletti_cmd_open">Open</string>
+    <string name="it_scoppelletti_cmd_save">Save</string>
+    <string name="it_scoppelletti_cmd_settings">Settings</string>
+    <string name="it_scoppelletti_cmd_update">Update</string>
+    <string name="it_scoppelletti_err_security">Security failure.</string>
+    <string name="it_scoppelletti_msg_looseChanges">The changes will be lost.</string>
+</resources>

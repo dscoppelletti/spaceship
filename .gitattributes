@@ -1,0 +1,12 @@
+# Files attributes
+*.gif binary
+*.jar binary
+*.png binary
+.gitignore export-ignore
+.gitattributes export-ignore
+spaceship-cognito/app/gradle.properties filter=git-crypt diff=git-crypt
+spaceship-http/app/gradle.properties filter=git-crypt diff=git-crypt
+spaceship-http/app/src/main/assets/ca.pem filter=git-crypt diff=git-crypt
+spaceship-http/app/src/main/assets/client.pem filter=git-crypt diff=git-crypt
+spaceship-http/app/src/main/assets/clientkey.pem filter=git-crypt diff=git-crypt
+

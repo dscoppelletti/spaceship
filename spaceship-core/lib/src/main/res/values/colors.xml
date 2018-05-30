@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2015 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <eat-comment />
+    <!-- http://material.io/guidelines/style/color.html - Color Palette -->
+    <!-- Primary: Indigo (500, 100, 700) -->
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryLight">#C5CAE9</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <!-- Accent: Pink (A200, A100, A400) -->
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccentLight">#FF80AB</color>
+    <color name="colorAccentDark">#F50057</color>
+    <!-- Text on primary color -->
+    <color name="textColorPrimary">#FFFFFF</color>
+    <!-- Text on accent color -->
+    <color name="textColorAccent">#FFFFFF</color>
+    <!-- Divider (black 12%) -->
+    <color name="it_scoppelletti_divider">#1F000000</color>
+    <!-- Disabled background (opacity 50%) -->
+    <color name="it_scoppelletti_tint_disabled">#7FFFFFFF</color>
+    <!-- http://material.io/guidelines/style/color.html - Dark text on light
+    backgrounds -->
+    <item name="it_scoppelletti_alpha_darkTextPrimary" format="float" type="dimen">0.87</item>
+    <item name="it_scoppelletti_alpha_darkTextSecondary" format="float" type="dimen">0.54</item>
+    <item name="it_scoppelletti_alpha_darkTextDisabled" format="float" type="dimen">0.38</item>
+    <!-- http://material.io/guidelines/style/color.html - White text on dark
+    backgrounds -->
+    <item name="it_scoppelletti_alpha_lightTextPrimary" format="float" type="dimen">1.0</item>
+    <item name="it_scoppelletti_alpha_lightTextSecondary" format="float" type="dimen">0.7</item>
+    <item name="it_scoppelletti_alpha_lightTextDisabled" format="float" type="dimen">0.5</item>
+    <!-- http://stackoverflow.com/questions/32070670 - August 18, 2015 -->
+    <color name="preference_fallback_accent_color" tools:override="true">@color/colorAccent</color>
+</resources>

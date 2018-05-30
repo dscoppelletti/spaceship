@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2016 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources>
+    <eat-comment />
+    <!-- http://material.io/guidelines/style/typography.html#typography-typeface -->
+    <!-- 112sp light -->
+    <style name="it_scoppelletti_text_display4"
+        parent="TextAppearance.AppCompat.Display4" />
+    <!-- 56sp regular -->
+    <style name="it_scoppelletti_text_display3"
+        parent="TextAppearance.AppCompat.Display3" />
+    <!-- 45sp regular -->
+    <style name="it_scoppelletti_text_display2"
+        parent="TextAppearance.AppCompat.Display2" />
+    <!-- 34sp regular -->
+    <style name="it_scoppelletti_text_display1"
+        parent="TextAppearance.AppCompat.Display1" />
+    <!-- 24sp regular -->
+    <style name="it_scoppelletti_text_headline"
+        parent="TextAppearance.AppCompat.Headline" />
+    <!-- 20sp medium -->
+    <style name="it_scoppelletti_text_title"
+        parent="TextAppearance.AppCompat.Title" />
+    <!-- 16sp regular -->
+    <style name="it_scoppelletti_text_subheading"
+        parent="TextAppearance.AppCompat.Subhead" />
+    <!-- 14sp medium -->
+    <style name="it_scoppelletti_text_body2"
+        parent="TextAppearance.AppCompat.Body2" />
+    <!-- 14sp regular -->
+    <style name="it_scoppelletti_text_body1"
+        parent="TextAppearance.AppCompat.Body1" />
+    <!-- 12sp regular -->
+    <style name="it_scoppelletti_text_caption"
+        parent="TextAppearance.AppCompat.Caption" />
+    <!-- 14sp medium (all caps) -->
+    <style name="it_scoppelletti_text_button"
+        parent="TextAppearance.AppCompat.Button" />
+</resources>

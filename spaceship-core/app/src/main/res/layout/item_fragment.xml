@@ -8,7 +8,8 @@
         <variable name="model" type="it.scoppelletti.spaceship.sample.viewmodel.ItemForm" />
     </data>
     <android.support.v4.widget.NestedScrollView
-        style="@style/it_scoppelletti_style_contentFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <LinearLayout android:id="@+id/contentFrame"
             android:layout_width="match_parent"
@@ -32,9 +33,9 @@
                     app:it_scoppelletti_enabled="@{model.id &lt;= 0}"
                     app:it_scoppelletti_inputType="@{InputType.TYPE_CLASS_TEXT}"
                     app:it_scoppelletti_validator="@{() -> model.validateCode()}"
-                    android:imeOptions="actionDone"
                     android:drawableRight="@{model.codeError &gt; 0 ? @drawable/ic_error : (model.id &gt; 0 ? @drawable/ic_block : null)}"
                     android:drawableEnd="@{model.codeError &gt; 0 ? @drawable/ic_error : (model.id &gt; 0 ? @drawable/ic_block : null)}"
+                    android:imeOptions="actionDone"
                     android:textAppearance="@style/it_scoppelletti_text_headline" />
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout

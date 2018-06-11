@@ -16,9 +16,17 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <eat-comment />
+    <!-- Activity with Navigation Drawer -->
     <style name="it_scoppelletti_theme_drawerActivity"
         parent="it_scoppelletti_theme_app">
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
+    <!-- TextInputLayout -->
+    <style name="it_scoppelletti_theme_textInputLayout"
+        parent="it_scoppelletti_theme_app">
+        <item name="colorControlActivated">?android:attr/colorPrimary</item>
+        <item name="colorControlHighlight">?android:attr/colorPrimary</item>
+    </style>
 </resources>
+

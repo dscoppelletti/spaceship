@@ -14,18 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 -->
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <eat-comment />
-    <!-- Root frame -->
-    <style name="it_scoppelletti_style_rootFrame">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-    </style>
-    <!-- Content -->
-    <style name="it_scoppelletti_style_contentFrame">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-    </style>
     <!-- App Bar -->
     <style name="it_scoppelletti_style_appBarLayout">
         <item name="android:layout_width">match_parent</item>
@@ -35,21 +26,17 @@
         parent="it_scoppelletti_baseStyle_collapsingAppBarLayout">
     </style>
     <!-- Toolbar -->
-    <style name="it_scoppelletti_style_toolbar">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">?android:attr/actionBarSize</item>
-        <item name="android:background">?android:attr/colorPrimary</item>
-        <item name="popupTheme">@style/it_scoppelletti_theme_toolbarPopup</item>
+    <style name="it_scoppelletti_style_toolbar"
+        parent="it_scoppelletti_baseStyle_toolbar">
+        <item name="android:background">@color/colorPrimary</item>
     </style>
     <style name="it_scoppelletti_style_collapsingToolbar"
         parent="it_scoppelletti_style_toolbar">
         <item name="layout_collapseMode">pin</item>
     </style>
-    <style name="it_scoppelletti_style_collapsingToolbarLayout">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="contentScrim">?android:attr/colorPrimary</item>
-        <item name="layout_scrollFlags">scroll|exitUntilCollapsed</item>
+    <style name="it_scoppelletti_style_collapsingToolbarLayout"
+        parent="it_scoppelletti_baseStyle_collapsingToolbarLayout">
+        <item name="contentScrim">@color/colorPrimary</item>
     </style>
     <!-- Navigation Drawer -->
     <style name="it_scoppelletti_style_drawerLayout">
@@ -63,10 +50,9 @@
         <item name="android:layout_gravity">start</item>
         <item name="android:fitsSystemWindows">true</item>
     </style>
-    <style name="it_scoppelletti_style_drawerHeader">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/it_scoppelletti_drawer_headerHeight</item>
-        <item name="android:background">?android:attr/colorAccent</item>
+    <style name="it_scoppelletti_style_drawerHeader"
+        parent="it_scoppelletti_baseStyle_drawerHeader">
+        <item name="android:background">@color/colorAccent</item>
     </style>
     <!-- Coordinator layout -->
     <style name="it_scoppelletti_style_coordinatorLayout">
@@ -126,7 +112,7 @@
         <item name="android:layout_width">@dimen/it_scoppelletti_list_secondaryIcon_size</item>
         <item name="android:layout_height">@dimen/it_scoppelletti_list_secondaryIcon_size</item>
         <item name="android:tint">?android:attr/textColorSecondary</item>
-        <item name="android:clickable">true</item>
         <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
     </style>
 </resources>

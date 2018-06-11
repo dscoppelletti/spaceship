@@ -3,15 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/refreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_marginTop="@dimen/it_scoppelletti_marginVert"
     android:layout_marginBottom="@dimen/it_scoppelletti_marginVert"
-    style="@style/it_scoppelletti_style_rootFrame"
     tools:context=".ListFragment">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:paddingTop="@dimen/it_scoppelletti_spacingVert"
-        android:paddingBottom="@dimen/it_scoppelletti_spacingVert"
-        style="@style/it_scoppelletti_style_contentFrame">
+        android:paddingBottom="@dimen/it_scoppelletti_spacingVert">
     </android.support.v7.widget.RecyclerView>
 </android.support.v4.widget.SwipeRefreshLayout>
 

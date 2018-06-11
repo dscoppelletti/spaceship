@@ -10,10 +10,13 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import it.scoppelletti.spaceship.app.NavigationDrawer
 import it.scoppelletti.spaceship.app.TitleAdapter
+import it.scoppelletti.spaceship.inject.Injectable
 import kotlinx.android.synthetic.main.drawer_activity.*
 import javax.inject.Inject
 
-class DrawerActivity : AppCompatActivity(), HasSupportFragmentInjector {
+class DrawerActivity : AppCompatActivity(),
+        Injectable,
+        HasSupportFragmentInjector {
 
     @Inject
     lateinit var fragmentDispatchingAndroidInjector:

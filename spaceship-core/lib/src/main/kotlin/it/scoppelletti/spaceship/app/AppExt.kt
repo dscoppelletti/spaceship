@@ -64,7 +64,7 @@ fun Activity.hideSoftKeyboard() {
     val view: View?
     val inputMgr: InputMethodManager
 
-    view = this?.currentFocus
+    view = this.currentFocus
     if (view != null) {
         inputMgr = this.getSystemService(Context.INPUT_METHOD_SERVICE) as
                 InputMethodManager

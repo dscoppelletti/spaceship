@@ -25,6 +25,7 @@ package it.scoppelletti.spaceship.inject
 /**
  * Marks a component injectable.
  *
+ * @see   it.scoppelletti.spaceship.inject.enableInject
  * @since 1.0.0
  */
 public interface Injectable

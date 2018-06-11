@@ -35,63 +35,59 @@ import dagger.android.support.HasSupportFragmentInjector
 /**
  * Enables the injection process for this application.
  *
- * The injection process is enabled for the following components:
- *
- * 1. Activities if they implement the `HasSupportFragmentInjector` interface.
- * 1. Fragments if they implement the `Injectable` interface.
+ * The injection process is enabled for activities and fragments if they
+ * implement the `Injectable` interface.
  *
  * @receiver The application.
+ * @see      it.scoppelletti.spaceship.inject.Injectable
  * @since    1.0.0
  */
 public fun Application.enableInject() {
-    this.registerActivityLifecycleCallbacks(
-            object : Application.ActivityLifecycleCallbacks {
-                override fun onActivityCreated(
-                        activity: Activity,
-                        savedInstanceState: Bundle?) {
-                    handleActivity(activity)
-                }
+    this.registerActivityLifecycleCallbacks(ActivityInjector)
+}
 
-                override fun onActivityStarted(activity: Activity) {
-                }
+private object ActivityInjector : Application.ActivityLifecycleCallbacks {
+    override fun onActivityCreated(
+            activity: Activity,
+            savedInstanceState: Bundle?) {
+        if (activity is Injectable) {
+            AndroidInjection.inject(activity)
+        }
+        if (activity is HasSupportFragmentInjector &&
+                activity is FragmentActivity) {
+            activity.supportFragmentManager
+                    .registerFragmentLifecycleCallbacks(FragmentInjector, true)
+        }
+    }
 
-                override fun onActivityResumed(activity: Activity) {
-                }
+    override fun onActivityStarted(activity: Activity) {
+    }
 
-                override fun onActivityPaused(activity: Activity) {
-                }
+    override fun onActivityResumed(activity: Activity) {
+    }
 
-                override fun onActivityStopped(activity: Activity) {
-                }
+    override fun onActivityPaused(activity: Activity) {
+    }
 
-                override fun onActivitySaveInstanceState(
-                        activity: Activity,
-                        outState: Bundle?) {
-                }
+    override fun onActivityStopped(activity: Activity) {
+    }
 
-                override fun onActivityDestroyed(activity: Activity) {
-                }
+    override fun onActivitySaveInstanceState(
+            activity: Activity,
+            outState: Bundle?) {
+    }
 
-                private fun handleActivity(activity: Activity) {
-                    if (activity is HasSupportFragmentInjector) {
-                        AndroidInjection.inject(activity)
-                    }
-                    if (activity is FragmentActivity) {
-                        activity.supportFragmentManager
-                                .registerFragmentLifecycleCallbacks(
-                                        object : FragmentManager.FragmentLifecycleCallbacks() {
-                                            override fun onFragmentCreated(
-                                                    fm: FragmentManager,
-                                                    f: Fragment,
-                                                    savedInstanceState: Bundle?
-                                            ) {
-                                                if (f is Injectable) {
-                                                    AndroidSupportInjection.inject(f)
-                                                }
-                                            }
-                                        },
-                                        true)
-                    }
-                }
-            })
+    override fun onActivityDestroyed(activity: Activity) {
+    }
+}
+
+private object FragmentInjector : FragmentManager.FragmentLifecycleCallbacks() {
+    override fun onFragmentCreated(
+            fm: FragmentManager,
+            f: Fragment,
+            savedInstanceState: Bundle?) {
+        if (f is Injectable) {
+            AndroidSupportInjection.inject(f)
+        }
+    }
 }

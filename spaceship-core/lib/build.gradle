@@ -51,6 +51,8 @@ dependencies {
     api "com.google.dagger:dagger:${versionMap.dagger}"
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
     kapt "com.android.databinding:compiler:${versionMap.android_gradle}"
+    implementation "android.arch.lifecycle:common-java8:${versionMap.android_lifecycle}"
+    implementation "android.arch.lifecycle:extensions:${versionMap.android_lifecycle}"
     implementation "com.android.support:preference-v7:${versionMap.android_support}"
     implementation "com.android.support:preference-v14:${versionMap.android_support}"
     implementation "com.android.support:recyclerview-v7:${versionMap.android_support}"

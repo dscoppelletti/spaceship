@@ -10,7 +10,7 @@ android {
         minSdkVersion versionMap.sdk_min
         targetSdkVersion versionMap.sdk_target
         versionCode 1
-        versionName versionMap.android
+        versionName versionMap.spaceship
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {

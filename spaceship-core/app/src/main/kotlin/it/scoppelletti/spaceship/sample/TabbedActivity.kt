@@ -20,6 +20,7 @@ import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
 import it.scoppelletti.spaceship.app.TitleAdapter
 import it.scoppelletti.spaceship.app.hideSoftKeyboard
+import it.scoppelletti.spaceship.inject.Injectable
 import it.scoppelletti.spaceship.sample.viewmodel.ItemState
 import it.scoppelletti.spaceship.sample.viewmodel.ItemViewModel
 import it.scoppelletti.spaceship.sample.widget.ItemPagerAdapter
@@ -27,6 +28,7 @@ import kotlinx.android.synthetic.main.tabbed_activity.*
 import javax.inject.Inject
 
 class TabbedActivity : AppCompatActivity(),
+        Injectable,
         HasSupportFragmentInjector,
         OnDialogResultListener,
         OnItemActionListener {
@@ -195,7 +197,7 @@ class TabbedActivity : AppCompatActivity(),
                 }
             }
 
-            TabbedActivity.DLG_EXIT -> when (which) {
+            TabbedActivity.DLG_DISCARD -> when (which) {
                 DialogInterface.BUTTON_POSITIVE -> {
                     if (!isFinishing) {
                         finish()
@@ -214,10 +216,10 @@ class TabbedActivity : AppCompatActivity(),
     private fun onExiting(): Boolean {
         if (viewModel.form.changed) {
             ConfirmDialogFragment.show(this,
-                    R.string.it_scoppelletti_msg_looseChanges,
+                    R.string.it_scoppelletti_msg_discardChanges,
                     titleId = android.R.string.dialog_alert_title,
-                    dialogId = TabbedActivity.DLG_EXIT,
-                    affermativeActionTextId = R.string.it_scoppelletti_cmd_exit)
+                    dialogId = TabbedActivity.DLG_DISCARD,
+                    affermativeActionTextId = R.string.it_scoppelletti_cmd_discard)
             return false
         }
 
@@ -265,6 +267,6 @@ class TabbedActivity : AppCompatActivity(),
 
     companion object {
         private const val DLG_DELETE: Int = 1
-        private const val DLG_EXIT: Int = 2
+        private const val DLG_DISCARD: Int = 2
     }
 }

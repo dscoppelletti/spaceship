@@ -6,7 +6,7 @@
     <string name="cmd_section3">Section 3</string>
     <string name="err_code_duplicate">An item with code %1$s already exists.</string>
     <string name="err_code_required">The code is required.</string>
-    <string name="err_desc_required">The description in required.</string>
+    <string name="err_desc_required">The description is required.</string>
     <string name="err_item_notfound">No item with id %1$ found.</string>
     <string name="lbl_code">Code</string>
     <string name="lbl_desc">Description</string>

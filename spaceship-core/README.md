@@ -16,6 +16,10 @@ Contains components used when developing applications with data binding.
 
 * [Data Binding Library](http://developer.android.com/topic/libraries/data-binding)
 
+# Package it.scoppelletti.spaceship.graphics
+
+Provides graphics components.
+
 # Package it.scoppelletti.spaceship.inject
 
 Dependency injection.

@@ -1,16 +1,15 @@
 package it.scoppelletti.spaceship.sample.inject
 
 import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import it.scoppelletti.spaceship.inject.InjectViewModelFactory
+import it.scoppelletti.spaceship.inject.CoreViewModelsModule
 import it.scoppelletti.spaceship.inject.ViewModelKey
-import it.scoppelletti.spaceship.sample.viewmodel.ItemViewModel
-import it.scoppelletti.spaceship.sample.viewmodel.ListViewModel
+import it.scoppelletti.spaceship.sample.lifecycle.ItemViewModel
+import it.scoppelletti.spaceship.sample.lifecycle.ListViewModel
 
-@Module
+@Module(includes = [ CoreViewModelsModule::class ])
 abstract class ViewModelsModule {
 
     @Binds
@@ -22,9 +21,4 @@ abstract class ViewModelsModule {
     @IntoMap
     @ViewModelKey(ListViewModel::class)
     abstract fun bindListViewModel(viewModel: ListViewModel): ViewModel
-
-    @Binds
-    abstract fun bindViewModelFactory(
-            factory: InjectViewModelFactory
-    ): ViewModelProvider.Factory
 }

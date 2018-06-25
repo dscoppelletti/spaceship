@@ -13,7 +13,7 @@ import android.view.inputmethod.EditorInfo
 import it.scoppelletti.spaceship.app.hideSoftKeyboard
 import it.scoppelletti.spaceship.inject.Injectable
 import it.scoppelletti.spaceship.sample.databinding.ItemFragmentBinding
-import it.scoppelletti.spaceship.sample.viewmodel.ItemViewModel
+import it.scoppelletti.spaceship.sample.lifecycle.ItemViewModel
 import javax.inject.Inject
 
 class ItemTabFragment : Fragment(), Injectable {
@@ -37,13 +37,13 @@ class ItemTabFragment : Fragment(), Injectable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.txtCode.setOnEditorActionListener({ _, actionId, _ ->
+        binding.txtCode.setOnEditorActionListener { _, actionId, _ ->
             onEditorAction(actionId)
-        })
+        }
 
-        binding.txtDesc.setOnEditorActionListener({ _, actionId, _ ->
+        binding.txtDesc.setOnEditorActionListener { _, actionId, _ ->
             onEditorAction(actionId)
-        })
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

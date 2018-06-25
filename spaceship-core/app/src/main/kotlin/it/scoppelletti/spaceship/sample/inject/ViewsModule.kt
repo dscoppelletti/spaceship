@@ -10,6 +10,7 @@ import it.scoppelletti.spaceship.sample.TabbedActivity
 
 @Module
 abstract class ViewsModule {
+
     @ContributesAndroidInjector(modules = [])
     abstract fun contributeDrawerActivity(): DrawerActivity
 

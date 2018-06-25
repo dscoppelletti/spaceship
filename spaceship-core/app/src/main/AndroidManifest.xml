@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="it.scoppelletti.spaceship.sample"
@@ -18,8 +19,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".TabbedActivity"
-            android:label="@string/lbl_tabbedActivity" />
-        <activity android:name=".TestActivity"
             android:label="@string/lbl_tabbedActivity" />
     </application>
 </manifest>

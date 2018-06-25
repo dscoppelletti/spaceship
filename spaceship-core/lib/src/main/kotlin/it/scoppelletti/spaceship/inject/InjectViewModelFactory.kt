@@ -30,14 +30,14 @@ import javax.inject.Provider
 import javax.inject.Singleton
 
 /**
- * Implementation of the `ViewModelProvider.Factory` for dependency injection
- * in `ViewModel` objects.
+ * Implementation of the `ViewModelProvider.Factory` interface for dependency
+ * injection in `ViewModel` objects.
  *
  * @since 1.0.0
  *
  * @constructor          Constructor.
  * @param       creators Map to associate a `ViewModel` class with a
- *                       with a `Provider<ViewModel>` dependency.
+ *                       `Provider<ViewModel>` dependency.
  */
 @Singleton
 public class InjectViewModelFactory @Inject constructor(

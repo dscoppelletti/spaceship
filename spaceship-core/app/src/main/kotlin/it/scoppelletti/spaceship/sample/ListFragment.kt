@@ -14,8 +14,8 @@ import android.view.View
 import android.view.ViewGroup
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.inject.Injectable
-import it.scoppelletti.spaceship.sample.viewmodel.ListState
-import it.scoppelletti.spaceship.sample.viewmodel.ListViewModel
+import it.scoppelletti.spaceship.sample.lifecycle.ListState
+import it.scoppelletti.spaceship.sample.lifecycle.ListViewModel
 import it.scoppelletti.spaceship.sample.widget.ItemListAdapter
 import kotlinx.android.synthetic.main.list_fragment.*
 import javax.inject.Inject

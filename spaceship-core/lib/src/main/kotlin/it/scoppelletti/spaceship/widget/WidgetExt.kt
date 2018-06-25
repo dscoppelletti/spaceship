@@ -25,6 +25,7 @@ import android.text.InputType
  *
  * @receiver The widget.
  * @return   Returns `true` if the widget is enabled, `false` otherwise.
+ * @since    1.0.0
  */
 @UiThread
 public fun TextInputEditText.isWidgetEnabled(): Boolean =

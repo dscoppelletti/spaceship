@@ -35,6 +35,9 @@
     <!-- Toobar -->
     <style name="it_scoppelletti_theme_toolbarPopup"
         parent="ThemeOverlay.AppCompat.Light" />
+    <!-- Toolbar not in AppBarLayout -->
+    <style name="it_scoppelletti_theme_actionBar"
+        parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <!-- TextInputLayout -->
     <style name="it_scoppelletti_theme_textInputLayout"
         parent="it_scoppelletti_theme_app">

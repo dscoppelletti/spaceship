@@ -8,7 +8,11 @@ Spaceship Core Library.
 
 # Package it.scoppelletti.spaceship.app
 
-Application model.
+Contains high-level classes encapsulating the overall Android application model.
+
+# Package it.scoppelletti.spaceship.content
+
+Contains classes for accessing and publishing data on a device.
 
 # Package it.scoppelletti.spaceship.databinding
 
@@ -16,15 +20,15 @@ Contains components used when developing applications with data binding.
 
 * [Data Binding Library](http://developer.android.com/topic/libraries/data-binding)
 
-# Package it.scoppelletti.spaceship.graphics
-
-Provides graphics components.
-
 # Package it.scoppelletti.spaceship.inject
 
 Dependency injection.
 
 * [Dagger 2](http://google.github.io/dagger)
+
+# Package it.scoppelletti.spaceship.lifecycle
+
+Manages your activity and fragment lifecycles.
 
 # Package it.scoppelletti.spaceship.os
 

@@ -5,7 +5,7 @@
     tools:context=".ItemTabFragment">
     <data>
         <import type="android.text.InputType" />
-        <variable name="model" type="it.scoppelletti.spaceship.sample.viewmodel.ItemForm" />
+        <variable name="model" type="it.scoppelletti.spaceship.sample.lifecycle.ItemForm" />
     </data>
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"

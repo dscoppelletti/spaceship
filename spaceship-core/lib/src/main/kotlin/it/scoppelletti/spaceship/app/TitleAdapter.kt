@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.design.widget.CollapsingToolbarLayout
 import android.support.v7.app.AppCompatActivity
+import it.scoppelletti.spaceship.CoreExt
 
 /**
  * Title adapter.
@@ -57,7 +58,7 @@ public class TitleAdapter(
      * @param savedInstanceState State of the activity.
      */
     public fun onPostCreate(savedInstanceState: Bundle?) {
-        val t = savedInstanceState?.getInt(AppExt.PROP_TITLE, -1) ?: -1
+        val t = savedInstanceState?.getInt(CoreExt.PROP_TITLE, -1) ?: -1
         if (t > 0) {
             titleId = t
         }
@@ -70,7 +71,7 @@ public class TitleAdapter(
      */
     public fun onSaveInstanceState(outState: Bundle?) {
         if (titleId > 0) {
-            outState?.putInt(AppExt.PROP_TITLE, titleId)
+            outState?.putInt(CoreExt.PROP_TITLE, titleId)
         }
     }
 }

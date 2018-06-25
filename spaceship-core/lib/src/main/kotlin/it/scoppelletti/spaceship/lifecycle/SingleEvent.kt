@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package it.scoppelletti.spaceship
+package it.scoppelletti.spaceship.lifecycle
 
 /**
  * Wrapper for data that represents an event that should be handled only once.
@@ -25,11 +25,11 @@ package it.scoppelletti.spaceship
  *
  * * [View actions (snackbar, activity navigation, ...) in ViewModel](http://github.com/googlesamples/android-architecture-components/issues/63)
  * * [LiveData with SnackBar, Navigation and other events (the SingleLiveEvent case)](http://medium.com/google-developers/livedata-with-snackbar-navigation-and-other-events-the-singleliveevent-case-ac2622673150)
- * * [Ractive Apps with Model-View-Intent - Part 7 - Timing (SingleLiveEvent problem)](http://hannesdorfmann.com/android/mosby3-mvi-7)
+ * * [Reactive Apps with Model-View-Intent - Part 7 - Timing (SingleLiveEvent problem)](http://hannesdorfmann.com/android/mosby3-mvi-7)
  *
+ * @since                   1.0.0
  * @property hasBeenHandled Indicates whether this event has been handled or
  *                          not.
- * @since                   1.0.0
  *
  * @constructor         Constructor.
  * @param       content Data.

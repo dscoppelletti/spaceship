@@ -9,5 +9,6 @@ import javax.inject.Singleton
 @Component(modules = [ AndroidInjectionModule::class, ViewsModule::class,
     ViewModelsModule::class, AppModule::class ])
 interface AppComponent {
+
     fun inject(app: MainApp)
 }

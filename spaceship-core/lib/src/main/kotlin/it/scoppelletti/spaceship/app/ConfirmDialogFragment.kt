@@ -24,13 +24,12 @@ import android.support.annotation.StringRes
 import android.support.annotation.UiThread
 import android.support.v4.app.FragmentActivity
 import android.support.v7.app.AppCompatDialogFragment
+import it.scoppelletti.spaceship.CoreExt
 
 /**
  * Confirmation dialog.
  *
  * @since 1.0.0
- *
- * @constructor Sole constructor.
  */
 @UiThread
 public class ConfirmDialogFragment : AppCompatDialogFragment() {
@@ -103,7 +102,7 @@ public class ConfirmDialogFragment : AppCompatDialogFragment() {
         /**
          * The fragment tag.
          */
-        public const val TAG: String = AppExt.TAG_CONFIRMDIALOG
+        public const val TAG: String = CoreExt.TAG_CONFIRMDIALOG
 
         private const val PROP_MSG: String = "1"
         private const val PROP_MSGID: String = "2"

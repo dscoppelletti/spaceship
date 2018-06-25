@@ -21,14 +21,19 @@
         parent="it_scoppelletti_baseStyle_collapsingAppBarLayout">
         <item name="android:stateListAnimator">@animator/it_scoppelletti_appbar</item>
     </style>
+    <!-- Toolbar -->
     <style name="it_scoppelletti_style_toolbar"
         parent="it_scoppelletti_baseStyle_toolbar">
         <item name="android:background">?android:attr/colorPrimary</item>
     </style>
-    <!-- Toolbar -->
     <style name="it_scoppelletti_style_collapsingToolbarLayout"
         parent="it_scoppelletti_baseStyle_collapsingToolbarLayout">
         <item name="contentScrim">?android:attr/colorPrimary</item>
+    </style>
+    <!-- Toolbar not in AppBarLayout -->
+    <style name="it_scoppelletti_style_actionBar."
+        parent="it_scoppelletti_baseStyle_actionBar">
+        <item name="android:background">?android:attr/colorPrimary</item>
     </style>
     <!-- Navigation Drawer -->
     <style name="it_scoppelletti_style_drawerHeader"

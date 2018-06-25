@@ -31,8 +31,7 @@ import android.view.MenuItem
  *
  * * [Navigation with Back and Up](http://developer.android.com/design/patterns/navigation.html)
  * * [Creating a Navigation Drawer](http://developer.android.com/training/implementing-navigation/nav-drawer.html)
- * * [Layout > Structure](http://material.io/guidelines/layout/structure.html)
- * * [Patterns > Navigation drawer](http://material.io/guidelines/patterns/navigation-drawer.html)
+ * * [Navigation drawer](http://material.io/design/components/navigation-drawer.html)
  *
  * @since 1.0.0
  *

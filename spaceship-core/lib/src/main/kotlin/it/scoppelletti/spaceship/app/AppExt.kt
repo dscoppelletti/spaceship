@@ -22,39 +22,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 
 /**
- * Application model operations.
- *
- * @since 1.0.0
- */
-public object AppExt {
-
-    /**
-     * Property indicating whether the user has manually opened the drawer
-     * at least once.
-     */
-    public const val PROP_LEARNED: String = "it.scoppelletti.spaceship.1"
-
-    /**
-     * Property reporting the title of an activity as a string resource ID.
-     */
-    public const val PROP_TITLE: String = "it.scoppelletti.spaceship.2"
-
-    /**
-     * Tag of `ConfirmDialogFragment` fragment.
-     *
-     * @see it.scoppelletti.spaceship.app.ConfirmDialogFragment
-     */
-    public const val TAG_CONFIRMDIALOG: String = "it.scoppelletti.spaceship.1"
-
-    /**
-     * Tag of `ExceptionDialogFragment` fragment.
-     *
-     * @see it.scoppelletti.spaceship.app.ExceptionDialogFragment
-     */
-    public const val TAG_EXCEPTIONDIALOG: String = "it.scoppelletti.spaceship.2"
-}
-
-/**
  * Hides the soft keyboard.
  *
  * @receiver The activity.

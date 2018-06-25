@@ -15,10 +15,10 @@ class DefaultItemRepo @Inject constructor(): ItemRepo {
         get() = _lastUpdate
 
     private val items: MutableList<Item> by lazy {
-        MutableList(20, {
+        MutableList(20) {
             Item(id = it + 1, code = "code${it + 1}",
                     desc = "Description ${it + 1}.")
-        })
+        }
     }
 
     override fun createItem(item: Item): Single<Item> {

@@ -21,8 +21,8 @@ import it.scoppelletti.spaceship.app.OnDialogResultListener
 import it.scoppelletti.spaceship.app.TitleAdapter
 import it.scoppelletti.spaceship.app.hideSoftKeyboard
 import it.scoppelletti.spaceship.inject.Injectable
-import it.scoppelletti.spaceship.sample.viewmodel.ItemState
-import it.scoppelletti.spaceship.sample.viewmodel.ItemViewModel
+import it.scoppelletti.spaceship.sample.lifecycle.ItemState
+import it.scoppelletti.spaceship.sample.lifecycle.ItemViewModel
 import it.scoppelletti.spaceship.sample.widget.ItemPagerAdapter
 import kotlinx.android.synthetic.main.tabbed_activity.*
 import javax.inject.Inject

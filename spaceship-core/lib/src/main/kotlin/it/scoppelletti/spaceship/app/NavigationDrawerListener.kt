@@ -25,6 +25,7 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.Toolbar
 import android.view.View
+import it.scoppelletti.spaceship.CoreExt
 import it.scoppelletti.spaceship.R
 
 /**
@@ -77,7 +78,7 @@ internal class NavigationDrawerListener : ActionBarDrawerToggle {
         syncState()
 
         prefs = PreferenceManager.getDefaultSharedPreferences(activity)
-        learned = prefs.getBoolean(AppExt.PROP_LEARNED, false)
+        learned = prefs.getBoolean(CoreExt.PROP_LEARNED, false)
         if (!learned && savedInstanceState == null) {
             drawerLayout.openDrawer(GravityCompat.START)
         }
@@ -92,7 +93,7 @@ internal class NavigationDrawerListener : ActionBarDrawerToggle {
         if (!learned) {
             prefs = PreferenceManager.getDefaultSharedPreferences(activity)
             editor = prefs.edit()
-            editor.putBoolean(AppExt.PROP_LEARNED, true)
+            editor.putBoolean(CoreExt.PROP_LEARNED, true)
             editor.apply()
             learned = true
         }

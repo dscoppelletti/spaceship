@@ -1,4 +1,4 @@
-package it.scoppelletti.spaceship.sample.viewmodel
+package it.scoppelletti.spaceship.sample.lifecycle
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
@@ -47,8 +47,8 @@ class ListViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        super.onCleared()
         disposables.clear()
+        super.onCleared()
     }
 }
 

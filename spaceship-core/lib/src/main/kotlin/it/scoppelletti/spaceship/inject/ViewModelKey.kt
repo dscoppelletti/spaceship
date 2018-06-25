@@ -30,8 +30,8 @@ import kotlin.reflect.KClass
  * Used to associate a `ViewModel` class as a key with a `Provider<ViewModel>`
  * as a value in order to compose the map used by [InjectViewModelFactory].
  *
- * @property value The `ViewModel` class.
  * @since          1.0.0
+ * @property value The `ViewModel` class.
  *
  * @constructor Constructor.
  */

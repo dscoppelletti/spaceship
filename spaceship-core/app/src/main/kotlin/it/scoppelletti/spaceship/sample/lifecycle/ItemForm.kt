@@ -1,4 +1,4 @@
-package it.scoppelletti.spaceship.sample.viewmodel
+package it.scoppelletti.spaceship.sample.lifecycle
 
 import android.databinding.BaseObservable
 import android.databinding.Bindable

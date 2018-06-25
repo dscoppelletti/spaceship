@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2018 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ * Copyright (C) 2018 Dario Scoppelletti, <http://www.scoppelletti.it/>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package it.scoppelletti.spaceship.graphics
+package it.scoppelletti.spaceship.content
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.support.annotation.DrawableRes
+import android.support.v4.content.ContextCompat
 
 /**
- * Returns a `Drawable` object associated with a oarticolar resource ID and
+ * Returns a `Drawable` object associated with a particolar resource ID and
  * styled for the current theme.
  *
  * @receiver    The context.
@@ -30,10 +30,5 @@ import android.support.annotation.DrawableRes
  * @returns     The `Drawable` object.
  * @since       1.0.0
  */
-@Suppress("DEPRECATION")
-fun Context.getDrawableCompat(@DrawableRes id: Int): Drawable {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        this.getDrawable(id)
-    else
-        this.resources.getDrawable(id)
-}
+public fun Context.getDrawableCompat(@DrawableRes id: Int): Drawable? =
+        ContextCompat.getDrawable(this, id)

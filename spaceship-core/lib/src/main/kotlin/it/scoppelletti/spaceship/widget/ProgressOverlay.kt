@@ -31,7 +31,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ProgressBar
-import it.scoppelletti.spaceship.R
 import it.scoppelletti.spaceship.os.parcelableCreator
 import it.scoppelletti.spaceship.os.readBoolean
 import it.scoppelletti.spaceship.os.writeBoolean

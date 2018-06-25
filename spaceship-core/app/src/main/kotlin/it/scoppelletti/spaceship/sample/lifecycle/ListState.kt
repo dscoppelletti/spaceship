@@ -1,6 +1,6 @@
-package it.scoppelletti.spaceship.sample.viewmodel
+package it.scoppelletti.spaceship.sample.lifecycle
 
-import it.scoppelletti.spaceship.SingleEvent
+import it.scoppelletti.spaceship.lifecycle.SingleEvent
 import it.scoppelletti.spaceship.sample.model.Item
 
 data class ListState(

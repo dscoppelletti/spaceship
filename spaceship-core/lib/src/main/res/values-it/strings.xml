@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="it_scoppelletti_cmd_about">Info</string>
     <string name="it_scoppelletti_cmd_delete">Cancella</string>
     <string name="it_scoppelletti_cmd_discard">Non salvare</string>
     <string name="it_scoppelletti_cmd_drawerClose">Chiudi il cassetto di navigazione</string>
     <string name="it_scoppelletti_cmd_drawerOpen">Apri il cassetto di navigazione</string>
     <string name="it_scoppelletti_cmd_edit">Modifica</string>
+    <string name="it_scoppelletti_cmd_help">Guida</string>
     <string name="it_scoppelletti_cmd_list">Elenco</string>
     <string name="it_scoppelletti_cmd_login">Accedi</string>
     <string name="it_scoppelletti_cmd_logout">Esci</string>

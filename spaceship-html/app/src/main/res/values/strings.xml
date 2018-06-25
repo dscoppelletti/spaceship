@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+    <string name="string_res">Inserted string</string>
+    <string name="html_text"><![CDATA[<p>The first paragraph is simple.</p>
+<p><it-scoppelletti-contentHandler>Integrate the content handler.</p>
+<p>The name of the application is <b><it-scoppelletti-appLabel>this
+tag</it-scoppelletti-appLabel></b>.</p>
+<p>The version of the application is
+<b><it-scoppelletti-appVersion /></b>.</p>
+<p>This is an <i><it-scoppelletti-resource name="string_res"
+type="string" /></i>.</p>]]></string>
+</resources>

@@ -24,6 +24,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
+import android.text.method.LinkMovementMethod
 import android.view.MenuItem
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
@@ -69,6 +70,8 @@ public class HtmlViewerActivity : AppCompatActivity(),
         setSupportActionBar(toolbar)
         actionBar = supportActionBar!!
         actionBar.setDisplayHomeAsUpEnabled(true)
+
+        txtContent.movementMethod = LinkMovementMethod.getInstance()
 
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(HtmlViewerViewModel::class.java)

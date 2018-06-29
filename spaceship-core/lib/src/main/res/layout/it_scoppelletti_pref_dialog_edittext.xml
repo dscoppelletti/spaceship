@@ -19,7 +19,7 @@
   ~ http://android.googlesource.com/platform/frameworks/support/+/master/v7/preference/res/layout/preference_dialog_edittext.xml,
   ~ commit: b84f4203bc91fd8d61301582e48a46451245ba24
   ~ Fix based on:
-  ~ http://medium.com/@JakobUlbrich/building-a-settings-screen-for-android-part-2-2ba63e2d7d1d#.mficjd3bn,
+  ~ http://medium.com/@JakobUlbrich/building-a-settings-screen-for-android-part-2-2ba63e2d7d1d,
   ~ May 29, 2016
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"

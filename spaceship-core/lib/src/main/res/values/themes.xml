@@ -22,7 +22,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="preferenceTheme">@style/it_scoppelletti_theme_preference</item>
         <item name="windowActionModeOverlay">true</item>
     </style>
     <!-- Activity with Navigation Drawer -->
@@ -41,8 +40,6 @@
     <!-- TextInputLayout -->
     <style name="it_scoppelletti_theme_textInputLayout"
         parent="it_scoppelletti_theme_app">
-        <item name="colorControlActivated">@color/colorPrimary</item>
-        <item name="colorControlHighlight">@color/colorPrimary</item>
     </style>
     <!-- Raised button -->
     <style name="it_scoppelletti_theme_raisedButton"
@@ -52,8 +49,14 @@
         parent="it_scoppelletti_theme_app">
         <item name="colorAccent">@android:color/white</item>
     </style>
-    <!-- http://medium.com/@JakobUlbrich/building-a-settings-screen-for-android-part-1-5959aa49337c#.29crbu6tt
-    May 28, 2016 -->
+    <!-- Settings -->
+    <style name="it_scoppelletti_theme_preferenceActivity"
+        parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="preferenceTheme">@style/it_scoppelletti_theme_preference</item>
+    </style>
     <style name="it_scoppelletti_theme_preference"
         parent="PreferenceThemeOverlay.v14.Material">
         <item name="preferenceFragmentCompatStyle">@style/PreferenceFragment.Material</item>

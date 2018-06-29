@@ -16,7 +16,7 @@
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
     <eat-comment />
-    <!-- http://material.io/guidelines/style/color.html - Color Palette -->
+    <!-- http://www.google.com/design/spec/style/color.html - Color Palette -->
     <!-- Primary: Indigo (500, 100, 700) -->
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryLight">#C5CAE9</color>
@@ -33,12 +33,12 @@
     <color name="it_scoppelletti_divider">#1F000000</color>
     <!-- Disabled background (opacity 50%) -->
     <color name="it_scoppelletti_tint_disabled">#7FFFFFFF</color>
-    <!-- http://material.io/guidelines/style/color.html - Dark text on light
+    <!-- http://www.google.com/design/spec/style/color.html - Dark text on light
     backgrounds -->
     <item name="it_scoppelletti_alpha_darkTextPrimary" format="float" type="dimen">0.87</item>
     <item name="it_scoppelletti_alpha_darkTextSecondary" format="float" type="dimen">0.54</item>
     <item name="it_scoppelletti_alpha_darkTextDisabled" format="float" type="dimen">0.38</item>
-    <!-- http://material.io/guidelines/style/color.html - White text on dark
+    <!-- http://www.google.com/design/spec/style/color.html - White text on dark
     backgrounds -->
     <item name="it_scoppelletti_alpha_lightTextPrimary" format="float" type="dimen">1.0</item>
     <item name="it_scoppelletti_alpha_lightTextSecondary" format="float" type="dimen">0.7</item>

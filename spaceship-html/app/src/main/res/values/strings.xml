@@ -9,5 +9,6 @@ tag</it-scoppelletti-appLabel></b>.</p>
 <p>The version of the application is
 <b><it-scoppelletti-appVersion /></b>.</p>
 <p>This is an <i><it-scoppelletti-resource name="string_res"
-type="string" /></i>.</p>]]></string>
+type="string" /></i>.</p>
+<p><a href="http://www.scoppelletti.it">Click here</a>.</p>]]></string>
 </resources>

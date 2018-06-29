@@ -22,11 +22,5 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
-    <!-- TextInputLayout -->
-    <style name="it_scoppelletti_theme_textInputLayout"
-        parent="it_scoppelletti_theme_app">
-        <item name="colorControlActivated">?android:attr/colorPrimary</item>
-        <item name="colorControlHighlight">?android:attr/colorPrimary</item>
-    </style>
 </resources>
 

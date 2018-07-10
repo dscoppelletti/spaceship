@@ -61,6 +61,5 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:${versionMap.android_support}"
     implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
     implementation "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"
-    implementation "io.reactivex.rxjava2:rxandroid:${versionMap.rxandroid}"
     implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
 }

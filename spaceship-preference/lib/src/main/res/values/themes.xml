@@ -16,37 +16,17 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <eat-comment/>
-    <!-- Application -->
-    <style name="it_scoppelletti_theme_app"
+    <!-- Settings -->
+    <style name="it_scoppelletti_pref_theme_preferenceActivity"
         parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="preferenceTheme">@style/it_scoppelletti_pref_theme_preference</item>
     </style>
-    <!-- Activity with Navigation Drawer -->
-    <style name="it_scoppelletti_theme_drawerActivity"
-        parent="it_scoppelletti_theme_app">
-    </style>
-    <!-- App Bar -->
-    <style name="it_scoppelletti_theme_appBarLayout"
-        parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <!-- Toobar -->
-    <style name="it_scoppelletti_theme_toolbarPopup"
-        parent="ThemeOverlay.AppCompat.Light" />
-    <!-- Toolbar not in AppBarLayout -->
-    <style name="it_scoppelletti_theme_actionBar"
-        parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <!-- TextInputLayout -->
-    <style name="it_scoppelletti_theme_textInputLayout"
-        parent="it_scoppelletti_theme_app">
-    </style>
-    <!-- Raised button -->
-    <style name="it_scoppelletti_theme_raisedButton"
-        parent="it_scoppelletti_theme_app">
-    </style>
-    <style name="it_scoppelletti_theme_secondaryRaisedButton"
-        parent="it_scoppelletti_theme_app">
-        <item name="colorAccent">@android:color/white</item>
+    <style name="it_scoppelletti_pref_theme_preference"
+            parent="PreferenceThemeOverlay.v14.Material">
+        <item name="preferenceCategoryStyle">@style/it_scoppelletti_pref_style_category</item>
     </style>
 </resources>

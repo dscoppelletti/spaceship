@@ -1,0 +1,50 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply from: '../../gradle-plugins/common.gradle'
+
+android {
+    compileSdkVersion versionMap.sdk_target
+    defaultConfig {
+        applicationId "it.scoppelletti.spaceship.preference.sample"
+        minSdkVersion versionMap.sdk_min
+        targetSdkVersion versionMap.sdk_target
+        versionCode 1
+        versionName versionMap.spaceship
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            useProguard false
+            debuggable true
+        }
+        release {
+            minifyEnabled false
+            useProguard false
+            debuggable false
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+dependencies {
+    implementation project(':lib')
+    implementation "com.android.support:appcompat-v7:${versionMap.android_support}"
+    implementation "com.android.support:design:${versionMap.android_support}"
+    implementation "com.android.support:preference-v7:${versionMap.android_support}"
+    implementation "com.android.support:preference-v14:${versionMap.android_support}"
+    implementation "com.android.support:support-annotations:${versionMap.android_support}"
+    implementation("it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}") {
+        changing = true
+    }
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
+    runtimeOnly "com.noveogroup.android:android-logger:${versionMap.android_logger}"
+}

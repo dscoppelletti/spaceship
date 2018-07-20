@@ -28,6 +28,7 @@ import android.text.method.LinkMovementMethod
 import android.view.MenuItem
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
+import it.scoppelletti.spaceship.app.exit
 import it.scoppelletti.spaceship.html.R
 import it.scoppelletti.spaceship.html.lifecycle.HtmlViewerState
 import it.scoppelletti.spaceship.html.lifecycle.HtmlViewerViewModel
@@ -113,10 +114,7 @@ public class HtmlViewerActivity : AppCompatActivity(),
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> {
-                if (!isFinishing) {
-                    finish()
-                }
-
+                exit()
                 return true
             }
         }
@@ -127,10 +125,7 @@ public class HtmlViewerActivity : AppCompatActivity(),
     override fun onDialogResult(dialogId: Int, which: Int) {
         when (dialogId) {
             HtmlViewerActivity.DLG_ERROR -> {
-                if (!isFinishing) {
-                    finish()
-                }
-
+                exit()
                 return
             }
         }

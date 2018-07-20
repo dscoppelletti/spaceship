@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+    <string name="lbl_category">Category</string>
+    <string name="lbl_switch">Switch preference</string>
+    <string name="msg_switchOn">Switch on</string>
+    <string name="msg_switchOff">Switch off</string>
+</resources>

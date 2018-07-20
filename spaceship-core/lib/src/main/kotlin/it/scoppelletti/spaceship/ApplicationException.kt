@@ -30,9 +30,10 @@ import java.lang.reflect.InvocationTargetException
  * @constructor Constructor.
  */
 public class ApplicationException(
-        @StringRes val messageId: Int,
-        val messageArguments: Array<out Any>? = null,
-        @StringRes val titleId: Int = android.R.string.dialog_alert_title,
+        @StringRes public val messageId: Int,
+        public val messageArguments: Array<out Any>? = null,
+        @StringRes public val titleId: Int =
+                android.R.string.dialog_alert_title,
         override val cause: Throwable? = null
 ) : RuntimeException() {
 

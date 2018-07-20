@@ -29,10 +29,6 @@
     <color name="textColorPrimary">#FFFFFF</color>
     <!-- Text on accent color -->
     <color name="textColorAccent">#FFFFFF</color>
-    <!-- Divider (black 12%) -->
-    <color name="it_scoppelletti_divider">#1F000000</color>
-    <!-- Disabled background (opacity 50%) -->
-    <color name="it_scoppelletti_tint_disabled">#7FFFFFFF</color>
     <!-- http://www.google.com/design/spec/style/color.html - Dark text on light
     backgrounds -->
     <item name="it_scoppelletti_alpha_darkTextPrimary" format="float" type="dimen">0.87</item>
@@ -43,6 +39,4 @@
     <item name="it_scoppelletti_alpha_lightTextPrimary" format="float" type="dimen">1.0</item>
     <item name="it_scoppelletti_alpha_lightTextSecondary" format="float" type="dimen">0.7</item>
     <item name="it_scoppelletti_alpha_lightTextDisabled" format="float" type="dimen">0.5</item>
-    <!-- http://stackoverflow.com/questions/32070670 - August 18, 2015 -->
-    <color name="preference_fallback_accent_color" tools:override="true">@color/colorAccent</color>
 </resources>

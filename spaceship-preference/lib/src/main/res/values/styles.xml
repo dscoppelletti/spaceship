@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
- * Copyright (C) 2016 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ * Copyright (C) 2018 Dario Scoppelletti, <http://www.scoppelletti.it/>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 -->
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- http://www.google.com/design/spec/style/color.html  -->
-    <!-- Active on dark background - opacity: 100% -->
-    <item android:color="#FFFFFFFF" android:state_enabled="true" />
-    <!-- Inactive on dark background - opacity: 50% -->
-    <item android:color="#7FFFFFFF" android:state_enabled="false" />
-</selector>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="it_scoppelletti_pref_style_category"
+        parent="Preference.Category.Material">
+        <item name="android:layout">@layout/it_scoppelletti_pref_category</item>
+    </style>
+</resources>

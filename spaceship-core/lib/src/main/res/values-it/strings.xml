@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="it_scoppelletti_cmd_about">Informazioni</string>
     <string name="it_scoppelletti_cmd_delete">Cancella</string>
     <string name="it_scoppelletti_cmd_discard">Non salvare</string>
     <string name="it_scoppelletti_cmd_drawerClose">Chiudi il cassetto di navigazione</string>
     <string name="it_scoppelletti_cmd_drawerOpen">Apri il cassetto di navigazione</string>
     <string name="it_scoppelletti_cmd_edit">Modifica</string>
-    <string name="it_scoppelletti_cmd_help">Guida</string>
     <string name="it_scoppelletti_cmd_list">Elenco</string>
     <string name="it_scoppelletti_cmd_login">Accedi</string>
     <string name="it_scoppelletti_cmd_logout">Esci</string>
     <string name="it_scoppelletti_cmd_new">Nuovo</string>
     <string name="it_scoppelletti_cmd_open">Apri</string>
-    <string name="it_scoppelletti_cmd_review">Valuta la App</string>
     <string name="it_scoppelletti_cmd_save">Salva</string>
-    <string name="it_scoppelletti_cmd_settings">Impostazioni</string>
     <string name="it_scoppelletti_cmd_update">Aggiorna</string>
     <string name="it_scoppelletti_err_security">Problema di sicurezza.</string>
+    <string name="it_scoppelletti_err_startActivity">Fallito avvio dell\'attività.</string>
     <string name="it_scoppelletti_msg_discardChanges">Le modifiche non saranno salvate.</string>
 </resources>

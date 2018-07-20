@@ -28,7 +28,6 @@ import android.graphics.BitmapFactory
  *                      original image (`outWidth`, `outHeight`) must be preset.
  * @param    viewWidth  Width of the target image container.
  * @param    viewHeight Height of the target image container.
- * @see
  * @since    1.0.0
  */
 public fun BitmapFactory.Options.calculateInSampleSize(

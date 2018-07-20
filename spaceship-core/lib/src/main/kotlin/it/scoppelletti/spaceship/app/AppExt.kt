@@ -22,12 +22,27 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 
 /**
+ * Terminates the activity.
+ *
+ * @receiver The activity.
+ * @since    1.0.0
+ */
+public fun Activity.exit(): Boolean {
+    if (this.isFinishing) {
+        return false
+    }
+
+    this.finish()
+    return true
+}
+
+/**
  * Hides the soft keyboard.
  *
  * @receiver The activity.
  * @since    1.0.0
  */
-fun Activity.hideSoftKeyboard() {
+public fun Activity.hideSoftKeyboard() {
     val view: View?
     val inputMgr: InputMethodManager
 

@@ -14,10 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 -->
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- http://www.google.com/design/spec/style/color.html  -->
-    <!-- Active on dark background - opacity: 100% -->
-    <item android:color="#FFFFFFFF" android:state_enabled="true" />
-    <!-- Inactive on dark background - opacity: 50% -->
-    <item android:color="#7FFFFFFF" android:state_enabled="false" />
-</selector>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <eat-comment/>
+    <color name="preference_fallback_accent_color" tools:override="true">@color/colorAccent</color>
+</resources>

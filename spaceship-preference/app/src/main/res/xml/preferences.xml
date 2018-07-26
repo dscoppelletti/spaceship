@@ -5,7 +5,7 @@
     <android.support.v7.preference.PreferenceCategory
         android:title="@string/lbl_category">
         <android.support.v7.preference.SwitchPreferenceCompat
-            android:key="it.scoppelletti.spaceship.preference.sample.1"
+            android:key="it.scoppelletti.spaceship.preference.sample.switch"
             android:title="@string/lbl_switch"
             android:summaryOn="@string/msg_switchOn"
             android:summaryOff="@string/msg_switchOff"
@@ -23,7 +23,7 @@
                 android:targetPackage="it.scoppelletti.spaceship.preference.sample" />
         </android.support.v7.preference.Preference>
         <android.support.v7.preference.Preference
-            android:key="it.scoppelletti.spaceship.preference.sample.2"
+            android:key="it.scoppelletti.spaceship.preference.sample.feedback"
             android:title="@string/it_scoppelletti_pref_cmd_feedback"
             android:icon="@drawable/ic_feedback_pref"
             android:persistent="false">

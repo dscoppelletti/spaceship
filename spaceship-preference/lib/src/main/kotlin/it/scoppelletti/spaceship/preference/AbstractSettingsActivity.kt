@@ -31,7 +31,7 @@ import kotlinx.android.synthetic.main.it_scoppelletti_pref_settings_activity.*
  *
  * @constructor Sole constructor.
  */
-public abstract class SettingsActivityBase : AppCompatActivity() {
+public abstract class AbstractSettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val actionBar: ActionBar
 
@@ -52,7 +52,7 @@ public abstract class SettingsActivityBase : AppCompatActivity() {
      *
      * @return The new object.
      */
-    protected abstract fun createFragment(): PreferenceFragmentCompat
+    protected abstract fun createFragment(): AbstractPreferenceFragment
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {

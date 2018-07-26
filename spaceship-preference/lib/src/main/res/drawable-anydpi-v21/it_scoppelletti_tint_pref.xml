@@ -16,8 +16,8 @@
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- http://www.google.com/design/spec/style/color.html  -->
-    <!-- Active on light background - opacity: 54% 137.7 -->
+    <!-- Active on light background - opacity: 54% -->
     <item android:color="#8A000000" android:state_enabled="true" />
-    <!-- Inactive on light background - opacity: 38% 96.9 -->
+    <!-- Inactive on light background - opacity: 38% -->
     <item android:color="#61000000" android:state_enabled="false" />
 </selector>

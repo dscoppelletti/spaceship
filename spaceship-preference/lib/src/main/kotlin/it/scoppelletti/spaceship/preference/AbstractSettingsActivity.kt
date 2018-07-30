@@ -17,11 +17,11 @@
 package it.scoppelletti.spaceship.preference
 
 import android.os.Bundle
+import android.support.annotation.UiThread
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.preference.PreferenceFragmentCompat
 import android.view.MenuItem
-import it.scoppelletti.spaceship.app.exit
+import it.scoppelletti.spaceship.app.tryFinish
 import kotlinx.android.synthetic.main.it_scoppelletti_pref_settings_activity.*
 
 /**
@@ -31,7 +31,9 @@ import kotlinx.android.synthetic.main.it_scoppelletti_pref_settings_activity.*
  *
  * @constructor Sole constructor.
  */
+@UiThread
 public abstract class AbstractSettingsActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         val actionBar: ActionBar
 
@@ -41,7 +43,6 @@ public abstract class AbstractSettingsActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         actionBar = supportActionBar!!
         actionBar.setDisplayHomeAsUpEnabled(true)
-
         supportFragmentManager.beginTransaction()
                 .replace(R.id.contentFrame, createFragment())
                 .commit()
@@ -57,7 +58,7 @@ public abstract class AbstractSettingsActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> {
-                exit()
+                tryFinish()
                 return true
             }
         }

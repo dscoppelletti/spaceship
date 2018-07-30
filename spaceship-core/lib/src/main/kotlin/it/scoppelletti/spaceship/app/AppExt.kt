@@ -22,12 +22,14 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 
 /**
- * Terminates the activity.
+ * Tries to finish an activity.
  *
  * @receiver The activity.
+ * @return   Returns `true` if the finish process has been started, `false` if
+ *           the activity was already finishing.
  * @since    1.0.0
  */
-public fun Activity.exit(): Boolean {
+public fun Activity.tryFinish(): Boolean {
     if (this.isFinishing) {
         return false
     }

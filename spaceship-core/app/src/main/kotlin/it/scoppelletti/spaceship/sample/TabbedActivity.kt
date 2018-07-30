@@ -20,6 +20,7 @@ import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
 import it.scoppelletti.spaceship.app.TitleAdapter
 import it.scoppelletti.spaceship.app.hideSoftKeyboard
+import it.scoppelletti.spaceship.app.tryFinish
 import it.scoppelletti.spaceship.inject.Injectable
 import it.scoppelletti.spaceship.sample.lifecycle.ItemState
 import it.scoppelletti.spaceship.sample.lifecycle.ItemViewModel
@@ -189,27 +190,25 @@ class TabbedActivity : AppCompatActivity(),
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onDialogResult(dialogId: Int, which: Int) {
-        when (dialogId) {
-            TabbedActivity.DLG_DELETE -> when (which) {
+    override fun onDialogResult(tag: String, which: Int) {
+        when (tag) {
+            MainApp.TAG_DELETEDLG -> when (which) {
                 DialogInterface.BUTTON_POSITIVE -> {
                     onItemDelete()
                 }
             }
 
-            TabbedActivity.DLG_DISCARD -> when (which) {
+            MainApp.TAG_DISCARDDLG -> when (which) {
                 DialogInterface.BUTTON_POSITIVE -> {
-                    if (!isFinishing) {
-                        finish()
-                    }
+                    tryFinish()
                 }
             }
         }
     }
 
     private fun onExit() {
-        if (onExiting() && !isFinishing) {
-            finish()
+        if (onExiting()) {
+            tryFinish()
         }
     }
 
@@ -218,7 +217,7 @@ class TabbedActivity : AppCompatActivity(),
             ConfirmDialogFragment.show(this,
                     R.string.it_scoppelletti_msg_discardChanges,
                     titleId = android.R.string.dialog_alert_title,
-                    dialogId = TabbedActivity.DLG_DISCARD,
+                    tag = MainApp.TAG_DISCARDDLG,
                     affermativeActionTextId = R.string.it_scoppelletti_cmd_discard)
             return false
         }
@@ -261,12 +260,7 @@ class TabbedActivity : AppCompatActivity(),
     private fun onItemDeleting() {
         ConfirmDialogFragment.show(this, R.string.msg_deleting,
                 titleId = R.string.it_scoppelletti_cmd_delete,
-                dialogId = TabbedActivity.DLG_DELETE,
+                tag = MainApp.TAG_DELETEDLG,
                 affermativeActionTextId = R.string.it_scoppelletti_cmd_delete)
-    }
-
-    companion object {
-        private const val DLG_DELETE: Int = 1
-        private const val DLG_DISCARD: Int = 2
     }
 }

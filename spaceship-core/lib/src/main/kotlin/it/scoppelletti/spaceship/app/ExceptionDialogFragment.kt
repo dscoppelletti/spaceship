@@ -31,6 +31,8 @@ import it.scoppelletti.spaceship.toMessage
  * Exception dialog.
  *
  * @since 1.0.0
+ *
+ * @constructor Sole constructor.
  */
 @UiThread
 public class ExceptionDialogFragment : AppCompatDialogFragment() {
@@ -74,18 +76,16 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
      */
     private fun onDialogResult(
             @Suppress("UNUSED_PARAMETER") dialog: DialogInterface?,
-            @Suppress("UNUSED_PARAMETER") which: Int
+            which: Int
     ) {
-        val dialogId: Int
-        val args: Bundle
+        val dialogTag: String?
         val activity: FragmentActivity
 
-        args = arguments!!
-        dialogId = args.getInt(ExceptionDialogFragment.PROP_DLGID, -1)
+        dialogTag = tag
         activity = requireActivity()
 
-        if (dialogId > 0 && activity is OnDialogResultListener) {
-            activity.onDialogResult(dialogId, DialogInterface.BUTTON_NEGATIVE)
+        if (dialogTag != null && activity is OnDialogResultListener) {
+            activity.onDialogResult(dialogTag, which)
         }
     }
 
@@ -99,19 +99,18 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
         private const val PROP_MSG: String = "1"
         private const val PROP_MSGID: String = "2"
         private const val PROP_TITLEID: String = "3"
-        private const val PROP_DLGID: String = "4"
 
         /**
          * Shows an exception dialog.
          *
          * @param activity The activity.
          * @param ex       The exception.
-         * @param dialogId The dialog ID.
+         * @param tag      The fragment tag.
          */
         public fun show(
                 activity: FragmentActivity,
                 ex: Throwable,
-                dialogId: Int = -1
+                tag: String = ExceptionDialogFragment.TAG
         ) {
             val args: Bundle
             val fragment: ExceptionDialogFragment
@@ -136,14 +135,9 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
                         ex.toMessage())
             }
 
-            if (dialogId > 0) {
-                args.putInt(ExceptionDialogFragment.PROP_DLGID, dialogId)
-            }
-
             fragment = ExceptionDialogFragment()
             fragment.arguments = args
-            fragment.show(activity.supportFragmentManager,
-                    ExceptionDialogFragment.TAG)
+            fragment.show(activity.supportFragmentManager, tag)
         }
     }
 }

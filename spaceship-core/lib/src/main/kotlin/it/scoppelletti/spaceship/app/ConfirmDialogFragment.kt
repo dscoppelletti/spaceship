@@ -16,13 +16,13 @@
 
 package it.scoppelletti.spaceship.app
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.annotation.UiThread
 import android.support.v4.app.FragmentActivity
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatDialogFragment
 import it.scoppelletti.spaceship.CoreExt
 
@@ -30,12 +30,11 @@ import it.scoppelletti.spaceship.CoreExt
  * Confirmation dialog.
  *
  * @since 1.0.0
+ *
+ * @constructor Sole constructor.
  */
 @UiThread
 public class ConfirmDialogFragment : AppCompatDialogFragment() {
-    // - Genymotion 2.12.1
-    // Negative button has a gray background, but only if the dialog is opened
-    // in the method onBackPressed!
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val msg: String?
@@ -84,16 +83,14 @@ public class ConfirmDialogFragment : AppCompatDialogFragment() {
             @Suppress("UNUSED_PARAMETER") dialog: DialogInterface?,
             which: Int
     ) {
-        val dialogId: Int
-        val args: Bundle
+        val dialogTag: String?
         val activity: FragmentActivity
 
-        args = arguments!!
-        dialogId = args.getInt(ConfirmDialogFragment.PROP_DLGID, -1)
+        dialogTag = tag
         activity = requireActivity()
 
-        if (dialogId > 0 && activity is OnDialogResultListener) {
-            activity.onDialogResult(dialogId, which)
+        if (dialogTag != null && activity is OnDialogResultListener) {
+            activity.onDialogResult(dialogTag, which)
         }
     }
 
@@ -107,9 +104,8 @@ public class ConfirmDialogFragment : AppCompatDialogFragment() {
         private const val PROP_MSG: String = "1"
         private const val PROP_MSGID: String = "2"
         private const val PROP_TITLEID: String = "3"
-        private const val PROP_DLGID: String = "4"
-        private const val PROP_POSITIVEID: String = "5"
-        private const val PROP_NEGATIVEID: String = "6"
+        private const val PROP_POSITIVEID: String = "4"
+        private const val PROP_NEGATIVEID: String = "5"
 
         /**
          * Shows a confirmation dialog.
@@ -118,7 +114,7 @@ public class ConfirmDialogFragment : AppCompatDialogFragment() {
          * @param messageId                The message as a string resource ID.
          * @param messageArguments         The arguments to build the message.
          * @param titleId                  The title as a string resource ID.
-         * @param dialogId                 The dialog ID.
+         * @param tag                      The fragment tag.
          * @param affermativeActionTextId  The affermative action text as a
          *                                 string resource ID.
          * @param dismissiveActionTextId   The dismissive action text as a
@@ -129,7 +125,7 @@ public class ConfirmDialogFragment : AppCompatDialogFragment() {
                 @StringRes messageId: Int,
                 messageArguments: Array<out Any>? = null,
                 @StringRes titleId: Int,
-                dialogId: Int = -1,
+                tag: String = ConfirmDialogFragment.TAG,
                 @StringRes affermativeActionTextId: Int = android.R.string.ok,
                 @StringRes dismissiveActionTextId: Int =
                         android.R.string.cancel
@@ -157,14 +153,9 @@ public class ConfirmDialogFragment : AppCompatDialogFragment() {
                         dismissiveActionTextId)
             }
 
-            if (dialogId > 0) {
-                args.putInt(ConfirmDialogFragment.PROP_DLGID, dialogId)
-            }
-
             fragment = ConfirmDialogFragment()
             fragment.arguments = args
-            fragment.show(activity.supportFragmentManager,
-                    ConfirmDialogFragment.TAG)
+            fragment.show(activity.supportFragmentManager, tag)
         }
     }
 }

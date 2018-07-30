@@ -24,12 +24,12 @@ package it.scoppelletti.spaceship.app
 public interface OnDialogResultListener {
 
     /**
-     * This method will be invoked when dialog is accepted or dismissed.
+     * This method will be invoked when dialog is accepted or canceled.
      *
-     * @param dialogId The dialog ID.
-     * @param which    ID of the button that was clicked (ex.
-     *                 `DialogInterface.BUTTON_POSITIVE`) or the position of the
-     *                 item clicked.
+     * @param tag   The fragment tag.
+     * @param which ID of the button that was clicked (ex.
+     *              `DialogInterface.BUTTON_POSITIVE`) or the position of the
+     *              item clicked.
      */
-    fun onDialogResult(dialogId: Int, which: Int)
+    fun onDialogResult(tag: String, which: Int)
 }

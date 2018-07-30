@@ -22,13 +22,14 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.support.annotation.UiThread
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.text.method.LinkMovementMethod
 import android.view.MenuItem
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
-import it.scoppelletti.spaceship.app.exit
+import it.scoppelletti.spaceship.app.tryFinish
 import it.scoppelletti.spaceship.html.R
 import it.scoppelletti.spaceship.html.lifecycle.HtmlViewerState
 import it.scoppelletti.spaceship.html.lifecycle.HtmlViewerViewModel
@@ -51,6 +52,7 @@ import javax.inject.Inject
  *
  * @constructor Sole constructor.
  */
+@UiThread
 public class HtmlViewerActivity : AppCompatActivity(),
         Injectable,
         OnDialogResultListener {
@@ -107,14 +109,14 @@ public class HtmlViewerActivity : AppCompatActivity(),
         txtContent.text = state.text
 
         state.error?.poll()?.let { ex ->
-            ExceptionDialogFragment.show(this, ex, HtmlViewerActivity.DLG_ERROR)
+            ExceptionDialogFragment.show(this, ex)
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> {
-                exit()
+                tryFinish()
                 return true
             }
         }
@@ -122,11 +124,10 @@ public class HtmlViewerActivity : AppCompatActivity(),
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onDialogResult(dialogId: Int, which: Int) {
-        when (dialogId) {
-            HtmlViewerActivity.DLG_ERROR -> {
-                exit()
-                return
+    override fun onDialogResult(tag: String, which: Int) {
+        when (tag) {
+            ExceptionDialogFragment.TAG -> {
+                tryFinish()
             }
         }
     }
@@ -139,7 +140,6 @@ public class HtmlViewerActivity : AppCompatActivity(),
         public const val PROP_TEXT: String =
                 "it.scoppelletti.spaceship.html.text"
 
-        private const val DLG_ERROR: Int = 1
         private val logger = KotlinLogging.logger {}
     }
 }

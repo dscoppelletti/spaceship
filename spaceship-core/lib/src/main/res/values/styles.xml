@@ -38,13 +38,6 @@
         parent="it_scoppelletti_baseStyle_collapsingToolbarLayout">
         <item name="contentScrim">@color/colorPrimary</item>
     </style>
-    <!-- Toolbar not in AppBarLayout
-    http://developer.android.com/training/appbar/setting-up -->
-    -->
-    <style name="it_scoppelletti_style_actionBar"
-        parent="it_scoppelletti_baseStyle_actionBar">
-        <item name="android:background">@color/colorPrimary</item>
-    </style>
     <!-- Navigation Drawer -->
     <style name="it_scoppelletti_style_drawerLayout">
         <item name="android:layout_width">match_parent</item>

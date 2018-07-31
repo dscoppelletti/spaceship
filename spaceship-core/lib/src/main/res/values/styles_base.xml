@@ -31,13 +31,6 @@
         <item name="android:layout_height">match_parent</item>
         <item name="layout_scrollFlags">scroll|exitUntilCollapsed</item>
     </style>
-    <!-- Toolbar not in AppBarLayout -->
-    <style name="it_scoppelletti_baseStyle_actionBar">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">?android:attr/actionBarSize</item>
-        <item name="elevation">4dp</item>
-        <item name="popupTheme">@style/it_scoppelletti_theme_toolbarPopup</item>
-    </style>
     <!-- Navigation Drawer -->
     <style name="it_scoppelletti_baseStyle_drawerHeader">
         <item name="android:layout_width">match_parent</item>

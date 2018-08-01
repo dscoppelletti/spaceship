@@ -47,4 +47,12 @@ public object CoreExt {
      * @see it.scoppelletti.spaceship.app.ExceptionDialogFragment
      */
     public const val TAG_EXCEPTIONDIALOG: String = "it.scoppelletti.spaceship.2"
+
+    /**
+     * Tag of `BottomSheetDialogFragmentEx` fragment.
+     *
+     * @see it.scoppelletti.spaceship.app.BottonSheetDialogFragmentEx
+     */
+    public const val TAG_BOTTOMSHEETDIALOG: String =
+            "it.scoppelletti.spaceship.3"
 }

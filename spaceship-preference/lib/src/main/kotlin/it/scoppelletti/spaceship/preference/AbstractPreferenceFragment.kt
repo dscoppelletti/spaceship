@@ -16,6 +16,7 @@
 
 package it.scoppelletti.spaceship.preference
 
+import android.support.annotation.UiThread
 import android.support.v4.app.FragmentManager
 import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceFragmentCompat
@@ -27,6 +28,7 @@ import android.support.v7.preference.PreferenceFragmentCompat
  *
  * @constructor Sole constructor.
  */
+@UiThread
 public abstract class AbstractPreferenceFragment : PreferenceFragmentCompat() {
 
     override fun onDisplayPreferenceDialog(preference: Preference?) {

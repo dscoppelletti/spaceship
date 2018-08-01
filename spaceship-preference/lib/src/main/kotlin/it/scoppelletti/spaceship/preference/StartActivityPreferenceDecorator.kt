@@ -17,6 +17,7 @@
 package it.scoppelletti.spaceship.preference
 
 import android.support.annotation.StringRes
+import android.support.annotation.UiThread
 import android.support.v4.app.FragmentActivity
 import android.support.v7.preference.Preference
 import it.scoppelletti.spaceship.ApplicationException
@@ -33,11 +34,13 @@ import it.scoppelletti.spaceship.app.ExceptionDialogFragment
  *
  * @constructor Constructor.
  */
+@UiThread
 public class StartActivityPreferenceDecorator(
         private val activity: FragmentActivity,
         private val preference: Preference,
         @StringRes private val titleId: Int
 ) {
+
     init {
         preference.setOnPreferenceClickListener(::onClickListener)
     }

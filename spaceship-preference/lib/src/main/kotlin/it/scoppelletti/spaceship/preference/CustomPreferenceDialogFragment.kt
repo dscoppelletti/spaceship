@@ -17,6 +17,7 @@
 package it.scoppelletti.spaceship.preference
 
 import android.os.Bundle
+import android.support.annotation.UiThread
 import android.support.v7.preference.PreferenceDialogFragmentCompat
 import android.view.View
 
@@ -25,6 +26,7 @@ import android.view.View
  *
  * @since 1.0.0
  */
+@UiThread
 public class CustomPreferenceDialogFragment : PreferenceDialogFragmentCompat() {
 
     override fun onBindDialogView(view: View?) {

@@ -24,7 +24,7 @@ import android.util.SparseArray
 import android.view.ViewGroup
 
 /**
- * Extended `FragmentPagerAdapter`.
+ * Extended `FragmentPagerAdapter` component.
  *
  * * [ViewPager with FragmentPagerAdapter > Access Fragment Instances](http://guides.codepath.com/android/ViewPager-with-FragmentPagerAdapter#access-fragment-instances)
  *

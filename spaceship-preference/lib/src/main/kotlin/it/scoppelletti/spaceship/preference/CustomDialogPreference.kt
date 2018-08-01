@@ -17,6 +17,7 @@
 package it.scoppelletti.spaceship.preference
 
 import android.content.Context
+import android.support.annotation.UiThread
 import android.support.v7.preference.DialogPreference
 import android.util.AttributeSet
 import android.view.View
@@ -26,6 +27,7 @@ import android.view.View
  *
  * @since 1.0.0
  */
+@UiThread
 public abstract class CustomDialogPreference : DialogPreference {
 
     /**

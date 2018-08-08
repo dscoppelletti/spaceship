@@ -35,11 +35,11 @@ public object CoreExt {
     public const val PROP_TITLE: String = "it.scoppelletti.spaceship.2"
 
     /**
-     * Tag of `ConfirmDialogFragment` fragment.
+     * Tag of `AlertDialogFragment` fragment.
      *
-     * @see it.scoppelletti.spaceship.app.ConfirmDialogFragment
+     * @see it.scoppelletti.spaceship.app.AlertDialogFragment
      */
-    public const val TAG_CONFIRMDIALOG: String = "it.scoppelletti.spaceship.1"
+    public const val TAG_ALERTDIALOG: String = "it.scoppelletti.spaceship.1"
 
     /**
      * Tag of `ExceptionDialogFragment` fragment.

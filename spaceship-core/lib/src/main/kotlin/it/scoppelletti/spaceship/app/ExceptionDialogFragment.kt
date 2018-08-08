@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2017 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ * Copyright (C) 2015-2018 Dario Scoppelletti, <http://www.scoppelletti.it/>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -89,7 +89,7 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
         }
     }
 
-    companion object {
+    public companion object {
 
         /**
          * The fragment tag.
@@ -99,31 +99,32 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
         private const val PROP_MSG: String = "1"
         private const val PROP_MSGID: String = "2"
         private const val PROP_TITLEID: String = "3"
+    }
 
-        /**
-         * Shows an exception dialog.
-         *
-         * @param activity The activity.
-         * @param ex       The exception.
-         * @param tag      The fragment tag.
-         */
-        public fun show(
-                activity: FragmentActivity,
-                ex: Throwable,
-                tag: String = ExceptionDialogFragment.TAG
-        ) {
+    /**
+     * Builds an `ExceptionDialogFragment` fragment.
+     *
+     * @property tag The fragment tag.
+     */
+    @ExceptionDialogFragment.Dsl
+    public class Builder internal constructor(
+            private val activity: FragmentActivity,
+            private val ex: Throwable
+    ) {
+        public var tag: String = ExceptionDialogFragment.TAG
+
+        internal fun show() {
             val args: Bundle
-            val fragment: ExceptionDialogFragment
 
             args = Bundle()
+
             if (ex is ApplicationException) {
-                if (ex.messageArguments == null) {
+                if (ex.messageBuilder.isSimple) {
                     args.putInt(ExceptionDialogFragment.PROP_MSGID,
-                            ex.messageId)
+                            ex.messageBuilder.messageId)
                 } else {
                     args.putString(ExceptionDialogFragment.PROP_MSG,
-                            activity.getString(ex.messageId,
-                                    *ex.messageArguments))
+                            ex.messageBuilder.build(activity.resources))
                 }
 
                 if (ex.titleId != android.R.string.dialog_alert_title) {
@@ -135,10 +136,30 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
                         ex.toMessage())
             }
 
-            fragment = ExceptionDialogFragment()
-            fragment.arguments = args
-            fragment.show(activity.supportFragmentManager, tag)
+            ExceptionDialogFragment()
+                    .apply {
+                        arguments = args
+                    }
+                    .show(activity.supportFragmentManager, tag)
         }
     }
+
+    /**
+     * Marks the `ExceptionDialogFragment` DSL's objects.
+     */
+    @DslMarker
+    public annotation class Dsl
 }
 
+/**
+ * Shows an exception dialog.
+ *
+ * @receiver      The activity.
+ * @param    ex   The exception.
+ * @param    init The initialization block.
+ * @since         1.0.0
+ */
+public fun FragmentActivity.showExceptionDialog(
+        ex: Throwable,
+        init: ExceptionDialogFragment.Builder.() -> Unit = { }
+) = ExceptionDialogFragment.Builder(this, ex).apply(init).show()

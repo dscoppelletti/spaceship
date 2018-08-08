@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="it_scoppelletti_cmd_delete">Cancella</string>
-    <string name="it_scoppelletti_cmd_discard">Non salvare</string>
+    <string name="it_scoppelletti_cmd_dontSave">Non salvare</string>
     <string name="it_scoppelletti_cmd_drawerClose">Chiudi il cassetto di navigazione</string>
     <string name="it_scoppelletti_cmd_drawerOpen">Apri il cassetto di navigazione</string>
     <string name="it_scoppelletti_cmd_edit">Modifica</string>
@@ -14,5 +14,5 @@
     <string name="it_scoppelletti_cmd_update">Aggiorna</string>
     <string name="it_scoppelletti_err_security">Problema di sicurezza.</string>
     <string name="it_scoppelletti_err_startActivity">Fallito avvio dell\'attività.</string>
-    <string name="it_scoppelletti_msg_discardChanges">Le modifiche non saranno salvate.</string>
+    <string name="it_scoppelletti_msg_saveChanges">Vuoi salvare le modifiche?</string>
 </resources>

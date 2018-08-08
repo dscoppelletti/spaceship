@@ -21,7 +21,8 @@ import android.support.annotation.UiThread
 import android.support.v4.app.FragmentActivity
 import android.support.v7.preference.Preference
 import it.scoppelletti.spaceship.ApplicationException
-import it.scoppelletti.spaceship.app.ExceptionDialogFragment
+import it.scoppelletti.spaceship.app.showExceptionDialog
+import it.scoppelletti.spaceship.applicationException
 
 /**
  * Decorates a `Preference` object so that it can start an activity by an
@@ -55,10 +56,13 @@ public class StartActivityPreferenceDecorator(
         try {
             preference.context.startActivity(preference.intent)
         } catch (ex: RuntimeException) {
-            err = ApplicationException(
-                    messageId = R.string.it_scoppelletti_err_startActivity,
-                    titleId = titleId, cause = ex)
-            ExceptionDialogFragment.show(activity, err)
+            err = applicationException {
+                message(R.string.it_scoppelletti_err_startActivity)
+                titleId = this@StartActivityPreferenceDecorator.titleId
+                cause = ex
+            }
+
+            activity.showExceptionDialog(err)
         }
 
         return true

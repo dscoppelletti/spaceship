@@ -57,10 +57,10 @@ public class NavigationDrawer(
     public fun onCreate(
             @Suppress("UNUSED_PARAMETER") savedInstanceState: Bundle?
     ) {
-        toggle = when(toolbar) {
-            null -> NavigationDrawerListener(activity, drawerLayout)
-            else -> NavigationDrawerListener(activity, drawerLayout, toolbar)
-        }
+        toggle = if (toolbar == null)
+            NavigationDrawerListener(activity, drawerLayout)
+        else
+            NavigationDrawerListener(activity, drawerLayout, toolbar)
 
         drawerLayout.addDrawerListener(toggle)
     }

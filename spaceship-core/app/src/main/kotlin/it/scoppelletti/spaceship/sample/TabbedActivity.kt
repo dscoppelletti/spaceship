@@ -15,11 +15,11 @@ import android.view.MenuItem
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
-import it.scoppelletti.spaceship.app.ConfirmDialogFragment
-import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
 import it.scoppelletti.spaceship.app.TitleAdapter
 import it.scoppelletti.spaceship.app.hideSoftKeyboard
+import it.scoppelletti.spaceship.app.showAlertDialog
+import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.app.tryFinish
 import it.scoppelletti.spaceship.inject.Injectable
 import it.scoppelletti.spaceship.sample.lifecycle.ItemState
@@ -139,7 +139,7 @@ class TabbedActivity : AppCompatActivity(),
             }
 
             state.error?.poll()?.let { err ->
-                ExceptionDialogFragment.show(this, err)
+                showExceptionDialog(err)
             }
         }
     }
@@ -192,15 +192,19 @@ class TabbedActivity : AppCompatActivity(),
 
     override fun onDialogResult(tag: String, which: Int) {
         when (tag) {
-            MainApp.TAG_DELETEDLG -> when (which) {
+            MainApp.TAG_SAVEDLG -> when (which) {
                 DialogInterface.BUTTON_POSITIVE -> {
-                    onItemDelete()
+                    onItemSave()
+                }
+
+                DialogInterface.BUTTON_NEUTRAL -> {
+                    tryFinish()
                 }
             }
 
-            MainApp.TAG_DISCARDDLG -> when (which) {
+            MainApp.TAG_DELETEDLG -> when (which) {
                 DialogInterface.BUTTON_POSITIVE -> {
-                    tryFinish()
+                    onItemDelete()
                 }
             }
         }
@@ -214,11 +218,14 @@ class TabbedActivity : AppCompatActivity(),
 
     private fun onExiting(): Boolean {
         if (viewModel.form.changed) {
-            ConfirmDialogFragment.show(this,
-                    R.string.it_scoppelletti_msg_discardChanges,
-                    titleId = android.R.string.dialog_alert_title,
-                    tag = MainApp.TAG_DISCARDDLG,
-                    affermativeActionTextId = R.string.it_scoppelletti_cmd_discard)
+            showAlertDialog {
+                message(R.string.it_scoppelletti_msg_saveChanges)
+                iconId = android.R.drawable.ic_dialog_alert
+                positiveActionTextId = R.string.it_scoppelletti_cmd_save
+                neutralActionTextId = R.string.it_scoppelletti_cmd_dontSave
+                tag = MainApp.TAG_SAVEDLG
+            }
+
             return false
         }
 
@@ -241,7 +248,7 @@ class TabbedActivity : AppCompatActivity(),
             }
         } catch (ex: RuntimeException) {
             progressIndicator.hide {
-                ExceptionDialogFragment.show(this, ex)
+                showExceptionDialog(ex)
             }
         }
     }
@@ -252,15 +259,17 @@ class TabbedActivity : AppCompatActivity(),
             viewModel.delete()
         } catch (ex: RuntimeException) {
             progressIndicator.hide {
-                ExceptionDialogFragment.show(this, ex)
+                showExceptionDialog(ex)
             }
         }
     }
 
     private fun onItemDeleting() {
-        ConfirmDialogFragment.show(this, R.string.msg_deleting,
-                titleId = R.string.it_scoppelletti_cmd_delete,
-                tag = MainApp.TAG_DELETEDLG,
-                affermativeActionTextId = R.string.it_scoppelletti_cmd_delete)
+        showAlertDialog {
+            message(R.string.msg_deleting)
+            titleId = R.string.it_scoppelletti_cmd_delete
+            positiveActionTextId = R.string.it_scoppelletti_cmd_delete
+            tag = MainApp.TAG_DELETEDLG
+        }
     }
 }

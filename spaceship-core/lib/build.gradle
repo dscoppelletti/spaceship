@@ -37,6 +37,8 @@ android {
     }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+        test.res.srcDirs += 'src/test/res'
     }
 }
 
@@ -60,4 +62,8 @@ dependencies {
     implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
     implementation "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"
     implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
+    testImplementation "junit:junit:${versionMap.junit}"
+    testImplementation "org.jetbrains.kotlin:kotlin-test:${versionMap.kotlin}"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:${versionMap.kotlin}"
+    testImplementation "org.mockito:mockito-core:${versionMap.mockito}"
 }

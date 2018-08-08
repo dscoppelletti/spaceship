@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2017 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ * Copyright (C) 2008-2018 Dario Scoppelletti, <http://www.scoppelletti.it/>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,33 +17,86 @@
 package it.scoppelletti.spaceship
 
 import android.support.annotation.StringRes
+import it.scoppelletti.spaceship.types.trimRaw
 import java.lang.reflect.InvocationTargetException
 
 /**
  * Application exception.
  *
- * @since                     1.0.0
- * @property messageId        The message as a string resource ID.
- * @property messageArguments The arguments to build the message.
- * @property titleId          The title as a string resource ID.
+ * @since                   1.0.0
+ * @property messageBuilder The message.
+ * @property titleId        The title as a string resource ID.
  *
  * @constructor Constructor.
  */
 public class ApplicationException(
-        @StringRes public val messageId: Int,
-        public val messageArguments: Array<out Any>? = null,
-        @StringRes public val titleId: Int =
-                android.R.string.dialog_alert_title,
-        override val cause: Throwable? = null
+        public val messageBuilder: MessageBuilder,
+        @StringRes public val titleId: Int,
+        override val cause: Throwable?
 ) : RuntimeException() {
 
     override val message: String?
         get() = toString()
 
-    override fun toString() = """${javaClass.name}(messageId=$messageId,
-messageArguments=${messageArguments?.contentToString()},
-titleId=$titleId)""".replace('\n', ' ')
+    override fun toString() = """
+        |{ApplicationException(messageBuilder=$messageBuilder,
+        |titleId=$titleId)""".trimRaw()
+
+    /**
+     * Builds an `ApplicationException` instance.
+     *
+     * @property titleId The title as a string resource ID.
+     * @property cause   The original exception.
+     */
+    @MessageBuilder.Dsl
+    @ApplicationException.Dsl
+    public class Builder internal constructor() {
+
+        @StringRes public var titleId: Int = android.R.string.dialog_alert_title
+        public var cause: Throwable? = null
+        private var messageBuilder: MessageBuilder? = null
+
+        /**
+         * Defines the `MessageBuilder` object.
+         *
+         * @param  messageId The message as a string resource ID.
+         * @param  init      The initializiation block.
+         * @return           The new object.
+         */
+        public fun message(
+                @StringRes messageId: Int,
+                init: MessageBuilder.() -> Unit = { }
+        ): MessageBuilder {
+            messageBuilder = MessageBuilder.make(messageId, init)
+            return messageBuilder!!
+        }
+
+        internal fun build(): ApplicationException {
+            if (messageBuilder == null) {
+                throw NullPointerException("Missing the MessageBuilder object.")
+            }
+
+            return ApplicationException(messageBuilder!!, titleId, cause)
+        }
+    }
+
+    /**
+     * Marks the `ApplicationException` DSL's objects.
+     */
+    @DslMarker
+    public annotation class Dsl
 }
+
+/**
+ * Creates a new [ApplicationException] instance.
+ *
+ * @param  init The initialization block.
+ * @return      The new object.
+ * @since       1.0.0
+ */
+public fun applicationException(
+        init: ApplicationException.Builder.() -> Unit
+): ApplicationException = ApplicationException.Builder().apply(init).build()
 
 /**
  * Returns the message of an exception.

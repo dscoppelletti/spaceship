@@ -28,3 +28,18 @@ public object StringExt {
      */
     public const val EMPTY: String = ""
 }
+
+/**
+ * Trims leading whitespace characters followed by `|` from every line of a
+ * source string and removes the first and the last lines if they are blank
+ * (notice difference blank vs empty). Then replace all `\n` characters by
+ * whitespace ` `.
+ *
+ * Doesn't affect a line if it doesn't contain `|` except the first and the last
+ * blank lines.
+ *
+ * Doesn't preserve the original line endings.
+ *
+ * @since 1.0.0
+ */
+public fun String.trimRaw() = this.trimMargin().replace('\n', ' ')

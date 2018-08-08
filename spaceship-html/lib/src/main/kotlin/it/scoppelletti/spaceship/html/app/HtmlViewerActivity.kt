@@ -29,6 +29,7 @@ import android.text.method.LinkMovementMethod
 import android.view.MenuItem
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
+import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.app.tryFinish
 import it.scoppelletti.spaceship.html.R
 import it.scoppelletti.spaceship.html.lifecycle.HtmlViewerState
@@ -109,7 +110,7 @@ public class HtmlViewerActivity : AppCompatActivity(),
         txtContent.text = state.text
 
         state.error?.poll()?.let { ex ->
-            ExceptionDialogFragment.show(this, ex)
+            showExceptionDialog(ex)
         }
     }
 

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="message_builder">Test</string>
+    <string name="message_builder_args">Test %s %d %s %s</string>
+</resources>

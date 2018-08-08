@@ -12,7 +12,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import it.scoppelletti.spaceship.app.ExceptionDialogFragment
+import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.inject.Injectable
 import it.scoppelletti.spaceship.sample.lifecycle.ListState
 import it.scoppelletti.spaceship.sample.lifecycle.ListViewModel
@@ -77,7 +77,7 @@ class ListFragment : Fragment(),
                 }
 
                 state.error?.poll()?.let { err ->
-                    ExceptionDialogFragment.show(requireActivity(), err)
+                    requireActivity().showExceptionDialog(err)
                 }
             }
         })

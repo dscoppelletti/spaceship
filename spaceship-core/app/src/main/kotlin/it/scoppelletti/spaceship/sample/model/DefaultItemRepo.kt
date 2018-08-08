@@ -3,7 +3,7 @@ package it.scoppelletti.spaceship.sample.model
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import it.scoppelletti.spaceship.ApplicationException
+import it.scoppelletti.spaceship.applicationException
 import it.scoppelletti.spaceship.sample.R
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -26,10 +26,14 @@ class DefaultItemRepo @Inject constructor(): ItemRepo {
             Observable.fromIterable(items)
                     .map {
                         if (it.code.orEmpty() == item.code.orEmpty()) {
-                            throw ApplicationException(
-                                    R.string.err_code_duplicate,
-                                    arrayOf(it.code.orEmpty()),
-                                    R.string.it_scoppelletti_cmd_save)
+                            throw applicationException {
+                                message(R.string.err_code_duplicate) {
+                                    arguments {
+                                        add(it.code.orEmpty())
+                                    }
+                                }
+                                titleId = R.string.it_scoppelletti_cmd_save
+                            }
                         }
 
                         it.id
@@ -67,9 +71,14 @@ class DefaultItemRepo @Inject constructor(): ItemRepo {
 
                         idx = (pos - 1).toInt()
                         if (idx < 0) {
-                            throw ApplicationException(R.string.err_item_notfound,
-                                    arrayOf(item.id),
-                                    R.string.it_scoppelletti_cmd_update)
+                            throw applicationException {
+                                message(R.string.err_item_notfound) {
+                                    arguments {
+                                        add(item.id)
+                                    }
+                                }
+                                titleId = R.string.it_scoppelletti_cmd_update
+                            }
                         }
 
                         oldItem = items[idx]

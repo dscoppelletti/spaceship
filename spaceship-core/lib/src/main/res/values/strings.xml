@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="it_scoppelletti_cmd_delete">Delete</string>
-    <string name="it_scoppelletti_cmd_discard">Discard</string>
+    <string name="it_scoppelletti_cmd_dontSave">Do not save</string>
     <string name="it_scoppelletti_cmd_drawerClose">Close navigation drawer</string>
     <string name="it_scoppelletti_cmd_drawerOpen">Open navigation drawer</string>
     <string name="it_scoppelletti_cmd_edit">Edit</string>
@@ -12,5 +12,5 @@
     <string name="it_scoppelletti_cmd_update">Update</string>
     <string name="it_scoppelletti_err_security">Security failure.</string>
     <string name="it_scoppelletti_err_startActivity">Failed to start activity.</string>
-    <string name="it_scoppelletti_msg_discardChanges">The changes will be discarded.</string>
+    <string name="it_scoppelletti_msg_saveChanges">Do you want to save the changes?</string>
 </resources>

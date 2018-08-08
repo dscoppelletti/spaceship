@@ -28,6 +28,6 @@ class MainApp : Application(), HasActivityInjector {
     companion object {
         const val PROP_ITEMID: String = "it.scoppelletti.spaceship.sample.1"
         const val TAG_DELETEDLG: String = "it.scoppelletti.spaceship.sample.2"
-        const val TAG_DISCARDDLG: String = "it.scoppelletti.spaceship.sample.3"
+        const val TAG_SAVEDLG: String = "it.scoppelletti.spaceship.sample.3"
     }
 }

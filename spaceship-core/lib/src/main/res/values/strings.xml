@@ -10,6 +10,7 @@
     <string name="it_scoppelletti_cmd_open">Open</string>
     <string name="it_scoppelletti_cmd_save">Save</string>
     <string name="it_scoppelletti_cmd_update">Update</string>
+    <string name="it_scoppelletti_err_packageNotFound">Package %1$s not found.</string>
     <string name="it_scoppelletti_err_security">Security failure.</string>
     <string name="it_scoppelletti_err_startActivity">Failed to start activity.</string>
     <string name="it_scoppelletti_msg_saveChanges">Do you want to save the changes?</string>

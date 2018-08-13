@@ -1,0 +1,57 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply from: '../../gradle-plugins/common.gradle'
+apply from: '../../gradle-plugins/library.gradle'
+
+group 'it.scoppelletti.spaceship'
+description 'Spaceship Library for HTTP'
+archivesBaseName = 'spaceship-http'
+
+android {
+    compileSdkVersion versionMap.sdk_target
+    defaultConfig {
+        minSdkVersion versionMap.sdk_min
+        targetSdkVersion versionMap.sdk_target
+        versionCode 1
+        versionName versionMap.spaceship
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            consumerProguardFiles 'proguard-rules.pro', 'retrofit2.pro',
+                    'okhttp3.pro', 'okio.pro'
+            debuggable false
+        }
+        debug {
+            minifyEnabled false
+            debuggable true
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+spaceship {
+    copyright '2017-2018'
+}
+
+dependencies {
+    api "com.android.support:support-annotations:${versionMap.android_support}"
+    api "com.squareup.okhttp3:okhttp:${versionMap.okhttp}"
+    api "com.squareup.retrofit2:retrofit:${versionMap.retrofit}"
+    api("it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}") {
+        changing = true
+    }
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
+    implementation "com.google.code.gson:gson:${versionMap.gson}"
+    implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
+    implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
+}

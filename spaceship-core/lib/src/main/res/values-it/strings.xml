@@ -12,6 +12,7 @@
     <string name="it_scoppelletti_cmd_open">Apri</string>
     <string name="it_scoppelletti_cmd_save">Salva</string>
     <string name="it_scoppelletti_cmd_update">Aggiorna</string>
+    <string name="it_scoppelletti_err_packageNotFound">Il pacchetto %1$s non esiste.</string>
     <string name="it_scoppelletti_err_security">Problema di sicurezza.</string>
     <string name="it_scoppelletti_err_startActivity">Fallito avvio dell\'attività.</string>
     <string name="it_scoppelletti_msg_saveChanges">Vuoi salvare le modifiche?</string>

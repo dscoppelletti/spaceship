@@ -4,7 +4,7 @@ Spaceship Core Library.
 
 # Package it.scoppelletti.spaceship
 
-Spaceship Core Library.
+Provides common utility classes.
 
 # Package it.scoppelletti.spaceship.app
 

@@ -4,7 +4,7 @@ Spaceship Library for HTML.
 
 # Package it.scoppelletti.spaceship.html
 
-Spaceship Library for HTML.
+Provide classes for manipulating HTML documents.
 
 # Package it.scoppelletti.spaceship.html.app
 

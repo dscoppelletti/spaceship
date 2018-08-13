@@ -104,6 +104,7 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
     /**
      * Builds an `ExceptionDialogFragment` fragment.
      *
+     * @since        1.0.0
      * @property tag The fragment tag.
      */
     @ExceptionDialogFragment.Dsl
@@ -146,6 +147,8 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
 
     /**
      * Marks the `ExceptionDialogFragment` DSL's objects.
+     *
+     * @since 1.0.0
      */
     @DslMarker
     public annotation class Dsl

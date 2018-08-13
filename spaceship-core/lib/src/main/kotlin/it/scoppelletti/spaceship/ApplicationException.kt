@@ -26,25 +26,35 @@ import java.lang.reflect.InvocationTargetException
  * @since                   1.0.0
  * @property messageBuilder The message.
  * @property titleId        The title as a string resource ID.
- *
- * @constructor Constructor.
  */
-public class ApplicationException(
-        public val messageBuilder: MessageBuilder,
-        @StringRes public val titleId: Int,
-        override val cause: Throwable?
+public class ApplicationException private constructor(
+        builder: ApplicationException.Builder
 ) : RuntimeException() {
+
+    public val messageBuilder: MessageBuilder
+
+    @StringRes
+    public val titleId: Int
+
+    init {
+        messageBuilder = builder.messageBuilder!!
+        titleId = builder.titleId
+        if (builder.cause != null) {
+            initCause(builder.cause)
+        }
+    }
 
     override val message: String?
         get() = toString()
 
     override fun toString() = """
-        |{ApplicationException(messageBuilder=$messageBuilder,
+        |ApplicationException(messageBuilder=$messageBuilder,
         |titleId=$titleId)""".trimRaw()
 
     /**
      * Builds an `ApplicationException` instance.
      *
+     * @since            1.0.0
      * @property titleId The title as a string resource ID.
      * @property cause   The original exception.
      */
@@ -54,7 +64,7 @@ public class ApplicationException(
 
         @StringRes public var titleId: Int = android.R.string.dialog_alert_title
         public var cause: Throwable? = null
-        private var messageBuilder: MessageBuilder? = null
+        internal var messageBuilder: MessageBuilder? = null
 
         /**
          * Defines the `MessageBuilder` object.
@@ -71,17 +81,24 @@ public class ApplicationException(
             return messageBuilder!!
         }
 
+        /**
+         * Builds a new `ApplicationException` instance.
+         *
+         * @return The new object.
+         */
         internal fun build(): ApplicationException {
             if (messageBuilder == null) {
                 throw NullPointerException("Missing the MessageBuilder object.")
             }
 
-            return ApplicationException(messageBuilder!!, titleId, cause)
+            return ApplicationException(this)
         }
     }
 
     /**
      * Marks the `ApplicationException` DSL's objects.
+     *
+     * @since 1.0.0
      */
     @DslMarker
     public annotation class Dsl

@@ -29,6 +29,8 @@
     <color name="textColorPrimary">#FFFFFF</color>
     <!-- Text on accent color -->
     <color name="textColorAccent">#FFFFFF</color>
+    <!-- Error color -->
+    <color name="colorError">#F4511E</color>
     <!-- http://www.google.com/design/spec/style/color.html - Dark text on light
     backgrounds -->
     <item name="it_scoppelletti_alpha_darkTextPrimary" format="float" type="dimen">0.87</item>

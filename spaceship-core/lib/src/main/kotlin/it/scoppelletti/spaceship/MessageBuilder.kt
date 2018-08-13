@@ -82,6 +82,8 @@ public class MessageBuilder private constructor(
 
     /**
      * Marks the `MessageBuilder` DSL's objects.
+     *
+     * @since 1.0.0
      */
     @DslMarker
     public annotation class Dsl

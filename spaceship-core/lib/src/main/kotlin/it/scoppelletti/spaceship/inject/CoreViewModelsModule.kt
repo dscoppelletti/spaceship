@@ -29,7 +29,7 @@ import dagger.Module
 public abstract class CoreViewModelsModule {
 
     @Binds
-    abstract fun bindViewModelFactory(
+    public abstract fun bindViewModelFactory(
             factory: InjectViewModelFactory
     ): ViewModelProvider.Factory
 }

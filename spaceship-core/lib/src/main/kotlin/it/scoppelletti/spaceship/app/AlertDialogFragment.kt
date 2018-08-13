@@ -127,14 +127,15 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
     /**
      * Builds an `AlertDialogFragment` fragment.
      *
-     * @property titleId        The title as a string resource ID.
-     * @property positiveActionTextId The positive action text as a string resource
-     *                          ID.
-     * @property negativeActionTextId The negative action text as a string resource
-     *                          ID.
-     * @property neutralActionTextId  The neutral action text as a string resource
-     *                          ID.
-     * @property iconId         The icon as a `Drawable` resource ID.
+     * @since                         1.0.0
+     * @property titleId              The title as a string resource ID.
+     * @property positiveActionTextId The positive action text as a string
+     *                                resource ID.
+     * @property negativeActionTextId The negative action text as a string
+     *                                resource ID.
+     * @property neutralActionTextId  The neutral action text as a string
+     *                                resource ID.
+     * @property iconId               The icon as a `Drawable` resource ID.
      */
     @MessageBuilder.Dsl
     @AlertDialogFragment.Dsl
@@ -212,6 +213,8 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
 
     /**
      * Marks the `AlertDialogFragment` DSL's objects.
+     *
+     * @since 1.0.0
      */
     @DslMarker
     public annotation class Dsl

@@ -16,15 +16,18 @@
 
 package it.scoppelletti.spaceship.http
 
-import com.google.gson.Gson
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.JsonClass
+import com.squareup.moshi.Moshi
 import it.scoppelletti.spaceship.io.closeQuietly
+import it.scoppelletti.spaceship.types.StringExt
 import it.scoppelletti.spaceship.types.trimRaw
 import mu.KotlinLogging
 import okhttp3.ResponseBody
+import okio.Source
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
-import java.io.Reader
 
 private val logger = KotlinLogging.logger {}
 
@@ -51,10 +54,10 @@ public class HttpApplicationException private constructor(
     private val _message: String
 
     init {
-        _message = builder.message.orEmpty()
+        _message = builder.message
         statusCode = builder.statusCode
         error = builder.error
-        exception = builder.exception.orEmpty()
+        exception = builder.exception
         path = builder.path
         timestamp = builder.timestamp
     }
@@ -80,12 +83,13 @@ public class HttpApplicationException private constructor(
      * @property timestamp  Timestamp of the original exception from the server
      *                      (milliseconds from the *Epoch*).
      */
-    internal class Builder() {
+    @JsonClass(generateAdapter = true)
+    internal class Builder {
 
-        var message: String? = null
+        var message: String = StringExt.EMPTY
         var statusCode: Int = 0
         var error: String? = null
-        var exception: String? = null
+        var exception: String = StringExt.EMPTY
         var path: String? = null
         var timestamp: Long = 0L
 
@@ -96,8 +100,8 @@ public class HttpApplicationException private constructor(
          * @param source The source exception.
          */
         fun applyDefaults(source: HttpException) {
-            if (message.isNullOrBlank()) {
-                message = source.message
+            if (message.isBlank()) {
+                message = source.message.orEmpty()
             }
 
             if (statusCode == 0) {
@@ -108,7 +112,7 @@ public class HttpApplicationException private constructor(
                 error = source.message()
             }
 
-            if (exception.isNullOrBlank()) {
+            if (exception.isBlank()) {
                 exception = source.javaClass.name
             }
 
@@ -141,38 +145,46 @@ public class HttpApplicationException private constructor(
 public fun HttpException.toHttpApplicationException(
 ): HttpApplicationException {
     val body: ResponseBody?
-    val converter: Gson
     val resp: Response<*>?
-    var builder: HttpApplicationException.Builder
-    var reader: Reader? = null
+    val moshi: Moshi
+    val adapter: JsonAdapter<HttpApplicationException.Builder>
+    var builder: HttpApplicationException.Builder?
+    var source: Source? = null
 
     resp = this.response()
     if (resp == null) {
         // The original exception comes from a deserialization
         builder = HttpApplicationException.Builder()
     } else {
-        converter = Gson()
         body = resp.errorBody()
 
         if (body == null) {
             builder = makeBuilder(this, resp, null)
         } else {
+            moshi = Moshi.Builder().build()
+            adapter = moshi.adapter(
+                    HttpApplicationException.Builder::class.java)
+
             try {
-                reader = body.charStream()
-                builder = converter.fromJson(reader,
-                        HttpApplicationException.Builder::class.java)
-            } catch (ex: RuntimeException) {
+                source = body.source()
+                builder = adapter.fromJson(body.source())
+                if (builder == null) {
+                    // It could happen only if I use the nullSafe version of the
+                    // adapter
+                    throw IOException("Error response body is empty.")
+                }
+            } catch (ex: Exception) { // IOException|JsonDataException
                 logger.error("Failed to convert response body.", ex)
                 builder = makeBuilder(this, resp, body)
             } finally {
-                reader?.closeQuietly()
+                source?.closeQuietly()
                 body.closeQuietly()
             }
         }
     }
 
-    builder.applyDefaults(this)
-    return builder.build().apply {
+    builder?.applyDefaults(this)
+    return builder!!.build().apply {
         initCause(this)
     }
 }
@@ -204,4 +216,4 @@ private fun makeBuilder(
             error = resp.message()
             exception = source.javaClass.name
             timestamp = System.currentTimeMillis()
-    }
+        }

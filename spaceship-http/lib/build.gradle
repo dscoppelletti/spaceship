@@ -21,8 +21,8 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            consumerProguardFiles 'proguard-rules.pro', 'retrofit2.pro',
-                    'okhttp3.pro', 'okio.pro'
+            consumerProguardFiles 'proguard-rules.pro', 'moshi.pro',
+                    'okhttp3.pro', 'okio.pro', 'retrofit2.pro'
             debuggable false
         }
         debug {
@@ -36,6 +36,7 @@ android {
     }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
     }
 }
 
@@ -51,7 +52,12 @@ dependencies {
         changing = true
     }
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
-    implementation "com.google.code.gson:gson:${versionMap.gson}"
+    implementation "com.squareup.moshi:moshi:${versionMap.moshi}"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:${versionMap.moshi}"
+    implementation "com.squareup.okio:okio:${versionMap.okio}"
     implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
     implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
+    testImplementation "junit:junit:${versionMap.junit}"
+    testImplementation "org.jetbrains.kotlin:kotlin-test:${versionMap.kotlin}"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:${versionMap.kotlin}"
 }

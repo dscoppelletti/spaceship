@@ -23,19 +23,6 @@ import java.io.IOException
 private val logger = KotlinLogging.logger {}
 
 /**
- * I/O operations.
- *
- * @since 1.0.0
- */
-public object IOExt {
-
-    /**
-     * Default buffer size.
-     */
-    public const val BUFSIZE: Int = 1024
-}
-
-/**
  * Closes a stream ignoring any exceptions.
  *
  * @receiver The stream.

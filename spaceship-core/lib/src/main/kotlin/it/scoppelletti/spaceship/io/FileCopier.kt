@@ -37,7 +37,7 @@ import java.io.OutputStream
 public class FileCopier(
         private val inStream: InputStream,
         private val outStream: OutputStream,
-        private val bufSize: Int = IOExt.BUFSIZE
+        private val bufSize: Int = DEFAULT_BUFFER_SIZE
 ) : CompletableOnSubscribe {
 
     override fun subscribe(emitter: CompletableEmitter) {

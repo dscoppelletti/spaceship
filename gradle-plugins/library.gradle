@@ -64,10 +64,16 @@ class Developer {
     String url = 'http://www.scoppelletti.it'
 }
 
+class License {
+    String name = 'The Apache License, Version 2.0'
+    String url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+}
+
 class LibraryExtension {
     final Project project
     final Object androidExt
     final Developer developer
+    License license
     String url = 'http://github.com/dscoppelletti/spaceship'
     String scmUrl = 'git@github.com:dscoppelletti/spaceship.git'
     String copyright
@@ -76,6 +82,7 @@ class LibraryExtension {
         this.project = project
         this.androidExt = androidExt
         this.developer = new Developer()
+        this.license = new License()
     }
     
     String getDescription() {
@@ -171,7 +178,7 @@ class LibraryTools {
     
     void generateKdoc() {
         // - Dokka 0.9.16
-        // The name of the class implmenenting the task is
+        // The name of the class implemenenting the task is
         // "org.jetbrains.dokka.gradle.DokkaAndroidTask_Decorated"!
         def dokkaTask = project.tasks['dokka']
         def kdocTask = project.task(taskNames.generateKdoc,
@@ -251,6 +258,11 @@ class LibraryTools {
         // file doesn't include the dependencies, thus I deploy in a development
         // Maven repository (anyway usually in local disk).
         
+        def ver = libExt.version
+        if (variant.name != 'release') {
+            ver = ver + '-' + variant.name
+        }
+        
         def uploadTask = project.task(taskNames.upload, type: Upload,
                 overwrite: true, group: BasePlugin.UPLOAD_GROUP) {
             description "Installs the ${variant.name} artifacts into the " +
@@ -259,7 +271,7 @@ class LibraryTools {
             configuration = project.configurations[variant.name]
             repositories.mavenDeployer {
 				pom.project {
-					version libExt.version
+					version ver
 					description libExt.description
 					url libExt.url
 					inceptionYear libExt.copyright
@@ -270,10 +282,12 @@ class LibraryTools {
 							url libExt.developer.url
 						}
 					}
-                    licenses {
-                        license {
-                            name 'The Apache License, Version 2.0'
-                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    if (libExt.license) {
+                        licenses {
+                            license {
+                                name libExt.license.name
+                                url libExt.license.url
+                            }
                         }
                     }
                     scm {

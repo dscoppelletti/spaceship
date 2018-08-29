@@ -185,7 +185,7 @@ public fun HttpException.toHttpApplicationException(
 
     builder?.applyDefaults(this)
     return builder!!.build().apply {
-        initCause(this)
+        initCause(this@toHttpApplicationException)
     }
 }
 

@@ -49,11 +49,11 @@ dependencies {
     api "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
     api "com.google.dagger:dagger-android-support:${versionMap.dagger}"
+    kapt "com.google.dagger:dagger-android-processor:${versionMap.dagger}"
     api("it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}") {
         changing = true
     }
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
-    kapt "com.google.dagger:dagger-android-processor:${versionMap.dagger}"
     implementation "android.arch.lifecycle:common-java8:${versionMap.android_lifecycle}"
     implementation "android.arch.lifecycle:extensions:${versionMap.android_lifecycle}"
     implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"

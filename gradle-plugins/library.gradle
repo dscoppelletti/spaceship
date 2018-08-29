@@ -69,6 +69,7 @@ class LibraryExtension {
     final Object androidExt
     final Developer developer
     String url = 'http://github.com/dscoppelletti/spaceship'
+    String scmUrl = 'git@github.com:dscoppelletti/spaceship.git'
     String copyright
     
     LibraryExtension(Project project, Object androidExt) {
@@ -276,9 +277,9 @@ class LibraryTools {
                         }
                     }
                     scm {
-                         connection 'scm:git:git@github.com:dscoppelletti/spaceship.git'
-                         developerConnection 'scm:git:git@github.com:dscoppelletti/spaceship.git'
-                         url 'git@github.com:dscoppelletti/spaceship.git'
+                         connection "scm:git:${libExt.scmUrl}"
+                         developerConnection "scm:git:${libExt.scmUrl}"
+                         url libExt.scmUrl
                     }                   
 				}
 				repository(url: devRepoUrl)

@@ -11,30 +11,26 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limit
+ * limitations under the License.
  */
 
-package it.scoppelletti.spaceship.html.inject
+package it.scoppelletti.spaceship.inject
 
-import android.arch.lifecycle.ViewModel
-import dagger.Binds
+import android.app.Application
+import android.util.DisplayMetrics
 import dagger.Module
-import dagger.multibindings.IntoMap
-import it.scoppelletti.spaceship.html.lifecycle.HtmlViewerViewModel
-import it.scoppelletti.spaceship.inject.ViewModelKey
+import dagger.Provides
 
 /**
- * Defines the `ViewModel`s exported by this library.
+ * Defines the dependencies for graphic operations.
  *
  * @since 1.0.0
  */
-@Module(includes = [ HtmlModule::class ])
-public abstract class HtmlViewModelsModule {
+@Module
+public object GraphicModule {
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(HtmlViewerViewModel::class)
-    abstract fun bindHtmlViewerViewModel(
-            viewModel: HtmlViewerViewModel
-    ): ViewModel
+    @Provides
+    @JvmStatic
+    public fun provideDisplayMetrics(application: Application): DisplayMetrics =
+            application.resources.displayMetrics
 }

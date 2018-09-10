@@ -24,6 +24,16 @@ package it.scoppelletti.spaceship
 public object CoreExt {
 
     /**
+     * Name of the `File` dependency containing the absolute path to the
+     * directory on the filesystem where all private files belonging to this app
+     * are stored.
+     * On device runnning `LOLLIPOP` or later, the files placed under this
+     * directory will be excluded from automatic backup to remote storage.
+     */
+    public const val DEP_NOBACKUPFILESDIR: String =
+            "it.scoppelletti.spaceship.1"
+
+    /**
      * Property indicating whether the user has manually opened the drawer
      * at least once.
      */

@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.stub_fragment.*
 
 class StubFragment : Fragment(), DrawerFragment {
@@ -28,7 +27,6 @@ class StubFragment : Fragment(), DrawerFragment {
     }
 
     override fun onAttach(context: Context?) {
-        AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }
 

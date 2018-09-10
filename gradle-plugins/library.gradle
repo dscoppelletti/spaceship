@@ -35,7 +35,7 @@ class LibraryPlugin implements Plugin<Project> {
         
         def androidExt = project.android
         def libExt = project.extensions.create('spaceship', LibraryExtension,
-            project, androidExt)
+            project)
         
         androidExt.libraryVariants.all({ variant ->
             def tools = new LibraryTools(project, variant, androidExt, libExt)
@@ -78,7 +78,7 @@ class LibraryExtension {
     String scmUrl = 'git@github.com:dscoppelletti/spaceship.git'
     String copyright
     
-    LibraryExtension(Project project, Object androidExt) {
+    LibraryExtension(Project project) {
         this.project = project
         this.androidExt = androidExt
         this.developer = new Developer()
@@ -91,15 +91,6 @@ class LibraryExtension {
         }
         
         return project.name
-    }
-    
-    String getVersion() {
-        def ver = androidExt.defaultConfig.versionName
-        if (ver) {
-            return ver
-        }
-        
-        return project.version.toString()
     }
     
     String getCopyrightNotice() {
@@ -258,9 +249,10 @@ class LibraryTools {
         // file doesn't include the dependencies, thus I deploy in a development
         // Maven repository (anyway usually in local disk).
         
-        def ver = libExt.version
-        if (variant.name != 'release') {
-            ver = ver + '-' + variant.name
+        def mergedFlavor = variant.getMergedFlavor()
+        def ver = mergedFlavor.versionName
+        if (mergedFlavor.versionNameSuffix) {
+            ver = ver + mergedFlavor.versionNameSuffix
         }
         
         def uploadTask = project.task(taskNames.upload, type: Upload,

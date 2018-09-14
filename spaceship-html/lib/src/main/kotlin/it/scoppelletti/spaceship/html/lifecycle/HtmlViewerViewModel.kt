@@ -19,16 +19,17 @@ package it.scoppelletti.spaceship.html.lifecycle
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.os.Build
 import android.text.Html
-import android.text.Spanned
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import it.scoppelletti.spaceship.html.HtmlExt
+import it.scoppelletti.spaceship.html.fromHtml
 import it.scoppelletti.spaceship.lifecycle.SingleEvent
 import javax.inject.Inject
+import javax.inject.Named
 
 /**
  * `ViewModel` for the `HtmlViewerActivity` activity.
@@ -41,13 +42,19 @@ import javax.inject.Inject
  * @param       tagHandler Handles the HTML custom tags.
  */
 public class HtmlViewerViewModel @Inject constructor(
+        @Named(HtmlExt.DEP_TAGHANDLER)
         private val tagHandler: Html.TagHandler
 ) : ViewModel() {
-    private val _state: MutableLiveData<HtmlViewerState> = MutableLiveData()
-    private val disposables: CompositeDisposable = CompositeDisposable()
+    private val _state: MutableLiveData<HtmlViewerState>
+    private val disposables: CompositeDisposable
 
     public val state: LiveData<HtmlViewerState>
         get() = _state
+
+    init {
+        _state = MutableLiveData()
+        disposables = CompositeDisposable()
+    }
 
     /**
      * Builds the displayable styled text from the provided HTML string.
@@ -68,26 +75,6 @@ public class HtmlViewerViewModel @Inject constructor(
                 })
         disposables.add(subscription)
     }
-
-    /**
-     * Returns a displayable styled text from the provided HTML string.
-     *
-     * @param  source      The source HTML string.
-     * @param  imageGetter Provides the representation of the image for an
-     *                    `<IMG>` tag.
-     * @param  tagHandler  Handles an unknown tag.
-     * @return             The resulting styled text.
-     */
-    @Suppress("deprecation")
-    private fun fromHtml(source: String,
-                         imageGetter: Html.ImageGetter? = null,
-                         tagHandler: Html.TagHandler? = null
-    ) : Spanned =
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
-                Html.fromHtml(source, imageGetter, tagHandler)
-            else
-                Html.fromHtml(source, Html.FROM_HTML_MODE_LEGACY, imageGetter,
-                        tagHandler)
 
     override fun onCleared() {
         disposables.clear()

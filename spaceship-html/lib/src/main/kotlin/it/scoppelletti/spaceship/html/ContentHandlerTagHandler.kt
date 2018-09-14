@@ -43,7 +43,7 @@ public class ContentHandlerTagHandler @Inject constructor() :
         xmlReader.contentHandler = HtmlContentHandler(delegate)
     }
 
-    companion object {
+    public companion object {
 
         /**
          * The tag.

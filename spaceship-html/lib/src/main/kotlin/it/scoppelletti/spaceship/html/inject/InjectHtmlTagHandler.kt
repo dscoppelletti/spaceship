@@ -20,6 +20,7 @@ import android.text.Editable
 import android.text.Html
 import android.text.Spanned
 import it.scoppelletti.spaceship.html.HtmlTagHandler
+import it.scoppelletti.spaceship.types.trimRaw
 import mu.KotlinLogging
 import org.xml.sax.XMLReader
 import javax.inject.Inject
@@ -71,9 +72,8 @@ public class InjectHtmlTagHandler @Inject constructor(
 
             handler = creator.get()
             if (!handler.tag.equals(tag, true)) {
-                logger.error {
-                    "HtmlTagHandler has tag ${handler.tag} instead of $tag"
-                }
+                logger.error { """HtmlTagHandler has tag ${handler.tag} instead
+                    |of $tag.""".trimRaw() }
                 return
             }
 
@@ -95,10 +95,10 @@ public class InjectHtmlTagHandler @Inject constructor(
     /**
      * Returns the open tag corresponding to a close tag.
      *
-     * @param  text The building text.
-     * @param  tag  The tag to look for.
-     * @return      The tag handler marking the open tag. If no open tag is
-     *              found, returns `null`.
+     * @param  text Building text.
+     * @param  tag  Tag to look for.
+     * @return      Tag handler marking the open tag. If no open tag is found,
+     *              returns `null`.
      */
     private fun getLastTag(text: Editable, tag: String?): HtmlTagHandler? {
         val span: Array<HtmlTagHandler>
@@ -108,7 +108,7 @@ public class InjectHtmlTagHandler @Inject constructor(
                 text.getSpanFlags(it) == Spanned.SPAN_MARK_MARK }
     }
 
-    companion object {
+    private companion object {
         private val logger = KotlinLogging.logger {}
     }
 }

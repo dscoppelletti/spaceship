@@ -87,7 +87,7 @@ internal class HtmlContentHandler(
  * Returns the collection of the attributes of the current HTML tag.
  *
  * > This function properly works only for tags inserted after the
- * > `<it-scoppelletti-contentHandler` /> tag.
+ * > `<it-scoppelletti-contentHandler/>` tag.
  *
  * @receiver The `XMLReader` interface.
  * @return   The collection.

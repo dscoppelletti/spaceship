@@ -19,6 +19,7 @@ package it.scoppelletti.spaceship.html
 import android.content.Context
 import android.content.res.Resources
 import android.text.Editable
+import it.scoppelletti.spaceship.types.trimRaw
 import mu.KotlinLogging
 import org.xml.sax.XMLReader
 import javax.inject.Inject
@@ -27,14 +28,14 @@ import javax.inject.Inject
  * HTML custom tag for inserting the value of a resource.
  *
  * > This tag properly works only if you insert the
- * > `<it-scoppelletti-contentHandler` /> tag before.
+ * > `<it-scoppelletti-contentHandler/>` tag before.
  *
  * @see   it.scoppelletti.spaceship.html.ContentHandlerTagHandler
  * @since 1.0.0
  *
  * @constructor
- * @param       context   The context.
- * @param       resources The application's resources.
+ * @param       context   Context.
+ * @param       resources Application's resources.
  */
 public class ResourceTagHandler @Inject constructor(
         private val context: Context,
@@ -60,8 +61,8 @@ public class ResourceTagHandler @Inject constructor(
         } ?.value
 
         if (name.isNullOrBlank()) {
-            logger.error { """"Attribute ${ResourceTagHandler.ATTR_NAME} not set
-in tag $tag.""".replace('\n', ' ') }
+            logger.error { """Attribute ${ResourceTagHandler.ATTR_NAME} not set
+in tag $tag.""".trimRaw() }
             return
         }
 
@@ -71,7 +72,7 @@ in tag $tag.""".replace('\n', ' ') }
 
         if (resType.isNullOrBlank()) {
             logger.error { """Attribute ${ResourceTagHandler.ATTR_TYPE} not set
-in tag $tag.""".replace('\n', ' ') }
+in tag $tag.""".trimRaw() }
             return
         }
 
@@ -83,9 +84,8 @@ in tag $tag.""".replace('\n', ' ') }
         pkgName = context.packageName
         resId = resources.getIdentifier(name, resType, pkgName)
         if (resId == 0) {
-            logger.error {
-                "Resource $name of type $resType not found in package $pkgName."
-            }
+            logger.error { """Resource $name of type $resType not found in
+                |package $pkgName.""".trimRaw() }
             return
         }
 
@@ -93,7 +93,7 @@ in tag $tag.""".replace('\n', ' ') }
         output.replace(start, end, stringValue)
     }
 
-    companion object {
+    public companion object {
 
         /**
          * The tag.
@@ -113,7 +113,7 @@ in tag $tag.""".replace('\n', ' ') }
         /**
          * Resource type `string`.
          */
-        public const val TYPE_STRING = "string"
+        public const val TYPE_STRING: String = "string"
 
         private val logger = KotlinLogging.logger {}
     }

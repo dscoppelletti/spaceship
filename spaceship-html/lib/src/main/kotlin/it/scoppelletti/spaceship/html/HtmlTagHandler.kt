@@ -23,7 +23,7 @@ import org.xml.sax.XMLReader
  * HTML custom tag handler.
  *
  * @since        1.0.0
- * @property tag The custom tag.
+ * @property tag Custom tag.
  *
  * @constructor Constructor.
  */
@@ -32,9 +32,9 @@ public abstract class HtmlTagHandler(public val tag: String) {
     /**
      * Handles a tag.
      *
-     * @param output The text in building.
-     * @param start  The start position of the tag in the text (inclusive).
-     * @param end    The end position of the tag in the text (exclusive).
+     * @param output Text in building.
+     * @param start  Start position of the tag in the text (inclusive).
+     * @param end    End position of the tag in the text (exclusive).
      */
     public abstract fun handleTag(
             output: Editable,

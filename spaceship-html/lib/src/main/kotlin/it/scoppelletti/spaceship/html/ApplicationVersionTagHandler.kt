@@ -20,6 +20,7 @@ import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.text.Editable
+import it.scoppelletti.spaceship.types.trimRaw
 import mu.KotlinLogging
 import org.xml.sax.XMLReader
 import javax.inject.Inject
@@ -30,8 +31,8 @@ import javax.inject.Inject
  * @since 1.0.0
  *
  * @constructor                Constructor.
- * @param       context        The context.
- * @param       packageManager The Package Manager.
+ * @param       context        Context.
+ * @param       packageManager Package Manager.
  */
 public class ApplicationVersionTagHandler @Inject constructor(
         private val context: Context,
@@ -53,9 +54,8 @@ public class ApplicationVersionTagHandler @Inject constructor(
         try {
             pkgInfo = packageManager.getPackageInfo(pkgName, 0)
         } catch (ex: PackageManager.NameNotFoundException) {
-            logger.error(ex) {
-                "Failed to get PackageInfo for package $pkgName."
-            }
+            logger.error(ex) { """"Failed to get PackageInfo for package
+                |$pkgName.""".trimRaw() }
 
             return
         }
@@ -64,7 +64,7 @@ public class ApplicationVersionTagHandler @Inject constructor(
         output.replace(start, end, version)
     }
 
-    companion object {
+    public companion object {
 
         /**
          * The tag.

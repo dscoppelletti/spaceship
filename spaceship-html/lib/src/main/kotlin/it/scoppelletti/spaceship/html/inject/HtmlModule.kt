@@ -24,15 +24,18 @@ import dagger.multibindings.StringKey
 import it.scoppelletti.spaceship.html.ApplicationLabelTagHandler
 import it.scoppelletti.spaceship.html.ApplicationVersionTagHandler
 import it.scoppelletti.spaceship.html.ContentHandlerTagHandler
+import it.scoppelletti.spaceship.html.HtmlExt
 import it.scoppelletti.spaceship.html.HtmlTagHandler
 import it.scoppelletti.spaceship.html.ResourceTagHandler
+import it.scoppelletti.spaceship.inject.ContextModule
+import javax.inject.Named
 
 /**
  * Defines the HTML custom tags dependencies.
  *
  * @since 1.0.0
  */
-@Module
+@Module(includes = [ ContextModule::class ])
 public abstract class HtmlModule {
 
     @Binds
@@ -64,6 +67,7 @@ public abstract class HtmlModule {
     ): HtmlTagHandler
 
     @Binds
+    @Named(HtmlExt.DEP_TAGHANDLER)
     abstract fun bindHtmlTagHandler(
             handler: InjectHtmlTagHandler
     ): Html.TagHandler

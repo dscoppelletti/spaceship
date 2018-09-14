@@ -133,7 +133,7 @@ public class HtmlViewerActivity : AppCompatActivity(),
         }
     }
 
-    companion object {
+    public companion object {
 
         /**
          * Property containing an HTML text as a string resource ID.

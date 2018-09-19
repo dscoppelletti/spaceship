@@ -24,7 +24,7 @@ import it.scoppelletti.spaceship.types.StringExt
 import it.scoppelletti.spaceship.types.trimRaw
 import mu.KotlinLogging
 import okhttp3.ResponseBody
-import okio.Source
+import okio.BufferedSource
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
@@ -149,7 +149,7 @@ public fun HttpException.toHttpApplicationException(
     val moshi: Moshi
     val adapter: JsonAdapter<HttpApplicationException.Builder>
     var builder: HttpApplicationException.Builder?
-    var source: Source? = null
+    var source: BufferedSource? = null
 
     resp = this.response()
     if (resp == null) {
@@ -167,7 +167,7 @@ public fun HttpException.toHttpApplicationException(
 
             try {
                 source = body.source()
-                builder = adapter.fromJson(body.source())
+                builder = adapter.fromJson(source!!)
                 if (builder == null) {
                     // It could happen only if I use the nullSafe version of the
                     // adapter

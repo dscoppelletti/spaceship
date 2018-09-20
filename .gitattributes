@@ -4,6 +4,9 @@
 *.png binary
 .gitignore export-ignore
 .gitattributes export-ignore
+google-services.json filter=git-crypt diff=git-crypt
+spaceship-ads/app/gradle.properties filter=git-crypt diff=git-crypt
+spaceship-ads/consent/gradle.properties filter=git-crypt diff=git-crypt
 spaceship-cognito/app/gradle.properties filter=git-crypt diff=git-crypt
 spaceship-http/app/gradle.properties filter=git-crypt diff=git-crypt
 spaceship-http/app/src/main/assets/ca.pem filter=git-crypt diff=git-crypt

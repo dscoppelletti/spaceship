@@ -43,7 +43,12 @@ communication on the device.
 
 # Package it.scoppelletti.spaceship.types
 
-Data types.
+Provides data types.
+
+# Package it.scoppelletti.spaceship.view
+
+Provides classes that expose basic user interface classes that handle screen
+layout and interaction with the user.
 
 # Package it.scoppelletti.spaceship.widget
 

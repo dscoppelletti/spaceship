@@ -1,0 +1,32 @@
+{
+  "ad_network_ids": [
+    {
+      "ad_network_id": "ca-app-pub-NNNNNNNNNNNNNNNN",
+      "company_ids": [
+        1765,
+        236,
+        15
+      ],
+      "publisher_consent_type": 1,
+      "is_npa": true
+    }
+  ],
+  "companies": [
+    {
+      "company_id": 1765,
+      "company_name": "Aarki",
+      "policy_url": "http://corp.aarki.com/privacy"
+    },
+    {
+      "company_id": 236,
+      "company_name": "Adacado",
+      "policy_url": "https://www.adacado.com/privacy-policy-april-25-2018/"
+    },
+    {
+      "company_id": 15,
+      "company_name": "Adara Media",
+      "policy_url": "https://adara.com/2018/04/10/adara-gdpr-faq/"
+    }
+  ],
+  "is_request_in_eea_or_unknown": true
+}

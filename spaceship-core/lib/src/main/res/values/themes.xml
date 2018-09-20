@@ -34,9 +34,6 @@
     <!-- Toobar -->
     <style name="it_scoppelletti_theme_toolbarPopup"
         parent="ThemeOverlay.AppCompat.Light" />
-    <!-- Toolbar not in AppBarLayout -->
-    <style name="it_scoppelletti_theme_actionBar"
-        parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <!-- TextInputLayout -->
     <style name="it_scoppelletti_theme_textInputLayout"
         parent="it_scoppelletti_theme_app">
@@ -48,5 +45,9 @@
     <style name="it_scoppelletti_theme_secondaryRaisedButton"
         parent="it_scoppelletti_theme_app">
         <item name="colorAccent">@android:color/white</item>
+    </style>
+    <!-- Flat button -->
+    <style name="it_scoppelletti_theme_flatButton"
+        parent="it_scoppelletti_theme_app">
     </style>
 </resources>

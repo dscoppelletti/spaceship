@@ -1,0 +1,78 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply from: '../../gradle-plugins/common.gradle'
+
+ext.adsConsentVersion = '1.0.6'
+
+android {
+    compileSdkVersion versionMap.sdk_target
+    defaultConfig {
+        applicationId "it.scoppelletti.consent.sample"
+        minSdkVersion versionMap.sdk_min
+        targetSdkVersion versionMap.sdk_target
+        multiDexEnabled true
+        versionCode 1
+        versionName adsConsentVersion
+        vectorDrawables.useSupportLibrary = true
+        if (project.hasProperty('ads.publisherId')) {
+            buildConfigField 'String', 'ADS_PUBLISHERID',
+                    '"' + project.property('ads.publisherId') + '"'
+        } else {
+            buildConfigField 'String', 'ADS_PUBLISHERID', '"N/D"'
+        }
+        if (project.hasProperty('ads.adAppId')) {
+            buildConfigField 'String', 'ADS_APPID',
+                    '"' + project.property('ads.adAppId') + '"'
+        } else {
+            buildConfigField 'String', 'ADS_APPID', '"N/D"'
+        }
+        if (project.hasProperty('ads.adUnitId')) {
+            buildConfigField 'String', 'ADS_UNITID',
+                    '"' + project.property('ads.adUnitId') + '"'
+        } else {
+            buildConfigField 'String', 'ADS_UNITID', '"N/D"'
+        }
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            useProguard false
+            debuggable true
+        }
+        release {
+            minifyEnabled false
+            useProguard false
+            debuggable false
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+dependencies {
+    implementation project(':lib')
+    implementation "com.android.support:appcompat-v7:${versionMap.android_support}"
+    implementation "com.android.support:customtabs:${versionMap.android_support}"
+    implementation "com.android.support:design:${versionMap.android_support}"
+    implementation "com.android.support:multidex:${versionMap.android_multidex}"
+    implementation "com.android.support:support-annotations:${versionMap.android_support}"
+    implementation "com.google.android.ads.consent:consent-library:${adsConsentVersion}"
+    implementation "com.google.firebase:firebase-ads:${versionMap.firebase_ads}"
+    implementation "com.google.firebase:firebase-core:${versionMap.firebase_core}"
+    implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
+    implementation("it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}") {
+        changing = true
+    }
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
+    runtimeOnly "com.noveogroup.android:android-logger:${versionMap.android_logger}"
+}
+
+apply plugin: 'com.google.gms.google-services'
+

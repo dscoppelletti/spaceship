@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="it_scoppelletti_ads_cmd_adult">I am at least 16 years old</string>
+    <string name="it_scoppelletti_ads_cmd_consent">Yes, continue to see relevant ads</string>
+    <string name="it_scoppelletti_ads_cmd_reminder">No, see adds that are less relevant</string>
+    <string name="it_scoppelletti_ads_cmd_underage">I am younger than 16</string>
+    <string name="it_scoppelletti_ads_err_internal">%1$d - Internal error.</string>
+    <string name="it_scoppelletti_ads_err_invalid_request">%1$d - Invalid request.</string>
+    <string name="it_scoppelletti_ads_err_network">%1$d - Network error.</string>
+    <string name="it_scoppelletti_ads_err_no_fill">%1$d - No Ad was returned due to lack of ad inventory.</string>
+    <string name="it_scoppelletti_ads_err_unknown">%1$d - Unknown error.</string>
+    <string name="it_scoppelletti_ads_err_lookupFailed">Lookup failure for: %1$s.</string>
+    <string name="it_scoppelletti_ads_err_notFound">Publisher Ids not found: %2$d: %1$s.</string>
+    <string name="it_scoppelletti_ads_err_notInEea">This feature is enabled only for users located in European Economic Area.</string>
+    <string name="it_scoppelletti_ads_err_publisher">Lookup failure for: %1$s. Publisher Ids not found: %2$d.</string>
+    <string name="it_scoppelletti_ads_err_user">Cannot load advertising configuration. Are you sure your Internet connections is available?</string>
+    <string name="it_scoppelletti_ads_html_age"><![CDATA[<it-scoppelletti-contentHandler/>
+<p><big><b><it-scoppelletti-resource name="it_scoppelletti_ads_lbl_underage" type="string" /></b></big></p>
+<p>We care about privacy and data security of children.</p>]]></string>
+    <string name="it_scoppelletti_ads_html_consent"><![CDATA[<it-scoppelletti-contentHandler/>
+We care about your privacy and data security. We keep this app free by showing ads.</p>
+<p><big><b>Can we continue to use your data to tailor ads for you?</b></big></p>
+<p>You can change your choice anytime for
+<it-scoppelletti-appLabel/> in the App settings. Our partners will collect data
+and use a unique identifier on your device to show you ads.
+<a href="%1$s">Learn how <it-scoppelletti-appLabel/> and our %2$d partners
+collect and use data</p>]]></string>
+    <string name="it_scoppelletti_ads_html_footer"><![CDATA[<p>
+<a href="%1$s">How <it-scoppelletti-appLabel/> uses your
+data</a></p>]]></string>
+    <string name="it_scoppelletti_ads_html_header"><![CDATA[<it-scoppelletti-contentHandler />
+<p><big><b><it-scoppelletti-resource name="it_scoppelletti_ads_lbl_privacy" type="string" /></b></big></p>
+<p>You can change your choice anytime for <it-scoppelletti-appLabel/> in the App
+settings. Learn how our partners collect and use data:</p>]]></string>
+    <string name="it_scoppelletti_ads_html_reminder"><![CDATA[<it-scoppelletti-contentHandler />
+<p><big><b><it-scoppelletti-resource name="it_scoppelletti_ads_lbl_reminder" type="string" /></b></big></p>
+<p>We will partner with Google and use a unique identifier on your device to
+respect your data usage choice. You can change your choice anytime for
+<it-scoppelletti-appLabel/> in the App settings.</p>
+<p><a href="%1$s">How <it-scoppelletti-appLabel/> uses your data</a></p>]]></string>
+    <string name="it_scoppelletti_ads_html_underage"><![CDATA[<it-scoppelletti-contentHandler />
+<p><big><b><it-scoppelletti-resource name="it_scoppelletti_ads_lbl_underage" type="string" /></b></big></p>
+<p>We keep this App free by showing ads.</p>
+<p>When you are 16, if you want, you can use the App settings to allow
+<it-scoppelletti-appLabel/> to use your data to tailor ads for you.</p>
+<p>Meanwhile, we will partner with Google and use a unique identifier on your
+device to not collect your data.</p>
+<p><a href="%1$s">How <it-scoppelletti-appLabel/> uses your data</a></p>]]></string>
+    <string name="it_scoppelletti_ads_lbl_privacy">Privacy policy</string>
+    <string name="it_scoppelletti_ads_lbl_reminder">Reminder</string>
+    <string name="it_scoppelletti_ads_lbl_underage">Children protection</string>
+</resources>

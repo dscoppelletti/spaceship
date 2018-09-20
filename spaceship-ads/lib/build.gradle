@@ -1,0 +1,85 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply from: '../../gradle-plugins/common.gradle'
+apply from: '../../gradle-plugins/library.gradle'
+
+group 'it.scoppelletti.spaceship'
+description 'Spaceship Library for AdMob'
+archivesBaseName = 'spaceship-ads'
+
+android {
+    compileSdkVersion versionMap.sdk_target
+    defaultConfig {
+        minSdkVersion versionMap.sdk_min
+        targetSdkVersion versionMap.sdk_target
+        versionCode 1
+        versionName versionMap.spaceship
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            consumerProguardFiles 'proguard-rules.pro'
+            debuggable false
+        }
+        debug {
+            minifyEnabled false
+            debuggable true
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
+}
+
+spaceship {
+    copyright '2018'
+}
+
+dependencies {
+    api "com.android.support:appcompat-v7:${versionMap.android_support}"
+    api "com.android.support:design:${versionMap.android_support}"
+    api "com.android.support:support-annotations:${versionMap.android_support}"
+    api "com.google.dagger:dagger:${versionMap.dagger}"
+    kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
+    api "com.google.dagger:dagger-android-support:${versionMap.dagger}"
+    kapt "com.google.dagger:dagger-android-processor:${versionMap.dagger}"
+    api "com.google.firebase:firebase-ads:${versionMap.firebase_ads}"
+    api "com.google.firebase:firebase-core:${versionMap.firebase_core}"
+    api "com.squareup.moshi:moshi:${versionMap.moshi}"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:${versionMap.moshi}"
+    api "com.squareup.okhttp3:okhttp:${versionMap.okhttp}"
+    api "com.squareup.retrofit2:retrofit:${versionMap.retrofit}"
+    api "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"
+    api("it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}") {
+        changing = true
+    }
+    api("it.scoppelletti.spaceship:spaceship-html:${versionMap.spaceship}") {
+        changing = true
+    }
+    api("it.scoppelletti.spaceship:spaceship-http:${versionMap.spaceship}") {
+        changing = true
+    }
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
+    implementation "android.arch.lifecycle:common-java8:${versionMap.android_lifecycle}"
+    implementation "android.arch.lifecycle:extensions:${versionMap.android_lifecycle}"
+    implementation "com.android.support.constraint:constraint-layout:${versionMap.android_constraint}"
+    implementation "com.android.support:customtabs:${versionMap.android_support}"
+    implementation "com.android.support:recyclerview-v7:${versionMap.android_support}"
+    implementation "com.squareup.okio:okio:${versionMap.okio}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${versionMap.retrofit}"
+    implementation "com.squareup.retrofit2:converter-moshi:${versionMap.retrofit}"
+    implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
+    implementation "io.reactivex.rxjava2:rxandroid:${versionMap.rxandroid}"
+    implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
+    testImplementation "org.jetbrains.kotlin:kotlin-test:${versionMap.kotlin}"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:${versionMap.kotlin}"
+    testImplementation "org.slf4j:slf4j-simple:${versionMap.slf4j}"
+}

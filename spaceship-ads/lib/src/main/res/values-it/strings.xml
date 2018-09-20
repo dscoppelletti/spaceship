@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="it_scoppelletti_ads_cmd_adult">Ho almeno 16 anni</string>
+    <string name="it_scoppelletti_ads_cmd_consent">Sì, voglio continuare a vedere le inserzioni più rilevanti</string>
+    <string name="it_scoppelletti_ads_cmd_reminder">No, vedrò inserzioni che saranno meno rilevanti</string>
+    <string name="it_scoppelletti_ads_cmd_underage">Ho meno di 16 anni</string>
+    <string name="it_scoppelletti_ads_err_internal">%1$d - Errore interno.</string>
+    <string name="it_scoppelletti_ads_err_invalid_request">%1$d - Richiesta non valida.</string>
+    <string name="it_scoppelletti_ads_err_network">%1$d - Errore di rete.</string>
+    <string name="it_scoppelletti_ads_err_no_fill">%1$d - Avvisi pubblicitari non disponibili.</string>
+    <string name="it_scoppelletti_ads_err_unknown">%1$d - Errore sconosciuto.</string>
+    <string name="it_scoppelletti_ads_err_lookupFailed">Errore di rete per: %1$s.</string>
+    <string name="it_scoppelletti_ads_err_notFound">Agenti non trovati: %2$d: %1$s.</string>
+    <string name="it_scoppelletti_ads_err_notInEea">Questa funzione è abilitata solo per gli utenti nell\'Area Economica Europea.</string>
+    <string name="it_scoppelletti_ads_err_publisher">Errore di rete per: %1$s. Editori non trovati: %2$s.</string>
+    <string name="it_scoppelletti_ads_err_user">Non riesco a leggere la configurazione per la pubblicità. Sei sicuro che la tua connessione Internet sia disponibile?</string>
+    <string name="it_scoppelletti_ads_html_age"><![CDATA[<it-scoppelletti-contentHandler/>
+<p><big><b><it-scoppelletti-resource name="it_scoppelletti_ads_lbl_underage" type="string" /></b></big></p>
+<p>Noi tuteliamo la privacy e la sicurezza dei dati personali dei minori.</p>]]></string>
+    <string name="it_scoppelletti_ads_html_consent"><![CDATA[<it-scoppelletti-contentHandler/>
+<p>Noi tuteliamo la tua privacy e la sicurezza dei tuoi dati personali. Possiamo
+mantenere questa App gratuita mostrando delle inserzioni pubblicitarie.</p>
+<p><big><b>Possiamo continuare a usare i tuoi dati per mostrarti le inserzioni
+pubblicitarie più rilevanti per te.</b></big></p>
+Puoi modificare la tua scelta in qualunque momento per
+<it-scoppelletti-appLabel/> nelle impostazioni dell\'App.</p>. I nostri partner
+collezioneranno i dati e useranno un identificatore univoco sul tuo dispositivo
+per mostrarti le inserzioni pubblicitarie.
+<a href="%1$s">Leggi come <it-scoppelletti-appLabel/> e i nostri %2$d partners
+raccolgono e usano i tuoi dati</a>]]></string>
+    <string name="it_scoppelletti_ads_html_footer"><![CDATA[<p>
+<a href="%1$s">Come <it-scoppelletti-appLabel/> usa i tuoi dati</a></p>]]></string>
+    <string name="it_scoppelletti_ads_html_header"><![CDATA[<it-scoppelletti-contentHandler />
+<p><big><b><it-scoppelletti-resource name="it_scoppelletti_ads_lbl_privacy" type="string" /></b></big></p>
+<p>Puoi modificare la tua scelta in qualunque momento per
+<it-scoppelletti-appLabel/> nelle impostazioni dell\'App. Leggi come i nostri
+partners raccolgono e usano i tuoi dati:</p>]]></string>
+    <string name="it_scoppelletti_ads_html_reminder"><![CDATA[<it-scoppelletti-contentHandler/>
+<p><big><b><it-scoppelletti-resource name="it_scoppelletti_ads_lbl_reminder" type="string" /></b></big></p>
+<p>Collaboreremo con Google e useremo un identificatore univoco sul tuo
+dispositivo per rispettare la tua scelta sull\'uso dei tuoi dati. Puoi
+modificare la tua scelta in qualunque momento per <it-scoppelletti-appLabel/>
+nelle impostazioni dell\'App.</p>
+<p><a href="%1$s">Come <it-scoppelletti-appLabel/> usa i tuoi dati</a></p>]]></string>
+    <string name="it_scoppelletti_ads_html_underage"><![CDATA[<it-scoppelletti-contentHandler />
+<p><big><b><it-scoppelletti-resource name="it_scoppelletti_ads_lbl_underage" type="string" /></b></big></p>
+<p>Possiamo mantenere questa App gratuita mostrando delle inserzioni
+pubblicitarie.</p>
+<p>Quando avrai 16 anni, se lo vorrai, potrai usare le impostazioni dell\'App
+per consentire a <it-scoppelletti-appLabel/> di usare i tuoi dati per mostrarti
+le inserzioni pubblicitarie più rilevanti per te.</p>
+<p>Nel frattempo, collaboreremo con Google e useremo un identificatore univoco
+sul tuo dispositivo per non collezionare i tuoi dati.</p>
+<p><a href="%1$s">Come <it-scoppelletti-appLabel/> usa i tuoi dati</a></p>]]></string>
+    <string name="it_scoppelletti_ads_lbl_privacy">Politica sulla privacy</string>
+    <string name="it_scoppelletti_ads_lbl_reminder">Promemoria</string>
+    <string name="it_scoppelletti_ads_lbl_underage">Protezione dei minori</string>
+</resources>

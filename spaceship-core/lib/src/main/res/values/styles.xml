@@ -78,6 +78,14 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
         <item name="android:textColor">@drawable/it_scoppelletti_secondary_raised_button</item>
     </style>
+    <!-- Flat button
+    http://medium.com/android-bits/android-material-button-e7b92cb014e0
+    August 16, 2016 -->
+    <style name="it_scoppelletti_style_flatButton"
+        parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
+        <item name="android:textColor">@drawable/it_scoppelletti_flat_button</item>
+    </style>
     <!-- ProgressOverlay -->
     <style name="it_scoppelletti_style_progressOverlay">
         <item name="android:layout_width">match_parent</item>

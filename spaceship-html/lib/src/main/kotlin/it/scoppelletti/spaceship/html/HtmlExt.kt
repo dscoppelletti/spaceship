@@ -18,7 +18,11 @@ package it.scoppelletti.spaceship.html
 
 import android.os.Build
 import android.text.Html
+import android.text.SpannableStringBuilder
 import android.text.Spanned
+import android.text.style.ClickableSpan
+import android.text.style.URLSpan
+import android.view.View
 
 /**
  * Operations for HTML.
@@ -67,4 +71,57 @@ public fun fromHtml(
     else
         Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY, imageGetter,
                 tagHandler)
+}
+
+/**
+ * Sets a custom handler for the hyperlinks in a styled text.
+ *
+ * @receiver         The original styled text.
+ * @param    onClick The custom handler.
+ * @param    filter  A predicate to select the hyperlinks.
+ * @return           The resulting styled text.
+ * @since            1.0.0
+ */
+public fun Spanned.replaceHyperlinks(
+        onClick: (String) -> Unit,
+        filter: ((String) -> Boolean)?
+): Spanned = SpannableStringBuilder(this)
+        .apply {
+            getSpans(0, this.length, URLSpan::class.java)
+                    .filter {
+                        filter?.invoke(it.url) ?: true
+                    }
+                    .forEach {
+                        replaceHyperlink(it, onClick)
+                    }
+        }
+
+/**
+ * Sets a custom handler for an hyperlink in a styled text.
+ *
+ * @receiver         The styled text.
+ * @param    urlSpan The hyperlink.
+ * @param    onClick The custom handler.
+ */
+private fun SpannableStringBuilder.replaceHyperlink(
+        urlSpan: URLSpan,
+        onClick: (String) -> Unit
+) {
+    val start: Int
+    val end: Int
+    val flags: Int
+    val newSpan: ClickableSpan
+
+    start = this.getSpanStart(urlSpan)
+    end = this.getSpanEnd(urlSpan)
+    flags = this.getSpanFlags(urlSpan)
+    newSpan = object : ClickableSpan() {
+
+        override fun onClick(widget: View?) {
+            onClick(urlSpan.url)
+        }
+    }
+
+    this.setSpan(newSpan, start, end, flags)
+    this.removeSpan(urlSpan)
 }

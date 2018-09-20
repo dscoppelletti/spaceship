@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="it_scoppelletti_cmd_agree">D\'accordo</string>
+    <string name="it_scoppelletti_cmd_back">Indietro</string>
     <string name="it_scoppelletti_cmd_delete">Cancella</string>
     <string name="it_scoppelletti_cmd_dontSave">Non salvare</string>
     <string name="it_scoppelletti_cmd_drawerClose">Chiudi il cassetto di navigazione</string>
@@ -16,4 +18,5 @@
     <string name="it_scoppelletti_err_security">Problema di sicurezza.</string>
     <string name="it_scoppelletti_err_startActivity">Fallito avvio dell\'attività.</string>
     <string name="it_scoppelletti_msg_saveChanges">Vuoi salvare le modifiche?</string>
+    <string name="it_scoppelletti_url_privacy">http://policies.google.com/privacy?hl=it</string>
 </resources>

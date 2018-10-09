@@ -16,12 +16,12 @@
 
 package it.scoppelletti.spaceship.widget
 
-import android.support.annotation.UiThread
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
 import android.util.SparseArray
 import android.view.ViewGroup
+import androidx.annotation.UiThread
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 
 /**
  * Extended `FragmentPagerAdapter` component.
@@ -31,7 +31,7 @@ import android.view.ViewGroup
  * @since 1.0.0
  *
  * @constructor             Constructor.
- * @param       fragmentMgr The fragment manager.
+ * @param       fragmentMgr Fragment manager.
  */
 @UiThread
 public abstract class FragmentPagerAdapterEx(

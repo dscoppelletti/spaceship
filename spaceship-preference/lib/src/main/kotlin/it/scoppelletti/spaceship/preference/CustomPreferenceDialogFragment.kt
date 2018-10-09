@@ -17,14 +17,16 @@
 package it.scoppelletti.spaceship.preference
 
 import android.os.Bundle
-import android.support.annotation.UiThread
-import android.support.v7.preference.PreferenceDialogFragmentCompat
 import android.view.View
+import androidx.annotation.UiThread
+import androidx.preference.PreferenceDialogFragmentCompat
 
 /**
  * Editor dialog for a custom setting [CustomDialogPreference].
  *
  * @since 1.0.0
+ *
+ * @constructor Sole constructor.
  */
 @UiThread
 public class CustomPreferenceDialogFragment : PreferenceDialogFragmentCompat() {
@@ -47,7 +49,14 @@ public class CustomPreferenceDialogFragment : PreferenceDialogFragmentCompat() {
         pref?.doDialogClosed(positiveResult)
     }
 
-    companion object {
+    public companion object {
+
+        /**
+         * Creates a new fragment.
+         *
+         * @param  key Key of the preference.
+         * @return     The new object.
+         */
         public fun newInstance(key: String): CustomPreferenceDialogFragment {
             val args: Bundle
 

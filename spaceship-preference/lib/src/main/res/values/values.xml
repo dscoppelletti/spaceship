@@ -16,5 +16,6 @@
 -->
 <resources xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation">
+    <eat-comment/>
     <string name="app_name">Spaceship Library for Preferences</string>
 </resources>

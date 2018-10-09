@@ -18,17 +18,17 @@
     <eat-comment />
     <!-- http://www.google.com/design/spec/style/color.html - Color Palette -->
     <!-- Primary: Indigo (500, 100, 700) -->
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryLight">#C5CAE9</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <!-- Accent: Pink (A200, A100, A400) -->
-    <color name="colorAccent">#FF4081</color>
-    <color name="colorAccentLight">#FF80AB</color>
-    <color name="colorAccentDark">#F50057</color>
+    <color name="primaryColor">#3F51B5</color>
+    <color name="primaryLightColor">#C5CAE9</color>
+    <color name="primaryDarkColor">#303F9F</color>
+    <!-- Secondary: Pink (A200, A100, A400) -->
+    <color name="secondaryColor">#FF4081</color>
+    <color name="secondaryLightColor">#FF80AB</color>
+    <color name="secondaryDarkColor">#F50057</color>
     <!-- Text on primary color -->
-    <color name="textColorPrimary">#FFFFFF</color>
-    <!-- Text on accent color -->
-    <color name="textColorAccent">#FFFFFF</color>
+    <color name="primaryTextColor">#FFFFFF</color>
+    <!-- Text on secondary color -->
+    <color name="secondaryTextColor">#FFFFFF</color>
     <!-- Error color -->
     <color name="colorError">#F4511E</color>
     <!-- http://www.google.com/design/spec/style/color.html - Dark text on light

@@ -17,20 +17,21 @@
 package it.scoppelletti.spaceship.app
 
 import android.os.Bundle
-import android.support.annotation.StringRes
-import android.support.design.widget.CollapsingToolbarLayout
-import android.support.v7.app.AppCompatActivity
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import it.scoppelletti.spaceship.CoreExt
 
 /**
  * Title adapter.
  *
- * A `TitleAdapter` object lets you set the title of an activity by the only
- * one property `title` even if you set a custom `Toolbar` as the action bar or
- * if you use a `CollapsingToolbarLayout` widget.
+ * A `TitleAdapter` object lets you set the title of an activity by the only one
+ * property `title` even if you set a custom `Toolbar` as the action bar or if
+ * you use a `CollapsingToolbarLayout` widget.
  *
- * @since            1.0.0
- * @property titleId The title as a string resource ID.
+ * @since 1.0.0
+ *
+ * @property titleId Title as a string resource ID.
  *
  * @constructor               Constructor.
  * @param       activity      The activity.
@@ -40,7 +41,9 @@ public class TitleAdapter(
         private val activity: AppCompatActivity,
         private val toolbarLayout: CollapsingToolbarLayout? = null
 ) {
-    @StringRes public var titleId: Int = -1
+
+    @StringRes
+    public var titleId: Int = -1
         set(value) {
             if (toolbarLayout == null) {
                 activity.supportActionBar?.setTitle(value)

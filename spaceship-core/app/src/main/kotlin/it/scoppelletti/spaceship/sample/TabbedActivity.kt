@@ -1,17 +1,17 @@
 package it.scoppelletti.spaceship.sample
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.content.DialogInterface
-import android.databinding.Observable
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
-import android.support.v7.app.ActionBar
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.Observable
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.snackbar.Snackbar
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -267,7 +267,7 @@ class TabbedActivity : AppCompatActivity(),
     private fun onItemDeleting() {
         showAlertDialog {
             message(R.string.msg_deleting)
-            titleId = R.string.it_scoppelletti_cmd_delete
+            title(R.string.it_scoppelletti_cmd_delete)
             positiveActionTextId = R.string.it_scoppelletti_cmd_delete
             tag = MainApp.TAG_DELETEDLG
         }

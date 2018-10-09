@@ -16,7 +16,7 @@
 
 package it.scoppelletti.spaceship.html.inject
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -24,7 +24,7 @@ import it.scoppelletti.spaceship.html.lifecycle.HtmlViewerViewModel
 import it.scoppelletti.spaceship.inject.ViewModelKey
 
 /**
- * Defines the `ViewModel`s exported by this library.
+ * Defines the `ViewModel` classes exported by this library.
  *
  * @since 1.0.0
  */

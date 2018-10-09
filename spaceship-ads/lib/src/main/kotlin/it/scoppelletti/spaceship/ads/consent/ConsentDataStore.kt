@@ -31,14 +31,14 @@ public interface ConsentDataStore {
     /**
      * Loads the `ConsentData` object.
      *
-     * @return The object.
+     * @return The new observable.
      */
     public fun load(): Single<ConsentData>
 
     /**
      * Saves the `ConsentData` object.
      *
-     * @param data The object.
+     * @param data The new observable.
      */
     public fun save(data: ConsentData): Completable
 }

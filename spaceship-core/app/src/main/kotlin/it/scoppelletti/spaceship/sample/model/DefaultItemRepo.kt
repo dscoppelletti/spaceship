@@ -32,7 +32,7 @@ class DefaultItemRepo @Inject constructor(): ItemRepo {
                                         add(it.code.orEmpty())
                                     }
                                 }
-                                titleId = R.string.it_scoppelletti_cmd_save
+                                title(R.string.it_scoppelletti_cmd_save)
                             }
                         }
 
@@ -77,7 +77,7 @@ class DefaultItemRepo @Inject constructor(): ItemRepo {
                                         add(item.id)
                                     }
                                 }
-                                titleId = R.string.it_scoppelletti_cmd_update
+                                title(R.string.it_scoppelletti_cmd_update)
                             }
                         }
 

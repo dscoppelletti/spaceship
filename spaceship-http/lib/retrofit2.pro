@@ -1,9 +1,9 @@
 # Source: http://github.com/square/retrofit/blob/master/retrofit/src/main/
 #         resources/META-INF/proguard/retrofit2.pro
-# Commit: 940f634e23bc33d01eae4dbf652cc8522c689bdc - Jun 15, 2018
+# Commit: 35381b1c1e90c906c032f872c729c594720391be - September 12, 2018
 
-# Retain generic type information for use by reflection by converters and adapters.
--keepattributes Signature
+# Retrofit does reflection on generic parameters and InnerClass is required to use Signature.
+-keepattributes Signature, InnerClasses
 
 # Retain service method parameters when optimizing.
 -keepclassmembers,allowshrinking,allowobfuscation interface * {
@@ -15,3 +15,9 @@
 
 # Ignore JSR 305 annotations for embedding nullability information.
 -dontwarn javax.annotation.**
+
+# Guarded by a NoClassDefFoundError try/catch and only used when on the classpath.
+-dontwarn kotlin.Unit
+
+# Top-level functions that can only be used by Kotlin.
+-dontwarn retrofit2.-KotlinExtensions

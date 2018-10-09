@@ -16,12 +16,13 @@
 
 package it.scoppelletti.spaceship.databinding
 
-import android.databinding.BindingAdapter
-import android.support.design.widget.TextInputEditText
-import android.support.design.widget.TextInputLayout
 import android.text.InputType
 import android.view.View
+import androidx.databinding.BindingAdapter
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import it.scoppelletti.spaceship.widget.isWidgetEnabled
+
 
 /**
  * Data binding operations.
@@ -66,9 +67,9 @@ public object DataBindingExt {
  * `it_scoppelletti_inputType` attribute to set the type and variant of data the
  * user can enter in the widget when it is enabled.
  *
- * @receiver          The widget.
+ * @receiver          Widget.
  * @param   enabled   Whether the widget is enabled or not.
- * @param   inputType The type and variant of data.
+ * @param   inputType Type and variant of data.
  * @since             1.0.0
  */
 @BindingAdapter(DataBindingExt.ATTR_ENABLED, DataBindingExt.ATTR_INPUTTYPE)
@@ -93,8 +94,8 @@ public fun TextInputEditText.setWidgetEnabled(
  * Sets a validator for a `TextInputEditText` widget to be called when the
  * widget looses the focus.
  *
- * @receiver           The widget.
- * @param    validator The validator.
+ * @receiver           Widget.
+ * @param    validator Validator.
  * @since              1.0.0
  */
 @BindingAdapter(DataBindingExt.ATTR_VALIDATOR)
@@ -114,8 +115,8 @@ public fun TextInputEditText.setWidgetValidator(validator: (() -> Boolean)?) {
  * also disable the hint animation of the `TextInputLayout` widget. The
  * `it_scoppelletti_enabled` attribute hides this detail.
  *
- * @receiver         The widget.
- * @param    enabled Whether the widget is enabled or not.
+ * @receiver         Widget.
+ * @param    enabled Whether this widget is enabled or not.
  * @since            1.0.0
  */
 @BindingAdapter(DataBindingExt.ATTR_ENABLED)
@@ -130,9 +131,9 @@ public fun TextInputLayout.setWidgetEnabled(enabled: Boolean) {
  * The `it_scoppelletti_error` attribute controls both attributes `error` and
  * `errorEnabled`.
  *
- * @receiver         The decorator.
- * @param    errorId The error message as a string resource ID. If not greater
- *                   than `0`, the error message will be cleared.
+ * @receiver         Decorator.
+ * @param    errorId Error message as a string resource ID. If not greater than
+ *                   `0`, the error message will be cleared.
  * @since            1.0.0
  */
 @BindingAdapter(DataBindingExt.ATTR_ERROR)

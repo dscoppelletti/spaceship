@@ -24,9 +24,9 @@ import android.view.inputmethod.InputMethodManager
 /**
  * Tries to finish an activity.
  *
- * @receiver The activity.
+ * @receiver Activity.
  * @return   Returns `true` if the finish process has been started, `false` if
- *           the activity was already finishing.
+ *           this activity was already finishing.
  * @since    1.0.0
  */
 public fun Activity.tryFinish(): Boolean {
@@ -41,7 +41,7 @@ public fun Activity.tryFinish(): Boolean {
 /**
  * Hides the soft keyboard.
  *
- * @receiver The activity.
+ * @receiver Activity.
  * @since    1.0.0
  */
 public fun Activity.hideSoftKeyboard() {

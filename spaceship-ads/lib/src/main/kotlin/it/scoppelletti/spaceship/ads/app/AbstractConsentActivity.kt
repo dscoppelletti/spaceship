@@ -16,19 +16,17 @@
 
 package it.scoppelletti.spaceship.ads.app
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.content.SharedPreferences
-import android.content.pm.ActivityInfo
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.annotation.UiThread
-import android.support.v4.app.Fragment
-import android.support.v7.app.ActionBar
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import androidx.annotation.UiThread
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -52,7 +50,7 @@ import javax.inject.Inject
 /**
  * Prompts the user for consent to receive perzonalized advertising.
  *
- * @see   it.scoppelletti.spaceship.ads.app.ConsentProgressFragment
+ * @see   it.scoppelletti.spaceship.ads.app.ConsentLoadFragment
  * @see   it.scoppelletti.spaceship.ads.app.ConsentAgeFragment
  * @see   it.scoppelletti.spaceship.ads.app.ConsentUnderageFragment
  * @see   it.scoppelletti.spaceship.ads.app.ConsentPromptFragment
@@ -84,7 +82,8 @@ public abstract class AbstractConsentActivity : AppCompatActivity(), Injectable,
 
         setContentView(R.layout.it_scoppelletti_ads_consent_activity)
         setSupportActionBar(toolbar)
-        settings = isSettings()
+        settings = intent.getBooleanExtra(AbstractConsentActivity.PROP_SETTINGS,
+                false)
 
         if (settings) {
             actionBar = supportActionBar!!
@@ -110,6 +109,20 @@ public abstract class AbstractConsentActivity : AppCompatActivity(), Injectable,
             fragmentDispatchingAndroidInjector
 
     private fun stateObserver(state: ConsentState) {
+        if (contentPager.currentItem != state.step) {
+            contentPager.currentItem = state.step
+        }
+
+        if (state.waiting) {
+            progressIndicator.show()
+        } else {
+            progressIndicator.hide {
+                onStateUpdate(state)
+            }
+        }
+    }
+
+    private fun onStateUpdate(state: ConsentState) {
         val prefs: SharedPreferences
         val editor: SharedPreferences.Editor
 
@@ -123,8 +136,6 @@ public abstract class AbstractConsentActivity : AppCompatActivity(), Injectable,
                 showExceptionDialog(applicationException {
                     message(R.string.it_scoppelletti_ads_err_notInEea)
                 })
-
-                return
             }
         } else if (state.data.consentStatus != ConsentStatus.UNKNOWN) {
             prefs = PreferenceManager.getDefaultSharedPreferences(this)
@@ -134,36 +145,13 @@ public abstract class AbstractConsentActivity : AppCompatActivity(), Injectable,
 
             onComplete()
             tryFinish()
-            return
         }
-
-        contentPager.currentItem = state.step
     }
 
     /**
      * Called when the user completes her choice.
      */
     public abstract fun onComplete()
-
-    private fun isSettings(): Boolean {
-        val mode: Int
-        val activityInfo: ActivityInfo
-
-        try {
-            activityInfo = packageManager.getActivityInfo(componentName,
-                    PackageManager.GET_META_DATA)
-        } catch (ex: PackageManager.NameNotFoundException) {
-            logger.error(ex) {
-                "Failed to get ActivityInfo for activity $componentName."
-            }
-
-            return false
-        }
-
-        mode = activityInfo.metaData?.getInt(
-                AbstractConsentActivity.PROP_SETTINGS, 0) ?: 0
-        return (mode != 0)
-    }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
@@ -200,8 +188,7 @@ public abstract class AbstractConsentActivity : AppCompatActivity(), Injectable,
          * Property indicating whether this activity has been launched as a
          * settings activity.
          */
-        public const val PROP_SETTINGS: String =
-                "it.scoppelletti.spaceship.ads.settings"
+        public const val PROP_SETTINGS: String = AdsExt.PROP_SETTINGS
 
         private val logger: KLogger = KotlinLogging.logger {}
     }

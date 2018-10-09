@@ -16,10 +16,10 @@
 
 package it.scoppelletti.spaceship.html.lifecycle
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
 import android.text.Html
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -34,8 +34,9 @@ import javax.inject.Named
 /**
  * `ViewModel` for the `HtmlViewerActivity` activity.
  *
- * @see            it.scoppelletti.spaceship.html.app.HtmlViewerActivity
- * @since          1.0.0
+ * @see   it.scoppelletti.spaceship.html.app.HtmlViewerActivity
+ * @since 1.0.0
+ *
  * @property state The styled text.
  *
  * @constructor            Constructor.
@@ -45,6 +46,7 @@ public class HtmlViewerViewModel @Inject constructor(
         @Named(HtmlExt.DEP_TAGHANDLER)
         private val tagHandler: Html.TagHandler
 ) : ViewModel() {
+
     private val _state: MutableLiveData<HtmlViewerState>
     private val disposables: CompositeDisposable
 

@@ -17,15 +17,17 @@
  * Original repository: http://github.com/googlesamples/android-architecture-components
  * Original file: GithubBrowserSample/app/src/main/java/com/android/example/github/viewmodel/GithubViewModelFactory.kt
  * Commit: 724cc1bd6ed11171a0bbf4a3a29977fac053777e
- * Renamed to InjectViewModelFactory.
- * Added public qualifier.
- * Added KDoc.
+ * Rename to InjectViewModelFactory.
+ * Add public qualifier.
+ * Add KDoc.
+ * Porting to androix namespace.
  */
 
 package it.scoppelletti.spaceship.inject
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton

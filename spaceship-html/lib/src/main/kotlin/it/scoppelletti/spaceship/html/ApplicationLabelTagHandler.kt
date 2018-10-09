@@ -21,6 +21,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.text.Editable
 import it.scoppelletti.spaceship.types.trimRaw
+import mu.KLogger
 import mu.KotlinLogging
 import org.xml.sax.XMLReader
 import javax.inject.Inject
@@ -64,13 +65,13 @@ public class ApplicationLabelTagHandler @Inject constructor(
         output.replace(start, end, applLabel)
     }
 
-    companion object {
+    public companion object {
 
         /**
-         * The tag.
+         * Tag.
          */
         public const val TAG: String = "it-scoppelletti-appLabel"
 
-        private val logger = KotlinLogging.logger {}
+        private val logger: KLogger = KotlinLogging.logger {}
     }
 }

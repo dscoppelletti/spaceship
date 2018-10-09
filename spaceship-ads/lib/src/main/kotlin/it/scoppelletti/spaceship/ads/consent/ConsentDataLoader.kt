@@ -30,7 +30,7 @@ public interface ConsentDataLoader {
     /**
      * Loads the `ConsentData` object.
      *
-     * @return The object.
+     * @return The new observable.
      */
     public fun load(): Single<ConsentData>
 }

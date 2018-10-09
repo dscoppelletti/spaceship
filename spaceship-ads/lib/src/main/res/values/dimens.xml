@@ -22,7 +22,7 @@
     <dimen name="it_scoppelletti_ads_large_banner_width">320dp</dimen>
     <dimen name="it_scoppelletti_ads_large_banner_height">100dp</dimen>
     <dimen name="it_scoppelletti_ads_medium_rectangle_width">300dp</dimen>
-    <dimen name="it_scoppelletti_ads_medium_recatable_height">250dp</dimen>
+    <dimen name="it_scoppelletti_ads_medium_rectangle_height">250dp</dimen>
     <dimen name="it_scoppelletti_ads_full_banner_width">468dp</dimen>
     <dimen name="it_scoppelletti_ads_full_banner_height">60dp</dimen>
     <dimen name="it_scoppelletti_ads_leaderboard_width">728dp</dimen>

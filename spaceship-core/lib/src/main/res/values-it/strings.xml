@@ -8,8 +8,6 @@
     <string name="it_scoppelletti_cmd_drawerOpen">Apri il cassetto di navigazione</string>
     <string name="it_scoppelletti_cmd_edit">Modifica</string>
     <string name="it_scoppelletti_cmd_list">Elenco</string>
-    <string name="it_scoppelletti_cmd_login">Accedi</string>
-    <string name="it_scoppelletti_cmd_logout">Esci</string>
     <string name="it_scoppelletti_cmd_new">Nuovo</string>
     <string name="it_scoppelletti_cmd_open">Apri</string>
     <string name="it_scoppelletti_cmd_save">Salva</string>

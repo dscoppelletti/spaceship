@@ -22,7 +22,8 @@ import org.xml.sax.XMLReader
 /**
  * HTML custom tag handler.
  *
- * @since        1.0.0
+ * @since 1.0.0
+ *
  * @property tag Custom tag.
  *
  * @constructor Constructor.

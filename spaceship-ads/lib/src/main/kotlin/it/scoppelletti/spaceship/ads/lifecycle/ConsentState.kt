@@ -30,13 +30,15 @@ import it.scoppelletti.spaceship.lifecycle.SingleEvent
  * @see   it.scoppelletti.spaceship.ads.app.AbstractConsentActivity
  * @since 1.0.0
  *
- * @property step  Current fragment.
- * @property data  Current data.
- * @property error Error to show.
+ * @property step    Current fragment.
+ * @property data    Current data.
+ * @property waiting Whether a work is in progress.
+ * @property error   Error to show.
  */
 public data class ConsentState(
         public val step: Int,
         public val data: ConsentData,
+        public val waiting: Boolean,
         public val error: SingleEvent<Throwable>?
 ) {
 
@@ -59,7 +61,7 @@ public data class ConsentState(
                 throw IllegalStateException("Property step is $step.")
         }
 
-        return copy(step = pos)
+        return copy(step = pos, waiting = false)
     }
 
     /**
@@ -68,5 +70,5 @@ public data class ConsentState(
      * @param ex The error.
      */
     internal fun withError(ex: Throwable): ConsentState =
-            copy(error = SingleEvent(ex))
+            copy(error = SingleEvent(ex), waiting = false)
 }

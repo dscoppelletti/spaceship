@@ -16,15 +16,15 @@
 
 package it.scoppelletti.spaceship.ads.lifecycle
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import it.scoppelletti.spaceship.ads.app.ConsentAgeFragment
-import it.scoppelletti.spaceship.ads.app.ConsentProgressFragment
+import it.scoppelletti.spaceship.ads.app.ConsentLoadFragment
 import it.scoppelletti.spaceship.ads.consent.ConsentDataLoader
 import it.scoppelletti.spaceship.ads.consent.ConsentDataStore
 import it.scoppelletti.spaceship.ads.consent.ConsentStatus
@@ -34,9 +34,9 @@ import javax.inject.Inject
 /**
  * ViewModel of the `AbstractConsentActivity` view.
  *
- * @see            it.scoppelletti.spaceship.ads.app.AbstractConsentActivity
- * @see            it.scoppelletti.spaceship.ads.model.ConsentData
- * @since          1.0.0
+ * @see   it.scoppelletti.spaceship.ads.app.AbstractConsentActivity
+ * @see   it.scoppelletti.spaceship.ads.model.ConsentData
+ * @since 1.0.0
  *
  * @property state State of the view.
  *
@@ -69,15 +69,15 @@ public class ConsentViewModel @Inject constructor(
             return
         }
 
-        _state.value = ConsentState(step = ConsentProgressFragment.POS,
-                data = ConsentData(), error = null)
+        _state.value = ConsentState(step = ConsentLoadFragment.POS,
+                data = ConsentData(), waiting = true, error = null)
 
         subscription = consentDataLoader.load()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ data ->
                     _state.value = _state.value?.copy(step =
-                        ConsentAgeFragment.POS, data = data)
+                        ConsentAgeFragment.POS, data = data, waiting = false)
                 }, { ex ->
                     _state.value = _state.value?.withError(ex)
                 })
@@ -97,7 +97,7 @@ public class ConsentViewModel @Inject constructor(
             return
         }
 
-        _state.value = _state.value?.copy(step = ConsentProgressFragment.POS)
+        _state.value = _state.value?.copy(waiting = true)
 
         data = (_state.value?.data ?: ConsentData())
                 .copy(consentStatus = status)
@@ -105,7 +105,8 @@ public class ConsentViewModel @Inject constructor(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    _state.value = _state.value?.copy(data = data)
+                    _state.value = _state.value?.copy(data = data,
+                            waiting = false)
                 }, { ex ->
                     _state.value = _state.value?.withError(ex)
                 })
@@ -118,7 +119,7 @@ public class ConsentViewModel @Inject constructor(
      * @param value Position of the fragment to select.
      */
     public fun setStep(value: Int) {
-        _state.value = _state.value?.copy(step = value)
+        _state.value = _state.value?.copy(step = value, waiting = false)
     }
 
     /**

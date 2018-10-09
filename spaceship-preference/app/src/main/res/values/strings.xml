@@ -2,7 +2,41 @@
 <resources xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation">
     <string name="lbl_category">Category</string>
+    <string name="lbl_check">Check preference</string>
+    <string name="lbl_combo">DropDown preference</string>
+    <string name="lbl_edit">Edit preference</string>
+    <string name="lbl_list">List preferences</string>
+    <string name="lbl_multi">MultiSelectList preference</string>
+    <string name="lbl_seekbar">SeekBar preference</string>
     <string name="lbl_switch">Switch preference</string>
+    <string name="lbl_text">Text preference</string>
+    <string name="html_help"><![CDATA[<p>This is the help text.</p>]]></string>
+    <string name="msg_checkOn">Check on</string>
+    <string name="msg_checkOff">Check off</string>
+    <string name="msg_combo">DropDown summary</string>
+    <string name="msg_edit">Edit message</string>
+    <string name="msg_list">List summary</string>
+    <string name="msg_multi">MultiSelectList summary</string>
+    <string name="msg_seekbar">SeekBar summary</string>
     <string name="msg_switchOn">Switch on</string>
     <string name="msg_switchOff">Switch off</string>
+    <string name="msg_text">Text summary</string>
+    <string-array name="pref_entries">
+        <item>Entry 1</item>
+        <item>Entry 2</item>
+        <item>Entry 3</item>
+        <item>Entry 4</item>
+        <item>Entry 5</item>
+    </string-array>
+    <string-array name="pref_entryValues">
+        <item>value1</item>
+        <item>value2</item>
+        <item>value3</item>
+        <item>value4</item>
+        <item>value5</item>
+    </string-array>
+    <string-array name="pref_values">
+        <item>value2</item>
+        <item>value4</item>
+    </string-array>
 </resources>

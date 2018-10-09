@@ -20,6 +20,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.text.Editable
 import it.scoppelletti.spaceship.types.trimRaw
+import mu.KLogger
 import mu.KotlinLogging
 import org.xml.sax.XMLReader
 import javax.inject.Inject
@@ -35,7 +36,7 @@ import javax.inject.Inject
  *
  * @constructor
  * @param       context   Context.
- * @param       resources Application's resources.
+ * @param       resources Resources of this application.
  */
 public class ResourceTagHandler @Inject constructor(
         private val context: Context,
@@ -96,7 +97,7 @@ in tag $tag.""".trimRaw() }
     public companion object {
 
         /**
-         * The tag.
+         * Tag.
          */
         public const val TAG: String = "it-scoppelletti-resource"
 
@@ -115,6 +116,6 @@ in tag $tag.""".trimRaw() }
          */
         public const val TYPE_STRING: String = "string"
 
-        private val logger = KotlinLogging.logger {}
+        private val logger: KLogger = KotlinLogging.logger {}
     }
 }

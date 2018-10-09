@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 -->
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -33,7 +33,8 @@
         app:layout_constraintBottom_toTopOf="@id/cmdAdult"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
-    <Button android:id="@+id/cmdAdult"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cmdAdult"
         android:text="@string/it_scoppelletti_ads_cmd_adult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,9 +43,9 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="@dimen/it_scoppelletti_spacingVert"
-        android:theme="@style/it_scoppelletti_theme_secondaryRaisedButton"
-        style="@style/it_scoppelletti_style_secondaryRaisedButton" />
-    <Button android:id="@+id/cmdUnderage"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cmdUnderage"
         android:text="@string/it_scoppelletti_ads_cmd_underage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,6 +54,5 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="@dimen/it_scoppelletti_spacingVert"
-        android:theme="@style/it_scoppelletti_theme_secondaryRaisedButton"
-        style="@style/it_scoppelletti_style_secondaryRaisedButton" />
-</android.support.constraint.ConstraintLayout>
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+</androidx.constraintlayout.widget.ConstraintLayout>

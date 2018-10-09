@@ -17,11 +17,11 @@
 package it.scoppelletti.spaceship.ads.app
 
 import android.os.Bundle
-import android.support.annotation.UiThread
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.UiThread
+import androidx.fragment.app.Fragment
 import it.scoppelletti.spaceship.ads.R
 
 /**
@@ -33,14 +33,14 @@ import it.scoppelletti.spaceship.ads.R
  * @constructor Sole constructor.
  */
 @UiThread
-public class ConsentProgressFragment : Fragment() {
+public class ConsentLoadFragment : Fragment() {
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? = inflater.inflate(
-            R.layout.it_scoppelletti_ads_consentprogress_fragment, container,
+            R.layout.it_scoppelletti_ads_consentload_fragment, container,
             false)
 
     public companion object {
@@ -56,7 +56,7 @@ public class ConsentProgressFragment : Fragment() {
          *
          * @return The new object.
          */
-        public fun newInstance(): ConsentProgressFragment =
-                ConsentProgressFragment()
+        public fun newInstance(): ConsentLoadFragment =
+                ConsentLoadFragment()
     }
 }

@@ -21,22 +21,27 @@
     <style name="it_scoppelletti_style_appBarLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Dark</item>
     </style>
     <style name="it_scoppelletti_style_collapsingAppBarLayout"
         parent="it_scoppelletti_baseStyle_collapsingAppBarLayout">
     </style>
     <!-- Toolbar -->
-    <style name="it_scoppelletti_style_toolbar"
-        parent="it_scoppelletti_baseStyle_toolbar">
-        <item name="android:background">@color/colorPrimary</item>
+    <style name="it_scoppelletti_style_toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?android:attr/actionBarSize</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="popupTheme">@style/ThemeOverlay.MaterialComponents.Light</item>
     </style>
     <style name="it_scoppelletti_style_collapsingToolbar"
         parent="it_scoppelletti_style_toolbar">
         <item name="layout_collapseMode">pin</item>
     </style>
-    <style name="it_scoppelletti_style_collapsingToolbarLayout"
-        parent="it_scoppelletti_baseStyle_collapsingToolbarLayout">
-        <item name="contentScrim">@color/colorPrimary</item>
+    <style name="it_scoppelletti_style_collapsingToolbarLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="contentScrim">?attr/colorPrimary</item>
+        <item name="layout_scrollFlags">scroll|exitUntilCollapsed|snap</item>
     </style>
     <!-- Navigation Drawer -->
     <style name="it_scoppelletti_style_drawerLayout">
@@ -50,9 +55,17 @@
         <item name="android:layout_gravity">start</item>
         <item name="android:fitsSystemWindows">true</item>
     </style>
-    <style name="it_scoppelletti_style_drawerHeader"
-        parent="it_scoppelletti_baseStyle_drawerHeader">
-        <item name="android:background">@color/colorAccent</item>
+    <style name="it_scoppelletti_style_drawerHeader">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/it_scoppelletti_drawer_headerHeight</item>
+        <item name="android:background">?attr/colorSecondary</item>
+    </style>
+    <!-- Tab Layout -->
+    <style name="it_scoppelletti_style_tabLayout"
+        parent="Widget.MaterialComponents.TabLayout.Colored">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="tabBackground">?attr/colorPrimary</item>
+        <item name="tabIndicatorColor">?attr/colorSecondary</item>
     </style>
     <!-- Coordinator layout -->
     <style name="it_scoppelletti_style_coordinatorLayout">
@@ -65,27 +78,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:clickable">true</item>
     </style>
-    <!-- Raised button
-    http://medium.com/google-developers/choosing-a-button-style-with-purpose-and-intent-35a945e228d3
-    February 24, 2016 -->
-    <style name="it_scoppelletti_style_raisedButton"
-        parent="Widget.AppCompat.Button.Colored">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
-        <item name="android:textColor">@drawable/it_scoppelletti_raised_button</item>
-    </style>
-    <style name="it_scoppelletti_style_secondaryRaisedButton"
-        parent="Widget.AppCompat.Button.Colored">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
-        <item name="android:textColor">@drawable/it_scoppelletti_secondary_raised_button</item>
-    </style>
-    <!-- Flat button
-    http://medium.com/android-bits/android-material-button-e7b92cb014e0
-    August 16, 2016 -->
-    <style name="it_scoppelletti_style_flatButton"
-        parent="Widget.AppCompat.Button.Borderless.Colored">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
-        <item name="android:textColor">@drawable/it_scoppelletti_flat_button</item>
-    </style>
     <!-- ProgressOverlay -->
     <style name="it_scoppelletti_style_progressOverlay">
         <item name="android:layout_width">match_parent</item>
@@ -96,25 +88,25 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
     <!-- List
-    http://www.google.com/design/spec/components/lists.html#lists-actions -->
+    http://material.io/design/components/lists.html#specs - September 28, 2018 -->
     <style name="it_scoppelletti_style_listItem_line1">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
-        <item name="android:textAppearance">@style/it_scoppelletti_text_subheading</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1</item>
     </style>
     <style name="it_scoppelletti_style_listItem_line2">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
-        <item name="android:textAppearance">@style/it_scoppelletti_text_body1</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body2</item>
     </style>
     <style name="it_scoppelletti_style_listItem_line23">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">false</item>
         <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
-        <item name="android:textAppearance">@style/it_scoppelletti_text_body1</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body2</item>
     </style>
     <style name="it_scoppelletti_style_listItem_secondaryIcon">
         <item name="android:layout_width">@dimen/it_scoppelletti_list_secondaryIcon_size</item>

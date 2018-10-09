@@ -7,7 +7,7 @@
     <string name="err_code_duplicate">An item with code %1$s already exists.</string>
     <string name="err_code_required">The code is required.</string>
     <string name="err_desc_required">The description is required.</string>
-    <string name="err_item_notfound">No item with id %1$ found.</string>
+    <string name="err_item_notfound">No item with id %1$d found.</string>
     <string name="lbl_code">Code</string>
     <string name="lbl_desc">Description</string>
     <string name="lbl_tabbedActivity">Tabbed Activity</string>

@@ -21,7 +21,7 @@ import it.scoppelletti.spaceship.ads.consent.DebugGeography
 /**
  * Configuration of AdMob.
  *
- * @since                   1.0.0
+ * @since 1.0.0
  *
  * @property serviceUrl     Service base URL.
  * @property publisherId    Publisher ID.

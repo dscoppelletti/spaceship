@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
- * Copyright (C) 2017 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ * Copyright (C) 2018 Dario Scoppelletti, <http://www.scoppelletti.it/>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 -->
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_enabled="true"
-        android:color="@color/colorAccent"
-        android:alpha="@dimen/it_scoppelletti_alpha_darkTextPrimary" />
-    <item android:state_enabled="false"
-        android:color="@android:color/black"
-        android:alpha="@dimen/it_scoppelletti_alpha_darkTextDisabled" />
-</selector>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <eat-comment/>
+    <style name="it_scoppelletti_pref_style_dialog_edittext"
+        parent="Preference.DialogPreference.EditTextPreference.Material">
+    </style>
+    <style name="it_scoppeletti_pref_style_seekbar"
+        parent="Preference.SeekBarPreference.Material">
+    </style>
+</resources>

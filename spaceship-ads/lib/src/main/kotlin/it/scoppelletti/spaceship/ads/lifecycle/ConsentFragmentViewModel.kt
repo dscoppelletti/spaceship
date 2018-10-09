@@ -16,11 +16,11 @@
 
 package it.scoppelletti.spaceship.ads.lifecycle
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
 import android.text.Html
 import android.text.SpannedString
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -36,10 +36,10 @@ import javax.inject.Named
 /**
  * ViewModel of the `AbstractConsentActivity` fragments.
  *
- * @see           it.scoppelletti.spaceship.ads.app.ConsentAgeFragment
- * @see           it.scoppelletti.spaceship.ads.app.ConsentUnderageFragment
- * @see           it.scoppelletti.spaceship.ads.app.ConsentReminderFragment
- * @since         1.0.0
+ * @see   it.scoppelletti.spaceship.ads.app.ConsentAgeFragment
+ * @see   it.scoppelletti.spaceship.ads.app.ConsentUnderageFragment
+ * @see   it.scoppelletti.spaceship.ads.app.ConsentReminderFragment
+ * @since 1.0.0
  *
  * @property text Message text.
  *
@@ -92,6 +92,6 @@ public class ConsentFragmentViewModel @Inject constructor(
     }
 
     private companion object {
-        private val logger: KLogger = KotlinLogging.logger {}
+        val logger: KLogger = KotlinLogging.logger {}
     }
 }

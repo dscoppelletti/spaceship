@@ -5,6 +5,7 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion versionMap.sdk_target
+    buildToolsVersion versionMap.build_tools
     defaultConfig {
         applicationId "it.scoppelletti.spaceship.sample"
         minSdkVersion versionMap.sdk_min
@@ -39,13 +40,13 @@ android {
 
 dependencies {
     implementation project(':lib')
-    implementation "android.arch.lifecycle:common-java8:${versionMap.android_lifecycle}"
-    implementation "android.arch.lifecycle:extensions:${versionMap.android_lifecycle}"
-    kapt "com.android.databinding:compiler:${versionMap.android_gradle}"
-    implementation "com.android.support:appcompat-v7:${versionMap.android_support}"
-    implementation "com.android.support:design:${versionMap.android_support}"
-    implementation "com.android.support:recyclerview-v7:${versionMap.android_support}"
-    implementation "com.android.support:support-annotations:${versionMap.android_support}"
+    implementation "androidx.annotation:annotation:${versionMap.androidx_support}"
+    implementation "androidx.appcompat:appcompat:${versionMap.androidx_support}"
+    implementation "androidx.lifecycle:lifecycle-common-java8:${versionMap.androidx_lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${versionMap.androidx_lifecycle}"
+    kapt "androidx.databinding:databinding-compiler:${versionMap.android_gradle}"
+    implementation "androidx.recyclerview:recyclerview:${versionMap.androidx_support}"
+    implementation "com.google.android.material:material:${versionMap.androidx_support}"
     implementation "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
     implementation "com.google.dagger:dagger-android-support:${versionMap.dagger}"

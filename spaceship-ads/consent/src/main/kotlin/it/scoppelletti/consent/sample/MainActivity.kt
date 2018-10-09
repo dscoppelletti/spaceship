@@ -1,7 +1,7 @@
 package it.scoppelletti.consent.sample
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.google.ads.consent.ConsentForm
 import com.google.ads.consent.ConsentInfoUpdateListener
 import com.google.ads.consent.ConsentInformation
@@ -20,6 +20,7 @@ import it.scoppelletti.spaceship.app.tryFinish
 import it.scoppelletti.spaceship.applicationException
 import it.scoppelletti.spaceship.types.trimRaw
 import kotlinx.android.synthetic.main.main_activity.*
+import mu.KLogger
 import mu.KotlinLogging
 import java.net.URL
 
@@ -148,6 +149,6 @@ class MainActivity : AppCompatActivity(), OnDialogResultListener,
     }
 
     private companion object {
-        val logger = KotlinLogging.logger {}
+        val logger: KLogger = KotlinLogging.logger {}
     }
 }

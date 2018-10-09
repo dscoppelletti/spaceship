@@ -20,14 +20,15 @@ package it.scoppelletti.spaceship.lifecycle
  * Wrapper for data that represents an event that should be handled only once.
  *
  * > Be aware that using `SingleEvent` with `ViewModel` and `LiveData` does not
- * > comply with _state immutability_ and _unidirectional data flow_ principles
+ * > comply with *state immutability* and *unidirectional data flow* principles
  * > of some design patterns.
  *
  * * [View actions (snackbar, activity navigation, ...) in ViewModel](http://github.com/googlesamples/android-architecture-components/issues/63)
  * * [LiveData with SnackBar, Navigation and other events (the SingleLiveEvent case)](http://medium.com/google-developers/livedata-with-snackbar-navigation-and-other-events-the-singleliveevent-case-ac2622673150)
  * * [Reactive Apps with Model-View-Intent - Part 7 - Timing (SingleLiveEvent problem)](http://hannesdorfmann.com/android/mosby3-mvi-7)
  *
- * @since                   1.0.0
+ * @since 1.0.0
+ *
  * @property hasBeenHandled Indicates whether this event has been handled or
  *                          not.
  *
@@ -35,7 +36,8 @@ package it.scoppelletti.spaceship.lifecycle
  * @param       content Data.
  */
 public class SingleEvent<out T>(private val content: T) {
-    var hasBeenHandled: Boolean = false
+
+    public var hasBeenHandled: Boolean = false
         private set
 
     /**

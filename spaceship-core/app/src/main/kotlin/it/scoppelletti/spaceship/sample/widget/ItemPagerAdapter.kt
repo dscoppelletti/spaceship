@@ -1,8 +1,8 @@
 package it.scoppelletti.spaceship.sample.widget
 
 import android.content.Context
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import it.scoppelletti.spaceship.sample.ItemTabFragment
 import it.scoppelletti.spaceship.sample.R
 import it.scoppelletti.spaceship.sample.StubFragment

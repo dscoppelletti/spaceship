@@ -32,8 +32,8 @@ import javax.inject.Inject
  * @since 1.0.0
  *
  * @constructor            Constructor
- * @param       context    The context.
- * @param       packageMgr The package manager.
+ * @param       context    Context.
+ * @param       packageMgr Package manager.
  */
 public class ClientInterceptor @Inject constructor(
         context: Context,
@@ -74,6 +74,7 @@ public class ClientInterceptor @Inject constructor(
          *
          * @return The value.
          */
+        @Suppress("Deprecation")
         private fun initApplName(
                 context: Context,
                 packageMgr: PackageManager
@@ -98,7 +99,8 @@ public class ClientInterceptor @Inject constructor(
             return buildString {
                 append(name)
                 append(ClientInterceptor.VALUE_SEP)
-                append(packageInfo.versionCode)
+                append(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                    packageInfo.longVersionCode else packageInfo.versionCode)
             }
         }
 

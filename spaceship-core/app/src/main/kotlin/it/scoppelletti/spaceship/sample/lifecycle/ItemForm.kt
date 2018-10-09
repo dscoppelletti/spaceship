@@ -1,8 +1,8 @@
 package it.scoppelletti.spaceship.sample.lifecycle
 
-import android.databinding.BaseObservable
-import android.databinding.Bindable
 import android.text.TextUtils
+import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
 import it.scoppelletti.spaceship.sample.BR
 import it.scoppelletti.spaceship.sample.R
 import it.scoppelletti.spaceship.sample.model.Item

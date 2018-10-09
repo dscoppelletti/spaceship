@@ -14,9 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 -->
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <style name="it_scoppelletti_pref_style_category"
-        parent="Preference.Category.Material">
-        <item name="android:layout">@layout/it_scoppelletti_pref_category</item>
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <eat-comment/>
+    <style name="it_scoppelletti_pref_style_dialog_edittext"
+        parent="Preference.DialogPreference.EditTextPreference.Material">
+        <item name="android:dialogLayout">@layout/it_scoppelletti_pref_dialog_edittext</item>
+    </style>
+    <style name="it_scoppeletti_pref_style_seekbar"
+        parent="Preference.SeekBarPreference.Material">
+        <item name="android:layout">@layout/it_scoppelletti_pref_seekbar</item>
+    </style>
+    <!-- Replace private resource Preference_TextAppearanceMaterialSubhead -->
+    <style name="it_scoppelletti_pref_TextAppearanceMaterialSubhead">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textStyle">normal</item>
     </style>
 </resources>

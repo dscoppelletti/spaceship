@@ -16,32 +16,40 @@
 package it.scoppelletti.spaceship
 
 import android.content.res.Resources
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
+import it.scoppelletti.spaceship.types.StringExt
 import it.scoppelletti.spaceship.types.trimRaw
 
 /**
- * Localized message builder.
+ * Message builder.
  *
- * @since              1.0.0
- * @property messageId The message as a string resource ID.
- * @property arguments The format arguments as defined in the `Formatter` class.
+ * @since 1.0.0
+ *
+ * @property messageId Message as a string resource ID.
+ * @property message   Message as a string.
+ * @property arguments Format arguments as defined in the `Formatter` class.
  * @property isSimple  Indicates whether the [messageId] is the only one data
  *                     needed to retrieve the message string or not.
  */
 @MessageBuilder.Dsl
 public class MessageBuilder private constructor(
-        @StringRes public val messageId: Int
+        public val messageId: Int,
+        public val message: String
 ) {
+
     private var args: MutableList<Any?>? = null
 
     public val arguments: List<Any?>?
         get() = args
 
     public val isSimple: Boolean
-        get() = (args == null)
+        get() = (messageId > 0 && args == null)
 
     /**
      * Adds format arguments as defined in the `Formatter` class.
+     *
+     * @param  init Initializiation block.
+     * @return      Collection of the arguments.
      */
     public fun arguments(init: MessageArguments.() -> Unit): MessageArguments {
         val msgArgs: MessageArguments
@@ -54,30 +62,58 @@ public class MessageBuilder private constructor(
     /**
      * Builds the message string.
      *
-     * @param  resources The object for accessing the application's resources.
+     * @param  resources Resources of this application.
      * @return           The message string.
      */
-    public fun build(resources: Resources): String =
-        if (args == null) resources.getString(messageId) else
-            resources.getString(messageId,
-                    *(args?.toTypedArray() ?: emptyArray()))
+    public fun build(resources: Resources): String {
+        val v: Array<Any?>
+
+        if (args == null) {
+            if (messageId > 0) {
+                return resources.getString(messageId)
+            } else {
+                return message
+            }
+        }
+
+        v = args?.toTypedArray() ?: emptyArray()
+        if (messageId > 0) {
+            return resources.getString(messageId, *v)
+        }
+
+        return message.format(*v)
+    }
 
     override fun toString(): String = """MessageBuilder(messageId=$messageId,
-        |args=${args?.joinToString()})""".trimRaw()
+        |message=$message|args=${args?.joinToString()})""".trimRaw()
 
     public companion object {
 
         /**
          * Creates a new `MessageBuilder` instance.
          *
-         * @param  messageId The message as a string resource ID.
-         * @param  init      The initializiation block.
+         * @param  messageId Message as a string resource ID.
+         * @param  init      Initializiation block.
          * @return           The new object.
          */
         public fun make(
                 @StringRes messageId: Int,
                 init: MessageBuilder.() -> Unit
-        ): MessageBuilder = MessageBuilder(messageId).apply(init)
+        ): MessageBuilder = MessageBuilder(messageId, StringExt.EMPTY)
+                .apply(init)
+
+        /**
+         * Creates a new `MessageBuilder` instance.
+         *
+         * @param  message Message.
+         * @param  init    Initializiation block.
+         * @return         The new object.
+         */
+        public fun make(
+                message: String,
+                init: MessageBuilder.() -> Unit
+        ): MessageBuilder = MessageBuilder(0, message)
+                .apply(init)
     }
 
     /**
@@ -102,7 +138,7 @@ public class MessageArguments internal constructor(
     /**
      * Adds an argument.
      *
-     * @param arg The argument.
+     * @param arg An argument.
      */
     public fun add(arg: Any?) {
         if (args == null) {

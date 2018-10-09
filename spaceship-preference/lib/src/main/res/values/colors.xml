@@ -16,5 +16,9 @@
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
     <eat-comment/>
-    <color name="preference_fallback_accent_color" tools:override="true">@color/colorAccent</color>
+    <!--
+    - Android 4.1.1, 4.2.2, 4.3, 4.4.4
+    The color of the categories title is the greenish default secondary color.
+    -->
+    <color name="preference_fallback_accent_color" tools:override="true">@color/secondaryColor</color>
 </resources>

@@ -14,19 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="KeyboardInaccessibleWidget"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
-    android:gravity="center_vertical"
     android:layout_width="match_parent"
     android:layout_height="@dimen/it_scoppelletti_list_singleLineItem_height"
-    android:orientation="vertical"
     android:paddingLeft="@dimen/it_scoppelletti_marginHorz"
     android:paddingRight="@dimen/it_scoppelletti_marginHorz"
     tools:context=".widget.AdProviderListAdapter">
     <TextView android:id="@+id/txtProvider"
         android:layout_width="match_parent"
+        android:layout_gravity="center_vertical"
         style="@style/it_scoppelletti_style_listItem_line1" />
-</LinearLayout>
+</FrameLayout>
+

@@ -116,7 +116,7 @@ class LibraryTaskNames {
         this.generateMetainf = "generate${varName}Metainf"
         this.generateSources = "generate${varName}Sources"
         this.packageKdoc = "package${varName}Kdoc"
-        this.packageLibrary = "bundle${varName}"
+        this.packageLibrary = "bundle${varName}Aar"
         this.packageSources = "package${varName}Sources"
         this.transformJavaRes =
             "transformResourcesWithMergeJavaResFor${varName}"

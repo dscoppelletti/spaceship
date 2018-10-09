@@ -16,15 +16,15 @@
 
 package it.scoppelletti.spaceship.ads.consent
 
-import android.support.annotation.WorkerThread
+import androidx.annotation.WorkerThread
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import io.reactivex.Completable
 import io.reactivex.CompletableEmitter
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
-import it.scoppelletti.spaceship.CoreExt
 import it.scoppelletti.spaceship.ads.model.ConsentData
+import it.scoppelletti.spaceship.io.IOProvider
 import it.scoppelletti.spaceship.io.closeQuietly
 import mu.KLogger
 import mu.KotlinLogging
@@ -35,26 +35,25 @@ import okio.Sink
 import okio.Source
 import java.io.File
 import javax.inject.Inject
-import javax.inject.Named
 
 /**
  * Default implementation of the `ConsentDataStore` interface.
  *
  * @since 1.0.0
  *
- * @constructor          Constructor.
- * @param       filesDir Directory for the data files.
+ * @constructor            Constructor.
+ * @param       ioProvider Provides I/O components.
  */
 @WorkerThread
 public class DefaultConsentDataStore @Inject constructor(
-        @Named(CoreExt.DEP_NOBACKUPFILESDIR) filesDir: File
+        ioProvider: IOProvider
 ) : ConsentDataStore {
     private val file: File
     private val adapter: JsonAdapter<ConsentData>
 
 
     init {
-        file = File(filesDir, DefaultConsentDataStore.DATA)
+        file = File(ioProvider.noBackupFilesDir, DefaultConsentDataStore.DATA)
         adapter = Moshi.Builder().build().adapter(ConsentData::class.java)
     }
 

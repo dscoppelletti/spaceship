@@ -16,15 +16,15 @@
 
 package it.scoppelletti.spaceship.widget
 
-import android.support.annotation.UiThread
-import android.support.design.widget.TextInputEditText
 import android.text.InputType
+import androidx.annotation.UiThread
+import com.google.android.material.textfield.TextInputEditText
 
 /**
  * Returns whether this `TextInputEditText` widget is enabled.
  *
- * @receiver The widget.
- * @return   Returns `true` if the widget is enabled, `false` otherwise.
+ * @receiver Widget.
+ * @return   Returns `true` if this widget is enabled, `false` otherwise.
  * @since    1.0.0
  */
 @UiThread

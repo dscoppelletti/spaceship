@@ -16,17 +16,21 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <eat-comment/>
-    <!-- Settings -->
     <style name="it_scoppelletti_pref_theme_preferenceActivity"
-        parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="windowActionModeOverlay">true</item>
+        parent="it_scoppelletti_theme_app">
         <item name="preferenceTheme">@style/it_scoppelletti_pref_theme_preference</item>
     </style>
     <style name="it_scoppelletti_pref_theme_preference"
-            parent="PreferenceThemeOverlay.v14.Material">
-        <item name="preferenceCategoryStyle">@style/it_scoppelletti_pref_style_category</item>
+        parent="PreferenceThemeOverlay">
+        <!--
+        - Android 4.1.1
+        Fix horizontal margins of EditTextPreferenceDialogFragment[Compat].
+        -->
+        <item name="editTextPreferenceStyle">@style/it_scoppelletti_pref_style_dialog_edittext</item>
+        <!--
+        - Android 4.1.1
+        Fix horizonatal margins of SeekBarPreference.
+        -->
+        <item name="seekBarPreferenceStyle">@style/it_scoppeletti_pref_style_seekbar</item>
     </style>
 </resources>

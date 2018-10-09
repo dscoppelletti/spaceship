@@ -1,42 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.preference.PreferenceScreen
+<androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <android.support.v7.preference.PreferenceCategory
+    <androidx.preference.PreferenceCategory
         android:title="@string/lbl_category">
-        <android.support.v7.preference.SwitchPreferenceCompat
+        <androidx.preference.SwitchPreferenceCompat
             android:key="it.scoppelletti.spaceship.preference.sample.switch"
             android:title="@string/lbl_switch"
             android:summaryOn="@string/msg_switchOn"
             android:summaryOff="@string/msg_switchOff"
             android:defaultValue="true"
             app:iconSpaceReserved="true" />
-    </android.support.v7.preference.PreferenceCategory>
-    <android.support.v7.preference.PreferenceCategory
+        <!-- android:dialogTitle = default android:title -->
+        <androidx.preference.EditTextPreference
+            android:key="it.scoppelletti.spaceship.preference.sample.text"
+            android:title="@string/lbl_text"
+            android:summary="@string/msg_text"
+            android:dialogIcon="@android:drawable/ic_dialog_info"
+            android:dialogTitle="@string/lbl_edit"
+            android:dialogMessage="@string/msg_edit"
+            android:defaultValue="Value"
+            app:iconSpaceReserved="true" />
+        <androidx.preference.CheckBoxPreference
+            android:key="it.scoppelletti.spaceship.preference.sample.check"
+            android:title="@string/lbl_check"
+            android:summaryOn="@string/msg_checkOn"
+            android:summaryOff="@string/msg_checkOff"
+            android:defaultValue="true"
+            app:iconSpaceReserved="true" />
+        <!-- androidx.preference:preference:1.0.0 defines attributes
+        "min" and "android:max" -->
+        <androidx.preference.SeekBarPreference
+            android:key="it.scoppelletti.spaceship.preference.sample.slider"
+            android:title="@string/lbl_seekbar"
+            android:summary="@string/msg_seekbar"
+            app:min="0"
+            android:max="100"
+            app:defaultValue="50"
+            app:iconSpaceReserved="true" />
+        <!-- If android:dialogMessage is set, the entries is not shown -->
+        <androidx.preference.ListPreference
+            android:key="it.scoppelletti.spaceship.preference.sample.list"
+            android:title="@string/lbl_list"
+            android:summary="@string/msg_list"
+            android:dialogIcon="@android:drawable/ic_dialog_info"
+            android:dialogTitle="@string/lbl_edit"
+            android:entries="@array/pref_entries"
+            android:entryValues="@array/pref_entryValues"
+            android:defaultValue="value2"
+            app:iconSpaceReserved="true" />
+        <androidx.preference.DropDownPreference
+            android:key="it.scoppelletti.spaceship.preference.sample.combo"
+            android:title="@string/lbl_combo"
+            android:summary="@string/msg_combo"
+            android:entries="@array/pref_entries"
+            android:entryValues="@array/pref_entryValues"
+            android:defaultValue="value2"
+            app:iconSpaceReserved="true" />
+        <!-- If android:dialogMessage is set, the entries is not shown.
+        Cannot set default value.
+        -->
+        <androidx.preference.MultiSelectListPreference
+            android:key="it.scoppelletti.spaceship.preference.sample.multi"
+            android:title="@string/lbl_multi"
+            android:summary="@string/msg_multi"
+            android:dialogIcon="@android:drawable/ic_dialog_info"
+            android:dialogTitle="@string/lbl_edit"
+            android:entries="@array/pref_entries"
+            android:entryValues="@array/pref_entryValues"
+            app:iconSpaceReserved="true" />
+    </androidx.preference.PreferenceCategory>
+    <androidx.preference.PreferenceCategory
         android:title="@string/it_scoppelletti_pref_lbl_info">
-        <android.support.v7.preference.Preference
+        <androidx.preference.Preference
+            android:key="it.scoppelletti.spaceship.preference.sample.help"
             android:title="@string/it_scoppelletti_pref_cmd_help"
             android:icon="@drawable/ic_help_pref"
-            android:persistent="false"
-            android:enabled="false">
-            <intent android:targetClass="it.scoppelletti.spaceship.preference.sample.HelpActivity"
+            android:persistent="false">
+            <intent android:targetClass="it.scoppelletti.spaceship.html.app.HtmlViewerActivity"
                 android:targetPackage="it.scoppelletti.spaceship.preference.sample" />
-        </android.support.v7.preference.Preference>
-        <android.support.v7.preference.Preference
+        </androidx.preference.Preference>
+        <androidx.preference.Preference
             android:key="it.scoppelletti.spaceship.preference.sample.feedback"
             android:title="@string/it_scoppelletti_pref_cmd_feedback"
             android:icon="@drawable/ic_feedback_pref"
             android:persistent="false">
             <intent android:action="android.intent.action.VIEW"
                 android:data="market://details?id=it.scoppelletti.spaceship.preference.sample" />
-        </android.support.v7.preference.Preference>
-        <android.support.v7.preference.Preference
+        </androidx.preference.Preference>
+        <androidx.preference.Preference
+            android:key="it.scoppelletti.spaceship.preference.sample.about"
             android:title="@string/it_scoppelletti_pref_cmd_about"
             android:icon="@drawable/ic_about_pref"
             android:persistent="false"
             android:enabled="false">
-            <intent android:targetClass="it.scoppelletti.spaceship.preference.sample.AboutActivity"
+            <intent android:targetClass="it.scoppelletti.spaceship.html.app.HtmlViewerActivity"
                 android:targetPackage="it.scoppelletti.spaceship.preference.sample" />
-        </android.support.v7.preference.Preference>
-    </android.support.v7.preference.PreferenceCategory>
-</android.support.v7.preference.PreferenceScreen>
+        </androidx.preference.Preference>
+    </androidx.preference.PreferenceCategory>
+</androidx.preference.PreferenceScreen>

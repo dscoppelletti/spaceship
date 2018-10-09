@@ -21,6 +21,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.text.Editable
 import it.scoppelletti.spaceship.types.trimRaw
+import mu.KLogger
 import mu.KotlinLogging
 import org.xml.sax.XMLReader
 import javax.inject.Inject
@@ -67,10 +68,10 @@ public class ApplicationVersionTagHandler @Inject constructor(
     public companion object {
 
         /**
-         * The tag.
+         * Tag.
          */
         public const val TAG: String = "it-scoppelletti-appVersion"
 
-        private val logger = KotlinLogging.logger {}
+        private val logger: KLogger = KotlinLogging.logger {}
     }
 }

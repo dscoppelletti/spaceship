@@ -2,6 +2,7 @@ package it.scoppelletti.spaceship.ads.consent
 
 import it.scoppelletti.spaceship.ads.model.AdProvider
 import it.scoppelletti.spaceship.ads.model.ConsentData
+import it.scoppelletti.spaceship.io.FakeIOProvider
 import java.util.Calendar
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -17,7 +18,7 @@ class ConsentDataStoreTest {
     @BeforeTest
     fun setUp() {
         currentYear = Calendar.getInstance().get(Calendar.YEAR)
-        consentDataStore = DefaultConsentDataStore(createTempDir())
+        consentDataStore = DefaultConsentDataStore(FakeIOProvider())
     }
 
     @Test

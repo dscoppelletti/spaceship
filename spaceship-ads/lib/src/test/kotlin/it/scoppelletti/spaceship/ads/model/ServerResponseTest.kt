@@ -34,7 +34,7 @@ class ServerResponseTest {
         var reader: BufferedSource? = null
 
         try {
-            stream = javaClass.classLoader.getResourceAsStream(
+            stream = javaClass.classLoader?.getResourceAsStream(
                     "ServerResponse.json")
             assertNotNull(stream, "ServerResponse.json not found.")
 

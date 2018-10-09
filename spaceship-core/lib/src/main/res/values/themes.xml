@@ -18,36 +18,14 @@
     <eat-comment/>
     <!-- Application -->
     <style name="it_scoppelletti_theme_app"
-        parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorSecondary">@color/secondaryColor</item>
         <item name="windowActionModeOverlay">true</item>
     </style>
     <!-- Activity with Navigation Drawer -->
     <style name="it_scoppelletti_theme_drawerActivity"
-        parent="it_scoppelletti_theme_app">
-    </style>
-    <!-- App Bar -->
-    <style name="it_scoppelletti_theme_appBarLayout"
-        parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <!-- Toobar -->
-    <style name="it_scoppelletti_theme_toolbarPopup"
-        parent="ThemeOverlay.AppCompat.Light" />
-    <!-- TextInputLayout -->
-    <style name="it_scoppelletti_theme_textInputLayout"
-        parent="it_scoppelletti_theme_app">
-    </style>
-    <!-- Raised button -->
-    <style name="it_scoppelletti_theme_raisedButton"
-        parent="it_scoppelletti_theme_app">
-    </style>
-    <style name="it_scoppelletti_theme_secondaryRaisedButton"
-        parent="it_scoppelletti_theme_app">
-        <item name="colorAccent">@android:color/white</item>
-    </style>
-    <!-- Flat button -->
-    <style name="it_scoppelletti_theme_flatButton"
         parent="it_scoppelletti_theme_app">
     </style>
 </resources>

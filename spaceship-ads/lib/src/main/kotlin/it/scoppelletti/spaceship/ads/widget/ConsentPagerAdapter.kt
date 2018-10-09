@@ -17,15 +17,15 @@
 package it.scoppelletti.spaceship.ads.widget
 
 import android.content.Context
-import android.support.annotation.UiThread
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
+import androidx.annotation.UiThread
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import it.scoppelletti.spaceship.ads.R
 import it.scoppelletti.spaceship.ads.app.ConsentAgeFragment
 import it.scoppelletti.spaceship.ads.app.ConsentPromptFragment
 import it.scoppelletti.spaceship.ads.app.ConsentReminderFragment
 import it.scoppelletti.spaceship.ads.app.ConsentPrivacyFragment
-import it.scoppelletti.spaceship.ads.app.ConsentProgressFragment
+import it.scoppelletti.spaceship.ads.app.ConsentLoadFragment
 import it.scoppelletti.spaceship.ads.app.ConsentUnderageFragment
 import it.scoppelletti.spaceship.widget.FragmentPagerAdapterEx
 
@@ -33,7 +33,7 @@ import it.scoppelletti.spaceship.widget.FragmentPagerAdapterEx
  * Adapter for the page fragments of the `AbstractConsentActivity`.
  *
  * @see   it.scoppelletti.spaceship.ads.app.AbstractConsentActivity
- * @see   it.scoppelletti.spaceship.ads.app.ConsentProgressFragment
+ * @see   it.scoppelletti.spaceship.ads.app.ConsentLoadFragment
  * @see   it.scoppelletti.spaceship.ads.app.ConsentAgeFragment
  * @see   it.scoppelletti.spaceship.ads.app.ConsentUnderageFragment
  * @see   it.scoppelletti.spaceship.ads.app.ConsentPromptFragment
@@ -41,9 +41,9 @@ import it.scoppelletti.spaceship.widget.FragmentPagerAdapterEx
  * @see   it.scoppelletti.spaceship.ads.app.ConsentReminderFragment
  * @since 1.0.0
  *
- * @constructor
+ * @constructor             Constructor.
  * @param       context     Context.
- * @param       fragmentMgr Fragment support.
+ * @param       fragmentMgr Fragment Manager.
  */
 @UiThread
 public class ConsentPagerAdapter(
@@ -55,7 +55,7 @@ public class ConsentPagerAdapter(
 
     override fun getItem(position: Int): Fragment =
             when (position) {
-                ConsentProgressFragment.POS -> ConsentProgressFragment.newInstance()
+                ConsentLoadFragment.POS -> ConsentLoadFragment.newInstance()
                 ConsentAgeFragment.POS -> ConsentAgeFragment.newInstance()
                 ConsentUnderageFragment.POS ->
                     ConsentUnderageFragment.newInstance()

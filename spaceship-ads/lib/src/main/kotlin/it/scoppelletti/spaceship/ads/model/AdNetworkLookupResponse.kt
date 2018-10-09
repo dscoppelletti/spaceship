@@ -22,7 +22,7 @@ import com.squareup.moshi.JsonClass
 /**
  * Configuration for a publisher.
  *
- * @since                 1.0.0
+ * @since 1.0.0
  *
  * @property networkId    Publisher ID.
  * @property companyIds   Collection of the non personalized Ad providers.

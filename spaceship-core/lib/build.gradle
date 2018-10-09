@@ -10,6 +10,7 @@ archivesBaseName = 'spaceship'
 
 android {
     compileSdkVersion versionMap.sdk_target
+    buildToolsVersion versionMap.build_tools
     defaultConfig {
         minSdkVersion versionMap.sdk_min
         targetSdkVersion versionMap.sdk_target
@@ -46,13 +47,13 @@ spaceship {
 }
 
 dependencies {
-    api "android.arch.lifecycle:common-java8:${versionMap.android_lifecycle}"
-    api "android.arch.lifecycle:extensions:${versionMap.android_lifecycle}"
-    kapt "com.android.databinding:compiler:${versionMap.android_gradle}"
-    api "com.android.support:appcompat-v7:${versionMap.android_support}"
-    api "com.android.support:design:${versionMap.android_support}"
-    api "com.android.support:recyclerview-v7:${versionMap.android_support}"
-    api "com.android.support:support-annotations:${versionMap.android_support}"
+    api "androidx.annotation:annotation:${versionMap.androidx_support}"
+    api "androidx.appcompat:appcompat:${versionMap.androidx_support}"
+    api "androidx.lifecycle:lifecycle-common-java8:${versionMap.androidx_lifecycle}"
+    api "androidx.lifecycle:lifecycle-extensions:${versionMap.androidx_lifecycle}"
+    kapt "androidx.databinding:databinding-compiler:${versionMap.android_gradle}"
+    api "androidx.recyclerview:recyclerview:${versionMap.androidx_support}"
+    api "com.google.android.material:material:${versionMap.androidx_support}"
     api "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
     api "com.google.dagger:dagger-android-support:${versionMap.dagger}"

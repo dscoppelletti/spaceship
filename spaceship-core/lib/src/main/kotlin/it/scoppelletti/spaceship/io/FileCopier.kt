@@ -16,7 +16,7 @@
 
 package it.scoppelletti.spaceship.io
 
-import android.support.annotation.WorkerThread
+import androidx.annotation.WorkerThread
 import io.reactivex.CompletableEmitter
 import io.reactivex.CompletableOnSubscribe
 import java.io.IOException
@@ -29,8 +29,8 @@ import java.io.OutputStream
  * @since 1.0.0
  *
  * @constructor           Costructor.
- * @param       inStream  The input stream.
- * @param       outStream The output stream.
+ * @param       inStream  Input stream.
+ * @param       outStream Output stream.
  * @param       bufSize   Size of the buffer used for copying.
  */
 @WorkerThread

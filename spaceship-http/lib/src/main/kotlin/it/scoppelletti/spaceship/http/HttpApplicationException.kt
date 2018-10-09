@@ -22,6 +22,7 @@ import com.squareup.moshi.Moshi
 import it.scoppelletti.spaceship.io.closeQuietly
 import it.scoppelletti.spaceship.types.StringExt
 import it.scoppelletti.spaceship.types.trimRaw
+import mu.KLogger
 import mu.KotlinLogging
 import okhttp3.ResponseBody
 import okio.BufferedSource
@@ -29,12 +30,13 @@ import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
 
-private val logger = KotlinLogging.logger {}
+private val logger: KLogger = KotlinLogging.logger {}
 
 /**
  * HTTP application exception.
  *
- * @since               1.0.0
+ * @since 1.0.0
+ *
  * @property statusCode HTTP status code.
  * @property error      Description of the HTTP status code.
  * @property exception  Class of the original exception from the server.
@@ -138,8 +140,8 @@ public class HttpApplicationException private constructor(
  *
  * * [Server error response](http://github.com/dscoppelletti/spaceship/wiki/Server-error-response)
  *
- * @receiver The source exception.
- * @return   The converted exception.
+ * @receiver Source exception.
+ * @return   Converted exception.
  * @since    1.0.0
  */
 public fun HttpException.toHttpApplicationException(
@@ -167,12 +169,7 @@ public fun HttpException.toHttpApplicationException(
 
             try {
                 source = body.source()
-                builder = adapter.fromJson(source!!)
-                if (builder == null) {
-                    // It could happen only if I use the nullSafe version of the
-                    // adapter
-                    throw IOException("Error response body is empty.")
-                }
+                builder = adapter.nonNull().fromJson(source!!)
             } catch (ex: Exception) { // IOException|JsonDataException
                 logger.error("Failed to convert response body.", ex)
                 builder = makeBuilder(this, resp, body)
@@ -192,9 +189,9 @@ public fun HttpException.toHttpApplicationException(
 /**
  * Creates a new `HttpApplicationException.Builder` instance.
  *
- * @param  source The original exception.
- * @param  resp   The response.
- * @param  body   The response body.
+ * @param  source Original exception.
+ * @param  resp   Response.
+ * @param  body   Response body.
  * @return        The new object.
  */
 private fun makeBuilder(

@@ -16,10 +16,10 @@
 
 package it.scoppelletti.spaceship.preference
 
-import android.support.annotation.StringRes
-import android.support.annotation.UiThread
-import android.support.v4.app.FragmentActivity
-import android.support.v7.preference.Preference
+import android.content.Intent
+import androidx.annotation.UiThread
+import androidx.fragment.app.FragmentActivity
+import androidx.preference.Preference
 import it.scoppelletti.spaceship.ApplicationException
 import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.applicationException
@@ -28,18 +28,18 @@ import it.scoppelletti.spaceship.applicationException
  * Decorates a `Preference` object so that it can start an activity by an
  * intent catching any exception.
  *
- * @property activity   The activity hosting the preferences.
- * @property preference The `Preference` object.
- * @property titleId    The title as a string resource ID.
- * @since               1.0.0
+ * @since 1.0.0
  *
- * @constructor Constructor.
+ * @constructor            Constructor.
+ * @param       activity   Activity hosting the preferences.
+ * @param       preference The `Preference` object.
+ * @param       config     Intent configuration.
  */
 @UiThread
 public class StartActivityPreferenceDecorator(
         private val activity: FragmentActivity,
         private val preference: Preference,
-        @StringRes private val titleId: Int
+        private val config: ((Intent) -> Unit)? = null
 ) {
 
     init {
@@ -47,18 +47,26 @@ public class StartActivityPreferenceDecorator(
     }
 
     private fun onClickListener(preference: Preference): Boolean {
+        val intent: Intent
         val err: ApplicationException
 
         if (preference.intent == null) {
             return false
         }
 
+        if (config == null) {
+            intent = preference.intent
+        } else {
+            intent = Intent(preference.intent)
+            config.invoke(intent)
+        }
+
         try {
-            preference.context.startActivity(preference.intent)
+            preference.context.startActivity(intent)
         } catch (ex: RuntimeException) {
             err = applicationException {
                 message(R.string.it_scoppelletti_err_startActivity)
-                titleId = this@StartActivityPreferenceDecorator.titleId
+                title(preference.title.toString())
                 cause = ex
             }
 

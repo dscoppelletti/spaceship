@@ -2,9 +2,9 @@ package it.scoppelletti.spaceship.sample
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -36,7 +36,7 @@ class DrawerActivity : AppCompatActivity(),
 
         fab.hide()
         fab.setOnClickListener {
-            val fragment: Fragment
+            val fragment: Fragment?
 
             fragment = supportFragmentManager.findFragmentById(
                     R.id.contentFrame)

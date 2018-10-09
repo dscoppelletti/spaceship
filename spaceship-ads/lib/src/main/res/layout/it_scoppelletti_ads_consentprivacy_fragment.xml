@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 -->
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -32,7 +32,7 @@
         app:layout_constraintBottom_toTopOf="@id/grdProviders"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/grdProviders"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -49,8 +49,9 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="@dimen/it_scoppelletti_spacingVert" />
-    <Button android:id="@+id/cmdBack"
+    <com.google.android.material.button.MaterialButton android:id="@+id/cmdBack"
         android:text="@string/it_scoppelletti_cmd_back"
+        app:icon="@drawable/ic_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/txtFooter"
@@ -58,6 +59,5 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="@dimen/it_scoppelletti_spacingVert"
-        android:theme="@style/it_scoppelletti_theme_secondaryRaisedButton"
-        style="@style/it_scoppelletti_style_secondaryRaisedButton" />
-</android.support.constraint.ConstraintLayout>
+        style="@style/Widget.MaterialComponents.Button.TextButton" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,10 +17,10 @@
 package it.scoppelletti.spaceship.preference
 
 import android.os.Bundle
-import android.support.annotation.UiThread
-import android.support.v7.app.ActionBar
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import androidx.annotation.UiThread
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import it.scoppelletti.spaceship.app.tryFinish
 import kotlinx.android.synthetic.main.it_scoppelletti_pref_settings_activity.*
 
@@ -43,6 +43,7 @@ public abstract class AbstractSettingsActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         actionBar = supportActionBar!!
         actionBar.setDisplayHomeAsUpEnabled(true)
+
         supportFragmentManager.beginTransaction()
                 .replace(R.id.contentFrame, createFragment())
                 .commit()

@@ -16,11 +16,11 @@
 
 package it.scoppelletti.spaceship.ads.lifecycle
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
 import android.text.Html
 import android.text.SpannedString
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -100,6 +100,6 @@ public class ConsentPromptViewModel @Inject constructor(
     }
 
     private companion object {
-        private val logger: KLogger = KotlinLogging.logger {}
+        val logger: KLogger = KotlinLogging.logger {}
     }
 }

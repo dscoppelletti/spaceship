@@ -40,6 +40,8 @@ public object StringExt {
  *
  * Doesn't preserve the original line endings.
  *
- * @since 1.0.0
+ * @receiver Original string
+ * @return   Resulting string.
+ * @since    1.0.0
  */
 public fun String.trimRaw() = this.trimMargin().replace('\n', ' ')

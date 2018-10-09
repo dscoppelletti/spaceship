@@ -17,13 +17,14 @@
  * Original repository: http://github.com/googlesamples/android-architecture-components
  * Original file: GithubBrowserSample/app/src/main/java/com/android/example/github/di/ViewModelKey.kt
  * Commit: 724cc1bd6ed11171a0bbf4a3a29977fac053777e
- * Added public qualifier.
- * Added KDoc.
+ * Add public qualifier.
+ * Add KDoc.
+ * Porting to androix namespace.
  */
 
 package it.scoppelletti.spaceship.inject
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import dagger.MapKey
 import kotlin.reflect.KClass
 
@@ -32,6 +33,7 @@ import kotlin.reflect.KClass
  * as a value in order to compose the map used by [InjectViewModelFactory].
  *
  * @since          1.0.0
+ *
  * @property value The `ViewModel` class.
  *
  * @constructor Constructor.

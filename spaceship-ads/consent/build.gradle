@@ -25,6 +25,8 @@ android {
         if (project.hasProperty('ads.adAppId')) {
             buildConfigField 'String', 'ADS_APPID',
                     '"' + project.property('ads.adAppId') + '"'
+            manifestPlaceholders =
+                    [ adsAppId : project.property('ads.adAppId') ]
         } else {
             buildConfigField 'String', 'ADS_APPID', '"N/D"'
         }
@@ -58,12 +60,12 @@ android {
 
 dependencies {
     implementation project(':lib')
-    implementation "com.android.support:appcompat-v7:${versionMap.android_support}"
-    implementation "com.android.support:customtabs:${versionMap.android_support}"
-    implementation "com.android.support:design:${versionMap.android_support}"
-    implementation "com.android.support:multidex:${versionMap.android_multidex}"
-    implementation "com.android.support:support-annotations:${versionMap.android_support}"
+    implementation "androidx.annotation:annotation:${versionMap.androidx_support}"
+    implementation "androidx.appcompat:appcompat:${versionMap.androidx_support}"
+    implementation "androidx.browser:browser:${versionMap.androidx_support}"
+    implementation "androidx.multidex:multidex:${versionMap.androidx_multidex}"
     implementation "com.google.android.ads.consent:consent-library:${adsConsentVersion}"
+    implementation "com.google.android.material:material:${versionMap.androidx_support}"
     implementation "com.google.firebase:firebase-ads:${versionMap.firebase_ads}"
     implementation "com.google.firebase:firebase-core:${versionMap.firebase_core}"
     implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"

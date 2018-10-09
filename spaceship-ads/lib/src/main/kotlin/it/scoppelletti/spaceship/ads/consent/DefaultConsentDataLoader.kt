@@ -16,7 +16,7 @@
 
 package it.scoppelletti.spaceship.ads.consent
 
-import android.support.annotation.WorkerThread
+import androidx.annotation.WorkerThread
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction

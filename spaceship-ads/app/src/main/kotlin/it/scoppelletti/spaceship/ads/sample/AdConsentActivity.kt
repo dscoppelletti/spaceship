@@ -3,7 +3,7 @@ package it.scoppelletti.spaceship.ads.sample
 import android.content.Intent
 import it.scoppelletti.spaceship.ads.app.AbstractConsentActivity
 
-public class AdConsentActivity : AbstractConsentActivity() {
+class AdConsentActivity : AbstractConsentActivity() {
 
     override fun onComplete() {
         val intent: Intent

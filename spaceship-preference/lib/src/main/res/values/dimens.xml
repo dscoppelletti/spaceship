@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
  * Copyright (C) 2018 Dario Scoppelletti, <http://www.scoppelletti.it/>.
  *
@@ -14,8 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 -->
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <style name="it_scoppelletti_pref_style_category"
-        parent="Preference.Category.Material">
-    </style>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <eat-comment/>
+    <!-- Replace private resource preference_seekbar_padding_start -->
+    <dimen name="it_scoppelletti_pref_seekbar_padding_start">0dp</dimen>
+    <!-- Replace private resource preference_seekbar_padding_end -->
+    <dimen name="it_scoppelletti_pref_seekbar_padding_end">22dp</dimen>
+    <!-- Replace private resource preference_seekbar_value_width -->
+    <dimen name="it_scoppelletti_pref_seekbar_value_width">36dp</dimen>
 </resources>

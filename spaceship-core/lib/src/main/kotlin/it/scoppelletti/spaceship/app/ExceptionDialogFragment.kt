@@ -19,10 +19,10 @@ package it.scoppelletti.spaceship.app
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.support.annotation.UiThread
-import android.support.v4.app.FragmentActivity
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatDialogFragment
+import androidx.annotation.UiThread
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.FragmentActivity
 import it.scoppelletti.spaceship.ApplicationException
 import it.scoppelletti.spaceship.CoreExt
 import it.scoppelletti.spaceship.toMessage
@@ -38,26 +38,31 @@ import it.scoppelletti.spaceship.toMessage
 public class ExceptionDialogFragment : AppCompatDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val msg: String?
+        val resId: Int
         val args: Bundle
         val builder: AlertDialog.Builder
+        var msg: String?
 
         args = arguments!!
-        msg = args.getString(ExceptionDialogFragment.PROP_MSG)
-
         builder = AlertDialog.Builder(requireActivity())
-                .setTitle(args.getInt(ExceptionDialogFragment.PROP_TITLEID,
-                        android.R.string.dialog_alert_title))
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setNegativeButton(android.R.string.cancel, ::onDialogResult)
-                .apply {
-                    if (!msg.isNullOrBlank()) {
-                        setMessage(msg)
-                    } else {
-                        setMessage(
-                                args.getInt(ExceptionDialogFragment.PROP_MSGID))
-                    }
-                }
+
+        msg = args.getString(ExceptionDialogFragment.PROP_MSG)
+        if (msg.isNullOrBlank()) {
+            builder.setMessage(args.getInt(ExceptionDialogFragment.PROP_MSGID))
+        } else {
+            builder.setMessage(msg)
+        }
+
+        msg = args.getString(ExceptionDialogFragment.PROP_TITLE)
+        if (msg.isNullOrBlank()) {
+            resId = args.getInt(ExceptionDialogFragment.PROP_TITLEID,
+                    android.R.string.dialog_alert_title)
+            builder.setTitle(resId)
+        } else {
+            builder.setTitle(msg)
+        }
 
         return builder.create()
     }
@@ -70,7 +75,7 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
     /**
      * Handles the result of this dialog.
      *
-     * @param dialog The dialog that received the click.
+     * @param dialog Dialog that received the click.
      * @param which  ID of the button that was clicked
      *               (`DialogInterface.BUTTON_NEGATIVE`).
      */
@@ -92,20 +97,22 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
     public companion object {
 
         /**
-         * The fragment tag.
+         * Fragment tag.
          */
         public const val TAG: String = CoreExt.TAG_EXCEPTIONDIALOG
 
         private const val PROP_MSG: String = "1"
         private const val PROP_MSGID: String = "2"
-        private const val PROP_TITLEID: String = "3"
+        private const val PROP_TITLE: String = "3"
+        private const val PROP_TITLEID: String = "4"
     }
 
     /**
      * Builds an `ExceptionDialogFragment` fragment.
      *
-     * @since        1.0.0
-     * @property tag The fragment tag.
+     * @since 1.0.0
+     *
+     * @property tag Fragment tag.
      */
     @ExceptionDialogFragment.Dsl
     public class Builder internal constructor(
@@ -128,9 +135,12 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
                             ex.messageBuilder.build(activity.resources))
                 }
 
-                if (ex.titleId != android.R.string.dialog_alert_title) {
+                if (ex.titleBuilder.isSimple) {
                     args.putInt(ExceptionDialogFragment.PROP_TITLEID,
-                            ex.titleId)
+                            ex.titleBuilder.messageId)
+                } else {
+                    args.putString(ExceptionDialogFragment.PROP_TITLE,
+                            ex.titleBuilder.build(activity.resources))
                 }
             } else {
                 args.putString(ExceptionDialogFragment.PROP_MSG,
@@ -157,9 +167,9 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
 /**
  * Shows an exception dialog.
  *
- * @receiver      The activity.
- * @param    ex   The exception.
- * @param    init The initialization block.
+ * @receiver      Activity.
+ * @param    ex   Exception.
+ * @param    init Initialization block.
  * @since         1.0.0
  */
 public fun FragmentActivity.showExceptionDialog(

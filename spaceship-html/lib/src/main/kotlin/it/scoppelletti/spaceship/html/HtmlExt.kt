@@ -35,6 +35,22 @@ public object HtmlExt {
      * Name of the `Html.TagHandler` dependency.
      */
     public const val DEP_TAGHANDLER: String = "it.scoppelletti.spaceship.html.1"
+
+    /**
+     * Property indicating whether `home` should be displayed as an `up`
+     * affordance.
+     */
+    public const val PROP_HOMEASUP: String = "it.scoppelletti.spaceship.html.1"
+
+    /**
+     * Property containing an HTML text as a string resource ID.
+     */
+    public const val PROP_TEXT: String = "it.scoppelletti.spaceship.html.2"
+
+    /**
+     * Property containing a title as a string resource ID.
+     */
+    public const val PROP_TITLE: String = "it.scoppelletti.spaceship.html.3"
 }
 
 private const val SPAN_START: String = "<span>"
@@ -43,11 +59,11 @@ private const val SPAN_END: String = "</span>"
 /**
  * Returns a displayable styled text from the provided HTML string.
  *
- * @param  source      The source HTML string.
+ * @param  source      Source HTML string.
  * @param  imageGetter Provides the representation of the image for an
  *                    `<IMG>` tag.
  * @param  tagHandler  Handles an unknown tag.
- * @return             The resulting styled text.
+ * @return             Resulting styled text.
  * @since              1.0.0
  */
 @Suppress("deprecation")
@@ -74,12 +90,12 @@ public fun fromHtml(
 }
 
 /**
- * Sets a custom handler for the hyperlinks in a styled text.
+ * Sets a custom handler for hyperlinks in a styled text.
  *
- * @receiver         The original styled text.
- * @param    onClick The custom handler.
- * @param    filter  A predicate to select the hyperlinks.
- * @return           The resulting styled text.
+ * @receiver         Original styled text.
+ * @param    onClick Custom handler.
+ * @param    filter  Predicate to select the hyperlinks.
+ * @return           Resulting styled text.
  * @since            1.0.0
  */
 public fun Spanned.replaceHyperlinks(
@@ -99,9 +115,9 @@ public fun Spanned.replaceHyperlinks(
 /**
  * Sets a custom handler for an hyperlink in a styled text.
  *
- * @receiver         The styled text.
- * @param    urlSpan The hyperlink.
- * @param    onClick The custom handler.
+ * @receiver         Styled text.
+ * @param    urlSpan Hyperlink.
+ * @param    onClick Custom handler.
  */
 private fun SpannableStringBuilder.replaceHyperlink(
         urlSpan: URLSpan,

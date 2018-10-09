@@ -17,8 +17,9 @@
  * Original repository: http://github.com/googlesamples/android-architecture-components
  * Original file: GithubBrowserSample/app/src/main/java/com/android/example/github/di/AppInjector.kt
  * Commit: 724cc1bd6ed11171a0bbf4a3a29977fac053777e
- * Removed the injection of the sample application.
- * Refactored the AppInjector class as the enabledInject extension function.
+ * Remove the injection of the sample application.
+ * Refactor the AppInjector class as the enabledInject extension function.
+ * Porting to androix namespace.
  */
 
 package it.scoppelletti.spaceship.inject
@@ -26,9 +27,9 @@ package it.scoppelletti.spaceship.inject
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
-import android.support.v4.app.FragmentManager
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import dagger.android.AndroidInjection
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
@@ -39,7 +40,7 @@ import dagger.android.support.HasSupportFragmentInjector
  * The injection process is enabled for activities and fragments if they
  * implement the `Injectable` interface.
  *
- * @receiver The application.
+ * @receiver Application.
  * @see      it.scoppelletti.spaceship.inject.Injectable
  * @since    1.0.0
  */

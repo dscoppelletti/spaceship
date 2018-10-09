@@ -16,10 +16,10 @@
 
 package it.scoppelletti.spaceship.preference
 
-import android.support.annotation.UiThread
-import android.support.v4.app.FragmentManager
-import android.support.v7.preference.Preference
-import android.support.v7.preference.PreferenceFragmentCompat
+import androidx.annotation.UiThread
+import androidx.fragment.app.FragmentManager
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 
 /**
  * Settings fragment for supporting [CustomPreferenceDialogFragment].
@@ -52,7 +52,11 @@ public abstract class AbstractPreferenceFragment : PreferenceFragmentCompat() {
         }
     }
 
-    companion object {
+    public companion object {
+
+        /**
+         * Tag.
+         */
         public const val DIALOG_FRAGMENT_TAG: String =
                 "android.support.v7.preference.PreferenceFragment.DIALOG"
         // - Support library 27.1.1

@@ -17,8 +17,8 @@
  * Original repository: http://github.com/googlesamples/android-architecture-components
  * Original file: GithubBrowserSample/app/src/main/java/com/android/example/github/di/Injectable.kt
  * Commit: 724cc1bd6ed11171a0bbf4a3a29977fac053777e
- * Added public qualifier.
- * Modified KDoc.
+ * Add public qualifier.
+ * Modify KDoc.
  */
 
 package it.scoppelletti.spaceship.inject

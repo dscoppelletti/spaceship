@@ -16,38 +16,31 @@
 
 package it.scoppelletti.spaceship.html.app
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
-import android.content.pm.ActivityInfo
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.support.annotation.UiThread
-import android.support.v7.app.ActionBar
-import android.support.v7.app.AppCompatActivity
 import android.text.method.LinkMovementMethod
 import android.view.MenuItem
+import androidx.annotation.UiThread
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
 import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.app.tryFinish
+import it.scoppelletti.spaceship.html.HtmlExt
 import it.scoppelletti.spaceship.html.R
 import it.scoppelletti.spaceship.html.lifecycle.HtmlViewerState
 import it.scoppelletti.spaceship.html.lifecycle.HtmlViewerViewModel
 import it.scoppelletti.spaceship.inject.Injectable
 import kotlinx.android.synthetic.main.it_scoppelletti_htmlviewer_activity.*
+import mu.KLogger
 import mu.KotlinLogging
 import javax.inject.Inject
 
 /**
  * Activity for displaying an HTML text.
- *
- * You have to set the following `<meta-data>` elements in the activity
- * definition in your `AndroidManifest.xml`:
- *
- * 1. `it.scoppelletti.spaceship.html.text`
- *
- *    The HTML text as a string resource ID.
  *
  * @since 1.0.0
  *
@@ -65,15 +58,23 @@ public class HtmlViewerActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val textId: Int
+        val titleId: Int
         val actionBar: ActionBar
-        val activityInfo: ActivityInfo
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.it_scoppelletti_htmlviewer_activity)
-
         setSupportActionBar(toolbar)
-        actionBar = supportActionBar!!
-        actionBar.setDisplayHomeAsUpEnabled(true)
+
+        if (intent.getBooleanExtra(HtmlViewerActivity.PROP_HOMEASUP, false)) {
+            actionBar = supportActionBar!!
+            actionBar.setDisplayHomeAsUpEnabled(true)
+        }
+
+        titleId = intent.getIntExtra(HtmlViewerActivity.PROP_TITLE, 0)
+        if (titleId > 0) {
+            supportActionBar?.setTitle(titleId)
+            setTitle(titleId)
+        }
 
         txtContent.movementMethod = LinkMovementMethod.getInstance()
 
@@ -86,19 +87,7 @@ public class HtmlViewerActivity : AppCompatActivity(),
             }
         })
 
-        try {
-            activityInfo = packageManager.getActivityInfo(componentName,
-                    PackageManager.GET_META_DATA)
-        } catch (ex: PackageManager.NameNotFoundException) {
-            logger.error(ex) {
-                "Failed to get ActivityInfo for activity $componentName."
-            }
-
-            return
-        }
-
-        textId = activityInfo.metaData?.getInt(
-                HtmlViewerActivity.PROP_TEXT, 0) ?: 0
+        textId = intent.getIntExtra(HtmlViewerActivity.PROP_TEXT, 0)
         if (textId > 0) {
             viewModel.buildText(getString(textId))
         } else {
@@ -136,11 +125,21 @@ public class HtmlViewerActivity : AppCompatActivity(),
     public companion object {
 
         /**
+         * Property indicating whether `home` should be displayed as an `up`
+         * affordance.
+         */
+        public const val PROP_HOMEASUP: String = HtmlExt.PROP_HOMEASUP
+
+        /**
          * Property containing an HTML text as a string resource ID.
          */
-        public const val PROP_TEXT: String =
-                "it.scoppelletti.spaceship.html.text"
+        public const val PROP_TEXT: String = HtmlExt.PROP_TEXT
 
-        private val logger = KotlinLogging.logger {}
+        /**
+         * Property containing a title as a string resource ID.
+         */
+        public const val PROP_TITLE: String = HtmlExt.PROP_TITLE
+
+        private val logger: KLogger = KotlinLogging.logger {}
     }
 }

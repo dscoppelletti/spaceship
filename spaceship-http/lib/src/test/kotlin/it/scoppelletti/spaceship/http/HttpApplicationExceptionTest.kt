@@ -17,17 +17,9 @@ class HttpApplicationExceptionTest {
     private lateinit var adapter: JsonAdapter<HttpApplicationException.Builder>
 
     @BeforeTest
-    fun before() {
+    fun setUp() {
         moshi = Moshi.Builder().build()
         adapter = moshi.adapter(HttpApplicationException.Builder::class.java)
-    }
-
-    @Test
-    fun testAdapter() {
-        assertEquals("it.scoppelletti.spaceship.http.HttpApplicationException_BuilderJsonAdapter",
-                adapter.javaClass.name, "className")
-        assertEquals("GeneratedJsonAdapter(HttpApplicationException.Builder)",
-                adapter.toString(), "toString")
     }
 
     @Test
@@ -73,12 +65,11 @@ class HttpApplicationExceptionTest {
 
     @Test
     fun testNull() {
+        val builder: HttpApplicationException.Builder?
         val json: String = "null"
 
-        assertFailsWith(JsonDataException::class) {
-            // Expected BEGIN_OBJECT but was NULL at path $
-            adapter.fromJson(json)
-        }
+        builder = adapter.fromJson(json)
+        assertNull(builder, "null")
     }
 
     @Test

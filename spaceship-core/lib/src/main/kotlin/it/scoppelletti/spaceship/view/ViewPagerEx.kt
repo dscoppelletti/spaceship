@@ -18,22 +18,23 @@ package it.scoppelletti.spaceship.view
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.view.MotionEvent
+import androidx.viewpager.widget.ViewPager
 
 /**
  * Extented `ViewPager` view.
  *
  * * [How do disable paging by swiping with finger in ViewPager but still be able to swipe programmatically?](http://stackoverflow.com/questions/9650265)
  *
- * @since                 1.0.0
+ * @since 1.0.0
+ *
  * @property swipeEnabled Indicates wheter the user can change page by swiping
  *                        or not.
  *
  * @constructor         Constructor.
- * @param       context The context
- * @param       attrs   The attributes.
+ * @param       context Context
+ * @param       attrs   Attributes.
  */
 @SuppressLint("ClickableViewAccessibility")
 public class ViewPagerEx(

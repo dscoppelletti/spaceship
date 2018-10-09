@@ -3,6 +3,7 @@ package it.scoppelletti.consent.sample
 import com.google.ads.consent.ConsentFormListener
 import com.google.ads.consent.ConsentStatus
 import it.scoppelletti.spaceship.types.trimRaw
+import mu.KLogger
 import mu.KotlinLogging
 
 class DefaultConsentFormListener(
@@ -36,6 +37,6 @@ class DefaultConsentFormListener(
     }
 
     private companion object {
-        val logger = KotlinLogging.logger {}
+        val logger: KLogger = KotlinLogging.logger {}
     }
 }

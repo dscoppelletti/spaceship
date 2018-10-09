@@ -20,7 +20,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdRequest
 import it.scoppelletti.spaceship.ads.consent.ConsentStatus
@@ -49,21 +49,24 @@ public object AdsExt {
     /**
      * Name of the `HttpClient` dependency.
      */
-    public const val DEP_HTTPCLIENT: String =
-            "it.scoppelletti.spaceship.consent.1"
+    public const val DEP_HTTPCLIENT: String = "it.scoppelletti.spaceship.ads.1"
 
     /**
      * Name of the `Retrofit` dependency.
      */
-    public const val DEP_RETROFIT: String =
-            "it.scoppelletti.spaceship.consent.2"
+    public const val DEP_RETROFIT: String = "it.scoppelletti.spaceship.ads.2"
 
     /**
      * Property containing the status of the consent from the user to receive
      * perzonalized advertising.
      */
-    public const val PROP_CONSENT: String =
-            "it.scoppelletti.spaceship.consent.1"
+    public const val PROP_CONSENT: String = "it.scoppelletti.spaceship.ads.1"
+
+    /**
+     * Property indicating whether an activity has been launched as a settings
+     * activity.
+     */
+    public const val PROP_SETTINGS: String = "it.scoppelletti.spaceship.ads.2"
 
     /**
      * Property indicating that the user has not consented to receive
@@ -125,7 +128,7 @@ public fun Context.createAdRequestBuilder(): AdRequest.Builder {
     val prefs: SharedPreferences
 
     prefs = PreferenceManager.getDefaultSharedPreferences(this)
-    name = prefs.getString(AdsExt.PROP_CONSENT, ConsentStatus.UNKNOWN.name)
+    name = prefs.getString(AdsExt.PROP_CONSENT, ConsentStatus.UNKNOWN.name)!!
 
     consentStatus = try {
         ConsentStatus.valueOf(name)

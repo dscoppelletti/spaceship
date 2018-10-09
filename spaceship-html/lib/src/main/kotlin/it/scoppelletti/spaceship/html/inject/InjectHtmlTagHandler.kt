@@ -21,6 +21,7 @@ import android.text.Html
 import android.text.Spanned
 import it.scoppelletti.spaceship.html.HtmlTagHandler
 import it.scoppelletti.spaceship.types.trimRaw
+import mu.KLogger
 import mu.KotlinLogging
 import org.xml.sax.XMLReader
 import javax.inject.Inject
@@ -109,7 +110,7 @@ public class InjectHtmlTagHandler @Inject constructor(
     }
 
     private companion object {
-        private val logger = KotlinLogging.logger {}
+        val logger: KLogger = KotlinLogging.logger {}
     }
 }
 

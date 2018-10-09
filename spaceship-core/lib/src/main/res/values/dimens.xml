@@ -39,10 +39,10 @@
     <dimen name="it_scoppelletti_dialog_padding">20dp</dimen>
     <!-- http://www.google.com/design/spec/components/dividers.html -->
     <dimen name="it_scoppelletti_divider_height">1dp</dimen>
-    <!-- http://www.google.com/design/spec/components/lists.html#lists-actions -->
+    <!-- http://material.io/design/components/lists.html#specs - September 28, 2018 -->
     <dimen name="it_scoppelletti_list_singleLineItem_height">48dp</dimen>
     <dimen name="it_scoppelletti_list_singleLineItemWithIcon_height">56dp</dimen>
-    <dimen name="it_scoppelletti_list_twoLineItem_height">56dp</dimen>
+    <dimen name="it_scoppelletti_list_twoLineItem_height">64dp</dimen>
     <dimen name="it_scoppelletti_list_twoLineItemWithIcon_height">72dp</dimen>
     <dimen name="it_scoppelletti_list_threeLineItem_height">88dp</dimen>
     <dimen name="it_scoppelletti_list_secondaryIcon_size">24dp</dimen>

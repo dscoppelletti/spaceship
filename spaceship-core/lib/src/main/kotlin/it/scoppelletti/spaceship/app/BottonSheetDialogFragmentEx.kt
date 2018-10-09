@@ -17,9 +17,9 @@
 package it.scoppelletti.spaceship.app
 
 import android.content.DialogInterface
-import android.support.annotation.UiThread
-import android.support.design.widget.BottomSheetDialogFragment
-import android.support.v4.app.FragmentActivity
+import androidx.annotation.UiThread
+import androidx.fragment.app.FragmentActivity
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import it.scoppelletti.spaceship.CoreExt
 
 /**
@@ -41,7 +41,7 @@ public abstract class BottonSheetDialogFragmentEx :
     /**
      * Handles the result of this dialog.
      *
-     * @param dialog The dialog that received the click.
+     * @param dialog Dialog that received the click.
      * @param which  ID of the button that was clicked
      *               (`DialogInterface.BUTTON_NEGATIVE`).
      */
@@ -60,10 +60,10 @@ public abstract class BottonSheetDialogFragmentEx :
         }
     }
 
-    companion object {
+    public companion object {
 
         /**
-         * The fragment tag.
+         * Fragment tag.
          */
         public const val TAG: String = CoreExt.TAG_BOTTOMSHEETDIALOG
     }

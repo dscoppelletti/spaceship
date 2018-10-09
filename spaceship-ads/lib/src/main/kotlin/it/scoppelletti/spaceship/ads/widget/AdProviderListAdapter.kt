@@ -16,10 +16,10 @@
 
 package it.scoppelletti.spaceship.ads.widget
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import it.scoppelletti.spaceship.ads.R
 import it.scoppelletti.spaceship.ads.model.AdProvider
 import kotlinx.android.synthetic.main.it_scoppelletti_ads_provider_item.view.*

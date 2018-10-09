@@ -16,11 +16,11 @@
 
 package it.scoppelletti.spaceship.ads.lifecycle
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
 import android.text.Html
 import android.text.SpannedString
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -36,8 +36,8 @@ import javax.inject.Named
 /**
  * ViewModel of the `ConsentPrivacyFragment` view.
  *
- * @see            it.scoppelletti.spaceship.ads.app.ConsentPrivacyFragment
- * @since          1.0.0
+ * @see   it.scoppelletti.spaceship.ads.app.ConsentPrivacyFragment
+ * @since 1.0.0
  *
  * @property state State of the view.
  *
@@ -100,15 +100,15 @@ public class ConsentPrivacyViewModel @Inject constructor(
     }
 
     private companion object {
-        private val logger: KLogger = KotlinLogging.logger {}
+        val logger: KLogger = KotlinLogging.logger {}
     }
 }
 
 /**
  * State of the `ConsentPrivacyFragment` view.
  *
- * @see             it.scoppelletti.spaceship.ads.app.ConsentPrivacyFragment
- * @since           1.0.0
+ * @see   it.scoppelletti.spaceship.ads.app.ConsentPrivacyFragment
+ * @since 1.0.0
  *
  * @property header Header text.
  * @property footer Footer text.

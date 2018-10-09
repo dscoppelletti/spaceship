@@ -1,15 +1,15 @@
 package it.scoppelletti.spaceship.sample
 
 import android.app.Activity
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import it.scoppelletti.spaceship.app.hideSoftKeyboard
 import it.scoppelletti.spaceship.inject.Injectable
 import it.scoppelletti.spaceship.sample.databinding.ItemFragmentBinding

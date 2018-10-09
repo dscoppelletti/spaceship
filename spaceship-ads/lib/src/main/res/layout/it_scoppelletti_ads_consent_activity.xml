@@ -14,24 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 -->
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".app.AbstractConsentActivity"
-    style="@style/it_scoppelletti_style_coordinatorLayout"
-    android:orientation="vertical"
-    android:fitsSystemWindows="true">
-    <android.support.design.widget.AppBarLayout
-        style="@style/it_scoppelletti_style_appBarLayout"
-        android:theme="@style/it_scoppelletti_theme_appBarLayout">
-        <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
-            style="@style/it_scoppelletti_style_toolbar"/>
-    </android.support.design.widget.AppBarLayout>
-    <it.scoppelletti.spaceship.view.ViewPagerEx
-        android:id="@+id/contentPager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-</android.support.design.widget.CoordinatorLayout>
-
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".app.AbstractConsentActivity">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        style="@style/it_scoppelletti_style_coordinatorLayout"
+        android:fitsSystemWindows="true">
+        <it.scoppelletti.spaceship.view.ViewPagerEx
+            android:id="@+id/contentPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        <com.google.android.material.appbar.AppBarLayout
+            style="@style/it_scoppelletti_style_appBarLayout">
+            <androidx.appcompat.widget.Toolbar android:id="@+id/toolbar"
+                style="@style/it_scoppelletti_style_toolbar"/>
+        </com.google.android.material.appbar.AppBarLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <it.scoppelletti.spaceship.widget.ProgressOverlay
+        android:id="@+id/progressIndicator"
+        style="@style/it_scoppelletti_style_progressOverlay" />
+</FrameLayout>

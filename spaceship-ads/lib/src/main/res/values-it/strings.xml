@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="it_scoppelletti_ads_cmd_adult">Ho almeno 16 anni</string>
-    <string name="it_scoppelletti_ads_cmd_consent">Sì, voglio continuare a vedere le inserzioni più rilevanti</string>
-    <string name="it_scoppelletti_ads_cmd_reminder">No, vedrò inserzioni che saranno meno rilevanti</string>
+    <string name="it_scoppelletti_ads_cmd_consent">Sì, voglio continuare a vedere gli annunci più rilevanti</string>
+    <string name="it_scoppelletti_ads_cmd_reminder">No, vedrò annunci che saranno meno rilevanti</string>
+    <string name="it_scoppelletti_ads_cmd_settings">Annunci</string>
     <string name="it_scoppelletti_ads_cmd_underage">Ho meno di 16 anni</string>
     <string name="it_scoppelletti_ads_err_internal">%1$d - Errore interno.</string>
     <string name="it_scoppelletti_ads_err_invalid_request">%1$d - Richiesta non valida.</string>
     <string name="it_scoppelletti_ads_err_network">%1$d - Errore di rete.</string>
-    <string name="it_scoppelletti_ads_err_no_fill">%1$d - Avvisi pubblicitari non disponibili.</string>
+    <string name="it_scoppelletti_ads_err_no_fill">%1$d - Annunci pubblicitari non disponibili.</string>
     <string name="it_scoppelletti_ads_err_unknown">%1$d - Errore sconosciuto.</string>
     <string name="it_scoppelletti_ads_err_lookupFailed">Errore di rete per: %1$s.</string>
     <string name="it_scoppelletti_ads_err_notFound">Agenti non trovati: %2$d: %1$s.</string>
@@ -19,13 +20,13 @@
 <p>Noi tuteliamo la privacy e la sicurezza dei dati personali dei minori.</p>]]></string>
     <string name="it_scoppelletti_ads_html_consent"><![CDATA[<it-scoppelletti-contentHandler/>
 <p>Noi tuteliamo la tua privacy e la sicurezza dei tuoi dati personali. Possiamo
-mantenere questa App gratuita mostrando delle inserzioni pubblicitarie.</p>
-<p><big><b>Possiamo continuare a usare i tuoi dati per mostrarti le inserzioni
-pubblicitarie più rilevanti per te.</b></big></p>
-Puoi modificare la tua scelta in qualunque momento per
-<it-scoppelletti-appLabel/> nelle impostazioni dell\'App.</p>. I nostri partner
+mantenere questa App gratuita mostrando degli annunci pubblicitari.</p>
+<p><big><b>Possiamo continuare a usare i tuoi dati per mostrarti gli annunci più
+rilevanti per te?</b></big></p>
+<p>Puoi modificare la tua scelta in qualunque momento per
+<it-scoppelletti-appLabel/> nelle impostazioni dell\'App. I nostri partner
 collezioneranno i dati e useranno un identificatore univoco sul tuo dispositivo
-per mostrarti le inserzioni pubblicitarie.
+per mostrarti gli annunci pubblicitari.
 <a href="%1$s">Leggi come <it-scoppelletti-appLabel/> e i nostri %2$d partners
 raccolgono e usano i tuoi dati</a>]]></string>
     <string name="it_scoppelletti_ads_html_footer"><![CDATA[<p>
@@ -44,11 +45,11 @@ nelle impostazioni dell\'App.</p>
 <p><a href="%1$s">Come <it-scoppelletti-appLabel/> usa i tuoi dati</a></p>]]></string>
     <string name="it_scoppelletti_ads_html_underage"><![CDATA[<it-scoppelletti-contentHandler />
 <p><big><b><it-scoppelletti-resource name="it_scoppelletti_ads_lbl_underage" type="string" /></b></big></p>
-<p>Possiamo mantenere questa App gratuita mostrando delle inserzioni
-pubblicitarie.</p>
+<p>Possiamo mantenere questa App gratuita mostrando degli annunci
+pubblicitari.</p>
 <p>Quando avrai 16 anni, se lo vorrai, potrai usare le impostazioni dell\'App
 per consentire a <it-scoppelletti-appLabel/> di usare i tuoi dati per mostrarti
-le inserzioni pubblicitarie più rilevanti per te.</p>
+gli annunci pubblicitari più rilevanti per te.</p>
 <p>Nel frattempo, collaboreremo con Google e useremo un identificatore univoco
 sul tuo dispositivo per non collezionare i tuoi dati.</p>
 <p><a href="%1$s">Come <it-scoppelletti-appLabel/> usa i tuoi dati</a></p>]]></string>

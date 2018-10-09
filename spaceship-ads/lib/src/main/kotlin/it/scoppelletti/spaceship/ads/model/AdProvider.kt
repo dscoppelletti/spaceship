@@ -22,7 +22,7 @@ import com.squareup.moshi.JsonClass
 /**
  * Ad provider info.
  *
- * @since              1.0.0
+ * @since 1.0.0
  *
  * @property companyId Provider ID.
  * @property name      Name of the provider.

@@ -28,7 +28,7 @@ import android.os.Parcelable
  * @param create Function for creating an instance of class `T`.
  * @since        1.0.0
  */
-inline fun <reified T : Parcelable> parcelableCreator(
+public inline fun <reified T : Parcelable> parcelableCreator(
         crossinline create: (Parcel) -> T
 ): Parcelable.Creator<T> =
         object : Parcelable.Creator<T> {
@@ -46,17 +46,17 @@ inline fun <reified T : Parcelable> parcelableCreator(
 /**
  * Reads a `Boolean` value from a stream.
  *
- * @receiver The stream.
+ * @receiver Stream.
  * @return   The read value.
  * @since    1.0.0
  */
-fun Parcel.readBoolean(): Boolean = readInt() != 0
+public fun Parcel.readBoolean(): Boolean = readInt() != 0
 
 /**
  * Writes a `Boolean` value to a stream.
  *
- * @param    value The value.
- * @receiver       The stream.
+ * @receiver       Stream.
+ * @param    value Value.
  * @since          1.0.0
  */
-fun Parcel.writeBoolean(value: Boolean) = writeInt(if (value) 1 else 0)
+public fun Parcel.writeBoolean(value: Boolean) = writeInt(if (value) 1 else 0)

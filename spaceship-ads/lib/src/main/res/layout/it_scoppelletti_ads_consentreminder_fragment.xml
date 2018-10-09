@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 -->
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -33,7 +33,8 @@
         app:layout_constraintBottom_toTopOf="@id/cmdAgree"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
-    <Button android:id="@+id/cmdAgree"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cmdAgree"
         android:text="@string/it_scoppelletti_cmd_agree"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,11 +43,11 @@
         app:layout_constraintLeft_toRightOf="@id/cmdBack"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="@dimen/it_scoppelletti_spacingVert"
-        android:theme="@style/it_scoppelletti_theme_secondaryRaisedButton"
-        style="@style/it_scoppelletti_style_secondaryRaisedButton" />
-    <Button android:id="@+id/cmdBack"
+        style="@style/Widget.MaterialComponents.Button" />
+    <com.google.android.material.button.MaterialButton android:id="@+id/cmdBack"
         tools:ignore="rtlHardcoded"
         android:text="@string/it_scoppelletti_cmd_back"
+        app:icon="@drawable/ic_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/txtMessage"
@@ -55,6 +56,5 @@
         app:layout_constraintRight_toLeftOf="@id/cmdAgree"
         android:layout_marginTop="@dimen/it_scoppelletti_spacingVert"
         android:layout_marginRight="@dimen/it_scoppelletti_spacingHorz"
-        android:theme="@style/it_scoppelletti_theme_flatButton"
-        style="@style/it_scoppelletti_style_flatButton" />
-</android.support.constraint.ConstraintLayout>
+        style="@style/Widget.MaterialComponents.Button.TextButton" />
+</androidx.constraintlayout.widget.ConstraintLayout>

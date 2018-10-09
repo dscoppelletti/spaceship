@@ -16,29 +16,33 @@
 
 package it.scoppelletti.spaceship
 
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import it.scoppelletti.spaceship.types.trimRaw
 import java.lang.reflect.InvocationTargetException
 
 /**
  * Application exception.
  *
- * @since                   1.0.0
- * @property messageBuilder The message.
- * @property titleId        The title as a string resource ID.
+ * @since 1.0.0
+ *
+ * @property messageBuilder Message.
+ * @property titleBuilder   Title.
  */
 public class ApplicationException private constructor(
         builder: ApplicationException.Builder
 ) : RuntimeException() {
 
     public val messageBuilder: MessageBuilder
-
-    @StringRes
-    public val titleId: Int
+    public val titleBuilder: MessageBuilder
 
     init {
-        messageBuilder = builder.messageBuilder!!
-        titleId = builder.titleId
+        messageBuilder = builder.messageBuilder ?:
+                throw NullPointerException("Missing the messageBuilder object.")
+
+        titleBuilder = builder.titleBuilder ?:
+                MessageBuilder.make(android.R.string.dialog_alert_title) {
+                }
+
         if (builder.cause != null) {
             initCause(builder.cause)
         }
@@ -49,28 +53,28 @@ public class ApplicationException private constructor(
 
     override fun toString() = """
         |ApplicationException(messageBuilder=$messageBuilder,
-        |titleId=$titleId)""".trimRaw()
+        |titleId=$titleBuilder)""".trimRaw()
 
     /**
      * Builds an `ApplicationException` instance.
      *
-     * @since            1.0.0
-     * @property titleId The title as a string resource ID.
-     * @property cause   The original exception.
+     * @since 1.0.0
+     *
+     * @property cause Original exception.
      */
     @MessageBuilder.Dsl
     @ApplicationException.Dsl
     public class Builder internal constructor() {
 
-        @StringRes public var titleId: Int = android.R.string.dialog_alert_title
         public var cause: Throwable? = null
         internal var messageBuilder: MessageBuilder? = null
+        internal var titleBuilder: MessageBuilder? = null
 
         /**
-         * Defines the `MessageBuilder` object.
+         * Defines the message.
          *
-         * @param  messageId The message as a string resource ID.
-         * @param  init      The initializiation block.
+         * @param  messageId Message as a string resource ID.
+         * @param  init      Initializiation block.
          * @return           The new object.
          */
         public fun message(
@@ -82,15 +86,56 @@ public class ApplicationException private constructor(
         }
 
         /**
+         * Defines the message.
+         *
+         * @param  message Message.
+         * @param  init    Initializiation block.
+         * @return         The new object.
+         */
+        public fun message(
+                message: String,
+                init: MessageBuilder.() -> Unit = { }
+        ): MessageBuilder {
+            messageBuilder = MessageBuilder.make(message, init)
+            return messageBuilder!!
+        }
+
+        /**
+         * Defines the title.
+         *
+         * @param  titleId Title as a string resource ID.
+         * @param  init    Initialization block.
+         * @return         The new object.
+         */
+        public fun title(
+                @StringRes titleId: Int,
+                init: MessageBuilder.() -> Unit = { }
+        ): MessageBuilder {
+            titleBuilder = MessageBuilder.make(titleId, init)
+            return titleBuilder!!
+        }
+
+        /**
+         * Defines the title.
+         *
+         * @param  title Title.
+         * @param  init  Initialization block.
+         * @return       The new object.
+         */
+        public fun title(
+                title: String,
+                init: MessageBuilder.() -> Unit = { }
+        ): MessageBuilder {
+            titleBuilder = MessageBuilder.make(title, init)
+            return titleBuilder!!
+        }
+
+        /**
          * Builds a new `ApplicationException` instance.
          *
          * @return The new object.
          */
         internal fun build(): ApplicationException {
-            if (messageBuilder == null) {
-                throw NullPointerException("Missing the MessageBuilder object.")
-            }
-
             return ApplicationException(this)
         }
     }
@@ -107,7 +152,7 @@ public class ApplicationException private constructor(
 /**
  * Creates a new [ApplicationException] instance.
  *
- * @param  init The initialization block.
+ * @param  init Initialization block.
  * @return      The new object.
  * @since       1.0.0
  */
@@ -124,7 +169,7 @@ public fun applicationException(
  * 1. The `message` property of the exception object.
  * 1. The fully qualified name of the exception class.
  *
- * @receiver The exception.
+ * @receiver An exception.
  * @return   The message.
  * @since    1.0.0
  */
@@ -154,7 +199,7 @@ public fun Throwable?.toMessage(): String {
 /**
  * Returns the message of an exception.
  *
- * @receiver The exception.
+ * @receiver An exception.
  * @return   The message.
  */
 private fun Throwable.toMessageImpl(): String {
@@ -174,5 +219,10 @@ private fun Throwable.toMessageImpl(): String {
         return msg
     }
 
-    return javaClass.canonicalName
+    msg = this.javaClass.canonicalName
+    if (!msg.isNullOrBlank()) {
+        return msg
+    }
+
+    return this.javaClass.name
 }

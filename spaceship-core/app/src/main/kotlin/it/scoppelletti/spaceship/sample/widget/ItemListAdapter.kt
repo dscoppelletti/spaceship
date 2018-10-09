@@ -1,11 +1,11 @@
 package it.scoppelletti.spaceship.sample.widget
 
-import android.support.v7.recyclerview.extensions.ListAdapter
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import it.scoppelletti.spaceship.sample.R
 import it.scoppelletti.spaceship.sample.model.Item
 import kotlinx.android.synthetic.main.item_layout.view.*
@@ -52,12 +52,14 @@ class ItemListAdapter(
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Item>() {
 
             override fun areItemsTheSame(
-                    oldItem: Item?,
-                    newItem: Item?): Boolean = oldItem!!.id == newItem!!.id
+                    oldItem: Item,
+                    newItem: Item
+            ): Boolean = oldItem.id == newItem.id
 
             override fun areContentsTheSame(
-                    oldItem: Item?,
-                    newItem: Item?): Boolean = oldItem!! == newItem!!
+                    oldItem: Item,
+                    newItem: Item
+            ): Boolean = oldItem == newItem
         }
     }
 

@@ -16,12 +16,13 @@
 
 package it.scoppelletti.spaceship.html
 
+import mu.KLogger
 import mu.KotlinLogging
 import org.xml.sax.Attributes
 import org.xml.sax.ContentHandler
 import org.xml.sax.XMLReader
 
-private val logger = KotlinLogging.logger {}
+private val logger: KLogger = KotlinLogging.logger {}
 
 /**
  * Implementation of the `ContentHandler` interface installed by the
@@ -31,7 +32,7 @@ private val logger = KotlinLogging.logger {}
  *                             tag.
  *
  * @constructor          Constructor.
- * @param       delegate The delegate implementation of the `ContentHandler`
+ * @param       delegate Delegate implementation of the `ContentHandler`
  *                       interface.
  */
 internal class HtmlContentHandler(
@@ -55,8 +56,8 @@ internal class HtmlContentHandler(
     /**
      * Converts an `Attributes` collection to a `Map` collection.
      *
-     * @param  atts The original collection.
-     * @return      The resulting collection.
+     * @param  atts Original collection.
+     * @return      Resulting collection.
      */
     private fun toMap(atts: Attributes): Map<String, String> {
         val len: Int
@@ -89,8 +90,8 @@ internal class HtmlContentHandler(
  * > This function properly works only for tags inserted after the
  * > `<it-scoppelletti-contentHandler/>` tag.
  *
- * @receiver The `XMLReader` interface.
- * @return   The collection.
+ * @receiver `XMLReader` interface.
+ * @return   Collection of attributes.
  * @see      it.scoppelletti.spaceship.html.ContentHandlerTagHandler
  * @since    1.0.0
  */

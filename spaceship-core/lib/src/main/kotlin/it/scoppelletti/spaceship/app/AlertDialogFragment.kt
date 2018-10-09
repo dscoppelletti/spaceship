@@ -19,12 +19,12 @@ package it.scoppelletti.spaceship.app
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
-import android.support.annotation.UiThread
-import android.support.v4.app.FragmentActivity
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatDialogFragment
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.annotation.UiThread
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.FragmentActivity
 import it.scoppelletti.spaceship.CoreExt
 import it.scoppelletti.spaceship.MessageBuilder
 
@@ -39,9 +39,9 @@ import it.scoppelletti.spaceship.MessageBuilder
 public class AlertDialogFragment : AppCompatDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val msg: String?
         val args: Bundle
         val builder: AlertDialog.Builder
+        var msg: String?
         var resId: Int
 
         args = arguments!!
@@ -54,9 +54,14 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
             builder.setMessage(msg)
         }
 
-        resId = args.getInt(AlertDialogFragment.PROP_TITLEID,
-                android.R.string.dialog_alert_title)
-        builder.setTitle(resId)
+        msg = args.getString(AlertDialogFragment.PROP_TITLE)
+        if (msg.isNullOrBlank()) {
+            resId = args.getInt(AlertDialogFragment.PROP_TITLEID,
+                    android.R.string.dialog_alert_title)
+            builder.setTitle(resId)
+        } else {
+            builder.setTitle(msg)
+        }
 
         resId = args.getInt(AlertDialogFragment.PROP_POSITIVEID,
                 android.R.string.ok)
@@ -87,7 +92,7 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
     /**
      * Handles the result of this dialog.
      *
-     * @param dialog The dialog that received the click.
+     * @param dialog Dialog that received the click.
      * @param which  ID of the button that was clicked
      *              (`DialogInterface.BUTTON_POSITIVE` or
      *              `DialogInterface.BUTTON_NEGATIVE` or
@@ -111,31 +116,33 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
     public companion object {
 
         /**
-         * The fragment tag.
+         * Fragment tag.
          */
         public const val TAG: String = CoreExt.TAG_ALERTDIALOG
 
         private const val PROP_MSG: String = "1"
         private const val PROP_MSGID: String = "2"
-        private const val PROP_TITLEID: String = "3"
-        private const val PROP_POSITIVEID: String = "4"
-        private const val PROP_NEGATIVEID: String = "5"
-        private const val PROP_NEUTRALID: String = "6"
-        private const val PROP_ICONID: String = "7"
+        private const val PROP_TITLE: String = "3"
+        private const val PROP_TITLEID: String = "4"
+        private const val PROP_POSITIVEID: String = "5"
+        private const val PROP_NEGATIVEID: String = "6"
+        private const val PROP_NEUTRALID: String = "7"
+        private const val PROP_ICONID: String = "8"
     }
 
     /**
      * Builds an `AlertDialogFragment` fragment.
      *
-     * @since                         1.0.0
-     * @property titleId              The title as a string resource ID.
-     * @property positiveActionTextId The positive action text as a string
-     *                                resource ID.
-     * @property negativeActionTextId The negative action text as a string
-     *                                resource ID.
-     * @property neutralActionTextId  The neutral action text as a string
-     *                                resource ID.
-     * @property iconId               The icon as a `Drawable` resource ID.
+     * @since 1.0.0
+     *
+     * @property positiveActionTextId Positive action text as a string resource
+     *                                ID.
+     * @property negativeActionTextId Negative action text as a string resource
+     *                                ID.
+     * @property neutralActionTextId  Neutral action text as a string resource
+     *                                ID.
+     * @property iconId               Icon as a `Drawable` resource ID.
+     * @property tag                  Fragment tag.
      */
     @MessageBuilder.Dsl
     @AlertDialogFragment.Dsl
@@ -143,20 +150,27 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
             private val activity: FragmentActivity
     ) {
 
-        @StringRes public var titleId: Int = android.R.string.dialog_alert_title
-        @StringRes public var positiveActionTextId: Int = android.R.string.ok
-        @StringRes public var negativeActionTextId: Int =
-                android.R.string.cancel
-        @StringRes public var neutralActionTextId: Int = 0
-        @DrawableRes public var iconId: Int = 0
+        @StringRes
+        public var positiveActionTextId: Int = android.R.string.ok
+
+        @StringRes
+        public var negativeActionTextId: Int = android.R.string.cancel
+
+        @StringRes
+        public var neutralActionTextId: Int = 0
+
+        @DrawableRes
+        public var iconId: Int = 0
+
         public var tag: String = AlertDialogFragment.TAG
         private var messageBuilder: MessageBuilder? = null
+        private var titleBuilder: MessageBuilder? = null
 
         /**
-         * Defines the `MessageBuilder` object.
+         * Defines the message.
          *
-         * @param  messageId The message as a string resource ID.
-         * @param  init      The initializiation block.
+         * @param  messageId Message as a string resource ID.
+         * @param  init      Initializiation block.
          * @return           The new object.
          */
         public fun message(
@@ -165,6 +179,51 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
         ): MessageBuilder {
             messageBuilder = MessageBuilder.make(messageId, init)
             return messageBuilder!!
+        }
+
+        /**
+         * Defines the message.
+         *
+         * @param  message Message.
+         * @param  init    Initializiation block.
+         * @return         The new object.
+         */
+        public fun message(
+                message: String,
+                init: MessageBuilder.() -> Unit = { }
+        ): MessageBuilder {
+            messageBuilder = MessageBuilder.make(message, init)
+            return messageBuilder!!
+        }
+
+        /**
+         * Defines the title.
+         *
+         * @param  titleId Title as a string resource ID.
+         * @param  init    Initialization block.
+         * @return         The new object.
+         */
+        public fun title(
+                @StringRes titleId: Int,
+                init: MessageBuilder.() -> Unit = { }
+        ): MessageBuilder {
+            titleBuilder = MessageBuilder.make(titleId, init)
+            return titleBuilder!!
+        }
+
+        /**
+         * Defines the title.
+         *
+         * @param  title Title.
+         * @param  init  Initialization block.
+         * @return       The new object.
+         */
+        public fun title(
+                title: String,
+                init: MessageBuilder.() -> Unit = { }
+        ): MessageBuilder {
+            titleBuilder = MessageBuilder.make(title, init)
+            return titleBuilder!!
         }
 
         internal fun show() {
@@ -184,9 +243,16 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
                 }
             }
 
-            if (titleId != android.R.string.dialog_alert_title) {
-                args.putInt(AlertDialogFragment.PROP_TITLEID, titleId)
+            titleBuilder?.let { title ->
+                if (title.isSimple) {
+                    args.putInt(AlertDialogFragment.PROP_TITLEID,
+                            title.messageId)
+                } else {
+                    args.putString(AlertDialogFragment.PROP_TITLE,
+                            title.build(activity.resources))
+                }
             }
+
             if (positiveActionTextId != android.R.string.ok) {
                 args.putInt(AlertDialogFragment.PROP_POSITIVEID,
                         positiveActionTextId)
@@ -223,8 +289,8 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
 /**
  * Shows an alert dialog.
  *
- * @receiver      The activity.
- * @param    init The initialization block.
+ * @receiver      Activity.
+ * @param    init Initialization block.
  * @since         1.0.0
  */
 public fun FragmentActivity.showAlertDialog(

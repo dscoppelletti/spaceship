@@ -10,15 +10,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/it_scoppelletti_theme_app">
-        <activity-alias android:label="@string/app_name"
-            android:name="it.scoppelletti.spaceship.html.sample.MainActivity"
-            android:targetActivity="it.scoppelletti.spaceship.html.app.HtmlViewerActivity">
+        <activity android:name=".MainActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <meta-data android:name="it.scoppelletti.spaceship.html.text"
-                    android:resource="@string/html_text" />
-        </activity-alias>
+        </activity>
     </application>
 </manifest>

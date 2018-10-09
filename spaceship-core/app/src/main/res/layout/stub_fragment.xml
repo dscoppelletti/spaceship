@@ -8,5 +8,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textAppearance="@style/it_scoppelletti_text_display1" />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4" />
 </FrameLayout>

@@ -17,10 +17,10 @@
 package it.scoppelletti.spaceship.preference
 
 import android.content.Context
-import android.support.annotation.UiThread
-import android.support.v7.preference.DialogPreference
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.UiThread
+import androidx.preference.DialogPreference
 
 /**
  * Custom setting with an editor dialog [CustomPreferenceDialogFragment].
@@ -32,14 +32,14 @@ public abstract class CustomDialogPreference : DialogPreference {
 
     /**
      * @constructor         Constructor.
-     * @param       context The context.
+     * @param       context Context.
      */
     public constructor(context: Context) : super(context)
 
     /**
      * @constructor         Constructor.
-     * @param       context The context.
-     * @param       attrs   The attribute set.
+     * @param       context Context.
+     * @param       attrs   Attribute set.
      */
     public constructor(
             context: Context,
@@ -48,9 +48,9 @@ public abstract class CustomDialogPreference : DialogPreference {
 
     /**
      * @constructor              Constructor.
-     * @param       context      The context.
-     * @param       attrs        The attribute set.
-     * @param       defStyleAttr The default style attributes as a resource ID.
+     * @param       context      Context.
+     * @param       attrs        Attribute set.
+     * @param       defStyleAttr Default style attributes as a resource ID.
      */
     public constructor(
             context: Context,
@@ -60,10 +60,10 @@ public abstract class CustomDialogPreference : DialogPreference {
 
     /**
      * @constructor              Constructor.
-     * @param       context      The context.
-     * @param       attrs        The attribute set.
-     * @param       defStyleAttr The default style attributes as a resource ID.
-     * @param       defStyleRes  The default style as a resource ID.
+     * @param       context      Context.
+     * @param       attrs        Attribute set.
+     * @param       defStyleAttr Default style attributes as a resource ID.
+     * @param       defStyleRes  Default style as a resource ID.
      */
     public constructor(
             context: Context,
@@ -72,12 +72,32 @@ public abstract class CustomDialogPreference : DialogPreference {
             defStyleRes: Int
     ) : super(context, attrs, defStyleAttr, defStyleRes)
 
+    /**
+     * Binds views in the content view of the dialog to data.
+     *
+     * @param view Content view.
+     */
     internal fun doBindDialogView(view: View) = onBindDialogView(view)
 
+    /**
+     * Binds views in the content view of the dialog to data.
+     *
+     * @param view Content view.
+     */
     protected abstract fun onBindDialogView(view: View)
 
+    /**
+     * Called when the dialog has been closed.
+     *
+     * @param positiveResult Whether the dialog is accepted.
+     */
     internal fun doDialogClosed(positiveResult: Boolean) =
             onDialogClosed(positiveResult)
 
+    /**
+     * Called when the dialog has been closed.
+     *
+     * @param positiveResult Whether the dialog is accepted.
+     */
     protected abstract fun onDialogClosed(positiveResult: Boolean)
 }

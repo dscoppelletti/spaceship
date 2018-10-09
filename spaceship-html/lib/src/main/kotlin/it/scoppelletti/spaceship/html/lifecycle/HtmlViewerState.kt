@@ -22,8 +22,9 @@ import it.scoppelletti.spaceship.types.StringExt
 /**
  * State for the `HtmlViewerActivity` activity.
  *
- * @see            it.scoppelletti.spaceship.html.app.HtmlViewerActivity
- * @since          1.0.0
+ * @see    it.scoppelletti.spaceship.html.app.HtmlViewerActivity
+ * @since  1.0.0
+ *
  * @property text  The styled text.
  * @property error The error.
  *

@@ -17,12 +17,12 @@
 package it.scoppelletti.spaceship.widget
 
 import android.content.Context
-import android.support.design.widget.AppBarLayout
-import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.view.ViewCompat
 import android.util.AttributeSet
 import android.view.View
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.ViewCompat
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
  * Behaviour for attaching a FAB to a vertical-scrolling widget.
@@ -33,8 +33,8 @@ import android.view.View
  * @since 1.0.0
  *
  * @constructor       Constructor.
- * @param       ctx   The context.
- * @param       attrs The attributes.
+ * @param       ctx   Context.
+ * @param       attrs Attributes.
  */
 public class FabScrollAwareBehavior(
         ctx: Context,
@@ -44,9 +44,9 @@ public class FabScrollAwareBehavior(
     // FAB never hides likely because "pixel perfect" is disabled.
 
     override fun layoutDependsOn(
-            parent: CoordinatorLayout?,
-            child: View?,
-            dependency: View?
+            parent: CoordinatorLayout,
+            child: View,
+            dependency: View
     ): Boolean = dependency is FloatingActionButton ||
                 super.layoutDependsOn(parent, child, dependency)
 

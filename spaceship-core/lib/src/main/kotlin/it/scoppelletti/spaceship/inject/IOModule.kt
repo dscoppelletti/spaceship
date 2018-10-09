@@ -18,12 +18,11 @@ package it.scoppelletti.spaceship.inject
 
 import android.app.Application
 import android.content.res.AssetManager
-import android.support.v4.content.ContextCompat
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
-import it.scoppelletti.spaceship.CoreExt
-import java.io.File
-import javax.inject.Named
+import it.scoppelletti.spaceship.io.DefaultIOProvider
+import it.scoppelletti.spaceship.io.IOProvider
 
 /**
  * Defines the dependencies for I/O operations.
@@ -31,16 +30,17 @@ import javax.inject.Named
  * @since 1.0.0
  */
 @Module
-public object IOModule {
+public abstract class IOModule {
 
-    @Provides
-    @JvmStatic
-    public fun provideAssetManager(application: Application): AssetManager =
-            application.assets
+    @Binds
+    public abstract fun bindIOProvider(obj: DefaultIOProvider): IOProvider
 
-    @Provides
-    @JvmStatic
-    @Named(CoreExt.DEP_NOBACKUPFILESDIR)
-    public fun provideNoBackupFilesDir(application: Application): File =
-            ContextCompat.getNoBackupFilesDir(application)!!
+    @Module
+    public companion object {
+
+        @Provides
+        @JvmStatic
+        public fun provideAssetManager(application: Application): AssetManager =
+                application.assets
+    }
 }

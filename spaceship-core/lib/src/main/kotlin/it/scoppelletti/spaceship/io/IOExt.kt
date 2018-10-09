@@ -16,16 +16,17 @@
 
 package it.scoppelletti.spaceship.io
 
+import mu.KLogger
 import mu.KotlinLogging
 import java.io.Closeable
 import java.io.IOException
 
-private val logger = KotlinLogging.logger {}
+private val logger: KLogger = KotlinLogging.logger {}
 
 /**
  * Closes a stream ignoring any exceptions.
  *
- * @receiver The stream.
+ * @receiver Stream.
  * @since    1.0.0
  */
 public fun Closeable.closeQuietly() {

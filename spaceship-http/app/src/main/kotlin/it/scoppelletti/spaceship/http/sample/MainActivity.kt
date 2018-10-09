@@ -5,25 +5,18 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.ActionBar
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import it.scoppelletti.spaceship.app.tryFinish
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.main_activity.*
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val actionBar: ActionBar
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-
         setSupportActionBar(toolbar)
-        actionBar = supportActionBar!!
-        actionBar.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -33,11 +26,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            android.R.id.home -> {
-                tryFinish()
-                return true
-            }
-
             R.id.cmd_network_check -> {
                 onNetworkCheckClick()
                 return true

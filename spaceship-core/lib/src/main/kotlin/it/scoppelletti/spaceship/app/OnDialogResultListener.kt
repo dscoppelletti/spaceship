@@ -26,7 +26,7 @@ public interface OnDialogResultListener {
     /**
      * This method will be invoked when dialog is accepted or canceled.
      *
-     * @param tag   The fragment tag.
+     * @param tag   Fragment tag.
      * @param which ID of the button that was clicked (ex.
      *              `DialogInterface.BUTTON_POSITIVE`) or the position of the
      *              item clicked.

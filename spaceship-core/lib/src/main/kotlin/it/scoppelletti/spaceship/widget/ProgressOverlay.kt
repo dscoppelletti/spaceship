@@ -21,9 +21,9 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
-import android.support.annotation.UiThread
 import android.util.AttributeSet
 import android.util.SparseArray
 import android.view.Gravity
@@ -31,9 +31,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ProgressBar
+import androidx.annotation.UiThread
 import it.scoppelletti.spaceship.os.parcelableCreator
 import it.scoppelletti.spaceship.os.readBoolean
 import it.scoppelletti.spaceship.os.writeBoolean
+import mu.KLogger
 import mu.KotlinLogging
 
 /**
@@ -48,15 +50,15 @@ public class ProgressOverlay : FrameLayout {
     private val hideAnim: ValueAnimator
 
     /**
-     * @constructor       Constructor.
-     * @param       ctx   The context.
+     * @constructor     Constructor.
+     * @param       ctx Context.
      */
     public constructor(ctx: Context) : super(ctx)
 
     /**
      * @constructor       Constructor.
-     * @param       ctx   The context.
-     * @param       attrs The attributes.
+     * @param       ctx   Context.
+     * @param       attrs Attributes.
      */
     public constructor(ctx: Context, attrs: AttributeSet?) : super(ctx, attrs)
 
@@ -70,7 +72,8 @@ public class ProgressOverlay : FrameLayout {
                 ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER)
         addView(indicator, layout)
 
-        showAnim = initShowAnimator()
+        showAnim = if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N)
+            initShowAnimator24() else initShowAnimator()
         hideAnim = initHideAnimator()
     }
 
@@ -80,10 +83,13 @@ public class ProgressOverlay : FrameLayout {
      * @return The new object.
      */
     private fun initShowAnimator(): ValueAnimator {
-        val anim = ValueAnimator.ofInt(ProgressOverlay.ALPHA_GONE,
-                ProgressOverlay.ALPHA_VISIBLE)
-        anim.startDelay = ProgressOverlay.DELAY
-        anim.duration = ProgressOverlay.DURATION
+        val anim: ValueAnimator
+
+        anim = ValueAnimator.ofInt(ProgressOverlay.ALPHA_GONE,
+                ProgressOverlay.ALPHA_VISIBLE).apply {
+            startDelay = ProgressOverlay.DELAY
+            duration = ProgressOverlay.DURATION
+        }
 
         anim.addUpdateListener { animation ->
             val color: Int
@@ -99,10 +105,79 @@ public class ProgressOverlay : FrameLayout {
 
         anim.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationStart(animation: Animator?) {
+                logger.trace("Show animation start.")
                 visibility = View.VISIBLE
             }
 
+            override fun onAnimationEnd(animation: Animator?) {
+                logger.trace("Show animation end.")
+            }
+
             override fun onAnimationCancel(animation: Animator?) {
+                logger.trace("Show animation cancel.")
+                setRunning(false)
+            }
+        })
+
+        return anim
+    }
+
+    /**
+     * Creates the animation for showing this progress indicator.
+     *
+     * @return The new object.
+     */
+    private fun initShowAnimator24(): ValueAnimator {
+        // - Android 7.0, API 24
+        // Sometime the cancel method doesn't have any effect maybe because the
+        // delay phase is not completed:
+        // Implement the delay phase in the animation phase.
+        val anim: ValueAnimator
+        val durationFrac: Float
+        val delayFrac: Float
+
+        anim = ValueAnimator.ofInt(ProgressOverlay.ALPHA_GONE,
+                ProgressOverlay.ALPHA_VISIBLE).apply {
+            duration = ProgressOverlay.DELAY + ProgressOverlay.DURATION
+        }
+
+        delayFrac = ProgressOverlay.DELAY.toFloat() / anim.duration.toFloat()
+        durationFrac = anim.duration.toFloat() /
+                ProgressOverlay.DURATION.toFloat()
+
+        anim.addUpdateListener { animation ->
+            val color: Int
+            val alpha: Float
+            val f: Float
+            val scale: Float
+
+            f = animation.animatedFraction
+            if (f >= delayFrac) {
+                if (visibility != View.VISIBLE) {
+                    visibility = View.VISIBLE
+                }
+
+                scale = (f - delayFrac) * durationFrac
+                indicator.scaleX = scale
+                indicator.scaleY = scale
+
+                alpha = ProgressOverlay.ALPHA_VISIBLE.toFloat() * scale
+                color = Color.argb(alpha.toInt(), 0, 0, 0)
+                setBackgroundColor(color)
+            }
+        }
+
+        anim.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationStart(animation: Animator?) {
+                logger.trace("Show animation start.")
+            }
+
+            override fun onAnimationEnd(animation: Animator?) {
+                logger.trace("Show animation end.")
+            }
+
+            override fun onAnimationCancel(animation: Animator?) {
+                logger.trace("Show animation cancel.")
                 setRunning(false)
             }
         })
@@ -117,8 +192,9 @@ public class ProgressOverlay : FrameLayout {
      */
     private fun initHideAnimator(): ValueAnimator {
         val anim = ValueAnimator.ofInt(ProgressOverlay.ALPHA_VISIBLE,
-                ProgressOverlay.ALPHA_GONE)
-        anim.duration = ProgressOverlay.DURATION
+                ProgressOverlay.ALPHA_GONE).apply {
+            duration = ProgressOverlay.DURATION
+        }
 
         anim.addUpdateListener { animation ->
             val color: Int
@@ -133,11 +209,17 @@ public class ProgressOverlay : FrameLayout {
         }
 
         anim.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationStart(animation: Animator?) {
+                logger.trace("Hide animation start.")
+            }
+
             override fun onAnimationEnd(animation: Animator?) {
+                logger.trace("Hide animation end.")
                 visibility = View.GONE
             }
 
             override fun onAnimationCancel(animation: Animator?) {
+                logger.trace("Hide animation cancel.")
                 setRunning(true)
             }
         })
@@ -174,10 +256,11 @@ public class ProgressOverlay : FrameLayout {
     public fun show() {
         if (hideAnim.isStarted) {
             try {
+                logger.trace("Cancel hide animation")
                 hideAnim.cancel()
             } catch (ex: RuntimeException) {
                 // This is a problem, but I don't know what to do, yet.
-                logger.error("Failed to cancel animation.", ex)
+                logger.error("Failed to cancel hide animation.", ex)
             }
 
             return
@@ -213,9 +296,15 @@ public class ProgressOverlay : FrameLayout {
     private fun doHide(): Boolean {
         if (showAnim.isStarted) {
             try {
+                // - Android 7.0, API 24
+                // Sometime the cancel method doesn't have any effect maybe
+                // because the delay phase is not completed:
+                // See differences between method initShowAnimator and
+                // initShowAnimator24.
+                logger.trace("Cancel show animation.")
                 showAnim.cancel()
             } catch (ex: RuntimeException) {
-                logger.error("Failed to cancel animation.", ex)
+                logger.error("Failed to cancel show animation.", ex)
             }
 
             return false
@@ -226,7 +315,6 @@ public class ProgressOverlay : FrameLayout {
             return false
         }
 
-        hideAnim.start()
         return true
     }
 
@@ -264,11 +352,17 @@ public class ProgressOverlay : FrameLayout {
         super.dispatchThawSelfOnly(container)
     }
 
-    override fun onSaveInstanceState(): Parcelable {
+    override fun onSaveInstanceState(): Parcelable? {
         val running: Boolean
+        val superState: Parcelable?
         val state: ProgressOverlay.SavedState
 
-        state = ProgressOverlay.SavedState(super.onSaveInstanceState())
+        superState = super.onSaveInstanceState()
+        if (superState == null) {
+            return null
+        }
+
+        state = ProgressOverlay.SavedState(superState)
 
         running = when {
             showAnim.isStarted -> true
@@ -289,12 +383,12 @@ public class ProgressOverlay : FrameLayout {
         }
     }
 
-    companion object {
-        private const val ALPHA_GONE: Int = 0
-        private const val ALPHA_VISIBLE: Int = 102
-        private const val DELAY: Long = 400L
-        private const val DURATION: Long = 400L
-        private val logger = KotlinLogging.logger {}
+    private companion object {
+        const val ALPHA_GONE: Int = 0
+        const val ALPHA_VISIBLE: Int = 102
+        const val DELAY: Long = 400L
+        const val DURATION: Long = 400L
+        val logger: KLogger = KotlinLogging.logger {}
     }
 
     /**
@@ -309,13 +403,13 @@ public class ProgressOverlay : FrameLayout {
 
         /**
          * @constructor        Constructor.
-         * @param       source The input stream.
+         * @param       source Input stream.
          */
         public constructor(source: Parcelable) : super(source)
 
         /**
          * @constructor        Constructor.
-         * @param       source The input stream.
+         * @param       source Input stream.
          */
         private constructor(source: Parcel) : super(source) {
             running = source.readBoolean()
@@ -326,7 +420,7 @@ public class ProgressOverlay : FrameLayout {
             out?.writeBoolean(running)
         }
 
-        companion object {
+        public companion object {
 
             /**
              * The `Parcelable` support.

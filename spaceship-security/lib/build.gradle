@@ -1,0 +1,64 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply from: '../../gradle-plugins/common.gradle'
+apply from: '../../gradle-plugins/library.gradle'
+
+group 'it.scoppelletti.spaceship'
+description 'Spaceship Security Library'
+archivesBaseName = 'spaceship-security'
+
+android {
+    compileSdkVersion versionMap.sdk_target
+    buildToolsVersion versionMap.build_tools
+    defaultConfig {
+        minSdkVersion versionMap.sdk_min
+        targetSdkVersion versionMap.sdk_target
+        versionCode 1
+        versionName versionMap.spaceship
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            consumerProguardFiles 'proguard-rules.pro'
+            debuggable false
+        }
+        debug {
+            minifyEnabled false
+            debuggable true
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
+}
+
+spaceship {
+    copyright '2017-2018'
+}
+
+dependencies {
+    api "androidx.annotation:annotation:${versionMap.androidx_support}"
+    api "com.google.dagger:dagger:${versionMap.dagger}"
+    kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
+    api "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"
+    api("it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}") {
+        changing = true
+    }
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
+    implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
+    implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
+    testImplementation "junit:junit:${versionMap.junit}"
+    testImplementation "org.bouncycastle:bcprov-jdk15on:${versionMap.bouncycastle}"
+    testImplementation "org.jetbrains.kotlin:kotlin-test:${versionMap.kotlin}"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:${versionMap.kotlin}"
+    testImplementation "org.mockito:mockito-core:${versionMap.mockito}"
+    testImplementation "org.slf4j:slf4j-simple:${versionMap.slf4j}"
+}

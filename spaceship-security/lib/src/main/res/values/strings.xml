@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="it_scoppelletti_security_err_aliasInvalid">Invalid alias %1$s.</string>
+    <string name="it_scoppelletti_security_err_aliasNotFound">Decryption key %1$s not found.</string>
+</resources>

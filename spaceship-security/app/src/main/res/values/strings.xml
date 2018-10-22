@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+    <string name="cmd_decrypt">Decrypt</string>
+    <string name="cmd_encrypt">Encrypt</string>
+    <string name="err_alias_required">Alias is required.</string>
+    <string name="err_expire_required">Expire is required.</string>
+    <string name="err_expire_integer">Expire must be an integer.</string>
+    <string name="err_expire_positive">Expire must be greater than 0.</string>
+    <string name="lbl_alias">Alias</string>
+    <string name="lbl_clearText">Clear text</string>
+    <string name="lbl_encryptedText">Encrypted text</string>
+    <string name="lbl_expire">Expire</string>
+</resources>

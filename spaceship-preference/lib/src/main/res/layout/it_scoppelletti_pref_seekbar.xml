@@ -11,10 +11,9 @@
      limitations under the License.
 
 - Dario Scoppelletti, 2018
-Original repository: http://android.googlesource.com/platform/frameworks/
-    support
-Original file: androidx-1.0-dev/preference/res/layout/
-    preference_widget_seekbar_material.xml
+Repository: http://android.googlesource.com/platform/frameworks/support
+File: androidx-1.0-dev/preference/res/layout/
+      preference_widget_seekbar_material.xml
 Commit: cec8cb68b73a24a9d95630f868587b6cf240107 - March 26, 2018
 Add tools namespace.
 Add tools:ignore.

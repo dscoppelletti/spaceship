@@ -14,9 +14,10 @@
  * limitations under the License.
  *
  * - Dario Scoppelletti, 2018
- * Original repository: http://github.com/googlesamples/android-architecture-components
- * Original file: GithubBrowserSample/app/src/main/java/com/android/example/github/viewmodel/GithubViewModelFactory.kt
- * Commit: 724cc1bd6ed11171a0bbf4a3a29977fac053777e
+ * Repository: http://github.com/googlesamples/android-architecture-components
+ * File: GithubBrowserSample/app/src/main/java/com/android/example/github/
+ *       viewmodel/GithubViewModelFactory.kt
+ * Commit: 724cc1bd6ed11171a0bbf4a3a29977fac053777e - April 10, 2018
  * Rename to InjectViewModelFactory.
  * Add public qualifier.
  * Add KDoc.

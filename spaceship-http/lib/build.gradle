@@ -45,7 +45,7 @@ spaceship {
 }
 
 dependencies {
-    api "androidx.annotation:annotation:${versionMap.androidx_support}"
+    api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
     api "com.squareup.okhttp3:okhttp:${versionMap.okhttp}"
     api "com.squareup.okio:okio:${versionMap.okio}"
     api "com.squareup.retrofit2:retrofit:${versionMap.retrofit}"

@@ -64,11 +64,11 @@ android {
 
 dependencies {
     implementation project(':lib')
-    implementation "androidx.annotation:annotation:${versionMap.androidx_support}"
-    implementation "androidx.appcompat:appcompat:${versionMap.androidx_support}"
-    implementation "androidx.browser:browser:${versionMap.androidx_support}"
+    implementation "androidx.annotation:annotation:${versionMap.androidx_annotation}"
+    implementation "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
+    implementation "androidx.browser:browser:${versionMap.androidx_browser}"
     implementation "androidx.multidex:multidex:${versionMap.androidx_multidex}"
-    implementation "com.google.android.material:material:${versionMap.androidx_support}"
+    implementation "com.google.android.material:material:${versionMap.androidx_material}"
     implementation "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
     implementation "com.google.dagger:dagger-android-support:${versionMap.dagger}"

@@ -37,17 +37,17 @@ public object DataBindingExt {
     public const val ATTR_ENABLED: String = "it_scoppelletti_enabled"
 
     /**
-     * The error message as a string resource ID,
+     * Error message as a string resource ID.
      */
     public const val ATTR_ERROR: String = "it_scoppelletti_error"
 
     /**
-     * The input type for a text widget.
+     * Input type for a text widget.
      */
     public const val ATTR_INPUTTYPE: String = "it_scoppelletti_inputType"
 
     /**
-     * The validator for a widget.
+     * Validator for a widget.
      */
     public const val ATTR_VALIDATOR: String = "it_scoppelletti_validator"
 }

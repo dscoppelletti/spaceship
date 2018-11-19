@@ -78,11 +78,11 @@ public class ConsentAgeFragment : Fragment(), Injectable {
 
         viewModel.buildText(getString(R.string.it_scoppelletti_ads_html_age))
 
-        cmdAdult.setOnClickListener { _ ->
+        cmdAdult.setOnClickListener {
             activityViewModel.setStep(ConsentPromptFragment.POS)
         }
 
-        cmdUnderage.setOnClickListener { _ ->
+        cmdUnderage.setOnClickListener {
             activityViewModel.setStep(ConsentUnderageFragment.POS)
         }
     }

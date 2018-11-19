@@ -108,7 +108,7 @@ public class ConsentPrivacyFragment : Fragment(), Injectable {
                         ?: emptyList(), ::openUrl)
 
         grdProviders.adapter = listAdapter
-        cmdBack.setOnClickListener { _ ->
+        cmdBack.setOnClickListener {
             activityViewModel.backStep()
         }
     }

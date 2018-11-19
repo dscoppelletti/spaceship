@@ -15,10 +15,9 @@
   ~ limitations under the License
   ~
   ~ - Dario Scoppelletti, 2018
-  ~ Original repository: http://android.googlesource.com/platform/frameworks/
-  ~     support
-  ~ Original file: androidx-1.0-dev/preference/res/layout/
-  ~     preference_dialog_edittext.xml
+  ~ Repository: http://android.googlesource.com/platform/frameworks/support
+  ~ File: androidx-1.0-dev/preference/res/layout/
+  ~       preference_dialog_edittext.xml
   ~ Commit: e94ca6676f8f845741369d4967255f642a4cefbb - March 09, 2018
   ~ Add tools namespace.
   ~ Add tools:ignore.

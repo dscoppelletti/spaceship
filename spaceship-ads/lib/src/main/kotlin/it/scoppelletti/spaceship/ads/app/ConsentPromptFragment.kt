@@ -83,16 +83,15 @@ public class ConsentPromptFragment : Fragment(), Injectable {
         url = getString(R.string.it_scoppelletti_url_privacy)
         count = activityViewModel.state.value?.data?.adProviders?.size ?: 0
         viewModel.buildText(getString(
-                R.string.it_scoppelletti_ads_html_consent, url, count), url)
-        { _ ->
+                R.string.it_scoppelletti_ads_html_consent, url, count), url) {
             activityViewModel.setStep(ConsentPrivacyFragment.POS)
         }
 
-        cmdConsent.setOnClickListener { _ ->
+        cmdConsent.setOnClickListener {
             activityViewModel.save(ConsentStatus.PERSONALIZED)
         }
 
-        cmdReminder.setOnClickListener { _ ->
+        cmdReminder.setOnClickListener {
             activityViewModel.setStep(ConsentReminderFragment.POS)
         }
     }

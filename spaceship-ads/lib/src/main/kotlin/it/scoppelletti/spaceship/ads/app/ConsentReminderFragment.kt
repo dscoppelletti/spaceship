@@ -83,11 +83,11 @@ public class ConsentReminderFragment : Fragment(), Injectable {
         viewModel.buildText(getString(
                 R.string.it_scoppelletti_ads_html_reminder, url))
 
-        cmdAgree.setOnClickListener { _ ->
+        cmdAgree.setOnClickListener {
             activityViewModel.save(ConsentStatus.NON_PERSONALIZED)
         }
 
-        cmdBack.setOnClickListener { _ ->
+        cmdBack.setOnClickListener {
             activityViewModel.backStep()
         }
     }

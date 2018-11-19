@@ -83,11 +83,11 @@ public class ConsentUnderageFragment : Fragment(), Injectable {
         viewModel.buildText(getString(
                 R.string.it_scoppelletti_ads_html_underage, url))
 
-        cmdAgree.setOnClickListener { _ ->
+        cmdAgree.setOnClickListener {
             activityViewModel.save(ConsentStatus.UNDER_AGE_OF_CONSENT)
         }
 
-        cmdBack.setOnClickListener { _ ->
+        cmdBack.setOnClickListener {
             activityViewModel.backStep()
         }
     }

@@ -43,9 +43,9 @@ spaceship {
 }
 
 dependencies {
-    api "androidx.annotation:annotation:${versionMap.androidx_support}"
-    api "androidx.appcompat:appcompat:${versionMap.androidx_support}"
-    api "com.google.android.material:material:${versionMap.androidx_support}"
+    api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
+    api "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
+    api "com.google.android.material:material:${versionMap.androidx_material}"
     api "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
     api "com.google.dagger:dagger-android-support:${versionMap.dagger}"

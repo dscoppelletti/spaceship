@@ -206,12 +206,12 @@ private fun Throwable.toMessageImpl(): String {
     var msg: String? = localizedMessage
 
     if (!msg.isNullOrBlank()) {
-        return msg as String
+        return msg
     }
 
     msg = this.message
     if (!msg.isNullOrBlank()) {
-        return msg as String
+        return msg
     }
 
     msg = this.toString()

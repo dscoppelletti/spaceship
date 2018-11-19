@@ -37,12 +37,12 @@ class HttpApplicationExceptionTest {
 
         builder = adapter.fromJson(json)
         assertNotNull(builder, "notNull")
-        assertEquals("Error message",  builder?.message, "message")
-        assertEquals(500, builder?.statusCode, "statusCode")
-        assertEquals("Status description", builder?.error, "error")
-        assertEquals("IOException", builder?.exception, "exception")
-        assertEquals("/api/resource", builder?.path, "path")
-        assertEquals(1000L, builder?.timestamp, "timestamp")
+        assertEquals("Error message",  builder.message, "message")
+        assertEquals(500, builder.statusCode, "statusCode")
+        assertEquals("Status description", builder.error, "error")
+        assertEquals("IOException", builder.exception, "exception")
+        assertEquals("/api/resource", builder.path, "path")
+        assertEquals(1000L, builder.timestamp, "timestamp")
     }
 
     @Test
@@ -55,12 +55,12 @@ class HttpApplicationExceptionTest {
 
         builder = adapter.fromJson(json)
         assertNotNull(builder, "notNull")
-        assertEquals(StringExt.EMPTY,  builder?.message, "message")
-        assertEquals(0, builder?.statusCode, "statusCode")
-        assertNull(builder?.error, "error")
-        assertEquals(StringExt.EMPTY, builder?.exception, "exception")
-        assertNull(builder?.path, "path")
-        assertEquals(0L, builder?.timestamp, "timestamp")
+        assertEquals(StringExt.EMPTY,  builder.message, "message")
+        assertEquals(0, builder.statusCode, "statusCode")
+        assertNull(builder.error, "error")
+        assertEquals(StringExt.EMPTY, builder.exception, "exception")
+        assertNull(builder.path, "path")
+        assertEquals(0L, builder.timestamp, "timestamp")
     }
 
     @Test

@@ -1,101 +1,158 @@
 package it.scoppelletti.spaceship.security.sample
 
+import android.content.res.Configuration
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import it.scoppelletti.spaceship.app.hideSoftKeyboard
+import com.google.android.material.snackbar.Snackbar
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
+import it.scoppelletti.spaceship.app.NavigationDrawer
+import it.scoppelletti.spaceship.app.TitleAdapter
 import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.inject.Injectable
-import it.scoppelletti.spaceship.lifecycle.SingleEvent
-import it.scoppelletti.spaceship.security.sample.databinding.MainActivityBinding
-import it.scoppelletti.spaceship.security.sample.lifecycle.MainForm
+import it.scoppelletti.spaceship.security.sample.lifecycle.MainState
 import it.scoppelletti.spaceship.security.sample.lifecycle.MainViewModel
 import kotlinx.android.synthetic.main.main_activity.*
-import java.lang.RuntimeException
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), Injectable {
+class MainActivity : AppCompatActivity(),
+        Injectable,
+        HasSupportFragmentInjector {
+
+    @Inject
+    lateinit var fragmentDispatchingAndroidInjector:
+            DispatchingAndroidInjector<Fragment>
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
+    private lateinit var drawer: NavigationDrawer
+    private lateinit var titleAdapter: TitleAdapter
     private lateinit var viewModel: MainViewModel
-    private lateinit var binding: MainActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.main_activity)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.main_activity)
+        drawer = NavigationDrawer(this, drawerLayout, navigationView, toolbar)
         setSupportActionBar(toolbar)
+        drawer.onCreate(savedInstanceState)
+        titleAdapter = TitleAdapter(this, toolbarLayout)
+
+        navigationView.setNavigationItemSelectedListener {
+            drawerLayout.closeDrawers()
+            navigateToFragment(it.itemId)
+        }
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+
+        drawer.onPostCreate(savedInstanceState)
+        titleAdapter.onPostCreate(savedInstanceState)
+
+        val fragment = supportFragmentManager.findFragmentById(
+                R.id.contentFrame)
+        if (fragment != null) {
+            setFragment(fragment)
+        } else if (navigateToFragment(R.id.cmd_key)) {
+            navigationView.setCheckedItem(R.id.cmd_key)
+        }
 
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(MainViewModel::class.java)
-        binding.model = viewModel.form
 
-        viewModel.state.observe(this,
-                Observer<SingleEvent<Throwable>> { state ->
+        viewModel.state.observe(this, Observer<MainState> { state ->
             if (state != null) {
                 stateObserver(state)
             }
         })
     }
 
-    private fun stateObserver(state: SingleEvent<Throwable>) {
-        state.poll()?.let { err ->
-            showExceptionDialog(err)
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> =
+            fragmentDispatchingAndroidInjector
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        titleAdapter.onSaveInstanceState(outState)
+    }
+
+    override fun onBackPressed() {
+        if (drawer.onBackPressed()) {
             return
+        }
+
+        super.onBackPressed()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration?) {
+        super.onConfigurationChanged(newConfig)
+        drawer.onConfigurationChanged(newConfig)
+    }
+
+    private fun stateObserver(state: MainState) {
+        if (state.waiting) {
+            progressIndicator.show()
+            return
+        }
+
+        progressIndicator.hide {
+            state.messageId?.poll()?.let { messageId ->
+                Snackbar.make(contentFrame, messageId, Snackbar.LENGTH_SHORT)
+                        .show()
+            }
+
+            state.error?.poll()?.let { err ->
+                showExceptionDialog(err)
+            }
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
-
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.cmd_encrypt -> {
-                onEncrypt(viewModel.form)
-                return true
-            }
-
-            R.id.cmd_decrypt -> {
-                onDecrypt(viewModel.form)
-                return true
-            }
+        if (drawer.onOptionItemSelected(item)) {
+            return true
         }
 
         return super.onOptionsItemSelected(item)
     }
 
-    private fun onEncrypt(form: MainForm) {
-        try {
-            hideSoftKeyboard()
-            if (!form.validate()) {
-                return
+    private fun navigateToFragment(itemId: Int): Boolean {
+        val fragment: Fragment
+
+        when (itemId) {
+            R.id.cmd_key -> {
+                fragment = KeyFragment.newInstance()
             }
 
-            viewModel.encrypt(form.alias, form.expire, form.clearText)
-        } catch (ex: RuntimeException) {
-            showExceptionDialog(ex)
+            R.id.cmd_cipher -> {
+                fragment = CipherFragment.newInstance()
+            }
+
+            R.id.cmd_providers -> {
+                fragment = ProviderFragment.newInstance()
+            }
+
+            else -> return false
         }
+
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.contentFrame, fragment)
+                .commit()
+        setFragment(fragment)
+
+        return true
     }
 
-    private fun onDecrypt(form: MainForm) {
-        try {
-            hideSoftKeyboard()
-            if (!form.validate()) {
-                return
-            }
-
-            viewModel.decrypt(form.alias, form.encryptedText)
-        } catch (ex: RuntimeException) {
-            showExceptionDialog(ex)
+    private fun setFragment(fragment: Fragment) {
+        if (fragment is DrawerFragment) {
+            titleAdapter.titleId = fragment.titleId
         }
     }
 }

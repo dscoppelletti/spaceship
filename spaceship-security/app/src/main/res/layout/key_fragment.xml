@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".KeyFragment">
+    <data>
+        <variable name="model" type="it.scoppelletti.spaceship.security.sample.lifecycle.KeyForm" />
+    </data>
+    <ScrollView android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout android:id="@+id/contentFrame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/it_scoppelletti_marginHorz"
+            android:layout_marginRight="@dimen/it_scoppelletti_marginHorz"
+            android:layout_marginTop="@dimen/it_scoppelletti_marginVert"
+            android:layout_marginBottom="@dimen/it_scoppelletti_marginVert"
+            android:orientation="vertical">
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:it_scoppelletti_error="@{model.aliasError}"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtAlias"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={model.alias}"
+                    android:hint="@string/lbl_alias"
+                    android:inputType="text"
+                    android:imeOptions="actionDone"
+                    app:it_scoppelletti_validator="@{() -> model.validateAlias()}"
+                    android:drawableRight="@{model.aliasError &gt; 0 ? @drawable/ic_error : null}"
+                    android:drawableEnd="@{model.aliasError &gt; 0 ? @drawable/ic_error : null}" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:it_scoppelletti_error="@{model.expireError}"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtExpire"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={model.expireString}"
+                    android:hint="@string/lbl_expire"
+                    android:inputType="number"
+                    android:imeOptions="actionDone"
+                    app:it_scoppelletti_validator="@{() -> model.validateExpire()}"
+                    android:drawableRight="@{model.expireError &gt; 0 ? @drawable/ic_error : null}"
+                    android:drawableEnd="@{model.expireError &gt; 0 ? @drawable/ic_error : null}"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+    </ScrollView>
+</layout>

@@ -16,6 +16,7 @@
 
 package it.scoppelletti.spaceship.security
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
@@ -29,6 +30,7 @@ import java.util.Calendar
 import java.util.Date
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
+import javax.crypto.spec.IvParameterSpec
 import javax.security.auth.x500.X500Principal
 
 /**
@@ -39,10 +41,22 @@ import javax.security.auth.x500.X500Principal
  * @param       timeProvider Provides components for operations on dates and
  *                           times.
  */
-internal class DefaultCipherProvider(
+internal class DefaultSecurityBridge(
         private val context: Context,
         private val timeProvider: TimeProvider
-) : CipherProvider {
+) : SecurityBridge {
+
+    override fun createCipher(transformation: String): Cipher =
+            Cipher.getInstance(transformation)
+
+    override fun createCipher(
+            transformation: String,
+            provider: String
+    ): Cipher = Cipher.getInstance(transformation, provider)
+
+    override fun createCipherParameterSpec(
+            iv: ByteArray
+    ): AlgorithmParameterSpec = IvParameterSpec(iv)
 
     override fun createKeyGenerator(
             algorithm: String,
@@ -55,27 +69,32 @@ internal class DefaultCipherProvider(
             expire: Int
     ): AlgorithmParameterSpec {
         val endDate: Date
+        val builder: KeyGenParameterSpec.Builder
 
-        endDate = timeProvider.currentTime()
-                .apply {
-                    add(Calendar.DATE, expire)
-                }
-                .time
-
-        // - OnePlus A3003, OxygenOS 4.1.6, Android 7.1.1
-        // If I set the keyValidityStart, the init method of the Cipher
-        // object often throws a KeyNotYetValidException exception: I should
-        // wait in debug mode for few seconds to avoid that.
-        return KeyGenParameterSpec.Builder(keystoreAlias,
+        builder = KeyGenParameterSpec.Builder(keystoreAlias,
                 KeyProperties.PURPOSE_ENCRYPT or
                         KeyProperties.PURPOSE_DECRYPT)
-                .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                .setKeySize(SecurityExt.AES_KEYSIZE)
+                .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
                 .setEncryptionPaddings(
-                        KeyProperties.ENCRYPTION_PADDING_NONE)
-                .setRandomizedEncryptionRequired(false)
+                        KeyProperties.ENCRYPTION_PADDING_PKCS7)
+                .setRandomizedEncryptionRequired(true)
                 .setUserAuthenticationRequired(false)
-                .setKeyValidityEnd(endDate)
-                .build()
+
+        if (expire > 0) {
+            // - OnePlus A3003, OxygenOS 4.1.6, Android 7.1.1
+            // If I set the keyValidityStart, the init method of the Cipher
+            // object often throws a KeyNotYetValidException exception: I should
+            // wait in debug mode for few seconds to avoid that.
+            endDate = timeProvider.currentTime()
+                    .apply {
+                        add(Calendar.DATE, expire)
+                    }
+                    .time
+            builder.setKeyValidityEnd(endDate)
+        }
+
+        return builder.build()
     }
 
     override fun createKeyPairGenerator(
@@ -84,6 +103,7 @@ internal class DefaultCipherProvider(
     ): KeyPairGenerator = KeyPairGenerator.getInstance(algorithm, provider)
 
     @Suppress("deprecation")
+    @SuppressLint("WrongConstant")
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     override fun createKeyPairGenParameterSpec(
             alias: String,
@@ -93,34 +113,37 @@ internal class DefaultCipherProvider(
         val startDate: Calendar
         val endDate: Calendar
         val subject: X500Principal
+        val builder: android.security.KeyPairGeneratorSpec.Builder
 
         subject = X500Principal(SecurityExt.TAG_CN + alias)
         serialNumber = System.currentTimeMillis()
 
         startDate = timeProvider.currentTime()
         endDate = startDate.clone() as Calendar
-        endDate.add(Calendar.DATE, expire)
+        if (expire > 0) {
+            endDate.add(Calendar.DATE, expire)
+        } else {
+            // Simulate no expiration
+            endDate.set(9999, Calendar.DECEMBER, 31)
+        }
 
-        return android.security.KeyPairGeneratorSpec.Builder(context)
+        builder = android.security.KeyPairGeneratorSpec.Builder(context)
                 .setAlias(alias)
                 .setSubject(subject)
                 .setSerialNumber(serialNumber.toBigInteger())
                 .setStartDate(startDate.time)
                 .setEndDate(endDate.time)
-                .build()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            builder.setKeyType(SecurityExt.KEY_ALGORITHM_RSA)
+                    .setKeySize(SecurityExt.RSA_KEYSIZE)
+        }
+
+        return builder.build()
     }
-
-    override fun createCipher(transformation: String): Cipher =
-            Cipher.getInstance(transformation)
-
-    override fun createCipher(
-            transformation: String,
-            provider: String
-    ): Cipher = Cipher.getInstance(transformation, provider)
 
     override fun createKeyStore(type: String): KeyStore =
             KeyStore.getInstance(type).apply {
                 load(null)
             }
 }
-

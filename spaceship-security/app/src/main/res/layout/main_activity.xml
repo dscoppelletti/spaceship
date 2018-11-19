@@ -1,91 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity">
-    <data>
-        <variable name="model" type="it.scoppelletti.spaceship.security.sample.lifecycle.MainForm" />
-    </data>
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        style="@style/it_scoppelletti_style_coordinatorLayout"
-        android:fitsSystemWindows="true">
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-            <LinearLayout android:id="@+id/contentFrame"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
+        style="@style/it_scoppelletti_style_drawerLayout">
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            style="@style/it_scoppelletti_style_coordinatorLayout">
+            <androidx.core.widget.NestedScrollView android:id="@+id/contentFrame"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/it_scoppelletti_marginHorz"
-                android:layout_marginRight="@dimen/it_scoppelletti_marginHorz"
-                android:layout_marginTop="@dimen/it_scoppelletti_marginVert"
-                android:layout_marginBottom="@dimen/it_scoppelletti_marginVert"
-                android:orientation="vertical">
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:it_scoppelletti_error="@{model.aliasError}"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/txtAlias"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@={model.alias}"
-                        android:hint="@string/lbl_alias"
-                        android:inputType="text"
-                        app:it_scoppelletti_validator="@{() -> model.validateAlias()}"
-                        android:drawableRight="@{model.aliasError &gt; 0 ? @drawable/ic_error : null}"
-                        android:drawableEnd="@{model.aliasError &gt; 0 ? @drawable/ic_error : null}" />
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:it_scoppelletti_error="@{model.expireError}"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/txtExpire"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@={model.expireString}"
-                        android:hint="@string/lbl_expire"
-                        android:inputType="number"
-                        app:it_scoppelletti_validator="@{() -> model.validateExpire()}"
-                        android:drawableRight="@{model.expireError &gt; 0 ? @drawable/ic_error : null}"
-                        android:drawableEnd="@{model.expireError &gt; 0 ? @drawable/ic_error : null}"/>
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/txtClearText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@={model.clearText}"
-                        android:hint="@string/lbl_clearText"
-                        android:singleLine="false"
-                        android:inputType="textMultiLine" />
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/txtEncryptedText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@={model.encryptedText}"
-                        android:hint="@string/lbl_encryptedText"
-                        android:singleLine="false"
-                        android:inputType="textMultiLine" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/app_bar_layout"
-            style="@style/it_scoppelletti_style_appBarLayout">
-            <androidx.appcompat.widget.Toolbar android:id="@+id/toolbar"
-                style="@style/it_scoppelletti_style_toolbar"/>
-        </com.google.android.material.appbar.AppBarLayout>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</layout>
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            </androidx.core.widget.NestedScrollView>
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
+                style="@style/it_scoppelletti_style_collapsingAppBarLayout">
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:id="@+id/toolbarLayout"
+                    style="@style/it_scoppelletti_style_collapsingToolbarLayout">
+                    <androidx.appcompat.widget.Toolbar android:id="@+id/toolbar"
+                        style="@style/it_scoppelletti_style_collapsingToolbar"/>
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigationView"
+            style="@style/it_scoppelletti_style_navView"
+            app:menu="@menu/main" />
+    </androidx.drawerlayout.widget.DrawerLayout>
+    <it.scoppelletti.spaceship.widget.ProgressOverlay
+        android:id="@+id/progressIndicator"
+        style="@style/it_scoppelletti_style_progressOverlay" />
+</FrameLayout>
+

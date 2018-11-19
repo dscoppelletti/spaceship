@@ -18,8 +18,5 @@
     tools:ignore="MissingTranslation">
     <eat-comment />
     <string name="app_name">Spaceship Security Library</string>
-    <string name="it_scoppelletti_security_aesMode">AES/ECB/PKCS7Padding</string>
-    <string name="it_scoppelletti_security_rsaMode">RSA/ECB/PKCS1Padding</string>
     <integer name="it_scoppelletti_security_ivLen">12</integer>
-    <integer name="it_scoppelletti_security_keyLen">16</integer>
 </resources>

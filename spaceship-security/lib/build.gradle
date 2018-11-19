@@ -45,7 +45,7 @@ spaceship {
 }
 
 dependencies {
-    api "androidx.annotation:annotation:${versionMap.androidx_support}"
+    api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
     api "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
     api "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"

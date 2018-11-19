@@ -17,7 +17,7 @@ import java.util.Date
 import java.util.Enumeration
 import javax.crypto.SecretKey
 
-private val PROVIDER: Provider = Security.getProvider(SecurityExtTest.PROVIDER)
+private val PROVIDER: Provider = Security.getProvider(SecurityExtTest.PROVIDER_SUN)
 private val logger: KLogger = KotlinLogging.logger {}
 
 class FakeKeyStore(

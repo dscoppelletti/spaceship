@@ -19,9 +19,9 @@ import java.security.spec.RSAPublicKeySpec
 import java.util.Date
 import javax.security.auth.x500.X500Principal
 
-private val MODULUS: BigInteger = BigInteger(ByteArray(64) { _ -> 3})
-private val PUBLIC_EXP: BigInteger = BigInteger(ByteArray(4) { _ -> 5 })
-private val PRIVATE_EXP: BigInteger = BigInteger(ByteArray(64) { _ -> 7})
+private val MODULUS: BigInteger = BigInteger(ByteArray(64) { 3 })
+private val PUBLIC_EXP: BigInteger = BigInteger(ByteArray(4) { 5 })
+private val PRIVATE_EXP: BigInteger = BigInteger(ByteArray(64) { 7 })
 
 private val logger: KLogger = KotlinLogging.logger {}
 
@@ -37,7 +37,6 @@ class StubKeyPairGenerator(
             random: SecureRandom?
     ) {
         spec = params as? FakeKeyPairGeneratorSpec
-
         logger.debug { "engineInit(alias=${spec?.alias})" }
     }
 
@@ -50,21 +49,26 @@ class StubKeyPairGenerator(
         var keySpec: KeySpec
         val x509Cert: X509Certificate
 
-        keyFactory = KeyFactory.getInstance(SecurityExtTest.ALG_RSA)
-        keySpec = RSAPublicKeySpec(MODULUS, PUBLIC_EXP)
+        try {
+            keyFactory = KeyFactory.getInstance(
+                    SecurityExt.KEY_ALGORITHM_RSA)
+            keySpec = RSAPublicKeySpec(MODULUS, PUBLIC_EXP)
 
-        publicKey = keyFactory.generatePublic(keySpec)
+            publicKey = keyFactory.generatePublic(keySpec)
 
-        keySpec = RSAPrivateKeySpec(MODULUS, PRIVATE_EXP)
-        privateKey = keyFactory.generatePrivate(keySpec)
+            keySpec = RSAPrivateKeySpec(MODULUS, PRIVATE_EXP)
+            privateKey = keyFactory.generatePrivate(keySpec)
 
-        keyPair = KeyPair(publicKey, privateKey)
+            keyPair = KeyPair(publicKey, privateKey)
 
-        if (spec != null) {
-            x509Cert = FakeCertificateFactory.create(publicKey, spec)
-            cert = CertificateNormalizer.toCertificate(x509Cert.encoded)
-            keyStore.setKeyEntry(spec?.alias, keyPair.private, null,
-                    arrayOf(cert))
+            if (spec != null) {
+                x509Cert = FakeCertificateFactory.create(publicKey, spec)
+                cert = CertificateNormalizer.toCertificate(x509Cert.encoded)
+                keyStore.setKeyEntry(spec?.alias, keyPair.private, null,
+                        arrayOf(cert))
+            }
+        } finally {
+            spec = null
         }
 
         return keyPair

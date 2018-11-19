@@ -29,7 +29,35 @@ import javax.crypto.NoSuchPaddingException
 /**
  * Provides components for encryption/decryption.
  */
-internal interface CipherProvider {
+internal interface SecurityBridge {
+
+    /**
+     * Creates a new `Cipher` instance.
+     *
+     * @param  transformation Name of the transformation.
+     * @return                The new object.
+     */
+    @Throws(NoSuchAlgorithmException::class, NoSuchPaddingException::class)
+    fun createCipher(transformation: String): Cipher
+
+    /**
+     * Creates a new `Cipher` instance.
+     *
+     * @param  transformation Name of the transformation.
+     * @param  provider       Name of the provider.
+     * @return                The new object.
+     */
+    @Throws(NoSuchAlgorithmException::class, NoSuchProviderException::class,
+            NoSuchPaddingException::class)
+    fun createCipher(transformation: String, provider: String): Cipher
+
+    /**
+     * Creates the parametes object for a cipher operation.
+     *
+     * @param  iv `IV`.
+     * @return    The new object.
+     */
+    fun createCipherParameterSpec(iv: ByteArray): AlgorithmParameterSpec
 
     /**
      * Creates a new `KeyGenerator` instance.
@@ -73,38 +101,16 @@ internal interface CipherProvider {
     /**
      * Creates the parameters object for the generation of a key pair.
      *
-     * @param  alias        Alias to be used to retrieve the key later from a
-     *                      `KeyStore` instance using the `AndroidKeyStore`
-     *                      provider.
-     * @param  expire       Expiration of the key the self-signed certificate of
-     *                      the generated key pair (days).
-     * @return              The new object.
+     * @param  alias  Alias to be used to retrieve the key later from a
+     *                `KeyStore` instance using the `AndroidKeyStore` provider.
+     * @param  expire Expiration of the key the self-signed certificate of the
+     *                generated key pair (days).
+     * @return        The new object.
      */
     fun createKeyPairGenParameterSpec(
             alias: String,
             expire: Int
     ): AlgorithmParameterSpec
-
-    /**
-     * Creates a new `Cipher` instance.
-     *
-     * @param  transformation Name of the transformation.
-     * @return                The new object.
-     */
-    @Throws(NoSuchAlgorithmException::class, NoSuchProviderException::class,
-            NoSuchPaddingException::class)
-    fun createCipher(transformation: String): Cipher
-
-    /**
-     * Creates a new `Cipher` instance.
-     *
-     * @param  transformation Name of the transformation.
-     * @param  provider       Name of the provider.
-     * @return                The new object.
-     */
-    @Throws(NoSuchAlgorithmException::class, NoSuchProviderException::class,
-            NoSuchPaddingException::class)
-    fun createCipher(transformation: String, provider: String): Cipher
 
     /**
      * Creates a new `KeyStore` instance (already initialized).

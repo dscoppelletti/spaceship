@@ -2,8 +2,6 @@
 
 Spaceship Security Library.
 
-* [AdMob](http://www.google.com/admob)
-
 # Package it.scoppelletti.spaceship.security
 
 Provides the classes and interfaces for the security framework.

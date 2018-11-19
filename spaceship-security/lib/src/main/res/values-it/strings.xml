@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="it_scoppelletti_security_err_aliasInvalid">Alias %1$s non valido.</string>
-    <string name="it_scoppelletti_security_err_aliasNotFound">La chiave di decrifratura %1$s non esiste.</string>
+    <string name="it_scoppelletti_security_err_aliasNotFound">L\'elemento %1$s non esiste.</string>
+    <string name="it_scoppelletti_security_err_aliasNotCertificate">L\'elemento %1$s non è un certificato X509.</string>
+    <string name="it_scoppelletti_security_err_aliasNotPrivateKey">L\'elemento %1$s non è una chiave privata.</string>
+    <string name="it_scoppelletti_security_err_aliasNotSecretKey">L\'elemento %1$s non è una chiave segreta.</string>
+    <string name="it_scoppelletti_security_err_certificateNotFound">Il certificato %1$s non esiste.</string>
+    <string name="it_scoppelletti_security_err_loadSecretKey">Errore nella lettura della chiave segreta dal file %1$s.</string>
+    <string name="it_scoppelletti_security_err_providerNotFound">Il provider %1$s non esiste.</string>
+    <string name="it_scoppelletti_security_err_saveSecretKey">Errore nella scrittura della chiave segreta nel file %1$s.</string>
+    <string name="it_scoppelletti_security_err_secretKeyNotFound">La chiave segreta non esiste (file %1$s).</string>
 </resources>

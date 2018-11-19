@@ -21,87 +21,19 @@ import kotlin.test.Test
 import kotlin.test.assertTrue
 
 private const val EXPIRE: Int = 30
-private const val ALG_AES: String = "AES"
 private const val ALIAS_KEY: String = "key"
 private const val ALIAS_KEYPAIR: String = "keypair"
-private val DATA: ByteArray = ByteArray(16) { _ -> 13}
+private val DATA: ByteArray = ByteArray(16) { 13 }
 
-class CipherProviderTest {
+class SecuirtyBridgeTest {
 
-    private lateinit var cipherProvider: CipherProvider
+    private lateinit var securityBridge: SecurityBridge
     private lateinit var random: SecureRandom
 
     @BeforeTest
-    fun before() {
-        cipherProvider = FakeCipherProvider(FakeTimeProvider())
+    fun setUp() {
+        securityBridge = FakeSecurityBridge(FakeTimeProvider())
         random = StubSecureRandom.create()
-    }
-
-    @Test
-    fun keyGenerator() {
-        val key: Key
-        val secretKey: SecretKey
-        val keyStore: KeyStore
-
-        secretKey = getSecretKey()
-        assertTrue(secretKey.encoded contentEquals StubKeyGenerator.ENCODED,
-                "Generated key is not well-known.")
-
-        keyStore = cipherProvider.createKeyStore(SecurityExtTest.KEYSTORE_TYPE)
-        key = keyStore.getKey(ALIAS_KEY, null)
-        assertTrue(key is SecretKey, "Read key is not a SecretKey.")
-
-        assertTrue(key.encoded contentEquals secretKey.encoded,
-                "Read key is not identical to the generated key.")
-    }
-
-    private fun getSecretKey(): SecretKey {
-        val keyGen: KeyGenerator
-        val params: AlgorithmParameterSpec
-
-        params = cipherProvider.createKeyGenParameterSpec(ALIAS_KEY, EXPIRE)
-
-        keyGen = cipherProvider.createKeyGenerator(ALG_AES,
-                SecurityExtTest.KEYSTORE_TYPE)
-                .apply {
-                    init(params, random)
-                }
-
-        return keyGen.generateKey()
-    }
-
-    @Test
-    fun keyPairGenerator() {
-        val key: Key
-        val keyPair: KeyPair
-        val keyPairGen: KeyPairGenerator
-        val params: AlgorithmParameterSpec
-        val keyStore: KeyStore
-
-        params = cipherProvider.createKeyPairGenParameterSpec(ALIAS_KEYPAIR,
-                EXPIRE)
-
-        keyPairGen = cipherProvider.createKeyPairGenerator(
-                SecurityExtTest.ALG_RSA, SecurityExtTest.PROVIDER)
-                .apply {
-                    initialize(params, random)
-                }
-
-        keyPair = keyPairGen.generateKeyPair()
-
-        assertTrue(keyPair.public.encoded contentEquals
-                StubKeyPairGenerator.PUBLIC_ENCODED,
-                "Generated public key is not well-known.")
-        assertTrue(keyPair.private.encoded contentEquals
-                StubKeyPairGenerator.PRIVATE_ENCODED,
-                "Generated private key is not well-known")
-
-        keyStore = cipherProvider.createKeyStore(SecurityExtTest.KEYSTORE_TYPE)
-        key = keyStore.getKey(ALIAS_KEYPAIR, null)
-        assertTrue(key is PrivateKey, "Read key is not a PrivateKey.")
-
-        assertTrue(key.encoded contentEquals keyPair.private.encoded,
-                "Read key is not identical to the generated private key.")
     }
 
     @Test
@@ -110,7 +42,7 @@ class CipherProviderTest {
         val outputStream: ByteArrayOutputStream
         val encryptor: OutputStream
 
-        cipher = cipherProvider.createCipher(ALG_AES)
+        cipher = securityBridge.createCipher(SecurityExt.KEY_ALGORITHM_AES)
         cipher.init(Cipher.ENCRYPT_MODE, getSecretKey())
 
         outputStream = ByteArrayOutputStream()
@@ -127,7 +59,7 @@ class CipherProviderTest {
         val outputStream: ByteArrayOutputStream
         val decryptor: OutputStream
 
-        cipher = cipherProvider.createCipher(ALG_AES)
+        cipher = securityBridge.createCipher(SecurityExt.KEY_ALGORITHM_AES)
         cipher.init(Cipher.ENCRYPT_MODE, getSecretKey())
 
         outputStream = ByteArrayOutputStream()
@@ -136,6 +68,73 @@ class CipherProviderTest {
         decryptor.closeQuietly()
 
         assertTrue(outputStream.toByteArray() contentEquals DATA)
+    }
+
+    @Test
+    fun keyGenerator() {
+        val key: Key
+        val secretKey: SecretKey
+        val keyStore: KeyStore
+
+        secretKey = getSecretKey()
+        assertTrue(secretKey.encoded contentEquals StubKeyGenerator.ENCODED,
+                "Generated key is not well-known.")
+
+        keyStore = securityBridge.createKeyStore(SecurityExtTest.KEYSTORE_TYPE)
+        key = keyStore.getKey(ALIAS_KEY, null)
+        assertTrue(key is SecretKey, "Read key is not a SecretKey.")
+
+        assertTrue(key.encoded contentEquals secretKey.encoded,
+                "Read key is not identical to the generated key.")
+    }
+
+    private fun getSecretKey(): SecretKey {
+        val keyGen: KeyGenerator
+        val params: AlgorithmParameterSpec
+
+        params = securityBridge.createKeyGenParameterSpec(ALIAS_KEY, EXPIRE)
+
+        keyGen = securityBridge.createKeyGenerator(
+                SecurityExt.KEY_ALGORITHM_AES, SecurityExtTest.KEYSTORE_TYPE)
+                .apply {
+                    init(params, random)
+                }
+
+        return keyGen.generateKey()
+    }
+
+    @Test
+    fun keyPairGenerator() {
+        val key: Key
+        val keyPair: KeyPair
+        val keyPairGen: KeyPairGenerator
+        val params: AlgorithmParameterSpec
+        val keyStore: KeyStore
+
+        params = securityBridge.createKeyPairGenParameterSpec(ALIAS_KEYPAIR,
+                EXPIRE)
+
+        keyPairGen = securityBridge.createKeyPairGenerator(
+                SecurityExt.KEY_ALGORITHM_RSA, SecurityExtTest.PROVIDER_SUN)
+                .apply {
+                    initialize(params, random)
+                }
+
+        keyPair = keyPairGen.generateKeyPair()
+
+        assertTrue(keyPair.public.encoded contentEquals
+                StubKeyPairGenerator.PUBLIC_ENCODED,
+                "Generated public key is not well-known.")
+        assertTrue(keyPair.private.encoded contentEquals
+                StubKeyPairGenerator.PRIVATE_ENCODED,
+                "Generated private key is not well-known.")
+
+        keyStore = securityBridge.createKeyStore(SecurityExtTest.KEYSTORE_TYPE)
+        key = keyStore.getKey(ALIAS_KEYPAIR, null)
+        assertTrue(key is PrivateKey, "Read key is not a PrivateKey.")
+
+        assertTrue(key.encoded contentEquals keyPair.private.encoded,
+                "Read key is not identical to the generated private key.")
     }
 
     @Test

@@ -7,12 +7,12 @@ import java.security.spec.AlgorithmParameterSpec
 import java.util.Calendar
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
-import javax.crypto.NullCipher
+import javax.crypto.spec.IvParameterSpec
 import javax.security.auth.x500.X500Principal
 
-internal class FakeCipherProvider(
+internal class FakeSecurityBridge(
         private val timeProvider: TimeProvider
-) : CipherProvider {
+) : SecurityBridge {
 
     private val keyStore: KeyStore
 
@@ -24,29 +24,43 @@ internal class FakeCipherProvider(
         }
     }
 
+    override fun createCipher(transformation: String): Cipher =
+            FakeCipher(transformation)
+
+    override fun createCipher(
+            transformation: String,
+            provider: String
+    ): Cipher = FakeCipher(transformation)
+
+    override fun createCipherParameterSpec(
+            iv: ByteArray
+    ): AlgorithmParameterSpec = IvParameterSpec(iv)
+
     override fun createKeyGenerator(
             algorithm: String,
             provider: String
     ): KeyGenerator =
-    // - Android SDK 27.3
-    // No provider provides the AES algorithm for SecretKeyFactory type.
-            StubKeyGenerator(FakeCipherProvider.ALG_DES, keyStore)
+            StubKeyGenerator(SecurityExtTest.KEY_ALGORITHM_DES, keyStore)
 
     override fun createKeyGenParameterSpec(
             keystoreAlias: String,
             expire: Int
     ): AlgorithmParameterSpec {
         val startDate: Calendar
-        val endDate: Calendar
+        val endDate: Calendar?
 
         startDate = timeProvider.currentTime()
-        endDate = startDate.clone() as Calendar
-        endDate.add(Calendar.DATE, expire)
+        if (expire > 0) {
+            endDate = startDate.clone() as Calendar
+            endDate.add(Calendar.DATE, expire)
+        } else {
+            endDate = null
+        }
 
         // - Android SDK 27.3
         // Methods of the class KeyGenParameterSpec.Builder are not mocked.
         return FakeKeyGenParameterSpec(keystoreAlias, startDate.time,
-                endDate.time)
+                endDate?.time)
     }
 
     override fun createKeyPairGenerator(
@@ -68,7 +82,12 @@ internal class FakeCipherProvider(
 
         startDate = timeProvider.currentTime()
         endDate = startDate.clone() as Calendar
-        endDate.add(Calendar.DATE, expire)
+        if (expire > 0) {
+            endDate.add(Calendar.DATE, expire)
+        } else {
+            // Simulate no expiration
+            endDate.set(9999, Calendar.DECEMBER, 31)
+        }
 
         // - Android SDK 27.3
         // The class KeyGenPairParameterSpec.Builder needs the Context
@@ -80,16 +99,5 @@ internal class FakeCipherProvider(
                 startDate.time, endDate.time)
     }
 
-    override fun createCipher(transformation: String): Cipher = NullCipher()
-
-    override fun createCipher(
-            transformation: String,
-            provider: String
-    ): Cipher = NullCipher()
-
     override fun createKeyStore(type: String): KeyStore = keyStore
-
-    private companion object {
-        const val ALG_DES: String = "DES"
-    }
 }

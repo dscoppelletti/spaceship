@@ -7,7 +7,7 @@ import it.scoppelletti.spaceship.security.sample.R
 import it.scoppelletti.spaceship.types.StringExt
 import java.lang.NumberFormatException
 
-class MainForm : BaseObservable() {
+class KeyForm : BaseObservable() {
 
     @get:Bindable
     var alias: String = StringExt.EMPTY
@@ -80,8 +80,8 @@ class MainForm : BaseObservable() {
             return false
         }
 
-        if (value <= 0) {
-            expireError = R.string.err_expire_positive
+        if (value < 0) {
+            expireError = R.string.err_expire_valid
             return false
         }
 
@@ -89,24 +89,6 @@ class MainForm : BaseObservable() {
         expireError = 0
         return true
     }
-
-    @get:Bindable
-    var clearText: String = StringExt.EMPTY
-        set(value) {
-            if (value != field) {
-                field = value
-                notifyPropertyChanged(BR.clearText)
-            }
-        }
-
-    @get:Bindable
-    var encryptedText: String = StringExt.EMPTY
-        set(value) {
-            if (value != field) {
-                field = value
-                notifyPropertyChanged(BR.encryptedText)
-            }
-        }
 
     fun validate(): Boolean {
         var valid: Boolean = true

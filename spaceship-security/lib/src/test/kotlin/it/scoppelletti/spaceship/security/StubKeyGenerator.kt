@@ -15,7 +15,8 @@ import javax.crypto.SecretKey
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.SecretKeySpec
 
-private val PROVIDER: Provider = Security.getProvider(SecurityExtTest.PROVIDER)
+private val PROVIDER: Provider =
+        Security.getProvider(SecurityExtTest.PROVIDER_SUN)
 private val logger: KLogger = KotlinLogging.logger {}
 
 class StubKeyGenerator(
@@ -27,8 +28,8 @@ class StubKeyGenerator(
     companion object {
 
         // The encoded form is not always identical to the raw data!
-        val RAW: ByteArray = ByteArray(8) { _ -> 11 }
-        val ENCODED: ByteArray = ByteArray(8) { _ -> 11}
+        val RAW: ByteArray = ByteArray(8) { 11 }
+        val ENCODED: ByteArray = ByteArray(8) { 11 }
     }
 }
 
@@ -40,7 +41,7 @@ private class StubKeyGeneratorSpi(
     private var spec: FakeKeyGenParameterSpec? = null
 
     override fun engineInit(keysize: Int, random: SecureRandom?) {
-        throw NotImplementedError()
+        logger.debug { "engineInit(keysize=$keysize)" }
     }
 
     override fun engineInit(random: SecureRandom?) {
@@ -60,14 +61,18 @@ private class StubKeyGeneratorSpi(
         val keyFactory: SecretKeyFactory
         val keySpec: SecretKeySpec
 
-        keyFactory = SecretKeyFactory.getInstance(algorithm, PROVIDER)
-        keySpec = SecretKeySpec(StubKeyGenerator.RAW, algorithm)
-        key = keyFactory.generateSecret(keySpec)
+        try {
+            keyFactory = SecretKeyFactory.getInstance(algorithm, PROVIDER)
+            keySpec = SecretKeySpec(StubKeyGenerator.RAW, algorithm)
+            key = keyFactory.generateSecret(keySpec)
 
-        if (spec != null) {
-            keyStore.setKeyEntry(spec?.keystoreAlias,
-                    SecretKeyDelegator(key, spec?.keyValidityStart,
-                            spec?.keyValidityEnd), null, null)
+            if (spec != null) {
+                keyStore.setKeyEntry(spec?.keystoreAlias,
+                        SecretKeyDelegator(key, spec?.keyValidityStart,
+                                spec?.keyValidityEnd), null, null)
+            }
+        } finally {
+            spec = null
         }
 
         return key
@@ -93,5 +98,5 @@ class SecretKeyDelegator(
 class FakeKeyGenParameterSpec(
         val keystoreAlias: String,
         val keyValidityStart: Date,
-        val keyValidityEnd: Date
+        val keyValidityEnd: Date?
 ) : AlgorithmParameterSpec

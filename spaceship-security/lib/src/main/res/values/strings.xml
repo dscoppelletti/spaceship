@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="it_scoppelletti_security_err_aliasInvalid">Invalid alias %1$s.</string>
-    <string name="it_scoppelletti_security_err_aliasNotFound">Decryption key %1$s not found.</string>
+    <string name="it_scoppelletti_security_err_aliasNotFound">Entry %1$s not found.</string>
+    <string name="it_scoppelletti_security_err_aliasNotCertificate">Entry %1$s is not a X509 certificate.</string>
+    <string name="it_scoppelletti_security_err_aliasNotPrivateKey">Entry %1$s is not a private key.</string>
+    <string name="it_scoppelletti_security_err_aliasNotSecretKey">Entry %1$s is not a secret key.</string>
+    <string name="it_scoppelletti_security_err_certificateNotFound">Certificate %1$s not found.</string>
+    <string name="it_scoppelletti_security_err_loadSecretKey">Failed to load secret key from file %1$s.</string>
+    <string name="it_scoppelletti_security_err_providerNotFound">Provider %1$s not found.</string>
+    <string name="it_scoppelletti_security_err_saveSecretKey">Failed to save secret key in file %1$s.</string>
+    <string name="it_scoppelletti_security_err_secretKeyNotFound">Secret key not found (file %1$s).</string>
 </resources>

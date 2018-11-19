@@ -17,15 +17,14 @@
 package it.scoppelletti.spaceship.security.inject
 
 import android.content.Context
-import android.content.res.Resources
 import dagger.Module
 import dagger.Provides
 import it.scoppelletti.spaceship.inject.ContextModule
 import it.scoppelletti.spaceship.inject.IOModule
 import it.scoppelletti.spaceship.inject.TimeModule
 import it.scoppelletti.spaceship.io.IOProvider
-import it.scoppelletti.spaceship.security.CipherFactory
-import it.scoppelletti.spaceship.security.cipherFactory
+import it.scoppelletti.spaceship.security.CryptoProvider
+import it.scoppelletti.spaceship.security.cryptoProvider
 import it.scoppelletti.spaceship.types.TimeProvider
 import java.security.SecureRandom
 import javax.inject.Singleton
@@ -45,12 +44,11 @@ public object SecurityModule {
 
     @Provides
     @JvmStatic
-    public fun provideCipherFactory(
+    public fun provideCryptoProvider(
             context: Context,
-            resources: Resources,
             ioProvider: IOProvider,
             timeProvider: TimeProvider,
             random: SecureRandom
-    ): CipherFactory =
-            cipherFactory(context, resources, ioProvider, timeProvider, random)
+    ): CryptoProvider =
+            cryptoProvider(context, ioProvider, timeProvider, random)
 }

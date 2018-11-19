@@ -17,39 +17,58 @@
 package it.scoppelletti.spaceship.security
 
 import android.content.Context
-import android.content.res.Resources
 import android.os.Build
 import io.reactivex.Single
 import it.scoppelletti.spaceship.io.IOProvider
 import it.scoppelletti.spaceship.types.TimeProvider
 import java.io.InputStream
 import java.io.OutputStream
+import java.security.Key
 import java.security.SecureRandom
 import javax.crypto.Cipher
+import javax.crypto.SecretKey
 
 /**
- * Provides `Cipher` instances.
+ * Cryptography service provider.
  *
  * @since 1.0.0
  */
-public interface CipherFactory {
+public interface CryptoProvider {
 
     /**
-     * Creates a new `Cipher` instance for encryption.
+     * Generates a secret key.
      *
      * @param  alias  Alias of the key.
-     * @param  expire Expiration of the key (days).
+     * @param  expire Expiration of the key (days). If `<= 0`, the key never
+     *                expires.
      * @return        The new observable object.
      */
-    fun newEncryptor(alias: String, expire: Int): Single<Cipher>
+    fun newSecretKey(alias: String, expire: Int): Single<SecretKey>
 
     /**
-     * Creates a new `Cipher` instance for decryption.
+     * Loads a secret key.
      *
      * @param  alias Alias of the key.
      * @return       The new observable object.
      */
-    fun newDecryptor(alias: String): Single<Cipher>
+    fun loadSecretKey(alias: String): Single<SecretKey>
+
+    /**
+     * Creates a new `Cipher` instance for an encryption operation.
+     *
+     * @param  key A key.
+     * @return     The new observable object.
+     */
+    fun newEncryptor(key: Key): Single<Cipher>
+
+    /**
+     * Creates a new `Cipher` instance for an decryption operation.
+     *
+     * @param  key The key.
+     * @param  iv  The `IV`.
+     * @return     The new observable object.
+     */
+    fun newDecryptor(key: Key, iv: ByteArray): Single<Cipher>
 
     /**
      * Returns an input stream that ciphers the data read in from the underlying
@@ -76,39 +95,29 @@ public interface CipherFactory {
 }
 
 /**
- * Creates a new `CipherFactory` instance.
+ * Creates a new `CryptoProvider` instance.
  *
  * @param  context      Context.
- * @param  resources    Resources of this application.
  * @param  ioProvider   Provides I/O components.
  * @param  timeProvider Provides components for operations on dates and times.
  * @param  random       CSRNG.
  * @return              The new object.
  * @since               1.0.0
  */
-public fun cipherFactory(
+public fun cryptoProvider(
         context: Context,
-        resources: Resources,
         ioProvider: IOProvider,
         timeProvider: TimeProvider,
         random: SecureRandom
-): CipherFactory =
+): CryptoProvider =
         when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ->
-                CipherFactoryMarshmallow(resources, ioProvider, random,
-                        DefaultCipherProvider(context, timeProvider),
-                        DefaultCipherIOProvider())
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ->
-                CipherFactoryMarshmallow(resources, ioProvider, random,
-                        DefaultCipherProvider(context, timeProvider),
-                        CipherIOProviderNougat())
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ->
-                CipherFactoryMarshmallow(resources, ioProvider, random,
-                        DefaultCipherProvider(context, timeProvider),
-                        DefaultCipherIOProvider())
+                CryptoProviderMarshmallow(random,
+                        DefaultSecurityBridge(context, timeProvider))
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 ->
-                CipherFactoryJellyBeanMR2(resources, ioProvider, timeProvider,
-                        random, DefaultCipherProvider(context, timeProvider),
-                        DefaultCipherIOProvider())
-            else -> CipherFactoryStub(DefaultCipherIOProvider())
+                CryptoProviderJellyBeanMR2(ioProvider, timeProvider,
+                        random, DefaultSecurityBridge(context,
+                        timeProvider))
+            else -> DefaultCryptoProvider(random, DefaultSecurityBridge(context,
+                    timeProvider))
         }

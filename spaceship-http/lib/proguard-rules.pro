@@ -20,7 +20,5 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class it.scoppelletti.spaceship.http.HttpApplicationException$Builder { *; }
-
 # http://github.com/square/okhttp/issues/3922
--dontwarn org.conscrypt.*
+-dontwarn org.conscrypt.**

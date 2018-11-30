@@ -16,6 +16,7 @@
 
 package it.scoppelletti.spaceship.http
 
+import androidx.annotation.Keep
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
@@ -25,7 +26,6 @@ import it.scoppelletti.spaceship.types.trimRaw
 import mu.KLogger
 import mu.KotlinLogging
 import okhttp3.ResponseBody
-import okio.BufferedSource
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
@@ -85,6 +85,7 @@ public class HttpApplicationException private constructor(
      * @property timestamp  Timestamp of the original exception from the server
      *                      (milliseconds from the *Epoch*).
      */
+    @Keep
     @JsonClass(generateAdapter = true)
     internal class Builder {
 
@@ -145,45 +146,67 @@ public class HttpApplicationException private constructor(
  * @since    1.0.0
  */
 public fun HttpException.toHttpApplicationException(
-): HttpApplicationException {
-    val body: ResponseBody?
+): HttpApplicationException =
+        makeBuilder(this)
+                .apply {
+                    applyDefaults(this@toHttpApplicationException)
+                }
+                .build()
+                .apply {
+                    initCause(this@toHttpApplicationException)
+                }
+
+/**
+ * Creates a new `HttpApplicationException.Builder` instance.
+ *
+ * @param  source Original exception.
+ * @return        The new object.
+ */
+private fun makeBuilder(
+        source: HttpException
+) : HttpApplicationException.Builder {
+    val message: String
     val resp: Response<*>?
+    val body: ResponseBody?
     val moshi: Moshi
     val adapter: JsonAdapter<HttpApplicationException.Builder>
-    var builder: HttpApplicationException.Builder?
-    var source: BufferedSource? = null
+    val builder: HttpApplicationException.Builder?
 
-    resp = this.response()
+    resp = source.response()
     if (resp == null) {
         // The original exception comes from a deserialization
-        builder = HttpApplicationException.Builder()
-    } else {
-        body = resp.errorBody()
-
-        if (body == null) {
-            builder = makeBuilder(this, resp, null)
-        } else {
-            moshi = Moshi.Builder().build()
-            adapter = moshi.adapter(
-                    HttpApplicationException.Builder::class.java)
-
-            try {
-                source = body.source()
-                builder = adapter.nonNull().fromJson(source!!)
-            } catch (ex: Exception) { // IOException|JsonDataException
-                logger.error("Failed to convert response body.", ex)
-                builder = makeBuilder(this, resp, body)
-            } finally {
-                source?.closeQuietly()
-                body.closeQuietly()
-            }
-        }
+        return HttpApplicationException.Builder()
     }
 
-    builder?.applyDefaults(this)
-    return builder!!.build().apply {
-        initCause(this@toHttpApplicationException)
+    body = resp.errorBody()
+    if (body == null) {
+        return makeBuilder(source, resp, null)
     }
+
+    try {
+        // Cannot read body by its Okio source because Moshi adapter would
+        // consume it hence I could not fallback to the original body
+        message = body.string()
+    } catch (ex: IOException) {
+        logger.error("Failed to read response body.", ex)
+        // Use raw response
+        return makeBuilder(source, resp, body.toString())
+    } finally {
+        body.closeQuietly()
+    }
+
+    moshi = Moshi.Builder().build()
+    adapter = moshi.adapter(HttpApplicationException.Builder::class.java)
+            .failOnUnknown().nonNull()
+
+    builder = try {
+        adapter.fromJson(message)
+    } catch (ex: Exception) { // IOException|JsonDataException
+        logger.error("Failed to convert response body.", ex)
+        null
+    }
+
+    return builder ?: makeBuilder(source, resp, message)
 }
 
 /**
@@ -197,16 +220,11 @@ public fun HttpException.toHttpApplicationException(
 private fun makeBuilder(
         source: HttpException,
         resp: Response<*>,
-        body: ResponseBody?
+        body: String?
 ) : HttpApplicationException.Builder =
         HttpApplicationException.Builder().apply {
             if (body != null) {
-                try {
-                    message = body.string()
-                } catch (ex: IOException) {
-                    logger.error("Failed to read response body.", ex)
-                    message = body.toString() // raw response
-                }
+               message = body
             }
 
             statusCode = resp.code()

@@ -24,6 +24,11 @@ package it.scoppelletti.spaceship.http
 public object HttpExt {
 
     /**
+     * Authorization type `Bearer`.
+     */
+    public const val AUTH_BEARER: String = "Bearer"
+
+    /**
      * Header containing the client application name and version.
      */
     public const val HEADER_APPL: String = "X-scoppelletti-appl"

@@ -21,8 +21,8 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            consumerProguardFiles 'proguard-rules.pro', 'moshi.pro',
-                    'okhttp3.pro', 'okio.pro', 'retrofit2.pro'
+            consumerProguardFiles 'proguard-rules.pro', 'okhttp3.pro',
+                'retrofit2.pro'
             debuggable false
         }
         debug {
@@ -47,7 +47,6 @@ spaceship {
 dependencies {
     api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
     api "com.squareup.okhttp3:okhttp:${versionMap.okhttp}"
-    api "com.squareup.okio:okio:${versionMap.okio}"
     api "com.squareup.retrofit2:retrofit:${versionMap.retrofit}"
     api("it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}") {
         changing = true

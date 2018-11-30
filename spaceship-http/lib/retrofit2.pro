@@ -1,9 +1,10 @@
 # Source: http://github.com/square/retrofit/blob/master/retrofit/src/main/
 #         resources/META-INF/proguard/retrofit2.pro
-# Commit: 35381b1c1e90c906c032f872c729c594720391be - September 12, 2018
+# Commit: 30b3bc2d8e155f2a7edec46d247fd9973cf3c46f9 - October 16, 2018
 
-# Retrofit does reflection on generic parameters and InnerClass is required to use Signature.
--keepattributes Signature, InnerClasses
+# Retrofit does reflection on generic parameters. InnerClasses is required to use Signature and
+# EnclosingMethod is required to use InnerClasses.
+-keepattributes Signature, InnerClasses, EnclosingMethod
 
 # Retain service method parameters when optimizing.
 -keepclassmembers,allowshrinking,allowobfuscation interface * {

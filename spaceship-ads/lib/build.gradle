@@ -11,6 +11,7 @@ archivesBaseName = 'spaceship-ads'
 
 android {
     compileSdkVersion versionMap.sdk_target
+    buildToolsVersion versionMap.build_tools
     defaultConfig {
         minSdkVersion versionMap.sdk_min
         targetSdkVersion versionMap.sdk_target
@@ -46,6 +47,7 @@ spaceship {
 dependencies {
     api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
     api "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
+    api "androidx.browser:browser:${versionMap.androidx_browser}"
     api "com.google.android.material:material:${versionMap.androidx_material}"
     api "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
@@ -55,7 +57,10 @@ dependencies {
     api "com.google.firebase:firebase-core:${versionMap.firebase_core}"
     api "com.squareup.moshi:moshi:${versionMap.moshi}"
     kapt "com.squareup.moshi:moshi-kotlin-codegen:${versionMap.moshi}"
-    api "com.squareup.okhttp3:okhttp:${versionMap.okhttp}"
+    api("com.squareup.okhttp3:okhttp:${versionMap.okhttp}") {
+        // OkHttp3 does not use last version of Okio
+        exclude group: 'com.squareup.okio', module: 'okio'
+    }
     api "com.squareup.retrofit2:retrofit:${versionMap.retrofit}"
     api "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"
     api("it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}") {
@@ -71,11 +76,9 @@ dependencies {
         changing = true
     }
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
-    implementation "androidx.browser:browser:${versionMap.androidx_browser}"
     implementation "androidx.constraintlayout:constraintlayout:${versionMap.androidx_constraint}"
     implementation "androidx.lifecycle:lifecycle-common-java8:${versionMap.androidx_lifecycle}"
     implementation "androidx.lifecycle:lifecycle-extensions:${versionMap.androidx_lifecycle}"
-    implementation "androidx.recyclerview:recyclerview:${versionMap.androidx_recycler}"
     implementation "com.squareup.okio:okio:${versionMap.okio}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${versionMap.retrofit}"
     implementation "com.squareup.retrofit2:converter-moshi:${versionMap.retrofit}"

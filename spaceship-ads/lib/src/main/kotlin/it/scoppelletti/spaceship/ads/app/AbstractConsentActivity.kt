@@ -108,11 +108,8 @@ public abstract class AbstractConsentActivity : AppCompatActivity(), Injectable,
             fragmentDispatchingAndroidInjector
 
     private fun stateObserver(state: ConsentState) {
-        if (contentPager.currentItem != state.step) {
-            contentPager.currentItem = state.step
-        }
-
         if (state.waiting) {
+            setCurrentItem(state)
             progressIndicator.show()
         } else {
             progressIndicator.hide {
@@ -121,14 +118,22 @@ public abstract class AbstractConsentActivity : AppCompatActivity(), Injectable,
         }
     }
 
+    private fun setCurrentItem(state: ConsentState) {
+        if (contentPager.currentItem != state.step) {
+            contentPager.currentItem = state.step
+        }
+    }
+
     private fun onStateUpdate(state: ConsentState) {
         state.error?.poll()?.let { err ->
+            setCurrentItem(state)
             showExceptionDialog(err)
             return
         }
 
         if (settings) {
             if (state.data.consentStatus == ConsentStatus.NOT_IN_EEA) {
+                setCurrentItem(state)
                 showExceptionDialog(applicationException {
                     message(R.string.it_scoppelletti_ads_err_notInEea)
                 })
@@ -139,14 +144,19 @@ public abstract class AbstractConsentActivity : AppCompatActivity(), Injectable,
             if (state.saved) {
                 ConsentStatusObservable.setStatus(state.data.consentStatus)
                 tryFinish()
+                return
             }
         } else {
             if (state.data.consentStatus != ConsentStatus.UNKNOWN) {
                 ConsentStatusObservable.setStatus(state.data.consentStatus)
-                onComplete()
-                tryFinish()
+                if (onComplete()) {
+                    tryFinish()
+                    return
+                }
             }
         }
+
+        setCurrentItem(state)
     }
 
     /**
@@ -154,8 +164,11 @@ public abstract class AbstractConsentActivity : AppCompatActivity(), Injectable,
      *
      * It is not called if this activity has been has been launched as a
      * settings activity.
+     *
+     * @return Returns `true` if the method has been succeded, `false`
+     *         otherwise.
      */
-    public abstract fun onComplete()
+    public abstract fun onComplete(): Boolean
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {

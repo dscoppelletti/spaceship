@@ -23,19 +23,19 @@ import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.annotation.UiThread
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
 import it.scoppelletti.spaceship.ads.R
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentPrivacyState
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentPrivacyViewModel
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentViewModel
-import it.scoppelletti.spaceship.ads.widget.AdProviderListAdapter
+import it.scoppelletti.spaceship.ads.model.AdProvider
 import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.applicationException
 import it.scoppelletti.spaceship.inject.Injectable
@@ -59,7 +59,6 @@ public class ConsentPrivacyFragment : Fragment(), Injectable {
 
     private lateinit var activityViewModel: ConsentViewModel
     private lateinit var viewModel: ConsentPrivacyViewModel
-    private lateinit var listAdapter: AdProviderListAdapter
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -70,18 +69,10 @@ public class ConsentPrivacyFragment : Fragment(), Injectable {
             false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val listLayout : LinearLayoutManager
-        val itemDeco: RecyclerView.ItemDecoration
-
         super.onViewCreated(view, savedInstanceState)
 
         txtHeader.movementMethod = LinkMovementMethod.getInstance()
         txtFooter.movementMethod = LinkMovementMethod.getInstance()
-
-        listLayout = LinearLayoutManager(context)
-        grdProviders.layoutManager = listLayout
-        itemDeco =  DividerItemDecoration(context, listLayout.orientation)
-        grdProviders.addItemDecoration(itemDeco)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -103,16 +94,44 @@ public class ConsentPrivacyFragment : Fragment(), Injectable {
         viewModel.buildText(getString(R.string.it_scoppelletti_ads_html_header),
                 getString(R.string.it_scoppelletti_ads_html_footer, url))
 
-        listAdapter = AdProviderListAdapter(
-                activityViewModel.state.value?.data?.adProviders
-                        ?: emptyList(), ::openUrl)
+        showProviders(activityViewModel.state.value?.data?.adProviders
+                ?: emptyList())
 
-        grdProviders.adapter = listAdapter
-        cmdBack.setOnClickListener {
+        view?.findViewById<Button>(R.id.cmdBack)?.setOnClickListener {
             activityViewModel.backStep()
         }
     }
 
+    /**
+     * Shows Ad providers.
+     *
+     * @param adProviders Collection.
+     */
+    private fun showProviders(adProviders: List<AdProvider>) {
+        var chip: Chip
+
+        for (provider: AdProvider in adProviders) {
+            chip = Chip(requireContext()).apply {
+                text = provider.name
+                isCheckable = false
+                setOnClickListener {
+                    openUrl(provider.policyUrl)
+                }
+            }
+
+            ViewCompat.setLayoutDirection(chip,
+                    ViewCompat.LAYOUT_DIRECTION_LOCALE)
+
+            grdProviders.addView(chip, ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT)
+        }
+    }
+
+    /**
+     * Visits an URL.
+     *
+     * @param url URL.
+     */
     private fun openUrl(url: String) {
         val intent: Intent
 

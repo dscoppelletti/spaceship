@@ -8,6 +8,7 @@ ext.adsConsentVersion = '1.0.6'
 
 android {
     compileSdkVersion versionMap.sdk_target
+    buildToolsVersion versionMap.build_tools
     defaultConfig {
         applicationId "it.scoppelletti.consent.sample"
         minSdkVersion versionMap.sdk_min
@@ -44,6 +45,7 @@ android {
             debuggable true
         }
         release {
+            // ProGuard fails!
             minifyEnabled false
             useProguard false
             debuggable false

@@ -11,6 +11,7 @@ archivesBaseName = 'spaceship-http'
 
 android {
     compileSdkVersion versionMap.sdk_target
+    buildToolsVersion versionMap.build_tools
     defaultConfig {
         minSdkVersion versionMap.sdk_min
         targetSdkVersion versionMap.sdk_target
@@ -46,7 +47,10 @@ spaceship {
 
 dependencies {
     api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
-    api "com.squareup.okhttp3:okhttp:${versionMap.okhttp}"
+    api("com.squareup.okhttp3:okhttp:${versionMap.okhttp}") {
+        // OkHttp3 does not use last version of Okio
+        exclude group: 'com.squareup.okio', module: 'okio'
+    }
     api "com.squareup.retrofit2:retrofit:${versionMap.retrofit}"
     api("it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}") {
         changing = true

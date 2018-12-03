@@ -1,6 +1,7 @@
 # Source: http://github.com/square/moshi/blob/master/moshi/src/main/resources/
 #         META-INF/proguard/moshi.pro
 # Commit: 9e3d2345f9969a633be6fdfb317b2ab835d2b8b8 - November 3, 2018
+# Fix based on http://github.com/square/moshi/issues/738
 
 # JSR 305 annotations are for embedding nullability information.
 -dontwarn javax.annotation.**
@@ -21,33 +22,7 @@
 -keepnames @com.squareup.moshi.JsonClass class *
 
 # Retain generated JsonAdapters if annotated type is retained.
--if @com.squareup.moshi.JsonClass class *
--keep class <1>JsonAdapter {
-    <init>(...);
-    <fields>;
-}
--if @com.squareup.moshi.JsonClass class **$*
--keep class <1>_<2>JsonAdapter {
-    <init>(...);
-    <fields>;
-}
--if @com.squareup.moshi.JsonClass class **$*$*
--keep class <1>_<2>_<3>JsonAdapter {
-    <init>(...);
-    <fields>;
-}
--if @com.squareup.moshi.JsonClass class **$*$*$*
--keep class <1>_<2>_<3>_<4>JsonAdapter {
-    <init>(...);
-    <fields>;
-}
--if @com.squareup.moshi.JsonClass class **$*$*$*$*
--keep class <1>_<2>_<3>_<4>_<5>JsonAdapter {
-    <init>(...);
-    <fields>;
-}
--if @com.squareup.moshi.JsonClass class **$*$*$*$*$*
--keep class <1>_<2>_<3>_<4>_<5>_<6>JsonAdapter {
+-keep class **JsonAdapter {
     <init>(...);
     <fields>;
 }

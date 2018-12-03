@@ -6,6 +6,7 @@ apply from: '../../gradle-plugins/common.gradle'
 
 android {
     compileSdkVersion versionMap.sdk_target
+    buildToolsVersion versionMap.build_tools
     defaultConfig {
         applicationId "it.scoppelletti.spaceship.http.sample"
         minSdkVersion versionMap.sdk_min
@@ -21,8 +22,9 @@ android {
             debuggable true
         }
         release {
-            minifyEnabled false
-            useProguard false
+            minifyEnabled true
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
         }
     }

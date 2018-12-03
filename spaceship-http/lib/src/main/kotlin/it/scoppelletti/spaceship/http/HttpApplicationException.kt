@@ -16,7 +16,6 @@
 
 package it.scoppelletti.spaceship.http
 
-import androidx.annotation.Keep
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
@@ -85,7 +84,6 @@ public class HttpApplicationException private constructor(
      * @property timestamp  Timestamp of the original exception from the server
      *                      (milliseconds from the *Epoch*).
      */
-    @Keep
     @JsonClass(generateAdapter = true)
     internal class Builder {
 
@@ -197,7 +195,7 @@ private fun makeBuilder(
 
     moshi = Moshi.Builder().build()
     adapter = moshi.adapter(HttpApplicationException.Builder::class.java)
-            .failOnUnknown().nonNull()
+            .failOnUnknown().nullSafe()
 
     builder = try {
         adapter.fromJson(message)

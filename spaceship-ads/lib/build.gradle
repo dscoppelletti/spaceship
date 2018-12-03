@@ -67,12 +67,15 @@ dependencies {
     api("it.scoppelletti.spaceship:spaceship-http:${versionMap.spaceship}") {
         changing = true
     }
+    api("it.scoppelletti.spaceship:spaceship-preference:${versionMap.spaceship}") {
+        changing = true
+    }
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
-    implementation "androidx.browser:browser:${versionMap.androidx_support}"
+    implementation "androidx.browser:browser:${versionMap.androidx_browser}"
     implementation "androidx.constraintlayout:constraintlayout:${versionMap.androidx_constraint}"
     implementation "androidx.lifecycle:lifecycle-common-java8:${versionMap.androidx_lifecycle}"
     implementation "androidx.lifecycle:lifecycle-extensions:${versionMap.androidx_lifecycle}"
-    implementation "androidx.recyclerview:recyclerview:${versionMap.androidx_support}"
+    implementation "androidx.recyclerview:recyclerview:${versionMap.androidx_recycler}"
     implementation "com.squareup.okio:okio:${versionMap.okio}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${versionMap.retrofit}"
     implementation "com.squareup.retrofit2:converter-moshi:${versionMap.retrofit}"

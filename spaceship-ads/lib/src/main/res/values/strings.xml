@@ -3,7 +3,7 @@
     <string name="it_scoppelletti_ads_cmd_adult">I am at least 16 years old</string>
     <string name="it_scoppelletti_ads_cmd_consent">Yes, continue to see relevant ads</string>
     <string name="it_scoppelletti_ads_cmd_reminder">No, see adds that are less relevant</string>
-    <string name="it_scoppelletti_ads_cmd_settings">Ads</string>
+    <string name="it_scoppelletti_ads_cmd_settings">Advertisements</string>
     <string name="it_scoppelletti_ads_cmd_underage">I am younger than 16</string>
     <string name="it_scoppelletti_ads_err_internal">%1$d - Internal error.</string>
     <string name="it_scoppelletti_ads_err_invalid_request">%1$d - Invalid request.</string>

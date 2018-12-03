@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.preference.Preference
+        android:key="it.scoppelletti.spaceship.ads.sample.ads"
+        android:title="@string/it_scoppelletti_ads_cmd_settings"
+        android:icon="@drawable/ic_ads_pref"
+        android:persistent="false">
+        <intent android:targetClass="it.scoppelletti.spaceship.ads.sample.AdConsentActivity"
+            android:targetPackage="it.scoppelletti.spaceship.ads.sample" />
+    </androidx.preference.Preference>
+</androidx.preference.PreferenceScreen>

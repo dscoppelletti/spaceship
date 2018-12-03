@@ -16,6 +16,7 @@
 
 package it.scoppelletti.spaceship.ads.model
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import it.scoppelletti.spaceship.ads.consent.ConsentStatus

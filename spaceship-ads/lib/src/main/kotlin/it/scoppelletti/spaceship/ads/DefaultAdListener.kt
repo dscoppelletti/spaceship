@@ -33,7 +33,7 @@ public open class DefaultAdListener : AdListener() {
      * An Ad has finished loading.
      */
     override fun onAdLoaded() {
-        logger.debug("Ad loded.")
+        logger.debug("Ad loaded.")
     }
 
     /**

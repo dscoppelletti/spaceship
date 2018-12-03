@@ -16,10 +16,7 @@
 
 package it.scoppelletti.spaceship.ads
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.preference.PreferenceManager
 import androidx.annotation.StringRes
 import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdRequest
@@ -55,12 +52,6 @@ public object AdsExt {
      * Name of the `Retrofit` dependency.
      */
     public const val DEP_RETROFIT: String = "it.scoppelletti.spaceship.ads.2"
-
-    /**
-     * Property containing the status of the consent from the user to receive
-     * perzonalized advertising.
-     */
-    public const val PROP_CONSENT: String = "it.scoppelletti.spaceship.ads.1"
 
     /**
      * Property indicating whether an activity has been launched as a settings
@@ -116,28 +107,13 @@ public fun adsErrorCodeToMessageId(errorCode: Int): Int =
 /**
  * Creates a new `AdRequest.Builder` instance.
  *
- * @receiver Context.
- * @return   The new object.
- * @since    1.0.0
+ * @param  consentStatus Consent status.
+ * @return               The new object.
+ * @since                1.0.0
  */
-public fun Context.createAdRequestBuilder(): AdRequest.Builder {
-    val name: String
-    val consentStatus: ConsentStatus
+public fun adRequestBuilder(consentStatus: ConsentStatus): AdRequest.Builder {
     val adBuilder: AdRequest.Builder
     val extra: Bundle
-    val prefs: SharedPreferences
-
-    prefs = PreferenceManager.getDefaultSharedPreferences(this)
-    name = prefs.getString(AdsExt.PROP_CONSENT, ConsentStatus.UNKNOWN.name)!!
-
-    consentStatus = try {
-        ConsentStatus.valueOf(name)
-    } catch (ex: IllegalArgumentException) {
-        logger.error(ex) { "Invalid consent status $name." }
-        ConsentStatus.UNKNOWN
-    }
-
-    logger.debug { "Consent status is $consentStatus." }
 
     adBuilder = AdRequest.Builder()
 

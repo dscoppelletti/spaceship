@@ -16,9 +16,7 @@
 
 package it.scoppelletti.spaceship.ads.app
 
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.MenuItem
 import androidx.annotation.UiThread
 import androidx.appcompat.app.ActionBar
@@ -34,6 +32,7 @@ import it.scoppelletti.spaceship.ads.AdsExt
 import it.scoppelletti.spaceship.ads.R
 import it.scoppelletti.spaceship.ads.consent.ConsentStatus
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentState
+import it.scoppelletti.spaceship.ads.lifecycle.ConsentStatusObservable
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentViewModel
 import it.scoppelletti.spaceship.ads.widget.ConsentPagerAdapter
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
@@ -123,9 +122,6 @@ public abstract class AbstractConsentActivity : AppCompatActivity(), Injectable,
     }
 
     private fun onStateUpdate(state: ConsentState) {
-        val prefs: SharedPreferences
-        val editor: SharedPreferences.Editor
-
         state.error?.poll()?.let { err ->
             showExceptionDialog(err)
             return
@@ -136,20 +132,28 @@ public abstract class AbstractConsentActivity : AppCompatActivity(), Injectable,
                 showExceptionDialog(applicationException {
                     message(R.string.it_scoppelletti_ads_err_notInEea)
                 })
-            }
-        } else if (state.data.consentStatus != ConsentStatus.UNKNOWN) {
-            prefs = PreferenceManager.getDefaultSharedPreferences(this)
-            editor = prefs.edit()
-            editor.putString(AdsExt.PROP_CONSENT, state.data.consentStatus.name)
-            editor.apply()
 
-            onComplete()
-            tryFinish()
+                return
+            }
+
+            if (state.saved) {
+                ConsentStatusObservable.setStatus(state.data.consentStatus)
+                tryFinish()
+            }
+        } else {
+            if (state.data.consentStatus != ConsentStatus.UNKNOWN) {
+                ConsentStatusObservable.setStatus(state.data.consentStatus)
+                onComplete()
+                tryFinish()
+            }
         }
     }
 
     /**
      * Called when the user completes her choice.
+     *
+     * It is not called if this activity has been has been launched as a
+     * settings activity.
      */
     public abstract fun onComplete()
 

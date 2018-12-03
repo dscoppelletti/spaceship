@@ -16,6 +16,7 @@
 
 package it.scoppelletti.spaceship.ads
 
+import com.squareup.moshi.JsonClass
 import it.scoppelletti.spaceship.ads.consent.DebugGeography
 
 /**
@@ -29,6 +30,7 @@ import it.scoppelletti.spaceship.ads.consent.DebugGeography
  * @property unitIds        Collection of unit IDs.
  * @property debugGeography Enable or disable the debug geography mode.
  */
+@JsonClass(generateAdapter = true)
 public class AdsConfig(
         public val serviceUrl: String,
         public val publisherId: String,

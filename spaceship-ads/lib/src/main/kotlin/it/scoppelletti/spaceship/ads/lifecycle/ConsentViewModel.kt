@@ -70,7 +70,8 @@ public class ConsentViewModel @Inject constructor(
         }
 
         _state.value = ConsentState(step = ConsentLoadFragment.POS,
-                data = ConsentData(), waiting = true, error = null)
+                data = ConsentData(), saved = false, waiting = true,
+                error = null)
 
         subscription = consentDataLoader.load()
                 .subscribeOn(Schedulers.io())
@@ -106,7 +107,7 @@ public class ConsentViewModel @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     _state.value = _state.value?.copy(data = data,
-                            waiting = false)
+                            saved = true, waiting = false)
                 }, { ex ->
                     _state.value = _state.value?.withError(ex)
                 })

@@ -56,20 +56,20 @@ public abstract class AdsModule {
     public companion object {
 
         @Volatile
-        private lateinit var adsConfigInit: (() -> AdsConfig)
+        private lateinit var adsConfig: AdsConfig
 
         /**
-         * Registers the `AdsConfig` object initializer.
+         * Registers the `AdsConfig` object.
          *
-         * @param init Initializer.
+         * @param obj The object.
          */
-        public fun registerAdsConfig(init: () -> AdsConfig) {
-            adsConfigInit = init
+        public fun registerAdsConfig(obj: AdsConfig) {
+            adsConfig = obj
         }
 
         @Provides
         @JvmStatic
-        public fun provideAdsConfig(): AdsConfig = adsConfigInit()
+        public fun provideAdsConfig(): AdsConfig = adsConfig
 
         @Provides
         @JvmStatic

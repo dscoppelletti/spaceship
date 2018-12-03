@@ -68,6 +68,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
     implementation "androidx.browser:browser:${versionMap.androidx_browser}"
     implementation "androidx.multidex:multidex:${versionMap.androidx_multidex}"
+    implementation "androidx.preference:preference:${versionMap.androidx_preference}"
     implementation "com.google.android.material:material:${versionMap.androidx_material}"
     implementation "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
@@ -76,6 +77,9 @@ dependencies {
     implementation "com.google.firebase:firebase-ads:${versionMap.firebase_ads}"
     implementation "com.google.firebase:firebase-core:${versionMap.firebase_core}"
     implementation("it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}") {
+        changing = true
+    }
+    implementation("it.scoppelletti.spaceship:spaceship-preference:${versionMap.spaceship}") {
         changing = true
     }
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"

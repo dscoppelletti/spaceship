@@ -38,12 +38,15 @@ import it.scoppelletti.spaceship.lifecycle.SingleEvent
 public data class ConsentState(
         public val step: Int,
         public val data: ConsentData,
+        public val saved: Boolean,
         public val waiting: Boolean,
         public val error: SingleEvent<Throwable>?
 ) {
 
     /**
      * Moves to the previous fragment.
+     *
+     * @return The new object.
      */
     internal fun backStep(): ConsentState {
         val pos: Int
@@ -67,7 +70,8 @@ public data class ConsentState(
     /**
      * Sets an error to show.
      *
-     * @param ex The error.
+     * @param  ex The error.
+     * @return    The new object.
      */
     internal fun withError(ex: Throwable): ConsentState =
             copy(error = SingleEvent(ex), waiting = false)

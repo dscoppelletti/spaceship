@@ -21,11 +21,11 @@ class MainApp : Application(), HasActivityInjector {
     override fun onCreate() {
         super.onCreate()
 
-        AdsModule.registerAdsConfig {
+        AdsModule.registerAdsConfig(
             AdsConfig(BuildConfig.ADS_SERVICEURL,
                     BuildConfig.ADS_PUBLISHERID, BuildConfig.ADS_APPID,
                     listOf(BuildConfig.ADS_UNITID))
-        }
+        )
 
         DaggerAppComponent.builder()
                 .application(this)
@@ -40,5 +40,9 @@ class MainApp : Application(), HasActivityInjector {
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         MultiDex.install(this)
+    }
+
+    companion object {
+        const val PROP_ADS = "it.scoppelletti.spaceship.ads.sample.ads"
     }
 }

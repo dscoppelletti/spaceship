@@ -17,12 +17,14 @@
 package it.scoppelletti.spaceship.ads.consent
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
 /**
  * Status of the consent from the user to receive perzonalized advertising.
  *
  * @since 1.0.0
  */
+@JsonClass(generateAdapter = false)
 public enum class ConsentStatus {
 
     /**

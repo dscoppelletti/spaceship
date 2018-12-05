@@ -11,6 +11,7 @@ archivesBaseName = 'spaceship-html'
 
 android {
     compileSdkVersion versionMap.sdk_target
+    buildToolsVersion versionMap.build_tools
     defaultConfig {
         minSdkVersion versionMap.sdk_min
         targetSdkVersion versionMap.sdk_target

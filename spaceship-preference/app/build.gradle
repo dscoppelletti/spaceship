@@ -6,6 +6,7 @@ apply from: '../../gradle-plugins/common.gradle'
 
 android {
     compileSdkVersion versionMap.sdk_target
+    buildToolsVersion versionMap.build_tools
     defaultConfig {
         applicationId "it.scoppelletti.spaceship.preference.sample"
         minSdkVersion versionMap.sdk_min

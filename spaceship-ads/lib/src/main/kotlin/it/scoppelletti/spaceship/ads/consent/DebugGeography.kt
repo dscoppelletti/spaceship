@@ -16,6 +16,8 @@
 
 package it.scoppelletti.spaceship.ads.consent
 
+import com.squareup.moshi.JsonClass
+
 /**
  * Debug value for testing geography.
  *
@@ -24,6 +26,7 @@ package it.scoppelletti.spaceship.ads.consent
  *
  * @property code Code for controlling the REST API.
  */
+@JsonClass(generateAdapter = false)
 public enum class DebugGeography(public val code: Int) {
 
     /**

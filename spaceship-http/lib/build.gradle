@@ -22,8 +22,8 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            consumerProguardFiles 'proguard-rules.pro', 'okhttp3.pro',
-                'retrofit2.pro'
+            consumerProguardFiles 'proguard-rules.pro', 'androidx.pro',
+                    'okhttp3.pro', 'retrofit2.pro'
             debuggable false
         }
         debug {
@@ -47,6 +47,8 @@ spaceship {
 
 dependencies {
     api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
+    api "com.squareup.moshi:moshi:${versionMap.moshi}"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:${versionMap.moshi}"
     api("com.squareup.okhttp3:okhttp:${versionMap.okhttp}") {
         // OkHttp3 does not use last version of Okio
         exclude group: 'com.squareup.okio', module: 'okio'
@@ -56,8 +58,6 @@ dependencies {
         changing = true
     }
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
-    implementation "com.squareup.moshi:moshi:${versionMap.moshi}"
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:${versionMap.moshi}"
     implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
     implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
     testImplementation "junit:junit:${versionMap.junit}"

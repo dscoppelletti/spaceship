@@ -21,7 +21,8 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            consumerProguardFiles 'proguard-rules.pro', 'moshi.pro', 'okio.pro'
+            consumerProguardFiles 'proguard-rules.pro', 'androidx.pro',
+                    'moshi.pro', 'okio.pro'
             debuggable false
         }
         debug {

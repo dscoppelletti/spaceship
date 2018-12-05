@@ -19,3 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Note: the configuration refers to the unknown class
+#   'android.databinding.DataBinderMapper' Maybe you meant the fully qualified
+#   name 'androidx.databinding.DataBinderMapper'?
+-dontnote android.databinding.DataBinderMapper

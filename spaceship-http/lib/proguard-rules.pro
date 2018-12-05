@@ -22,3 +22,4 @@
 
 # http://github.com/square/okhttp/issues/3922
 -dontwarn org.conscrypt.**
+

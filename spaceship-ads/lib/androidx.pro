@@ -1,19 +1,5 @@
 # AndroidX and Jetifier cause some annoying notes
 
-# Note: the configuration refers to the unknown class
-# 'com.google.android.gms.ads.mediation.rtb.RtbAdapter'
--dontnote com.google.android.gms.ads.mediation.rtb.RtbAdapter
-
-# Note: the configuration refers to the unknown field
-# 'com.google.android.gms.common.api.internal.BasePendingResult$ReleasableResultGuardian
-# mResultGuardian' in class
-# 'com.google.android.gms.common.api.internal.BasePendingResult'
--dontnote com.google.android.gms.common.api.internal.BasePendingResult
-
-# Note: the configuration refers to the unknown class
-# 'com.google.android.gms.common.api.internal.BasePendingResult$ReleasableResultGuardian'
--dontnote com.google.android.gms.common.api.internal.BasePendingResult$ReleasableResultGuardian
-
 # Note: the configuration keeps the entry point '***' { *** *(...); }', but not
 # the descriptor class '***'
 -keepclassmembers,includedescriptorclasses public class com.google.firebase.iid.FirebaseInstanceId {

@@ -31,7 +31,7 @@ import it.scoppelletti.spaceship.ads.consent.DebugGeography
  * @property debugGeography Enable or disable the debug geography mode.
  */
 @JsonClass(generateAdapter = true)
-public class AdsConfig(
+public data class AdsConfig(
         public val serviceUrl: String,
         public val publisherId: String,
         public val appId: String,

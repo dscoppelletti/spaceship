@@ -33,7 +33,8 @@
             android:layout_marginTop="@dimen/it_scoppelletti_marginVert"
             android:layout_marginBottom="@dimen/it_scoppelletti_marginVert"
             android:layout_marginLeft="@dimen/it_scoppelletti_marginHorz"
-            android:layout_marginRight="@dimen/it_scoppelletti_marginHorz" />
+            android:layout_marginRight="@dimen/it_scoppelletti_marginHorz"
+            android:textIsSelectable="true" />
     </androidx.core.widget.NestedScrollView>
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"

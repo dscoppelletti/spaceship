@@ -20,6 +20,13 @@ import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.Status
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
+import java.lang.Exception
 
 /**
  * Tries to finish an activity.
@@ -54,4 +61,27 @@ public fun Activity.hideSoftKeyboard() {
                 InputMethodManager
         inputMgr.hideSoftInputFromWindow(view.windowToken, 0)
     }
+}
+
+/**
+ * Attempts to make Google Play services available on this device.
+ *
+ * @receiver Activity
+ * @return   The new task.
+ * @since    1.0.0
+ */
+public fun Activity.makeGooglePlayServicesAvailable() : Task<Void> {
+    val result: Int
+    val googleApi: GoogleApiAvailability
+    val ex: Exception
+
+    googleApi = GoogleApiAvailability.getInstance()
+    result = googleApi.isGooglePlayServicesAvailable(this)
+    if (result == ConnectionResult.SERVICE_INVALID) {
+        // http://issuetracker.google.com/issues/120871359 - Dec 12, 2018
+        ex = ApiException(Status(result))
+        return Tasks.forException(ex)
+    }
+
+    return googleApi.makeGooglePlayServicesAvailable(this)
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation">
+    <string name="cmd_googleApi">Google API Test</string>
     <string name="cmd_section1">Section 1</string>
     <string name="cmd_section2">Section 2</string>
     <string name="cmd_section3">Section 3</string>
@@ -17,5 +18,6 @@
     <string name="msg_created">Item created.</string>
     <string name="msg_deleted">Item deleted.</string>
     <string name="msg_deleting">The item will be deleted.</string>
+    <string name="msg_googleApiAvailable">Google API available.</string>
     <string name="msg_updated">Item updated.</string>
 </resources>

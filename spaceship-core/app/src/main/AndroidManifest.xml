@@ -18,6 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".GoogleApiActivity"
+            android:label="@string/cmd_googleApi" />
         <activity android:name=".TabbedActivity"
             android:label="@string/lbl_tabbedActivity" />
     </application>

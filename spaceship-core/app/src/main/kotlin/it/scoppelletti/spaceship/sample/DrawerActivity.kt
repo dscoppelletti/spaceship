@@ -1,7 +1,9 @@
 package it.scoppelletti.spaceship.sample
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -87,9 +89,24 @@ class DrawerActivity : AppCompatActivity(),
         drawer.onConfigurationChanged(newConfig)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        val intent: Intent
+
         if (drawer.onOptionItemSelected(item)) {
             return true
+        }
+
+        when (item?.itemId) {
+            R.id.cmd_googleApi -> {
+                intent = Intent(this, GoogleApiActivity::class.java)
+                startActivity(intent)
+                return true
+            }
         }
 
         return super.onOptionsItemSelected(item)

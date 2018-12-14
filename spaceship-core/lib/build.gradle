@@ -55,6 +55,7 @@ dependencies {
     kapt "androidx.databinding:databinding-compiler:${versionMap.android_gradle}"
     api "androidx.recyclerview:recyclerview:${versionMap.androidx_recyclerview}"
     api "com.google.android.gms:play-services-base:${versionMap.playservices_base}"
+    api "com.google.android.gms:play-services-basement:${versionMap.playservices_basement}"
     api "com.google.android.material:material:${versionMap.androidx_material}"
     api "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"

@@ -6,10 +6,6 @@
     *** getInstance(...);
 }
 
--keepclassmembers,includedescriptorclasses public class com.google.android.gms.common.api.internal.LifecycleCallback {
-    *** getChimeraLifecycleFragmentImpl(...);
-}
-
 -keepclassmembers,includedescriptorclasses public class com.google.firebase.analytics.connector.internal.AnalyticsConnectorRegistrar {
     *** *(com.google.firebase.components.ComponentContainer);
 }

@@ -26,10 +26,10 @@
 }
 
 # proguard-android.txt-3.2.1
-# -keepclassmembers,includedescriptorclasses public class * extends android.view.View {
+# -keepclassmembers public class * extends android.view.View {
 #    void set*(***);
 #    *** get*();
-#}
+# }
 #
 # Note: the configuration keeps the entry point
 # 'com.google.android.material.chip.Chip { void
@@ -38,6 +38,21 @@
 -keepclassmembers,includedescriptorclasses public class * extends android.view.View {
     void set*(***);
     *** get*();
+}
+
+# Note: com.google.android.gms.common.util.WorkSourceUtil: can't find
+# dynamically referenced class android.os.WorkSource$WorkChain
+-dontnote com.google.android.gms.common.util.WorkSourceUtil
+
+# Note: the configuration keeps the entry point
+# 'com.google.android.gms.common.api.internal.LifecycleCallback {
+# com.google.android.gms.common.api.internal.LifecycleFragment
+# getChimeraLifecycleFragmentImpl(
+# com.google.android.gms.common.api.internal.LifecycleActivity); }', but not the
+# descriptor class
+# 'com.google.android.gms.common.api.internal.LifecycleActivity'
+-keepclassmembers,includedescriptorclasses public class com.google.android.gms.common.api.internal.LifecycleCallback {
+    *** getChimeraLifecycleFragmentImpl(...);
 }
 
 # Note: com.squareup.moshi.ClassFactory accesses a declared field 'theUnsafe'

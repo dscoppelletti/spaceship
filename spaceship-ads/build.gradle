@@ -1,5 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+apply plugin: 'com.github.ben-manes.versions'
+
 buildscript {
     apply from: '../gradle-plugins/versionMap.gradle'
     ext.kotlin_version = versionMap.kotlin
@@ -9,6 +11,7 @@ buildscript {
     }
     dependencies {
         classpath "com.android.tools.build:gradle:${versionMap.android_gradle}"
+        classpath "com.github.ben-manes:gradle-versions-plugin:${versionMap.gradle_versions}"
         classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:${versionMap.dokka}"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versionMap.kotlin}"
         classpath "com.google.gms:google-services:${versionMap.firebase_plugin}"

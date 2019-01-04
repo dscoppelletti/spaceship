@@ -6,11 +6,12 @@ import dagger.Component
 import dagger.android.AndroidInjectionModule
 import it.scoppelletti.spaceship.ads.inject.AdsViewModelsModule
 import it.scoppelletti.spaceship.ads.sample.MainApp
+import it.scoppelletti.spaceship.inject.CoreViewsModule
 import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [ AndroidInjectionModule::class, ViewsModule::class,
-    AdsViewModelsModule::class ])
+    CoreViewsModule::class, AdsViewModelsModule::class ])
 interface AppComponent {
 
     fun inject(app: MainApp)

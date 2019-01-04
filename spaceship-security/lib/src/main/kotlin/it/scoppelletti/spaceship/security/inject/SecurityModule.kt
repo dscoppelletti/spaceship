@@ -20,6 +20,7 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import it.scoppelletti.spaceship.inject.ContextModule
+import it.scoppelletti.spaceship.inject.CoreModule
 import it.scoppelletti.spaceship.inject.IOModule
 import it.scoppelletti.spaceship.inject.TimeModule
 import it.scoppelletti.spaceship.io.IOProvider
@@ -34,7 +35,8 @@ import javax.inject.Singleton
  *
  * @since 1.0.0
  */
-@Module(includes = [ ContextModule::class, IOModule::class, TimeModule::class ])
+@Module(includes = [ ContextModule::class, CoreModule::class, IOModule::class,
+    TimeModule::class ])
 public object SecurityModule {
 
     @Provides

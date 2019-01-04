@@ -16,6 +16,8 @@
     <string name="it_scoppelletti_err_packageNotFound">Il pacchetto %1$s non esiste.</string>
     <string name="it_scoppelletti_err_security">Problema di sicurezza.</string>
     <string name="it_scoppelletti_err_startActivity">Fallito avvio dell\'attività.</string>
+    <string name="it_scoppelletti_lbl_class">Classe:</string>
+    <string name="it_scoppelletti_lbl_message">Messaggio:</string>
     <string name="it_scoppelletti_msg_saveChanges">Vuoi salvare le modifiche?</string>
     <string name="it_scoppelletti_url_privacy">http://policies.google.com/privacy?hl=it</string>
 </resources>

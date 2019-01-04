@@ -7,13 +7,13 @@ import dagger.android.AndroidInjectionModule
 import it.scoppelletti.spaceship.html.inject.HtmlViewModelsModule
 import it.scoppelletti.spaceship.html.inject.HtmlViewsModule
 import it.scoppelletti.spaceship.html.sample.MainApp
-import it.scoppelletti.spaceship.inject.ContextModule
 import it.scoppelletti.spaceship.inject.CoreViewModelsModule
+import it.scoppelletti.spaceship.inject.CoreViewsModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [ AndroidInjectionModule::class,
-    ContextModule::class, CoreViewModelsModule::class, HtmlViewsModule::class,
+@Component(modules = [ AndroidInjectionModule::class, CoreViewsModule::class,
+    CoreViewModelsModule::class, HtmlViewsModule::class,
     HtmlViewModelsModule::class ])
 interface AppComponent {
 

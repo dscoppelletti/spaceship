@@ -16,6 +16,8 @@
     <string name="it_scoppelletti_err_packageNotFound">Package %1$s not found.</string>
     <string name="it_scoppelletti_err_security">Security failure.</string>
     <string name="it_scoppelletti_err_startActivity">Failed to start activity.</string>
+    <string name="it_scoppelletti_lbl_class">Class:</string>
+    <string name="it_scoppelletti_lbl_message">Message:</string>
     <string name="it_scoppelletti_msg_saveChanges">Do you want to save the changes?</string>
     <string name="it_scoppelletti_url_privacy">http://policies.google.com/privacy</string>
 </resources>

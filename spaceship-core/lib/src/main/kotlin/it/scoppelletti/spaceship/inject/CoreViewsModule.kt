@@ -16,30 +16,19 @@
 
 package it.scoppelletti.spaceship.inject
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import dagger.Binds
 import dagger.Module
-import dagger.multibindings.IntoMap
-import it.scoppelletti.spaceship.lifecycle.ExceptionListViewModel
+import dagger.android.ContributesAndroidInjector
+import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 
 /**
- * Defines the `ViewModel` classes exported by this library.
+ * Defines the views exported by this library.
  *
  * @since 1.0.0
  */
-@Module(includes = [ CoreModule::class ])
-public abstract class CoreViewModelsModule {
+@Module
+public abstract class CoreViewsModule {
 
-    @Binds
-    public abstract fun bindViewModelFactory(
-            factory: InjectViewModelFactory
-    ): ViewModelProvider.Factory
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(ExceptionListViewModel::class)
-    public abstract fun bindExceptionListViewModel(
-            viewModel: ExceptionListViewModel
-    ): ViewModel
+    @ContributesAndroidInjector(modules = [])
+    public abstract fun contributeExceptionDialogFragment(
+    ): ExceptionDialogFragment
 }

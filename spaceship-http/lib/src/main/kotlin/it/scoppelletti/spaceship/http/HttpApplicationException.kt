@@ -25,6 +25,7 @@ import it.scoppelletti.spaceship.types.trimRaw
 import mu.KLogger
 import mu.KotlinLogging
 import okhttp3.ResponseBody
+import okio.BufferedSource
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
@@ -167,6 +168,7 @@ private fun makeBuilder(
     val resp: Response<*>?
     val body: ResponseBody?
     val moshi: Moshi
+    val stream: BufferedSource
     val adapter: JsonAdapter<HttpApplicationException.Builder>
     val builder: HttpApplicationException.Builder?
 
@@ -181,16 +183,16 @@ private fun makeBuilder(
         return makeBuilder(source, resp, null)
     }
 
+    // I don't want to consume the original Okio source of the body
+    stream = body.source().peek()
     try {
-        // Cannot read body by its Okio source because Moshi adapter would
-        // consume it hence I could not fallback to the original body
-        message = body.string()
+        message = stream.readUtf8()
     } catch (ex: IOException) {
         logger.error("Failed to read response body.", ex)
         // Use raw response
-        return makeBuilder(source, resp, body.toString())
+        return makeBuilder(source, resp, null)
     } finally {
-        body.closeQuietly()
+        stream.closeQuietly()
     }
 
     moshi = Moshi.Builder().build()

@@ -66,11 +66,12 @@ public class StartActivityPreferenceDecorator(
         } catch (ex: RuntimeException) {
             err = applicationException {
                 message(R.string.it_scoppelletti_err_startActivity)
-                title(preference.title.toString())
                 cause = ex
             }
 
-            activity.showExceptionDialog(err)
+            activity.showExceptionDialog(err) {
+                title(preference.title.toString())
+            }
         }
 
         return true

@@ -32,7 +32,6 @@ class DefaultItemRepo @Inject constructor(): ItemRepo {
                                         add(it.code.orEmpty())
                                     }
                                 }
-                                title(R.string.it_scoppelletti_cmd_save)
                             }
                         }
 
@@ -77,7 +76,6 @@ class DefaultItemRepo @Inject constructor(): ItemRepo {
                                         add(item.id)
                                     }
                                 }
-                                title(R.string.it_scoppelletti_cmd_update)
                             }
                         }
 

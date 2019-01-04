@@ -24,6 +24,7 @@ General Data Protection Regulation (GDPR) for the users in the European Economic
 Area (EEA).
 
 * [Requesting Consent from European Users](http://developers.google.com/admob/android/eu-consent)
+* [Ads EU consent](http://github.com/dscoppelletti/spaceship/wiki/Ads-EU-consent)
 
 # Package it.scoppelletti.spaceship.ads.inject
 

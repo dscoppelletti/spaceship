@@ -85,7 +85,7 @@ public class MessageBuilder private constructor(
     }
 
     override fun toString(): String = """MessageBuilder(messageId=$messageId,
-        |message=$message|args=${args?.joinToString()})""".trimRaw()
+        |message=$message,args=${args?.joinToString()})""".trimRaw()
 
     public companion object {
 

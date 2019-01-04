@@ -19,13 +19,22 @@ package it.scoppelletti.spaceship.app
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
+import androidx.annotation.StringRes
 import androidx.annotation.UiThread
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.FragmentActivity
-import it.scoppelletti.spaceship.ApplicationException
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import it.scoppelletti.spaceship.CoreExt
-import it.scoppelletti.spaceship.toMessage
+import it.scoppelletti.spaceship.MessageBuilder
+import it.scoppelletti.spaceship.inject.Injectable
+import it.scoppelletti.spaceship.lifecycle.ExceptionListState
+import it.scoppelletti.spaceship.lifecycle.ExceptionListViewModel
+import it.scoppelletti.spaceship.lifecycle.ExceptionViewModel
+import it.scoppelletti.spaceship.widget.ExceptionListAdapter
+import javax.inject.Inject
 
 /**
  * Exception dialog.
@@ -35,25 +44,27 @@ import it.scoppelletti.spaceship.toMessage
  * @constructor Sole constructor.
  */
 @UiThread
-public class ExceptionDialogFragment : AppCompatDialogFragment() {
+public class ExceptionDialogFragment : AppCompatDialogFragment(), Injectable {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private lateinit var viewModel: ExceptionListViewModel
+    private lateinit var adapter: ExceptionListAdapter
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val resId: Int
+        val msg: String?
         val args: Bundle
         val builder: AlertDialog.Builder
-        var msg: String?
+
+        adapter = ExceptionListAdapter(requireContext())
 
         args = arguments!!
-        builder = AlertDialog.Builder(requireActivity())
+        builder = AlertDialog.Builder(requireContext())
+                .setAdapter(adapter, null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setNegativeButton(android.R.string.cancel, ::onDialogResult)
-
-        msg = args.getString(ExceptionDialogFragment.PROP_MSG)
-        if (msg.isNullOrBlank()) {
-            builder.setMessage(args.getInt(ExceptionDialogFragment.PROP_MSGID))
-        } else {
-            builder.setMessage(msg)
-        }
 
         msg = args.getString(ExceptionDialogFragment.PROP_TITLE)
         if (msg.isNullOrBlank()) {
@@ -65,6 +76,33 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
         }
 
         return builder.create()
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        val ex: Throwable
+        val activityModel: ExceptionViewModel
+
+        super.onActivityCreated(savedInstanceState)
+
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+                .get(ExceptionListViewModel::class.java)
+
+        if (viewModel.outerEx == null) {
+            activityModel = ViewModelProviders.of(requireActivity())
+                    .get(ExceptionViewModel::class.java)
+            ex = activityModel.ex ?:
+                    throw IllegalStateException("Exception is not set.")
+            activityModel.ex = null
+            viewModel.outerEx = ex
+        }
+
+        viewModel.state.observe(this, Observer<ExceptionListState> { state ->
+            if (state != null) {
+                adapter.addAll(state.exList)
+            }
+        })
+
+        viewModel.load()
     }
 
     override fun onCancel(dialog: DialogInterface?) {
@@ -101,10 +139,8 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
          */
         public const val TAG: String = CoreExt.TAG_EXCEPTIONDIALOG
 
-        private const val PROP_MSG: String = "1"
-        private const val PROP_MSGID: String = "2"
-        private const val PROP_TITLE: String = "3"
-        private const val PROP_TITLEID: String = "4"
+        private const val PROP_TITLE: String = "1"
+        private const val PROP_TITLEID: String = "2"
     }
 
     /**
@@ -114,38 +150,64 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
      *
      * @property tag Fragment tag.
      */
+    @MessageBuilder.Dsl
     @ExceptionDialogFragment.Dsl
     public class Builder internal constructor(
             private val activity: FragmentActivity,
             private val ex: Throwable
     ) {
         public var tag: String = ExceptionDialogFragment.TAG
+        private var titleBuilder: MessageBuilder? = null
+
+        /**
+         * Defines the title.
+         *
+         * @param  titleId Title as a string resource ID.
+         * @param  init    Initialization block.
+         * @return         The new object.
+         */
+        public fun title(
+                @StringRes titleId: Int,
+                init: MessageBuilder.() -> Unit = { }
+        ): MessageBuilder {
+            titleBuilder = MessageBuilder.make(titleId, init)
+            return titleBuilder!!
+        }
+
+        /**
+         * Defines the title.
+         *
+         * @param  title Title.
+         * @param  init  Initialization block.
+         * @return       The new object.
+         */
+        public fun title(
+                title: String,
+                init: MessageBuilder.() -> Unit = { }
+        ): MessageBuilder {
+            titleBuilder = MessageBuilder.make(title, init)
+            return titleBuilder!!
+        }
 
         internal fun show() {
             val args: Bundle
+            val viewModel: ExceptionViewModel
 
             args = Bundle()
 
-            if (ex is ApplicationException) {
-                if (ex.messageBuilder.isSimple) {
-                    args.putInt(ExceptionDialogFragment.PROP_MSGID,
-                            ex.messageBuilder.messageId)
-                } else {
-                    args.putString(ExceptionDialogFragment.PROP_MSG,
-                            ex.messageBuilder.build(activity.resources))
-                }
-
-                if (ex.titleBuilder.isSimple) {
+            titleBuilder?.let {
+                if (it.isSimple) {
                     args.putInt(ExceptionDialogFragment.PROP_TITLEID,
-                            ex.titleBuilder.messageId)
+                            it.messageId)
                 } else {
                     args.putString(ExceptionDialogFragment.PROP_TITLE,
-                            ex.titleBuilder.build(activity.resources))
+                            it.build(activity.resources))
                 }
-            } else {
-                args.putString(ExceptionDialogFragment.PROP_MSG,
-                        ex.toMessage())
             }
+
+            viewModel = ViewModelProviders.of(activity).get(
+                    ExceptionViewModel::class.java)
+            viewModel.ex = ex
 
             ExceptionDialogFragment()
                     .apply {

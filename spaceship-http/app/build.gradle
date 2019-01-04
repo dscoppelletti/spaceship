@@ -39,9 +39,9 @@ android {
 
 dependencies {
     implementation project(':lib')
-    api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
-    api "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
-    api "com.google.android.material:material:${versionMap.androidx_material}"
+    implementation "androidx.annotation:annotation:${versionMap.androidx_annotation}"
+    implementation "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
+    implementation "com.google.android.material:material:${versionMap.androidx_material}"
     implementation("it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}") {
         changing = true
     }

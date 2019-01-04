@@ -2,6 +2,7 @@ package it.scoppelletti.spaceship.sample.inject
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+import it.scoppelletti.spaceship.inject.CoreViewsModule
 import it.scoppelletti.spaceship.sample.DrawerActivity
 import it.scoppelletti.spaceship.sample.ItemTabFragment
 import it.scoppelletti.spaceship.sample.ListFragment

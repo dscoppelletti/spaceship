@@ -21,6 +21,7 @@ import it.scoppelletti.spaceship.app.hideSoftKeyboard
 import it.scoppelletti.spaceship.app.showAlertDialog
 import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.app.tryFinish
+import it.scoppelletti.spaceship.applicationException
 import it.scoppelletti.spaceship.inject.Injectable
 import it.scoppelletti.spaceship.sample.lifecycle.ItemState
 import it.scoppelletti.spaceship.sample.lifecycle.ItemViewModel

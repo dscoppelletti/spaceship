@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="it_scoppelletti_http_lbl_error">Error:</string>
+    <string name="it_scoppelletti_http_lbl_path">Path:</string>
+    <string name="it_scoppelletti_http_lbl_statusCode">HTTP status code:</string>
+    <string name="it_scoppelletti_http_lbl_timestamp">Timestamp:</string>
+</resources>

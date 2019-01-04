@@ -28,6 +28,7 @@ import it.scoppelletti.spaceship.html.HtmlExt
 import it.scoppelletti.spaceship.html.HtmlTagHandler
 import it.scoppelletti.spaceship.html.ResourceTagHandler
 import it.scoppelletti.spaceship.inject.ContextModule
+import it.scoppelletti.spaceship.inject.CoreModule
 import javax.inject.Named
 
 /**
@@ -35,7 +36,7 @@ import javax.inject.Named
  *
  * @since 1.0.0
  */
-@Module(includes = [ ContextModule::class ])
+@Module(includes = [ ContextModule::class, CoreModule::class ])
 public abstract class HtmlModule {
 
     @Binds

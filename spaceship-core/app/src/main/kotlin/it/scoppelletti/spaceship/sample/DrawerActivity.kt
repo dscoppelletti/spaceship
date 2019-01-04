@@ -12,8 +12,11 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import it.scoppelletti.spaceship.app.NavigationDrawer
 import it.scoppelletti.spaceship.app.TitleAdapter
+import it.scoppelletti.spaceship.app.showExceptionDialog
+import it.scoppelletti.spaceship.applicationException
 import it.scoppelletti.spaceship.inject.Injectable
 import kotlinx.android.synthetic.main.drawer_activity.*
+import java.lang.Exception
 import javax.inject.Inject
 
 class DrawerActivity : AppCompatActivity(),
@@ -102,6 +105,11 @@ class DrawerActivity : AppCompatActivity(),
         }
 
         when (item?.itemId) {
+            R.id.cmd_exceptionTest -> {
+                onExceptionTest()
+                return true
+            }
+
             R.id.cmd_googleApi -> {
                 intent = Intent(this, GoogleApiActivity::class.java)
                 startActivity(intent)
@@ -149,6 +157,23 @@ class DrawerActivity : AppCompatActivity(),
             fab.show()
         } else {
             fab.hide()
+        }
+    }
+
+    private fun onExceptionTest() {
+        val ex: Exception
+
+        ex = applicationException {
+            message(R.string.msg_exceptionTest) {
+                arguments {
+                    add(1)
+                }
+            }
+            cause = RuntimeException("Runtime message.")
+        }
+
+        showExceptionDialog(ex) {
+            title(R.string.cmd_exceptionTest)
         }
     }
 }

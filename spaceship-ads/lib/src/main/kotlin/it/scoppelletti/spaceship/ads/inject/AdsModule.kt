@@ -27,6 +27,7 @@ import it.scoppelletti.spaceship.ads.consent.ConsentDataLoader
 import it.scoppelletti.spaceship.ads.consent.ConsentDataStore
 import it.scoppelletti.spaceship.ads.consent.DefaultConsentDataLoader
 import it.scoppelletti.spaceship.ads.consent.DefaultConsentDataStore
+import it.scoppelletti.spaceship.inject.CoreModule
 import it.scoppelletti.spaceship.inject.IOModule
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -39,7 +40,7 @@ import javax.inject.Named
  *
  * @since 1.0.0
  */
-@Module(includes = [ IOModule::class ])
+@Module(includes = [ CoreModule::class, IOModule::class ])
 public abstract class AdsModule {
 
     @Binds

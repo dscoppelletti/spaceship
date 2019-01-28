@@ -2,8 +2,8 @@ package it.scoppelletti.spaceship.sample.inject
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import it.scoppelletti.spaceship.inject.CoreViewsModule
 import it.scoppelletti.spaceship.sample.DrawerActivity
+import it.scoppelletti.spaceship.sample.GoogleApiActivity
 import it.scoppelletti.spaceship.sample.ItemTabFragment
 import it.scoppelletti.spaceship.sample.ListFragment
 import it.scoppelletti.spaceship.sample.StubFragment
@@ -26,4 +26,7 @@ abstract class ViewsModule {
 
     @ContributesAndroidInjector(modules = [])
     abstract fun contributeStubFragment(): StubFragment
+
+    @ContributesAndroidInjector(modules = [])
+    abstract fun contributeGoogleApiActivity(): GoogleApiActivity
 }

@@ -3,7 +3,7 @@ ext.versionMap = [
     sdk_min : 16,
     build_tools : '28.0.3',
     
-    android_gradle : '3.2.1',
+    android_gradle : '3.3.0',
     android_logger : '1.3.6',
     androidx_annotation : '1.0.1',
     androidx_appcompat : '1.0.2',
@@ -16,7 +16,7 @@ ext.versionMap = [
     androidx_preference : '1.0.0',
     androidx_recyclerview : '1.0.0',
     bouncycastle : '1.60',
-    dagger : '2.16',
+    dagger : '2.21',
     dokka : '0.9.17',
     firebase_ads : '17.1.2',
     firebase_auth : '16.1.0',
@@ -25,17 +25,17 @@ ext.versionMap = [
     gradle_versions : '0.20.0',
     hamcrest : '1.3',
     junit : '4.12', // Next 5.x
-    kotlin : '1.3.11',
+    kotlin : '1.3.20',
     kotlin_logging : '1.6.22',
     mockito : '1.10.19', // Next 2.x
     moshi : '1.8.0',
     okio : '1.16.0', // Next 2.x
     okhttp : '3.12.1',
-    playservices_base : '16.0.1',
-    playservices_basement : '16.1.0',
+    playservices_base : '16.1.0',
+    playservices_basement : '16.2.0',
     retrofit : '2.5.0',
     rxandroid : '2.1.0',
-    rxjava : '2.2.4',
+    rxjava : '2.2.6',
     slf4j : '1.7.25', // Next 1.8.x
     spaceship : '1.0.0'
 ]

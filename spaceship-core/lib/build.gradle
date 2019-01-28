@@ -21,8 +21,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            consumerProguardFiles 'proguard-rules.pro', 'androidx.pro',
-                    'moshi.pro', 'okio.pro'
+            consumerProguardFiles 'proguard-rules.pro', 'okio.pro'
             debuggable false
         }
         debug {
@@ -50,6 +49,8 @@ spaceship {
 dependencies {
     api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
     api "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
+    api "androidx.cardview:cardview:${versionMap.androidx_cardview}"
+    api "androidx.constraintlayout:constraintlayout:${versionMap.androidx_constraint}"
     api "androidx.lifecycle:lifecycle-common-java8:${versionMap.androidx_lifecycle}"
     api "androidx.lifecycle:lifecycle-extensions:${versionMap.androidx_lifecycle}"
     kapt "androidx.databinding:databinding-compiler:${versionMap.android_gradle}"
@@ -62,8 +63,6 @@ dependencies {
     api "com.google.dagger:dagger-android-support:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-android-processor:${versionMap.dagger}"
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
-    implementation "androidx.cardview:cardview:${versionMap.androidx_cardview}"
-    implementation "androidx.constraintlayout:constraintlayout:${versionMap.androidx_constraint}"
     implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
     implementation "io.reactivex.rxjava2:rxandroid:${versionMap.rxandroid}"
     implementation "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"

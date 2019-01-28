@@ -22,7 +22,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            consumerProguardFiles 'proguard-rules.pro', 'androidx.pro'
+            consumerProguardFiles 'proguard-rules.pro'
             debuggable false
         }
         debug {
@@ -48,6 +48,9 @@ dependencies {
     api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
     api "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
     api "androidx.browser:browser:${versionMap.androidx_browser}"
+    api "androidx.constraintlayout:constraintlayout:${versionMap.androidx_constraint}"
+    api "androidx.lifecycle:lifecycle-common-java8:${versionMap.androidx_lifecycle}"
+    api "androidx.lifecycle:lifecycle-extensions:${versionMap.androidx_lifecycle}"
     api "com.google.android.material:material:${versionMap.androidx_material}"
     api "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
@@ -73,9 +76,6 @@ dependencies {
         changing = true
     }
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
-    implementation "androidx.constraintlayout:constraintlayout:${versionMap.androidx_constraint}"
-    implementation "androidx.lifecycle:lifecycle-common-java8:${versionMap.androidx_lifecycle}"
-    implementation "androidx.lifecycle:lifecycle-extensions:${versionMap.androidx_lifecycle}"
     implementation "com.squareup.okio:okio:${versionMap.okio}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${versionMap.retrofit}"
     implementation "com.squareup.retrofit2:converter-moshi:${versionMap.retrofit}"

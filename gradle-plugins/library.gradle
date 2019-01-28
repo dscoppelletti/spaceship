@@ -227,8 +227,6 @@ class LibraryTools {
                 overwrite: true, group: BasePlugin.UPLOAD_GROUP) {
             description "Packages KDoc for ${variant.name}."
             
-            def compiler = variant.javaCompiler
-            
             classifier CLASSIFIER_JAVADOC
             from kdocTask.outputDirectory
         }

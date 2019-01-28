@@ -22,8 +22,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            consumerProguardFiles 'proguard-rules.pro', 'androidx.pro',
-                    'okhttp3.pro', 'retrofit2.pro'
+            consumerProguardFiles 'proguard-rules.pro'
             debuggable false
         }
         debug {
@@ -48,6 +47,9 @@ spaceship {
 dependencies {
     api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
     api "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
+    api "androidx.cardview:cardview:${versionMap.androidx_cardview}"
+    api "androidx.constraintlayout:constraintlayout:${versionMap.androidx_constraint}"
+    api "com.google.android.material:material:${versionMap.androidx_material}"
     api "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
     api "com.squareup.moshi:moshi:${versionMap.moshi}"
@@ -58,9 +60,6 @@ dependencies {
         changing = true
     }
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
-    implementation "com.google.android.material:material:${versionMap.androidx_material}"
-    implementation "androidx.cardview:cardview:${versionMap.androidx_cardview}"
-    implementation "androidx.constraintlayout:constraintlayout:${versionMap.androidx_constraint}"
     implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
     implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
     testImplementation "junit:junit:${versionMap.junit}"

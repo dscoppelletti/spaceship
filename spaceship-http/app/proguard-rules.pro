@@ -19,18 +19,3 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-
-# Note: the configuration refers to the unknown class
-#   'android.databinding.DataBinderMapper' Maybe you meant the fully qualified
-#   name 'androidx.databinding.DataBinderMapper'?
--dontnote android.databinding.DataBinderMapper
-
-# Note: the configuration refers to the unknown field
-# 'com.google.android.gms.common.api.internal.BasePendingResult$ReleasableResultGuardian
-# mResultGuardian' in class
-# 'com.google.android.gms.common.api.internal.BasePendingResult'
--dontnote com.google.android.gms.common.api.internal.BasePendingResult
-
-# Note: the configuration refers to the unknown class
-# 'com.google.android.gms.common.api.internal.BasePendingResult$ReleasableResultGuardian'
--dontnote com.google.android.gms.common.api.internal.BasePendingResult$ReleasableResultGuardian

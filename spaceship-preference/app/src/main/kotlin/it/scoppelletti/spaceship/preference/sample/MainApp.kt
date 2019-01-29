@@ -28,6 +28,7 @@ class MainApp : Application(), HasActivityInjector {
             activityInjector
 
     companion object {
+        const val PROP_CREDITS = "it.scoppelletti.spaceship.preference.sample.credits"
         const val PROP_FEEDBACK = "it.scoppelletti.spaceship.preference.sample.feedback"
         const val PROP_HELP = "it.scoppelletti.spaceship.preference.sample.help"
     }

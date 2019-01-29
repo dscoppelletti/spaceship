@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<credits>
+    <credit>
+        <component><![CDATA[<a href="http://developer.android.com">Android SDK</a>]]></component>
+        <owner><![CDATA[<a href="http://source.android.com">The Android Open Source Project</a>]]></owner>
+        <license><![CDATA[<a href="http://developer.android.com/studio/terms.html">Android Software Development Kit License</a>]]></license>
+    </credit>
+    <credit>
+        <component><![CDATA[<a href="http://google.github.io/dagger">Dagger 2</a>]]></component>
+        <owner><![CDATA[<a href="http://github.com/google/dagger/blob/master/AUTHORS">The Dagger Authors</a>]]></owner>
+        <license><![CDATA[<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>]]></license>
+    </credit>
+    <credit>
+        <component><![CDATA[<a href="http://firebase.google.com">Firebase SDK</a>]]></component>
+        <owner><![CDATA[<a href="http://www.google.com">Google, Inc.</a>]]></owner>
+        <license><![CDATA[<a href="http://developer.android.com/studio/terms.html">Android Software Development Kit License</a>]]></license>
+    </credit>
+    <credit>
+        <component><![CDATA[<a href="http://developers.google.com/android/guides/overview">Google Play Services</a>]]></component>
+        <owner><![CDATA[<a href="http://www.google.com">Google, Inc.</a>]]></owner>
+        <license><![CDATA[<a href="http://developer.android.com/studio/terms.html">Android Software Development Kit License</a>]]></license>
+    </credit>
+    <credit>
+        <component><![CDATA[<a href="http://www.oracle.com/technetwork/java/javase">JDK</a>]]></component>
+        <owner><![CDATA[<a href="http://www.oracle.com/technetwork">OTN</a>]]></owner>
+        <license><![CDATA[<a href="http://www.oracle.com/technetwork/java/javase/terms/license">Custom License</a>]]></license>
+    </credit>
+    <credit>
+        <component><![CDATA[<a href="http://kotlinlang.org">Kotlin</a>]]></component>
+        <owner><![CDATA[<a href="http://www.jetbrains.com">JetBrains s.r.o.</a>]]></owner>
+        <license><![CDATA[<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>]]></license>
+    </credit>
+    <credit>
+        <component><![CDATA[<a href="http://github.com/MicroUtils/kotlin-logging">kotlin-logging</a>]]></component>
+        <owner><![CDATA[<a href="http://github.com/MicroUtils">MicroUtils</a>]]></owner>
+        <license><![CDATA[<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>]]></license>
+    </credit>
+    <credit>
+        <component><![CDATA[<a href="http://material.io/develop/android">Material Design Components for Android</a>]]></component>
+        <owner><![CDATA[<a href="http://source.android.com">The Android Open Source Project</a></p>]]></owner>
+        <license><![CDATA[<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>]]></license>
+    </credit>
+    <credit>
+        <component><![CDATA[<a href="http://google.github.io/material-design-icons">Material design icons</a>]]></component>
+        <owner><![CDATA[<a href="http://www.google.com">Google, Inc.</a>]]></owner>
+        <license><![CDATA[<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>]]></license>
+    </credit>
+    <credit>
+        <component><![CDATA[<a href="http://github.com/square/moshi">Moshi</a>]]></component>
+        <owner><![CDATA[<a href="http://square.github.io">Square, Inc.</a>]]></owner>
+        <license><![CDATA[<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>]]></license>
+    </credit>
+    <credit>
+        <component><![CDATA[<a href="http://square.github.io/okhttp">OkHttp</a>]]></component>
+        <owner><![CDATA[<a href="http://square.github.io">Square, Inc.</a>]]></owner>
+        <license><![CDATA[<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>]]></license>
+    </credit>
+    <credit>
+        <component><![CDATA[<a href="http://github.com/square/okio">Okio</a>]]></component>
+        <owner><![CDATA[<a href="http://square.github.io">Square, Inc.</a>]]></owner>
+        <license><![CDATA[<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>]]></license>
+    </credit>
+    <credit>
+        <component><![CDATA[<a href="http://square.github.io/retrofit">Retrofit</a>]]></component>
+        <owner><![CDATA[<a href="http://square.github.io">Square, Inc.</a>]]></owner>
+        <license><![CDATA[<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>]]></license>
+    </credit>
+    <credit>
+        <component><![CDATA[<a href="http://github.com/ReactiveX/RxAndroid">RxAndroid</a>]]></component>
+        <owner><![CDATA[<a href="http://reactivex.io">The RxAndroid authors</a>]]></owner>
+        <license><![CDATA[<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>]]></license>
+    </credit>
+    <credit>
+        <component><![CDATA[<a href="http://github.com/ReactiveX/RxJava">RxJava</a>]]></component>
+        <owner><![CDATA[<a href="http://reactivex.io">The RxAndroid authors</a>]]></owner>
+        <license><![CDATA[<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>]]></license>
+    </credit>
+    <credit>
+        <component><![CDATA[<a href="http://www.slf4j.org">SLF4J</a>]]></component>
+        <owner><![CDATA[<a href="http://www.qos.ch">QOS.ch</a>]]></owner>
+        <license><![CDATA[<a href="http://opensource.org/licenses/MIT">MIT License</a>]]></license>
+    </credit>
+</credits>

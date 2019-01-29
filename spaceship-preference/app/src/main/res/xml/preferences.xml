@@ -97,5 +97,22 @@
             <intent android:targetClass="it.scoppelletti.spaceship.html.app.HtmlViewerActivity"
                 android:targetPackage="it.scoppelletti.spaceship.preference.sample" />
         </androidx.preference.Preference>
+        <androidx.preference.Preference
+            android:key="it.scoppelletti.spaceship.preference.sample.about"
+            android:title="@string/it_scoppelletti_pref_cmd_privacy"
+            android:icon="@drawable/ic_privacy_pref"
+            android:persistent="false"
+            android:enabled="false">
+            <intent android:targetClass="it.scoppelletti.spaceship.html.app.HtmlViewerActivity"
+                android:targetPackage="it.scoppelletti.spaceship.preference.sample" />
+        </androidx.preference.Preference>
+        <androidx.preference.Preference
+            android:key="it.scoppelletti.spaceship.preference.sample.credits"
+            android:title="@string/it_scoppelletti_pref_cmd_credits"
+            android:icon="@drawable/ic_credits_pref"
+            android:persistent="false">
+            <intent android:targetClass="it.scoppelletti.spaceship.preference.CreditsActivity"
+                android:targetPackage="it.scoppelletti.spaceship.preference.sample" />
+        </androidx.preference.Preference>
     </androidx.preference.PreferenceCategory>
 </androidx.preference.PreferenceScreen>

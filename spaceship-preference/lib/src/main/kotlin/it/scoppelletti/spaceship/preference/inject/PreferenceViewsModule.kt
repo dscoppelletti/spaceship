@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
- * Copyright (C) 2018 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+/*
+ * Copyright (C) 2019 Dario Scoppelletti, <http://www.scoppelletti.it/>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,13 +11,24 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License.
--->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="it.scoppelletti.spaceship.preference">
-    <application android:supportsRtl="true">
-        <activity android:name=".CreditsActivity"
-            android:label="@string/it_scoppelletti_pref_cmd_credits">
-        </activity>
-    </application>
-</manifest>
+ * limit
+ */
+
+package it.scoppelletti.spaceship.preference.inject
+
+import dagger.Module
+import dagger.android.ContributesAndroidInjector
+import it.scoppelletti.spaceship.preference.CreditsActivity
+
+/**
+ * Defines the views exported by this library.
+ *
+ * @since 1.0.0
+ */
+@Module
+public abstract class PreferenceViewsModule {
+
+    @ContributesAndroidInjector(modules = [])
+    public abstract fun contributeCreditsActivity(): CreditsActivity
+}
+

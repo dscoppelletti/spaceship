@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
- * Copyright (C) 2018 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+/*
+ * Copyright (C) 2019 Dario Scoppelletti, <http://www.scoppelletti.it/>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +12,23 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
--->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="it.scoppelletti.spaceship.preference">
-    <application android:supportsRtl="true">
-        <activity android:name=".CreditsActivity"
-            android:label="@string/it_scoppelletti_pref_cmd_credits">
-        </activity>
-    </application>
-</manifest>
+ */
+
+package it.scoppelletti.spaceship.preference.model
+
+/**
+ * Credit.
+ *
+ * @since 1.0.0
+ *
+ * @property component Component.
+ * @property owner     Organization.
+ * @property license   License.
+ *
+ * @constructor Constructor.
+ */
+public data class Credit(
+        public val component: CharSequence,
+        public val owner: CharSequence,
+        public val license: CharSequence
+)

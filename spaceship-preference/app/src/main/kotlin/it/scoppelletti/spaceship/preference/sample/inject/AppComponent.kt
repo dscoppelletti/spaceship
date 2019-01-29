@@ -10,12 +10,15 @@ import it.scoppelletti.spaceship.preference.sample.MainApp
 import it.scoppelletti.spaceship.inject.ContextModule
 import it.scoppelletti.spaceship.inject.CoreViewModelsModule
 import it.scoppelletti.spaceship.inject.CoreViewsModule
+import it.scoppelletti.spaceship.preference.inject.PreferenceViewModelsModule
+import it.scoppelletti.spaceship.preference.inject.PreferenceViewsModule
 import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [ AndroidInjectionModule::class, ContextModule::class,
-    CoreViewsModule::class, CoreViewModelsModule::class, HtmlViewsModule::class,
-    HtmlViewModelsModule::class ])
+    ViewsModule::class, CoreViewsModule::class, CoreViewModelsModule::class,
+    HtmlViewsModule::class, HtmlViewModelsModule::class,
+    PreferenceViewsModule::class, PreferenceViewModelsModule::class ])
 interface AppComponent {
 
     fun inject(app: MainApp)

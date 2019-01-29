@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2019 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/it_scoppelletti_marginHorz"
+    android:paddingRight="@dimen/it_scoppelletti_marginHorz"
+    tools:context="it.scoppelletti.spaceship.preference.widget.CreditListAdapter">
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/it_scoppelletti_spacingVert"
+        android:layout_marginLeft="@dimen/it_scoppelletti_spacingHorz"
+        android:layout_marginRight="@dimen/it_scoppelletti_spacingHorz"
+        style="@style/Widget.MaterialComponents.CardView">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/it_scoppelletti_marginVert"
+            android:layout_marginBottom="@dimen/it_scoppelletti_marginVert"
+            android:layout_marginLeft="@dimen/it_scoppelletti_marginHorz"
+            android:layout_marginRight="@dimen/it_scoppelletti_marginHorz"
+            tools:ignore="rtlHardcoded">
+            <TextView android:id="@+id/lblComponent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@id/txtComponent"
+                android:text="@string/it_scoppelletti_pref_lbl_component" />
+            <TextView android:id="@+id/lblOwner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@id/txtOwner"
+                android:text="@string/it_scoppelletti_pref_lbl_owner" />
+            <TextView android:id="@+id/lblLicense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@id/txtLicense"
+                android:text="@string/it_scoppelletti_pref_lbl_license" />
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/lblBarrier"
+                android:layout_width="@dimen/it_scoppelletti_spacingHorz"
+                android:layout_height="wrap_content"
+                app:barrierDirection="right"
+                app:constraint_referenced_ids="lblComponent,lblOwner,lblLicense" />
+            <TextView android:id="@+id/txtComponent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:singleLine="false"
+                android:layout_marginBottom="@dimen/it_scoppelletti_spacingVert"
+                android:layout_marginLeft="@dimen/it_scoppelletti_spacingHorz"
+                app:layout_constraintLeft_toRightOf="@id/lblBarrier"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/txtOwner"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                tools:text="@string/it_scoppelletti_pref_lbl_component" />
+            <TextView android:id="@+id/txtOwner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:singleLine="false"
+                android:layout_marginBottom="@dimen/it_scoppelletti_spacingVert"
+                android:layout_marginLeft="@dimen/it_scoppelletti_spacingHorz"
+                app:layout_constraintLeft_toRightOf="@id/lblBarrier"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtComponent"
+                app:layout_constraintBottom_toTopOf="@id/txtLicense"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                tools:text="@string/it_scoppelletti_pref_lbl_owner" />
+            <TextView android:id="@+id/txtLicense"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:singleLine="false"
+                android:layout_marginBottom="@dimen/it_scoppelletti_spacingVert"
+                android:layout_marginLeft="@dimen/it_scoppelletti_spacingHorz"
+                app:layout_constraintLeft_toRightOf="@id/lblBarrier"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtOwner"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                tools:text="@string/it_scoppelletti_pref_lbl_license" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</FrameLayout>

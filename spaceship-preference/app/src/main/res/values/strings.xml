@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation">
+    <string name="cmd_oss">Open Source Notices</string>
     <string name="lbl_category">Category</string>
     <string name="lbl_check">Check preference</string>
     <string name="lbl_combo">DropDown preference</string>

@@ -20,13 +20,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="it.scoppelletti.spaceship.widget.ApplicationExceptionAdapter">
-    <com.google.android.material.card.MaterialCardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/it_scoppelletti_spacingVert"
         android:layout_marginLeft="@dimen/it_scoppelletti_spacingHorz"
-        android:layout_marginRight="@dimen/it_scoppelletti_spacingHorz"
-        style="@style/Widget.MaterialComponents.CardView">
+        android:layout_marginRight="@dimen/it_scoppelletti_spacingHorz">
         <TextView android:id="@+id/txtMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,5 +36,5 @@
             android:singleLine="false"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             tools:text="Exception message"/>
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.cardview.widget.CardView>
 </FrameLayout>

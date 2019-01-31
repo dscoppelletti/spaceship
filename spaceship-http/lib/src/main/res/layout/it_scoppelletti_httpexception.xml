@@ -20,13 +20,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="it.scoppelletti.spaceship.http.widget.HttpApplicationExceptionAdapter">
-    <com.google.android.material.card.MaterialCardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/it_scoppelletti_spacingVert"
         android:layout_marginLeft="@dimen/it_scoppelletti_spacingHorz"
-        android:layout_marginRight="@dimen/it_scoppelletti_spacingHorz"
-        style="@style/Widget.MaterialComponents.CardView">
+        android:layout_marginRight="@dimen/it_scoppelletti_spacingHorz">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -107,5 +106,5 @@
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 tools:text="java.lang.RuntimeException" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.cardview.widget.CardView>
 </FrameLayout>

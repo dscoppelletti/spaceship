@@ -103,7 +103,6 @@ public class CreditsActivity : AppCompatActivity(),
             fragmentDispatchingAndroidInjector
 
     private fun stateObserver(state: CreditsState) {
-
         if (state.waiting) {
             refreshLayout.isRefreshing = true
         }

@@ -12,7 +12,7 @@ preferences UI.
 Provides components to appropriately display the notices to comply with
 the license requirements of open source libraries. 
 
-* [Including Open Source notices](http://github.com/dscoppelletti/spaceship/wiki/Including-Open-Source-notice)
+* [Including Open Source notices](http://github.com/dscoppelletti/spaceship/wiki/Including-Open-Source-notices)
 
 # Package it.scoppelletti.spaceship.preference.inject
 

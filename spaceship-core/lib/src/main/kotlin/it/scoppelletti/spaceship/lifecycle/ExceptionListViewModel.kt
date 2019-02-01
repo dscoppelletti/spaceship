@@ -24,7 +24,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import it.scoppelletti.spaceship.ExceptionLogger
 import it.scoppelletti.spaceship.widget.ExceptionAdapter
+import mu.KLogger
+import mu.KotlinLogging
+import java.lang.Exception
 import javax.inject.Inject
 
 /**
@@ -35,11 +39,14 @@ import javax.inject.Inject
  * @property outerEx Exception at the head of the chain.
  * @property state   Collection of exceptions.
  *
- * @constructor                Constructor.
- * @params      adapterFactory Creates an adapter for an exception class.
+ * @constructor                  Constructor.
+ * @params      adapterFactory   Creates an adapter for an exception class.
+ * @params      exceptionLoggers Logs an exception.
  */
+@JvmSuppressWildcards
 public class ExceptionListViewModel @Inject constructor(
-        private val adapterFactory: ExceptionAdapter.Factory
+        private val adapterFactory: ExceptionAdapter.Factory,
+        private val exceptionLoggers: Set<ExceptionLogger>
 ): ViewModel() {
 
     public var outerEx: Throwable?
@@ -66,6 +73,20 @@ public class ExceptionListViewModel @Inject constructor(
         }
 
         subscription = Observable.create<Throwable> generator@{ emitter ->
+            outerEx?.let { ex ->
+                exceptionLoggers.forEach {
+                    if (emitter.isDisposed) {
+                        return@generator
+                    }
+
+                    try {
+                        it.log(ex)
+                    } catch (logEx: Exception) {
+                        logger.error(logEx) { "Failure in logger $it." }
+                    }
+                }
+            }
+
             var ex: Throwable? = outerEx
 
             while (ex != null) {
@@ -97,6 +118,10 @@ public class ExceptionListViewModel @Inject constructor(
     override fun onCleared() {
         disposables.clear()
         super.onCleared()
+    }
+
+    private companion object {
+        val logger: KLogger = KotlinLogging.logger {}
     }
 }
 

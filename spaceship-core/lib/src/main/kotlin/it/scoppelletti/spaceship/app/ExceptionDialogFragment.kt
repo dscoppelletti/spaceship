@@ -189,6 +189,9 @@ public class ExceptionDialogFragment : AppCompatDialogFragment(), Injectable {
             return titleBuilder!!
         }
 
+        /**
+         * Shows the dialog.
+         */
         internal fun show() {
             val args: Bundle
             val viewModel: ExceptionViewModel

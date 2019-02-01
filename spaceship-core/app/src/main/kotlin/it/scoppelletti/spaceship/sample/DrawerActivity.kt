@@ -161,19 +161,19 @@ class DrawerActivity : AppCompatActivity(),
     }
 
     private fun onExceptionTest() {
-        val ex: Exception
-
-        ex = applicationException {
-            message(R.string.msg_exceptionTest) {
-                arguments {
-                    add(1)
+        try {
+            throw applicationException {
+                message(R.string.msg_exceptionTest) {
+                    arguments {
+                        add(1)
+                    }
                 }
+                cause = RuntimeException("Runtime message.")
             }
-            cause = RuntimeException("Runtime message.")
-        }
-
-        showExceptionDialog(ex) {
-            title(R.string.cmd_exceptionTest)
+        } catch (ex: Exception) {
+            showExceptionDialog(ex) {
+                title(R.string.cmd_exceptionTest)
+            }
         }
     }
 }

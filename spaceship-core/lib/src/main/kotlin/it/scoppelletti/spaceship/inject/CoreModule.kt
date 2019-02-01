@@ -18,8 +18,12 @@ package it.scoppelletti.spaceship.inject
 
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.multibindings.IntoMap
+import dagger.multibindings.IntoSet
 import it.scoppelletti.spaceship.ApplicationException
+import it.scoppelletti.spaceship.DefaultExceptionLogger
+import it.scoppelletti.spaceship.ExceptionLogger
 import it.scoppelletti.spaceship.widget.ApplicationExceptionAdapter
 import it.scoppelletti.spaceship.widget.ExceptionAdapter
 
@@ -39,7 +43,17 @@ public abstract class CoreModule {
     @Binds
     @IntoMap
     @ExceptionAdapterKey(ApplicationException::class)
-    public abstract fun bindApplicationExeptionAdapter(
+    public abstract fun bindApplicationExceptionAdapter(
             adapter: ApplicationExceptionAdapter
     ): ExceptionAdapter<*>
+
+    @Module
+    public companion object {
+
+        @IntoSet
+        @Provides
+        @JvmStatic
+        public fun provideExceptionLogger(): ExceptionLogger =
+                DefaultExceptionLogger()
+    }
 }

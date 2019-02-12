@@ -37,7 +37,6 @@ import it.scoppelletti.spaceship.ads.lifecycle.ConsentViewModel
 import it.scoppelletti.spaceship.ads.widget.ConsentPagerAdapter
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
-import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.app.tryFinish
 import it.scoppelletti.spaceship.applicationException
 import it.scoppelletti.spaceship.inject.Injectable
@@ -70,6 +69,9 @@ public abstract class AbstractConsentActivity : AppCompatActivity(), Injectable,
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var exDialog: ExceptionDialogFragment.Builder
 
     private var settings: Boolean = false
     private lateinit var viewModel: ConsentViewModel
@@ -127,14 +129,14 @@ public abstract class AbstractConsentActivity : AppCompatActivity(), Injectable,
     private fun onStateUpdate(state: ConsentState) {
         state.error?.poll()?.let { err ->
             setCurrentItem(state)
-            showExceptionDialog(err)
+            exDialog.show(this, err)
             return
         }
 
         if (settings) {
             if (state.data.consentStatus == ConsentStatus.NOT_IN_EEA) {
                 setCurrentItem(state)
-                showExceptionDialog(applicationException {
+                exDialog.show(this, applicationException {
                     message(R.string.it_scoppelletti_ads_err_notInEea)
                 })
 

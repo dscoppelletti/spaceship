@@ -22,6 +22,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import it.scoppelletti.spaceship.lifecycle.ExceptionListViewModel
+import it.scoppelletti.spaceship.lifecycle.ExceptionViewModel
 
 /**
  * Defines the `ViewModel` classes exported by this library.
@@ -35,6 +36,13 @@ public abstract class CoreViewModelsModule {
     public abstract fun bindViewModelFactory(
             factory: InjectViewModelFactory
     ): ViewModelProvider.Factory
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ExceptionViewModel::class)
+    public abstract fun bindExceptionViewModel(
+            viewModel: ExceptionViewModel
+    ): ViewModel
 
     @Binds
     @IntoMap

@@ -66,6 +66,8 @@ dependencies {
     implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
     implementation "io.reactivex.rxjava2:rxandroid:${versionMap.rxandroid}"
     implementation "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versionMap.kotlinx_coroutines}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:${versionMap.kotlinx_coroutines}"
     implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
     testImplementation "junit:junit:${versionMap.junit}"
     testImplementation "org.jetbrains.kotlin:kotlin-test:${versionMap.kotlin}"

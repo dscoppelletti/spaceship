@@ -15,13 +15,12 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import it.scoppelletti.spaceship.app.AlertDialogFragment
+import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
 import it.scoppelletti.spaceship.app.TitleAdapter
 import it.scoppelletti.spaceship.app.hideSoftKeyboard
-import it.scoppelletti.spaceship.app.showAlertDialog
-import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.app.tryFinish
-import it.scoppelletti.spaceship.applicationException
 import it.scoppelletti.spaceship.inject.Injectable
 import it.scoppelletti.spaceship.sample.lifecycle.ItemState
 import it.scoppelletti.spaceship.sample.lifecycle.ItemViewModel
@@ -41,6 +40,12 @@ class TabbedActivity : AppCompatActivity(),
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var exDialog: ExceptionDialogFragment.Builder
+
+    @Inject
+    lateinit var alertDialog: AlertDialogFragment.Builder
 
     private lateinit var titleAdapter: TitleAdapter
     private lateinit var viewModel: ItemViewModel
@@ -140,7 +145,7 @@ class TabbedActivity : AppCompatActivity(),
             }
 
             state.error?.poll()?.let { err ->
-                showExceptionDialog(err)
+                exDialog.show(this, err)
             }
         }
     }
@@ -219,7 +224,7 @@ class TabbedActivity : AppCompatActivity(),
 
     private fun onExiting(): Boolean {
         if (viewModel.form.changed) {
-            showAlertDialog {
+            alertDialog.show(this) {
                 message(R.string.it_scoppelletti_msg_saveChanges)
                 iconId = android.R.drawable.ic_dialog_alert
                 positiveActionTextId = R.string.it_scoppelletti_cmd_save
@@ -249,7 +254,7 @@ class TabbedActivity : AppCompatActivity(),
             }
         } catch (ex: RuntimeException) {
             progressIndicator.hide {
-                showExceptionDialog(ex)
+                exDialog.show(this, ex)
             }
         }
     }
@@ -260,13 +265,13 @@ class TabbedActivity : AppCompatActivity(),
             viewModel.delete()
         } catch (ex: RuntimeException) {
             progressIndicator.hide {
-                showExceptionDialog(ex)
+                exDialog.show(this, ex)
             }
         }
     }
 
     private fun onItemDeleting() {
-        showAlertDialog {
+        alertDialog.show(this) {
             message(R.string.msg_deleting)
             title(R.string.it_scoppelletti_cmd_delete)
             positiveActionTextId = R.string.it_scoppelletti_cmd_delete

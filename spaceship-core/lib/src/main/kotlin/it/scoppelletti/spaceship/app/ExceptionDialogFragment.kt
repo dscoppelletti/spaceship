@@ -147,14 +147,36 @@ public class ExceptionDialogFragment : AppCompatDialogFragment(), Injectable {
      * Builds an `ExceptionDialogFragment` fragment.
      *
      * @since 1.0.0
+     */
+    public interface Builder {
+
+        /**
+         * Shows an exception dialog.
+         *
+         * @param  activity Activity.
+         * @param  ex       Exception.
+         * @param  init     Initialization block.
+         */
+        fun show(
+                activity: FragmentActivity,
+                ex: Throwable,
+                init: ExceptionDialogFragment.BuilderDsl.() -> Unit = { }
+        )
+    }
+
+    /**
+     * Builds an `ExceptionDialogFragment` fragment.
+     *
+     * @since 1.0.0
      *
      * @property tag Fragment tag.
      */
     @MessageBuilder.Dsl
     @ExceptionDialogFragment.Dsl
-    public class Builder internal constructor(
+    public class BuilderDsl internal constructor(
             private val activity: FragmentActivity,
-            private val ex: Throwable
+            private val ex: Throwable,
+            private val viewModelFactory : ViewModelProvider.Factory
     ) {
         public var tag: String = ExceptionDialogFragment.TAG
         private var titleBuilder: MessageBuilder? = null
@@ -196,6 +218,11 @@ public class ExceptionDialogFragment : AppCompatDialogFragment(), Injectable {
             val args: Bundle
             val viewModel: ExceptionViewModel
 
+            viewModel = ViewModelProviders.of(activity, viewModelFactory).get(
+                    ExceptionViewModel::class.java)
+            viewModel.ex = ex
+            viewModel.log()
+
             args = Bundle()
 
             titleBuilder?.let {
@@ -207,10 +234,6 @@ public class ExceptionDialogFragment : AppCompatDialogFragment(), Injectable {
                             it.build(activity.resources))
                 }
             }
-
-            viewModel = ViewModelProviders.of(activity).get(
-                    ExceptionViewModel::class.java)
-            viewModel.ex = ex
 
             ExceptionDialogFragment()
                     .apply {
@@ -230,14 +253,23 @@ public class ExceptionDialogFragment : AppCompatDialogFragment(), Injectable {
 }
 
 /**
- * Shows an exception dialog.
+ * Implementation of the `ExceptionDialogBuilder` interface.
  *
- * @receiver      Activity.
- * @param    ex   Exception.
- * @param    init Initialization block.
- * @since         1.0.0
+ * @since 1.0.0
+ *
+ * @constructor                  Constructor.
+ * @param       viewModelFactory Implementation of the
+ *                               `ViewModelProvider.Factory` interface.
  */
-public fun FragmentActivity.showExceptionDialog(
-        ex: Throwable,
-        init: ExceptionDialogFragment.Builder.() -> Unit = { }
-) = ExceptionDialogFragment.Builder(this, ex).apply(init).show()
+public class ExceptionDialogBuilder @Inject constructor(
+        private val viewModelFactory : ViewModelProvider.Factory
+) : ExceptionDialogFragment.Builder {
+
+    override fun show(
+            activity: FragmentActivity,
+            ex: Throwable,
+            init: ExceptionDialogFragment.BuilderDsl.() -> Unit
+    ) = ExceptionDialogFragment.BuilderDsl(activity, ex, viewModelFactory)
+            .apply(init)
+            .show()
+}

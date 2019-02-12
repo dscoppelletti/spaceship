@@ -20,7 +20,7 @@ import mu.KLogger
 import mu.KotlinLogging
 
 /**
- * Default implementation ot the `ExceptionLogger` interface.
+ * Default implementation of the `ExceptionLogger` interface.
  *
  * @since 1.0.0
  *
@@ -29,7 +29,7 @@ import mu.KotlinLogging
 public class DefaultExceptionLogger : ExceptionLogger {
 
     override fun log(ex: Throwable) {
-        logger.error(ex) { null }
+        logger.error("ExceptionLogger", ex)
     }
 
     private companion object {

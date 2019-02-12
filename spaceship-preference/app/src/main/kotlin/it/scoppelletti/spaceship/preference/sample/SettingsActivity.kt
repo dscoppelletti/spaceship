@@ -9,7 +9,6 @@ import it.scoppelletti.spaceship.html.HtmlExt
 import it.scoppelletti.spaceship.preference.AbstractPreferenceFragment
 import it.scoppelletti.spaceship.preference.AbstractSettingsActivity
 import it.scoppelletti.spaceship.preference.CreditsActivity
-import it.scoppelletti.spaceship.preference.StartActivityPreferenceDecorator
 
 class SettingsActivity : AbstractSettingsActivity() {
 
@@ -37,30 +36,28 @@ class SettingsActivity : AbstractSettingsActivity() {
 
         return super.onOptionsItemSelected(item)
     }
+}
 
-    class SettingsFragment : AbstractPreferenceFragment() {
+class SettingsFragment : AbstractPreferenceFragment() {
 
-        override fun onCreatePreferences(
-                savedInstanceState: Bundle?,
-                rootKey: String?
-        ) {
-            setPreferencesFromResource(R.xml.preferences, rootKey)
+    override fun onCreatePreferences(
+            savedInstanceState: Bundle?,
+            rootKey: String?
+    ) {
+        setPreferencesFromResource(R.xml.preferences, rootKey)
 
-            StartActivityPreferenceDecorator(requireActivity(),
-                    findPreference(MainApp.PROP_HELP)) { intent ->
-                intent.putExtra(HtmlExt.PROP_TITLE,
-                        R.string.it_scoppelletti_pref_cmd_help)
-                intent.putExtra(HtmlExt.PROP_HOMEASUP, true)
-                intent.putExtra(HtmlExt.PROP_TEXT, R.string.html_help)
-            }
+        findPreference(MainApp.PROP_HELP).startActivityConfig { intent ->
+            intent.putExtra(HtmlExt.PROP_TITLE,
+                    R.string.it_scoppelletti_pref_cmd_help)
+            intent.putExtra(HtmlExt.PROP_HOMEASUP, true)
+            intent.putExtra(HtmlExt.PROP_TEXT, R.string.html_help)
+        }
 
-            StartActivityPreferenceDecorator(requireActivity(),
-                    findPreference(MainApp.PROP_FEEDBACK))
+        findPreference(MainApp.PROP_FEEDBACK).startActivityConfig()
 
-            StartActivityPreferenceDecorator(requireActivity(),
-                    findPreference(MainApp.PROP_CREDITS)) { intent ->
-                intent.putExtra(CreditsActivity.PROP_CREDITS, R.xml.credits)
-            }
+        findPreference(MainApp.PROP_CREDITS).startActivityConfig { intent ->
+            intent.putExtra(CreditsActivity.PROP_CREDITS, R.xml.credits)
         }
     }
 }
+

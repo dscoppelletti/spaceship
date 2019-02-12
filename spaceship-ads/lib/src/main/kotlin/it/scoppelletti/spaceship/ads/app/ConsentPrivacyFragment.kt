@@ -36,7 +36,7 @@ import it.scoppelletti.spaceship.ads.lifecycle.ConsentPrivacyState
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentPrivacyViewModel
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentViewModel
 import it.scoppelletti.spaceship.ads.model.AdProvider
-import it.scoppelletti.spaceship.app.showExceptionDialog
+import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.applicationException
 import it.scoppelletti.spaceship.inject.Injectable
 import kotlinx.android.synthetic.main.it_scoppelletti_ads_consentprivacy_fragment.*
@@ -56,6 +56,9 @@ public class ConsentPrivacyFragment : Fragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var exDialog: ExceptionDialogFragment.Builder
 
     private lateinit var activityViewModel: ConsentViewModel
     private lateinit var viewModel: ConsentPrivacyViewModel
@@ -140,7 +143,7 @@ public class ConsentPrivacyFragment : Fragment(), Injectable {
             intent.data = Uri.parse(url)
             startActivity(intent)
         } catch (ex: RuntimeException) {
-            requireActivity().showExceptionDialog(applicationException {
+            exDialog.show(requireActivity(), applicationException {
                 message(R.string.it_scoppelletti_err_startActivity)
                 cause = ex
             })

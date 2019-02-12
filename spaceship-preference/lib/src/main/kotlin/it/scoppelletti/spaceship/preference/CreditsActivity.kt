@@ -32,7 +32,6 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
-import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.app.tryFinish
 import it.scoppelletti.spaceship.inject.Injectable
 import it.scoppelletti.spaceship.preference.lifecycle.CreditsState
@@ -61,6 +60,9 @@ public class CreditsActivity : AppCompatActivity(),
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var exDialog: ExceptionDialogFragment.Builder
 
     private lateinit var viewModel: CreditsViewModel
     private lateinit var adapter: CreditListAdapter
@@ -115,7 +117,7 @@ public class CreditsActivity : AppCompatActivity(),
         }
 
         state.error?.poll()?.let { err ->
-            showExceptionDialog(err)
+            exDialog.show(this, err)
         }
     }
 

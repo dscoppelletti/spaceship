@@ -11,13 +11,12 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import com.google.android.material.snackbar.Snackbar
 import it.scoppelletti.spaceship.ads.AdsExt
 import it.scoppelletti.spaceship.ads.DefaultAdListener
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
-import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.app.tryFinish
-import it.scoppelletti.spaceship.applicationException
 import it.scoppelletti.spaceship.types.trimRaw
 import kotlinx.android.synthetic.main.main_activity.*
 import mu.KLogger
@@ -44,23 +43,21 @@ class MainActivity : AppCompatActivity(), OnDialogResultListener,
     }
 
     override fun onConsentInfoUpdated(consentStatus: ConsentStatus?) {
+        val msg: String
         val form: ConsentForm
         val formListener: DefaultConsentFormListener
 
         if (consentStatus == null) {
             logger.error("Argument consent status is null.")
-            showExceptionDialog(
-                    applicationException {
-                        message(R.string.err_consentLoad)
-                        cause = NullPointerException(
-                                "Argument consentStatus is null.")
-                    })
+            msg = resources.getString(R.string.err_consentLoad,
+                    "Argument consent status is null.")
+            Snackbar.make(contentFrame, msg, Snackbar.LENGTH_LONG).show()
             return
         }
 
         if (!consentInfo.isRequestLocationInEeaOrUnknown) {
             logger.info(
-                    "The user is not located in the European Economic Area")
+                    "The user is not located in the European Economic Area.")
             onConsentResult(ConsentStatus.PERSONALIZED)
             return
         }
@@ -123,21 +120,18 @@ class MainActivity : AppCompatActivity(), OnDialogResultListener,
     }
 
     private fun onConsentError(reason: String?) {
-        showExceptionDialog(
-                applicationException {
-                    message(R.string.err_consentForm)
-                    cause = RuntimeException(reason)
-                })
+        val msg: String
+
+        msg = resources.getString(R.string.err_consentForm, reason)
+        Snackbar.make(contentFrame, msg, Snackbar.LENGTH_LONG).show()
     }
 
     override fun onFailedToUpdateConsentInfo(reason: String?) {
-        logger.error { "Failed to load data to adhere the EU GDPR: $reason." }
+        val msg: String
 
-        showExceptionDialog(
-                applicationException {
-                    message(R.string.err_consentLoad)
-                    cause = RuntimeException(reason)
-                })
+        logger.error { "Failed to load data to adhere the EU GDPR: $reason." }
+        msg = resources.getString(R.string.err_consentLoad, reason)
+        Snackbar.make(contentFrame, msg, Snackbar.LENGTH_LONG).show()
     }
 
     override fun onDialogResult(tag: String, which: Int) {

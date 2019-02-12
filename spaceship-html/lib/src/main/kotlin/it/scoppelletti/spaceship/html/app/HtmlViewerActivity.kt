@@ -31,7 +31,6 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
-import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.app.tryFinish
 import it.scoppelletti.spaceship.html.HtmlExt
 import it.scoppelletti.spaceship.html.R
@@ -62,6 +61,9 @@ public class HtmlViewerActivity : AppCompatActivity(),
     @Inject
     lateinit var fragmentDispatchingAndroidInjector:
             DispatchingAndroidInjector<Fragment>
+
+    @Inject
+    lateinit var exDialog: ExceptionDialogFragment.Builder
 
     private lateinit var viewModel: HtmlViewerViewModel
 
@@ -111,7 +113,7 @@ public class HtmlViewerActivity : AppCompatActivity(),
         txtContent.text = state.text
 
         state.error?.poll()?.let { ex ->
-            showExceptionDialog(ex)
+            exDialog.show(this, ex)
         }
     }
 

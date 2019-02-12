@@ -27,6 +27,8 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.FragmentActivity
 import it.scoppelletti.spaceship.CoreExt
 import it.scoppelletti.spaceship.MessageBuilder
+import it.scoppelletti.spaceship.inject.Injectable
+import javax.inject.Inject
 
 /**
  * Alert dialog.
@@ -36,7 +38,7 @@ import it.scoppelletti.spaceship.MessageBuilder
  * @constructor Sole constructor.
  */
 @UiThread
-public class AlertDialogFragment : AppCompatDialogFragment() {
+public class AlertDialogFragment : AppCompatDialogFragment(), Injectable {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val args: Bundle
@@ -134,6 +136,25 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
      * Builds an `AlertDialogFragment` fragment.
      *
      * @since 1.0.0
+     */
+    public interface Builder {
+
+        /**
+         * Shows an alert dialog.
+         *
+         * @param  activity Activity.
+         * @param  init     Initialization block.
+         */
+        fun show(
+                activity: FragmentActivity,
+                init: AlertDialogFragment.BuilderDsl.() -> Unit = { }
+        )
+    }
+
+    /**
+     * Builds an `AlertDialogFragment` fragment.
+     *
+     * @since 1.0.0
      *
      * @property positiveActionTextId Positive action text as a string resource
      *                                ID.
@@ -146,7 +167,7 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
      */
     @MessageBuilder.Dsl
     @AlertDialogFragment.Dsl
-    public class Builder internal constructor(
+    public class BuilderDsl internal constructor(
             private val activity: FragmentActivity
     ) {
 
@@ -287,12 +308,17 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
 }
 
 /**
- * Shows an alert dialog.
+ * Implementation of the `AlertDialogBuilder` interface.
  *
- * @receiver      Activity.
- * @param    init Initialization block.
- * @since         1.0.0
+ * @since 1.0.0
+ *
+ * @constructor Sole constructor.
  */
-public fun FragmentActivity.showAlertDialog(
-        init: AlertDialogFragment.Builder.() -> Unit
-) = AlertDialogFragment.Builder(this).apply(init).show()
+public class AlertDialogBuilder @Inject constructor(
+) : AlertDialogFragment.Builder {
+
+    override fun show(
+            activity: FragmentActivity,
+            init: AlertDialogFragment.BuilderDsl.() -> Unit
+    ) = AlertDialogFragment.BuilderDsl(activity).apply(init).show()
+}

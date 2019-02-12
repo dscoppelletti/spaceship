@@ -10,13 +10,12 @@ import androidx.fragment.app.Fragment
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.NavigationDrawer
 import it.scoppelletti.spaceship.app.TitleAdapter
-import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.applicationException
 import it.scoppelletti.spaceship.inject.Injectable
 import kotlinx.android.synthetic.main.drawer_activity.*
-import java.lang.Exception
 import javax.inject.Inject
 
 class DrawerActivity : AppCompatActivity(),
@@ -26,6 +25,9 @@ class DrawerActivity : AppCompatActivity(),
     @Inject
     lateinit var fragmentDispatchingAndroidInjector:
             DispatchingAndroidInjector<Fragment>
+
+    @Inject
+    lateinit var exDialog: ExceptionDialogFragment.Builder
 
     private lateinit var drawer: NavigationDrawer
     private lateinit var titleAdapter: TitleAdapter
@@ -161,19 +163,15 @@ class DrawerActivity : AppCompatActivity(),
     }
 
     private fun onExceptionTest() {
-        try {
-            throw applicationException {
-                message(R.string.msg_exceptionTest) {
-                    arguments {
-                        add(1)
-                    }
+        exDialog.show(this, applicationException {
+            message(R.string.msg_exceptionTest) {
+                arguments {
+                    add(1)
                 }
-                cause = RuntimeException("Runtime message.")
             }
-        } catch (ex: Exception) {
-            showExceptionDialog(ex) {
-                title(R.string.cmd_exceptionTest)
-            }
+            cause = RuntimeException("Runtime message.")
+        }) {
+            title(R.string.cmd_exceptionTest)
         }
     }
 }

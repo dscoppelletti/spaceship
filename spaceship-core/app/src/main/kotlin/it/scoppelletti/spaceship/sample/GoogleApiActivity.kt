@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
-import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.app.tryFinish
 import com.google.android.gms.tasks.Task
 import dagger.android.AndroidInjector
@@ -28,6 +27,9 @@ class GoogleApiActivity : AppCompatActivity(),
     @Inject
     lateinit var fragmentDispatchingAndroidInjector:
             DispatchingAndroidInjector<Fragment>
+
+    @Inject
+    lateinit var exDialogBuilder: ExceptionDialogFragment.Builder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,8 +58,7 @@ class GoogleApiActivity : AppCompatActivity(),
             return
         }
 
-        logger.error("Google API not available.", ex)
-        showExceptionDialog(applicationException {
+        exDialogBuilder.show(this, applicationException {
             message(R.string.it_scoppelletti_err_googleApiNotAvailable)
             cause = ex
         })

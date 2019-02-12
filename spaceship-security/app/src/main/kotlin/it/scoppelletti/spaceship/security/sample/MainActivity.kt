@@ -12,9 +12,9 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.NavigationDrawer
 import it.scoppelletti.spaceship.app.TitleAdapter
-import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.inject.Injectable
 import it.scoppelletti.spaceship.security.sample.lifecycle.MainState
 import it.scoppelletti.spaceship.security.sample.lifecycle.MainViewModel
@@ -31,6 +31,9 @@ class MainActivity : AppCompatActivity(),
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var exDialog: ExceptionDialogFragment.Builder
 
     private lateinit var drawer: NavigationDrawer
     private lateinit var titleAdapter: TitleAdapter
@@ -109,7 +112,7 @@ class MainActivity : AppCompatActivity(),
             }
 
             state.error?.poll()?.let { err ->
-                showExceptionDialog(err)
+                exDialog.show(this, err)
             }
         }
     }

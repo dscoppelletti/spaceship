@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import it.scoppelletti.spaceship.app.showExceptionDialog
+import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.inject.Injectable
 import it.scoppelletti.spaceship.sample.lifecycle.ListState
 import it.scoppelletti.spaceship.sample.lifecycle.ListViewModel
@@ -27,6 +27,9 @@ class ListFragment : Fragment(),
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var exDialog: ExceptionDialogFragment.Builder
 
     private lateinit var viewModel: ListViewModel
     private lateinit var adapter: ItemListAdapter
@@ -77,7 +80,7 @@ class ListFragment : Fragment(),
                 }
 
                 state.error?.poll()?.let { err ->
-                    requireActivity().showExceptionDialog(err)
+                    exDialog.show(requireActivity(), err)
                 }
             }
         })

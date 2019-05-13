@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.preference.widget
 
 import android.text.method.LinkMovementMethod

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier", "unused")
+
 package it.scoppelletti.spaceship.view
 
 import android.annotation.SuppressLint
@@ -42,6 +44,7 @@ public class ViewPagerEx(
         attrs: AttributeSet
 ) : ViewPager(context, attrs) {
 
+    @Suppress("WeakerAccess")
     public var swipeEnabled: Boolean = true
 
     override fun onTouchEvent(ev: MotionEvent?): Boolean =

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.ads.lifecycle
 
 import androidx.lifecycle.LiveData
@@ -28,11 +30,9 @@ import it.scoppelletti.spaceship.ads.consent.ConsentStatus
  * @since 1.0.0
  */
 public object ConsentStatusObservable {
-    private val _status: MutableLiveData<ConsentStatus>
 
-    init {
-        _status = MutableLiveData()
-    }
+    @Suppress("ObjectPropertyName")
+    private val _status = MutableLiveData<ConsentStatus>()
 
     public val status: LiveData<ConsentStatus> = _status
 

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.widget
 
 import android.view.LayoutInflater
@@ -27,8 +29,6 @@ import it.scoppelletti.spaceship.toMessage
  * Default implementation of the `ExceptionAdapter` interface.
  *
  * @since 1.0.0
- *
- * @constructor Sole constructor.
  */
 public class DefaultExceptionAdapter : ExceptionAdapter<Throwable> {
 

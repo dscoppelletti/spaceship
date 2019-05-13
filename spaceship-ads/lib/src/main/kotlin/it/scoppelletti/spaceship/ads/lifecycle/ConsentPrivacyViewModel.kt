@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.ads.lifecycle
 
 import android.text.Html
@@ -21,17 +23,18 @@ import android.text.SpannedString
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import it.scoppelletti.spaceship.CoreExt
 import it.scoppelletti.spaceship.html.HtmlExt
 import it.scoppelletti.spaceship.html.fromHtml
-import mu.KLogger
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import mu.KotlinLogging
 import javax.inject.Inject
 import javax.inject.Named
+import kotlin.coroutines.CoroutineContext
 
 /**
  * ViewModel of the `ConsentPrivacyFragment` view.
@@ -42,22 +45,24 @@ import javax.inject.Named
  * @property state State of the view.
  *
  * @constructor            Constructor.
+ * @param       dispatcher Coroutine dispatcher.
  * @param       tagHandler Handles the HTML custom tags.
  */
 public class ConsentPrivacyViewModel @Inject constructor(
+
+        @Named(CoreExt.DEP_MAINDISPATCHER)
+        dispatcher: CoroutineDispatcher,
+
         @Named(HtmlExt.DEP_TAGHANDLER)
         private val tagHandler: Html.TagHandler
-) : ViewModel() {
-    private val _state: MutableLiveData<ConsentPrivacyState>
-    private val disposables: CompositeDisposable
+) : ViewModel(), CoroutineScope {
 
-    public val state: LiveData<ConsentPrivacyState>
-        get() = _state
+    private val _state = MutableLiveData<ConsentPrivacyState>()
+    private val job = Job()
 
-    init {
-        _state = MutableLiveData()
-        disposables = CompositeDisposable()
-    }
+    override val coroutineContext: CoroutineContext = dispatcher + job
+
+    public val state: LiveData<ConsentPrivacyState> = _state
 
     /**
      * Builds the displayable styled text from the provided HTML strings.
@@ -65,42 +70,42 @@ public class ConsentPrivacyViewModel @Inject constructor(
      * @param header Source HTML string for the header.
      * @param footer Source HTML string for the footer.
      */
-    public fun buildText(header: String, footer: String) {
-        val subscription: Disposable
+    public fun buildText(header: String, footer: String) = launch {
+        var h: CharSequence
+        var f: CharSequence
 
         if (_state.value != null) {
-            return
+            return@launch
         }
 
-        subscription = Observable.fromCallable {
-            fromHtml(header, null, tagHandler)
-        }.onErrorReturn { ex ->
+        try {
+            h = fromHtml(header, null, tagHandler)
+        } catch (ex: CancellationException) {
+            throw ex
+        } catch (ex: Exception) {
             logger.error("Failed to build header text.", ex)
-            SpannedString.valueOf(ex.localizedMessage)
-        }.flatMap { h ->
-            Observable.fromCallable {
-                fromHtml(footer, null, tagHandler)
-            }.onErrorReturn { ex ->
-                logger.error("Failed to build footer text.", ex)
-                SpannedString.valueOf(ex.localizedMessage)
-            }.map { f ->
-                Pair(h, f)
-            }
-        }.subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { (h, f) ->
-                    _state.value = ConsentPrivacyState(h, f)
-                }
-        disposables.add(subscription)
+            h = SpannedString.valueOf(ex.localizedMessage)
+        }
+
+        try {
+            f = fromHtml(footer, null, tagHandler)
+        } catch (ex: CancellationException) {
+            throw ex
+        } catch (ex: Exception) {
+            logger.error("Failed to build footer text.", ex)
+            f = SpannedString.valueOf(ex.localizedMessage)
+        }
+
+        _state.value = ConsentPrivacyState(h, f)
     }
 
     override fun onCleared() {
-        disposables.clear()
+        job.cancel()
         super.onCleared()
     }
 
     private companion object {
-        val logger: KLogger = KotlinLogging.logger {}
+        val logger = KotlinLogging.logger {}
     }
 }
 

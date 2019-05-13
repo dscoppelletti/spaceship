@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.ads.consent
 
-import io.reactivex.Completable
-import io.reactivex.Single
 import it.scoppelletti.spaceship.ads.model.ConsentData
 
 /**
@@ -31,14 +31,12 @@ public interface ConsentDataStore {
     /**
      * Loads the `ConsentData` object.
      *
-     * @return The new observable.
+     * @return The loaded data.
      */
-    public fun load(): Single<ConsentData>
+    suspend fun load(): ConsentData
 
     /**
      * Saves the `ConsentData` object.
-     *
-     * @param data The new observable.
      */
-    public fun save(data: ConsentData): Completable
+    suspend fun save(data: ConsentData)
 }

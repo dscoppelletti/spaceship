@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier", "unused")
+
 package it.scoppelletti.spaceship.html.inject
 
 import android.text.Html
@@ -42,34 +44,34 @@ public abstract class HtmlModule {
     @Binds
     @IntoMap
     @StringKey(ApplicationLabelTagHandler.TAG)
-    abstract fun bindApplicationLabelHtmlTagHandler(
+    public abstract fun bindApplicationLabelHtmlTagHandler(
             handler: ApplicationLabelTagHandler
     ): HtmlTagHandler
 
     @Binds
     @IntoMap
     @StringKey(ApplicationVersionTagHandler.TAG)
-    abstract fun bindApplicationVersionHtmlTagHandler(
+    public abstract fun bindApplicationVersionHtmlTagHandler(
             handler: ApplicationVersionTagHandler
     ): HtmlTagHandler
 
     @Binds
     @IntoMap
     @StringKey(ContentHandlerTagHandler.TAG)
-    abstract fun bindContentHandlerTagHandler(
+    public abstract fun bindContentHandlerTagHandler(
             handler: ContentHandlerTagHandler
     ): HtmlTagHandler
 
     @Binds
     @IntoMap
     @StringKey(ResourceTagHandler.TAG)
-    abstract fun bindResourceTagHandler(
+    public abstract fun bindResourceTagHandler(
             handler: ResourceTagHandler
     ): HtmlTagHandler
 
     @Binds
     @Named(HtmlExt.DEP_TAGHANDLER)
-    abstract fun bindHtmlTagHandler(
+    public abstract fun bindHtmlTagHandler(
             handler: InjectHtmlTagHandler
     ): Html.TagHandler
 }

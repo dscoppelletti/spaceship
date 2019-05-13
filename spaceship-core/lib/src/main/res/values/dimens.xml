@@ -45,5 +45,6 @@
     <dimen name="it_scoppelletti_list_twoLineItem_height">64dp</dimen>
     <dimen name="it_scoppelletti_list_twoLineItemWithIcon_height">72dp</dimen>
     <dimen name="it_scoppelletti_list_threeLineItem_height">88dp</dimen>
+    <dimen name="it_scoppelletti_list_primaryIcon_size">40dp</dimen>
     <dimen name="it_scoppelletti_list_secondaryIcon_size">24dp</dimen>
 </resources>

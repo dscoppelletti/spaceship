@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.ads.model
 
-import androidx.annotation.Keep
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import it.scoppelletti.spaceship.ads.consent.ConsentStatus
-import java.util.Calendar
 
 /**
  * Data regarding the consent from the user to receive perzonalized advertising.
@@ -33,8 +33,6 @@ import java.util.Calendar
  *                                         configured any non personalized Ad
  *                                         providers.
  * @property year                          Year of the consent from the user.
- *
- * @constructor Constructor.
  */
 @JsonClass(generateAdapter = true)
 public data class ConsentData(
@@ -49,5 +47,5 @@ public data class ConsentData(
         public val hasNonPersonalizedPublisherId: Boolean = false,
 
         @Json(name = "year")
-        public val year: Int = Calendar.getInstance().get(Calendar.YEAR)
+        public val year: Int
 )

@@ -75,6 +75,6 @@ class ItemTabFragment : Fragment(), Injectable {
     }
 
     companion object {
-        fun newInstance(): ItemTabFragment = ItemTabFragment()
+        fun newInstance() = ItemTabFragment()
     }
 }

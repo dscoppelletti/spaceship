@@ -1,18 +1,19 @@
+
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.sample.model
 
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.Single
 import it.scoppelletti.spaceship.applicationException
 import it.scoppelletti.spaceship.sample.R
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class DefaultItemRepo @Inject constructor(): ItemRepo {
     private var _lastUpdate: Long = System.currentTimeMillis()
 
-    override val lastUpdate: Long
-        get() = _lastUpdate
+    override val lastUpdate: Long = _lastUpdate
 
     private val items: MutableList<Item> by lazy {
         MutableList(20) {
@@ -21,100 +22,96 @@ class DefaultItemRepo @Inject constructor(): ItemRepo {
         }
     }
 
-    override fun createItem(item: Item): Single<Item> {
-        return synchronized(items) {
-            Observable.fromIterable(items)
-                    .map {
-                        if (it.code.orEmpty() == item.code.orEmpty()) {
-                            throw applicationException {
-                                message(R.string.err_code_duplicate) {
-                                    arguments {
-                                        add(it.code.orEmpty())
-                                    }
-                                }
+    override suspend fun createItem(item: Item): Item =
+            withContext(Dispatchers.Default) {
+                val maxId: Int
+                val newItem: Item
+                val oldItem: Item?
+
+                delay(4000)
+                oldItem = items.find {
+                    it.code.orEmpty() == item.code.orEmpty()
+                }
+                if (oldItem != null) {
+                    throw applicationException {
+                        message(R.string.err_code_duplicate) {
+                            arguments {
+                                add(item.code.orEmpty())
                             }
                         }
-
-                        it.id
                     }
-                    .reduce(0) { t1, t2 -> if (t2 > t1) t2 else t1 }
-                    .map { maxId ->
-                        val newItem = Item(maxId + 1, item.code, item.desc)
-                        items.add(newItem)
+                }
 
-                        setLastUpdate()
-                        newItem
-                    }
-                    .delay(4, TimeUnit.SECONDS)
-        }
-    }
+                maxId = items.maxBy { it.id }?.id ?: 0
 
-    override fun readItem(id: Int): Single<Item> {
-        return synchronized(items) {
-            Observable.fromIterable(items)
-                    .filter { it.id == id }
-                    .firstOrError()
-                    .delay(4, TimeUnit.SECONDS)
-        }
-    }
+                newItem = Item(maxId + 1, item.code, item.desc)
+                items.add(newItem)
 
-    override fun updateItem(item: Item): Single<Item> {
-        return synchronized(items) {
-            Observable.fromIterable(items)
-                    .takeUntil { it.id == item.id }
-                    .count()
-                    .map { pos ->
-                        val idx: Int
-                        val oldItem: Item
-                        val newItem: Item
+                setLastUpdate()
+                newItem
+            }
 
-                        idx = (pos - 1).toInt()
-                        if (idx < 0) {
-                            throw applicationException {
-                                message(R.string.err_item_notfound) {
-                                    arguments {
-                                        add(item.id)
-                                    }
-                                }
+    override suspend fun readItem(id: Int): Item =
+            withContext(Dispatchers.Default) {
+                delay(4000)
+                items.find { it.id == id } ?:
+                    throw applicationException {
+                        message(R.string.err_item_notfound) {
+                            arguments {
+                                add(id)
                             }
                         }
-
-                        oldItem = items[idx]
-
-                        // Properties id and code are not updatable
-                        newItem = Item(oldItem.id, oldItem.code, item.desc)
-
-                        items[idx] = newItem
-                        setLastUpdate()
-                        newItem
                     }
-                    .delay(4, TimeUnit.SECONDS)
-        }
-    }
+            }
 
-    override fun deleteItem(id: Int): Completable {
-        return synchronized(items) {
-            Observable.fromIterable(items)
-                    .takeUntil { it.id == id }
-                    .count()
-                    .flatMapCompletable { pos ->
-                        if (pos > 0L) {
-                            items.removeAt((pos - 1).toInt())
-                            setLastUpdate()
+    override suspend fun updateItem(item: Item): Item =
+            withContext(Dispatchers.Default) {
+                val idx: Int
+                val newItem: Item
+                val oldItem: Item
+
+                delay(4000)
+                idx = items.indexOfFirst { it.id == item.id }
+                if (idx < 0) {
+                    throw applicationException {
+                        message(R.string.err_item_notfound) {
+                            arguments {
+                                add(item.id)
+                            }
                         }
-
-                        Completable.complete()
                     }
-                    .delay(4, TimeUnit.SECONDS)
-        }
-    }
+                }
 
-    override fun listItems(): Single<List<Item>> {
-        return synchronized(items) {
-            Single.just(items.toList())
-                    .delay(4, TimeUnit.SECONDS)
-        }
-    }
+                oldItem = items[idx]
+
+                // Properties id and code are not updatable
+                newItem = Item(oldItem.id, oldItem.code, item.desc)
+
+                items[idx] = newItem
+                setLastUpdate()
+
+                newItem
+            }
+
+    override suspend fun deleteItem(id: Int) =
+            withContext(Dispatchers.Default) {
+                val idx: Int
+
+                delay(4000)
+                idx = items.indexOfFirst { it.id == id }
+                if (idx < 0) {
+                    return@withContext
+                }
+
+                items.removeAt(idx)
+                setLastUpdate()
+            }
+
+    override suspend fun listItems(): List<Item> =
+            withContext(Dispatchers.Default) {
+                delay(4000)
+                items.toList()
+            }
 
     private fun setLastUpdate() {
         _lastUpdate = System.currentTimeMillis()

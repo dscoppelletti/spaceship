@@ -107,6 +107,6 @@ class KeyFragment : Fragment(),
     }
 
     companion object {
-        fun newInstance(): KeyFragment = KeyFragment()
+        fun newInstance() = KeyFragment()
     }
 }

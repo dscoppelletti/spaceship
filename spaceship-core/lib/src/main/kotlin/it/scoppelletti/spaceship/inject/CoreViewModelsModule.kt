@@ -14,15 +14,17 @@
  * limit
  */
 
+@file:Suppress("RedundantVisibilityModifier", "unused")
+
 package it.scoppelletti.spaceship.inject
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import it.scoppelletti.spaceship.lifecycle.ExceptionListViewModel
-import it.scoppelletti.spaceship.lifecycle.ExceptionViewModel
+import it.scoppelletti.spaceship.ApplicationException
+import it.scoppelletti.spaceship.widget.ApplicationExceptionAdapter
+import it.scoppelletti.spaceship.widget.ExceptionAdapter
 
 /**
  * Defines the `ViewModel` classes exported by this library.
@@ -38,16 +40,14 @@ public abstract class CoreViewModelsModule {
     ): ViewModelProvider.Factory
 
     @Binds
-    @IntoMap
-    @ViewModelKey(ExceptionViewModel::class)
-    public abstract fun bindExceptionViewModel(
-            viewModel: ExceptionViewModel
-    ): ViewModel
+    public abstract fun bindExceptionAdapterFactory(
+            factory: InjectExceptionAdapterFactory
+    ): ExceptionAdapter.Factory
 
     @Binds
     @IntoMap
-    @ViewModelKey(ExceptionListViewModel::class)
-    public abstract fun bindExceptionListViewModel(
-            viewModel: ExceptionListViewModel
-    ): ViewModel
+    @ExceptionAdapterKey(ApplicationException::class)
+    public abstract fun bindApplicationExceptionAdapter(
+            adapter: ApplicationExceptionAdapter
+    ): ExceptionAdapter<*>
 }

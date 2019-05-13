@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.ads
 
 import android.os.Bundle
@@ -21,10 +23,6 @@ import androidx.annotation.StringRes
 import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdRequest
 import it.scoppelletti.spaceship.ads.consent.ConsentStatus
-import mu.KLogger
-import mu.KotlinLogging
-
-private val logger: KLogger = KotlinLogging.logger {}
 
 /**
  * Operations for Google Ads.
@@ -41,23 +39,23 @@ public object AdsExt {
     /**
      * Consent API version.
      */
-    public const val API_VERSION: String = "1.0.6"
+    public const val API_VERSION = "1.0.7"
 
     /**
      * Name of the `HttpClient` dependency.
      */
-    public const val DEP_HTTPCLIENT: String = "it.scoppelletti.spaceship.ads.1"
+    public const val DEP_HTTPCLIENT = "it.scoppelletti.spaceship.ads.1"
 
     /**
      * Name of the `Retrofit` dependency.
      */
-    public const val DEP_RETROFIT: String = "it.scoppelletti.spaceship.ads.2"
+    public const val DEP_RETROFIT = "it.scoppelletti.spaceship.ads.2"
 
     /**
      * Property indicating whether an activity has been launched as a settings
      * activity.
      */
-    public const val PROP_SETTINGS: String = "it.scoppelletti.spaceship.ads.2"
+    public const val PROP_SETTINGS = "it.scoppelletti.spaceship.ads.2"
 
     /**
      * Property indicating that the user has not consented to receive
@@ -65,7 +63,7 @@ public object AdsExt {
      *
      * @see it.scoppelletti.spaceship.ads.AdsExt.NPA_TRUE
      */
-    public const val PROP_NPA: String = "npa"
+    public const val PROP_NPA = "npa"
 
     /**
      * Value indicating that the user has not consented to receive personalized
@@ -73,14 +71,14 @@ public object AdsExt {
      *
      * @see it.scoppelletti.spaceship.ads.AdsExt.PROP_NPA
      */
-    public const val NPA_TRUE: String = "1"
+    public const val NPA_TRUE = "1"
 
     /**
      * Property indicating that the User is Under the Age of Consent in Europe.
      *
      * * [Users under the age of consent](http://developers.google.com/admob/android/targeting#users_under_the_age_of_consent)
      */
-    public const val PROP_TFUA: String = "tag_for_under_age_of_consent"
+    public const val PROP_TFUA = "tag_for_under_age_of_consent"
 }
 
 /**
@@ -91,6 +89,7 @@ public object AdsExt {
  * @since            1.0.0
  */
 @StringRes
+@Suppress("unused")
 public fun adsErrorCodeToMessageId(errorCode: Int): Int =
         when (errorCode) {
             AdRequest.ERROR_CODE_INTERNAL_ERROR ->

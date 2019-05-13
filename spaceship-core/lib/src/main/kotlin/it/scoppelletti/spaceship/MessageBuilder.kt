@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship
 
 import android.content.res.Resources
@@ -39,6 +42,7 @@ public class MessageBuilder private constructor(
 
     private var args: MutableList<Any?>? = null
 
+    @Suppress("WeakerAccess")
     public val arguments: List<Any?>?
         get() = args
 
@@ -69,10 +73,10 @@ public class MessageBuilder private constructor(
         val v: Array<Any?>
 
         if (args == null) {
-            if (messageId > 0) {
-                return resources.getString(messageId)
+            return if (messageId > 0) {
+                resources.getString(messageId)
             } else {
-                return message
+                message
             }
         }
 

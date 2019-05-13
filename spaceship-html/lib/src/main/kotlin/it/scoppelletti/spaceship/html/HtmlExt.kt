@@ -14,6 +14,8 @@
  * limit
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.html
 
 import android.os.Build
@@ -23,6 +25,8 @@ import android.text.Spanned
 import android.text.style.ClickableSpan
 import android.text.style.URLSpan
 import android.view.View
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * Operations for HTML.
@@ -34,27 +38,27 @@ public object HtmlExt {
     /**
      * Name of the `Html.TagHandler` dependency.
      */
-    public const val DEP_TAGHANDLER: String = "it.scoppelletti.spaceship.html.1"
+    public const val DEP_TAGHANDLER = "it.scoppelletti.spaceship.html.1"
 
     /**
      * Property indicating whether `home` should be displayed as an `up`
      * affordance.
      */
-    public const val PROP_HOMEASUP: String = "it.scoppelletti.spaceship.html.1"
+    public const val PROP_HOMEASUP = "it.scoppelletti.spaceship.html.1"
 
     /**
      * Property containing an HTML text as a string resource ID.
      */
-    public const val PROP_TEXT: String = "it.scoppelletti.spaceship.html.2"
+    public const val PROP_TEXT = "it.scoppelletti.spaceship.html.2"
 
     /**
      * Property containing a title as a string resource ID.
      */
-    public const val PROP_TITLE: String = "it.scoppelletti.spaceship.html.3"
+    public const val PROP_TITLE = "it.scoppelletti.spaceship.html.3"
 }
 
-private const val SPAN_START: String = "<span>"
-private const val SPAN_END: String = "</span>"
+private const val SPAN_START = "<span>"
+private const val SPAN_END = "</span>"
 
 /**
  * Returns a displayable styled text from the provided HTML string.
@@ -67,11 +71,11 @@ private const val SPAN_END: String = "</span>"
  * @since              1.0.0
  */
 @Suppress("deprecation")
-public fun fromHtml(
+public suspend fun fromHtml(
         source: String,
         imageGetter: Html.ImageGetter? = null,
         tagHandler: Html.TagHandler? = null
-) : Spanned {
+) : Spanned = withContext(Dispatchers.Default) {
     val html: String
 
     // - Android 8.1
@@ -82,7 +86,7 @@ public fun fromHtml(
             .append(source)
             .append(SPAN_END).toString()
 
-    return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
         Html.fromHtml(html, imageGetter, tagHandler)
     else
         Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY, imageGetter,
@@ -98,19 +102,22 @@ public fun fromHtml(
  * @return           Resulting styled text.
  * @since            1.0.0
  */
-public fun Spanned.replaceHyperlinks(
+@Suppress("unused")
+public suspend fun Spanned.replaceHyperlinks(
         onClick: (String) -> Unit,
         filter: ((String) -> Boolean)?
-): Spanned = SpannableStringBuilder(this)
-        .apply {
-            getSpans(0, this.length, URLSpan::class.java)
-                    .filter {
-                        filter?.invoke(it.url) ?: true
-                    }
-                    .forEach {
-                        replaceHyperlink(it, onClick)
-                    }
-        }
+): Spanned = withContext(Dispatchers.Default) {
+    SpannableStringBuilder(this@replaceHyperlinks)
+            .apply {
+                getSpans(0, this.length, URLSpan::class.java)
+                        .filter {
+                            filter?.invoke(it.url) ?: true
+                        }
+                        .forEach {
+                            replaceHyperlink(it, onClick)
+                        }
+            }
+}
 
 /**
  * Sets a custom handler for an hyperlink in a styled text.

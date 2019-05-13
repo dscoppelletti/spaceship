@@ -1,10 +1,8 @@
 package it.scoppelletti.spaceship.security
 
-import mu.KLogger
 import mu.KotlinLogging
 import java.security.InvalidKeyException
 import java.security.KeyStore
-import java.security.Provider
 import java.security.SecureRandom
 import java.security.Security
 import java.security.spec.AlgorithmParameterSpec
@@ -15,9 +13,8 @@ import javax.crypto.SecretKey
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.SecretKeySpec
 
-private val PROVIDER: Provider =
-        Security.getProvider(SecurityExtTest.PROVIDER_SUN)
-private val logger: KLogger = KotlinLogging.logger {}
+private val PROVIDER = Security.getProvider(SecurityExtTest.PROVIDER_SUN)
+private val logger = KotlinLogging.logger {}
 
 class StubKeyGenerator(
         algorithm: String,

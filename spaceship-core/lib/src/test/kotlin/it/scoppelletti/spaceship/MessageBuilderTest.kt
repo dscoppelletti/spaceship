@@ -19,7 +19,7 @@ class MessageBuilderTest {
     private lateinit var resources: Resources
 
     @BeforeTest
-    fun before() {
+    fun setUp() {
         Mockito.`when`(resources.getString(R.string.message_builder))
                 .thenReturn("Test")
         Mockito.`when`(resources.getString(R.string.message_builder_args,
@@ -31,9 +31,8 @@ class MessageBuilderTest {
     @Test
     fun testSimple() {
         val s: String
-        val builder: MessageBuilder
 
-        builder = MessageBuilder.make(R.string.message_builder) { }
+        val builder = MessageBuilder.make(R.string.message_builder) { }
         assertEquals("""MessageBuilder(messageId=${R.string.message_builder},
             |args=null)""".trimMargin().trimRaw(),
                 builder.toString(),
@@ -48,9 +47,8 @@ class MessageBuilderTest {
     @Test
     fun testArgs() {
         val s: String
-        val builder: MessageBuilder
 
-        builder = MessageBuilder.make(R.string.message_builder_args) {
+        val builder = MessageBuilder.make(R.string.message_builder_args) {
             arguments {
                 add("foo")
                 add(5)

@@ -1,3 +1,6 @@
+
+@file:Suppress("unused")
+
 package it.scoppelletti.spaceship.security.sample.inject
 
 import dagger.Module
@@ -10,15 +13,15 @@ import it.scoppelletti.spaceship.security.sample.ProviderFragment
 @Module
 abstract class ViewsModule {
 
-    @ContributesAndroidInjector(modules = [])
+    @ContributesAndroidInjector
     abstract fun contributeMainActivity(): MainActivity
 
-    @ContributesAndroidInjector(modules = [])
+    @ContributesAndroidInjector
     abstract fun contributeKeyFragment(): KeyFragment
 
-    @ContributesAndroidInjector(modules = [])
+    @ContributesAndroidInjector
     abstract fun contributeCipherFragment(): CipherFragment
 
-    @ContributesAndroidInjector(modules = [])
+    @ContributesAndroidInjector
     abstract fun contributeProvideFragment(): ProviderFragment
 }

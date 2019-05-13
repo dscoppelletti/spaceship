@@ -14,10 +14,12 @@
  * limit
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
+        "RemoveRedundantQualifierName")
+
 package it.scoppelletti.spaceship.html
 
 import android.text.Editable
-import mu.KLogger
 import mu.KotlinLogging
 import org.xml.sax.ContentHandler
 import org.xml.sax.XMLReader
@@ -49,9 +51,9 @@ public class ContentHandlerTagHandler @Inject constructor() :
         /**
          * Tag.
          */
-        public const val TAG: String = "it-scoppelletti-contentHandler"
+        public const val TAG = "it-scoppelletti-contentHandler"
 
-        private val logger: KLogger = KotlinLogging.logger {}
+        private val logger = KotlinLogging.logger {}
     }
 }
 

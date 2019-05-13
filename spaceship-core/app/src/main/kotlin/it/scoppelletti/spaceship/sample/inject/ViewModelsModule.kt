@@ -1,3 +1,6 @@
+
+@file:Suppress("unused")
+
 package it.scoppelletti.spaceship.sample.inject
 
 import androidx.lifecycle.ViewModel

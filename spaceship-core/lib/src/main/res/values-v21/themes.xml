@@ -16,11 +16,11 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <eat-comment />
-    <!-- Activity with Navigation Drawer -->
-    <style name="it_scoppelletti_theme_drawerActivity"
-        parent="it_scoppelletti_theme_app">
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    <!-- Actitivity with Navigation Drawer -->
+    <style name="it_scoppelletti_theme_activityNavDrawer"
+        parent="it_scoppelletti_theme_activityNoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 </resources>
 

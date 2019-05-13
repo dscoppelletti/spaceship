@@ -1,6 +1,5 @@
 package it.scoppelletti.spaceship.security
 
-import mu.KLogger
 import mu.KotlinLogging
 import java.math.BigInteger
 import java.security.KeyFactory
@@ -19,11 +18,10 @@ import java.security.spec.RSAPublicKeySpec
 import java.util.Date
 import javax.security.auth.x500.X500Principal
 
-private val MODULUS: BigInteger = BigInteger(ByteArray(64) { 3 })
-private val PUBLIC_EXP: BigInteger = BigInteger(ByteArray(4) { 5 })
-private val PRIVATE_EXP: BigInteger = BigInteger(ByteArray(64) { 7 })
-
-private val logger: KLogger = KotlinLogging.logger {}
+private val MODULUS = BigInteger(ByteArray(64) { 3 })
+private val PUBLIC_EXP = BigInteger(ByteArray(4) { 5 })
+private val PRIVATE_EXP = BigInteger(ByteArray(64) { 7 })
+private val logger = KotlinLogging.logger {}
 
 class StubKeyPairGenerator(
         algorithm: String,

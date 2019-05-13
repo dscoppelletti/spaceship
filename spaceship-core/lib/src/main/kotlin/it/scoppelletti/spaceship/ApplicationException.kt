@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier", "RemoveRedundantQualifierName")
+
 package it.scoppelletti.spaceship
 
 import androidx.annotation.StringRes
@@ -44,7 +46,7 @@ public class ApplicationException private constructor(
     override val message: String?
         get() = toString()
 
-    override fun toString() =
+    override fun toString(): String =
             "ApplicationException(messageBuilder=$messageBuilder)"
 
     /**
@@ -139,7 +141,7 @@ public fun Throwable?.toMessage(): String {
         return "null"
     }
 
-    var msg: String? = localizedMessage
+    var msg: String? = this.localizedMessage
 
     if (!msg.isNullOrBlank()) {
         return msg

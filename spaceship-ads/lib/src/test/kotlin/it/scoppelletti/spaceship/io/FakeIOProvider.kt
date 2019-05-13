@@ -5,14 +5,9 @@ import java.io.InputStream
 import java.io.OutputStream
 
 class FakeIOProvider : IOProvider {
-    private val _dataDir: File
+    private val _dataDir: File = createTempDir()
 
-    init {
-        _dataDir = createTempDir()
-    }
-
-    override val noBackupFilesDir: File
-        get() = _dataDir
+    override val noBackupFilesDir: File = _dataDir
 
     override fun base64InputStream(inputStream: InputStream): InputStream {
         throw NotImplementedError()

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.app
 
 import android.content.DialogInterface
@@ -26,8 +28,6 @@ import it.scoppelletti.spaceship.CoreExt
  * Extended `BottomSheetDialogFragment` fragment.
  *
  * @since 1.0.0
- *
- * @constructor Sole constructor.
  */
 @UiThread
 public abstract class BottonSheetDialogFragmentEx :
@@ -65,6 +65,7 @@ public abstract class BottonSheetDialogFragmentEx :
         /**
          * Fragment tag.
          */
+        @Suppress("unused")
         public const val TAG: String = CoreExt.TAG_BOTTOMSHEETDIALOG
     }
 }

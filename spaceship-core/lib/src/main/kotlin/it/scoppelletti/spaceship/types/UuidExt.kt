@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier", "unused")
+
 package it.scoppelletti.spaceship.types
 
 import java.util.UUID
@@ -21,7 +23,7 @@ import java.util.UUID
 /**
  * Operations on UUIDs.
  *
- * * <a href="http://www.ietf.org/rfc/rfc4122.txt" TARGET="_top">RFC 4122: A Universally Unique IDentifier (UUID) URN Namespace</a>
+ * * [RFC 4122: A Universally Unique IDentifier (UUID) URN Namespace](http://www.ietf.org/rfc/rfc4122.txt)
  */
 public object UuidExt {
 

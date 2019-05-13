@@ -14,15 +14,16 @@
  * limit
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.html
 
-import mu.KLogger
 import mu.KotlinLogging
 import org.xml.sax.Attributes
 import org.xml.sax.ContentHandler
 import org.xml.sax.XMLReader
 
-private val logger: KLogger = KotlinLogging.logger {}
+private val logger = KotlinLogging.logger {}
 
 /**
  * Implementation of the `ContentHandler` interface installed by the
@@ -65,7 +66,7 @@ internal class HtmlContentHandler(
 
         len = atts.length
         map = mutableMapOf()
-        for (idx: Int in 0..(len - 1)) {
+        for (idx: Int in 0 until len) {
             map[atts.getLocalName(idx)] = atts.getValue(idx)
         }
 

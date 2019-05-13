@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.ads.app
 
 import android.os.Bundle
@@ -39,8 +41,6 @@ import javax.inject.Inject
  *
  * @see   it.scoppelletti.spaceship.ads.app.AbstractConsentActivity
  * @since 1.0.0
- *
- * @constructor Sole constructor.
  */
 @UiThread
 public class ConsentUnderageFragment : Fragment(), Injectable {
@@ -97,14 +97,13 @@ public class ConsentUnderageFragment : Fragment(), Injectable {
         /**
          * Fragment position.
          */
-        public const val POS: Int = 2
+        public const val POS = 2
 
         /**
          * Creates a new fragment.
          *
          * @return The new object.
          */
-        public fun newInstance(): ConsentUnderageFragment =
-                ConsentUnderageFragment()
+        public fun newInstance() = ConsentUnderageFragment()
     }
 }

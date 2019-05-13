@@ -62,7 +62,6 @@ dependencies {
     kapt "com.squareup.moshi:moshi-kotlin-codegen:${versionMap.moshi}"
     api "com.squareup.okhttp3:okhttp:${versionMap.okhttp}"
     api "com.squareup.retrofit2:retrofit:${versionMap.retrofit}"
-    api "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"
     api("it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}") {
         changing = true
     }
@@ -76,11 +75,10 @@ dependencies {
         changing = true
     }
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versionMap.kotlinx_coroutines}"
     implementation "com.squareup.okio:okio:${versionMap.okio}"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:${versionMap.retrofit}"
     implementation "com.squareup.retrofit2:converter-moshi:${versionMap.retrofit}"
     implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
-    implementation "io.reactivex.rxjava2:rxandroid:${versionMap.rxandroid}"
     implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
     testImplementation "org.jetbrains.kotlin:kotlin-test:${versionMap.kotlin}"
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:${versionMap.kotlin}"

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier", "unused")
+
 package it.scoppelletti.spaceship.types
 
 /**
@@ -26,5 +28,5 @@ public object TimeExt {
     /**
      * Time-zone UTC.
      */
-    public const val TZ_UTC: String = "UTC"
+    public const val TZ_UTC = "UTC"
 }

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.ads.lifecycle
 
 import it.scoppelletti.spaceship.ads.app.ConsentAgeFragment
@@ -51,15 +53,15 @@ public data class ConsentState(
     internal fun backStep(): ConsentState {
         val pos: Int
 
-        when (step) {
+        pos = when (step) {
             ConsentPromptFragment.POS ->
-                pos = ConsentAgeFragment.POS
+                ConsentAgeFragment.POS
             ConsentPrivacyFragment.POS ->
-                pos = ConsentPromptFragment.POS
+                ConsentPromptFragment.POS
             ConsentReminderFragment.POS ->
-                pos = ConsentPromptFragment.POS
+                ConsentPromptFragment.POS
             ConsentUnderageFragment.POS ->
-                pos = ConsentAgeFragment.POS
+                ConsentAgeFragment.POS
             else ->
                 throw IllegalStateException("Property step is $step.")
         }

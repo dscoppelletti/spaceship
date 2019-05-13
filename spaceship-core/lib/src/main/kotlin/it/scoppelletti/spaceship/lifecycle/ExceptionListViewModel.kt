@@ -14,88 +14,74 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.lifecycle
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import it.scoppelletti.spaceship.widget.ExceptionAdapter
-import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 /**
  * `ViewModel` of an exception chain.
  *
  * @since 1.0.0
  *
- * @property outerEx Exception at the head of the chain.
- * @property state   Collection of exceptions.
- *
- * @constructor                Constructor.
- * @params      adapterFactory Creates an adapter for an exception class.
+ * @property state Collection of exceptions.
  */
-public class ExceptionListViewModel @Inject constructor(
+public class ExceptionListViewModel internal constructor(
+        dispatcher: CoroutineDispatcher,
+        private val outerEx: Throwable,
         private val adapterFactory: ExceptionAdapter.Factory
-): ViewModel() {
+): ViewModel(), CoroutineScope {
 
-    public var outerEx: Throwable?
-    private val _state: MutableLiveData<ExceptionListState>
-    private val disposables: CompositeDisposable
+    private val job = Job()
+    private val _state = MutableLiveData<ExceptionListState>()
+    public val state: LiveData<ExceptionListState> = _state
 
-    public val state: LiveData<ExceptionListState>
-        get() = _state
-
-    init {
-        outerEx = null
-        _state = MutableLiveData()
-        disposables = CompositeDisposable()
-    }
+    public override val coroutineContext: CoroutineContext = dispatcher + job
 
     /**
      * Loads the chain of an exception.
      */
-    public fun load() {
-        val subscription: Disposable
+    public fun load() = launch {
+        val exList: MutableList<ExceptionItemState>
 
-        if (_state.value?.exList?.isNotEmpty() == true) {
-            return
+        if (!_state.value?.exList.isNullOrEmpty()) {
+            return@launch
         }
 
-        subscription = Observable.create<Throwable> generator@{ emitter ->
+        exList = mutableListOf()
+        withContext(Dispatchers.Default) {
             var ex: Throwable? = outerEx
+            var adapter: ExceptionAdapter<*>
 
             while (ex != null) {
-                if (emitter.isDisposed) {
-                    return@generator
+                if (!isActive) {
+                    return@withContext
                 }
 
-                emitter.onNext(ex)
+                adapter = adapterFactory.create(ex.javaClass)
+                exList.add(ExceptionItemState(ex, adapter))
+
                 ex = ex.cause
             }
-
-            emitter.onComplete()
         }
-                .map { ex ->
-                    val adapter: ExceptionAdapter<*>
 
-                    adapter = adapterFactory.create(ex.javaClass)
-                    ExceptionItemState(ex, adapter)
-                }
-                .toList()
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { exList ->
-                    _state.value = ExceptionListState(exList)
-                }
-        disposables.add(subscription)
+        _state.value = ExceptionListState(exList)
     }
 
     override fun onCleared() {
-        disposables.clear()
+        job.cancel()
         super.onCleared()
     }
 }
@@ -106,8 +92,6 @@ public class ExceptionListViewModel @Inject constructor(
  * @since 1.0.0
  *
  * @property exList Collection of exceptions.
- *
- * @constructor Constructor.
  */
 public data class ExceptionListState(
         public val exList: List<ExceptionItemState>
@@ -120,8 +104,6 @@ public data class ExceptionListState(
  *
  * @property ex      Exception.
  * @property adapter Renders an exception as an item in a `ListView` control.
- *
- * @constructor Constructor.
  */
 public data class ExceptionItemState(
         public val ex: Throwable,

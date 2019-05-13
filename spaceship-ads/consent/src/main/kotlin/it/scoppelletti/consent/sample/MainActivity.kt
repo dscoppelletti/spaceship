@@ -1,3 +1,6 @@
+
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.consent.sample
 
 import android.os.Bundle
@@ -19,7 +22,6 @@ import it.scoppelletti.spaceship.app.OnDialogResultListener
 import it.scoppelletti.spaceship.app.tryFinish
 import it.scoppelletti.spaceship.types.trimRaw
 import kotlinx.android.synthetic.main.main_activity.*
-import mu.KLogger
 import mu.KotlinLogging
 import java.net.URL
 
@@ -143,6 +145,6 @@ class MainActivity : AppCompatActivity(), OnDialogResultListener,
     }
 
     private companion object {
-        val logger: KLogger = KotlinLogging.logger {}
+        val logger = KotlinLogging.logger {}
     }
 }

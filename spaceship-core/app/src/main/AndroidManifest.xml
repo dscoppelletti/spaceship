@@ -12,7 +12,7 @@
         android:theme="@style/it_scoppelletti_theme_app">
         <activity android:name=".DrawerActivity"
             android:label="@string/app_name"
-            android:theme="@style/it_scoppelletti_theme_drawerActivity">
+            android:theme="@style/it_scoppelletti_theme_activityNavDrawer">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -21,6 +21,7 @@
         <activity android:name=".GoogleApiActivity"
             android:label="@string/cmd_googleApi" />
         <activity android:name=".TabbedActivity"
-            android:label="@string/lbl_tabbedActivity" />
+            android:label="@string/lbl_tabbedActivity"
+            android:theme="@style/it_scoppelletti_theme_activityNoActionBar" />
     </application>
 </manifest>

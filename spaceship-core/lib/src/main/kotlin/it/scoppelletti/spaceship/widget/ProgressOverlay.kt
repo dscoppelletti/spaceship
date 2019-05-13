@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
+        "RemoveRedundantQualifierName")
+
 package it.scoppelletti.spaceship.widget
 
 import android.animation.Animator
@@ -32,10 +35,10 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import androidx.annotation.UiThread
+import androidx.core.content.ContextCompat
 import it.scoppelletti.spaceship.os.parcelableCreator
 import it.scoppelletti.spaceship.os.readBoolean
 import it.scoppelletti.spaceship.os.writeBoolean
-import mu.KLogger
 import mu.KotlinLogging
 
 /**
@@ -64,6 +67,11 @@ public class ProgressOverlay : FrameLayout {
 
     init {
         val layout: FrameLayout.LayoutParams
+
+        visibility = View.GONE
+        isClickable = true
+        setBackgroundColor(ContextCompat.getColor(context,
+                android.R.color.transparent))
 
         indicator = ProgressBar(context)
         indicator.isIndeterminate = true
@@ -384,11 +392,11 @@ public class ProgressOverlay : FrameLayout {
     }
 
     private companion object {
-        const val ALPHA_GONE: Int = 0
-        const val ALPHA_VISIBLE: Int = 102
-        const val DELAY: Long = 400L
-        const val DURATION: Long = 400L
-        val logger: KLogger = KotlinLogging.logger {}
+        const val ALPHA_GONE = 0
+        const val ALPHA_VISIBLE = 102
+        const val DELAY = 400L
+        const val DURATION = 400L
+        val logger = KotlinLogging.logger {}
     }
 
     /**
@@ -426,6 +434,7 @@ public class ProgressOverlay : FrameLayout {
              * The `Parcelable` support.
              */
             @JvmField
+            @Suppress("unused")
             public val CREATOR = parcelableCreator(::SavedState)
         }
     }

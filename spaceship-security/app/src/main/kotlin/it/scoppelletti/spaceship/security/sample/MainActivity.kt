@@ -58,7 +58,6 @@ class MainActivity : AppCompatActivity(),
         super.onPostCreate(savedInstanceState)
 
         drawer.onPostCreate(savedInstanceState)
-        titleAdapter.onPostCreate(savedInstanceState)
 
         val fragment = supportFragmentManager.findFragmentById(
                 R.id.contentFrame)
@@ -80,11 +79,6 @@ class MainActivity : AppCompatActivity(),
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> =
             fragmentDispatchingAndroidInjector
-
-    override fun onSaveInstanceState(outState: Bundle?) {
-        super.onSaveInstanceState(outState)
-        titleAdapter.onSaveInstanceState(outState)
-    }
 
     override fun onBackPressed() {
         if (drawer.onBackPressed()) {

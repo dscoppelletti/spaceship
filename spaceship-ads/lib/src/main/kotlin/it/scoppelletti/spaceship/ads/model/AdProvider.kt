@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.ads.model
 
 import com.squareup.moshi.Json
@@ -27,8 +29,6 @@ import com.squareup.moshi.JsonClass
  * @property companyId Provider ID.
  * @property name      Name of the provider.
  * @property policyUrl URL of the privacy policy.
- *
- * @constructor Constructor.
  */
 @JsonClass(generateAdapter = true)
 public data class AdProvider(

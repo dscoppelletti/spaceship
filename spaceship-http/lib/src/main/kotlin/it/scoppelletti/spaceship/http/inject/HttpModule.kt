@@ -14,6 +14,8 @@
  * limit
  */
 
+@file:Suppress("RedundantVisibilityModifier", "unused")
+
 package it.scoppelletti.spaceship.http.inject
 
 import dagger.Binds

@@ -30,6 +30,7 @@
  * Make internal.
  * Remove some warnings.
  */
+
 package it.scoppelletti.spaceship.security;
 
 import java.io.InputStream;
@@ -74,8 +75,6 @@ import androidx.annotation.RequiresApi;
  * @author  Li Gong
  * @see     java.io.InputStream
  * @see     java.io.FilterInputStream
- * @see     javax.crypto.Cipher
- * @see     javax.crypto.CipherOutputStream
  *
  * @since 1.4
  */
@@ -178,6 +177,7 @@ class CipherInputStreamAndroid extends FilterInputStream {
      * NullPointerException may be thrown later when it is used.
      * @param is the to-be-processed input stream
      */
+    @SuppressWarnings("unused")
     protected CipherInputStreamAndroid(InputStream is) {
         super(is);
         input = is;
@@ -223,7 +223,7 @@ class CipherInputStreamAndroid extends FilterInputStream {
      * @see        java.io.InputStream#read(byte[], int, int)
      * @since      JCE1.2
      */
-    public int read(byte b[]) throws IOException {
+    public int read(byte[] b) throws IOException {
         return read(b, 0, b.length);
     }
     /**
@@ -243,7 +243,7 @@ class CipherInputStreamAndroid extends FilterInputStream {
      * @see        java.io.InputStream#read()
      * @since      JCE1.2
      */
-    public int read(byte b[], int off, int len) throws IOException {
+    public int read(byte[] b, int off, int len) throws IOException {
         if (ostart >= ofinish) {
             // we loop for new data as the spec says we are blocking
             int i = 0;

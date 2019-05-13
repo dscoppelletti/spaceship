@@ -66,7 +66,7 @@ class HttpApplicationExceptionTest {
     @Test
     fun testNull() {
         val builder: HttpApplicationException.Builder?
-        val json: String = "null"
+        val json = "null"
 
         builder = adapter.fromJson(json)
         assertNull(builder, "null")
@@ -74,7 +74,7 @@ class HttpApplicationExceptionTest {
 
     @Test
     fun testNonNull() {
-        val json: String = "null"
+        val json = "null"
 
         assertFailsWith(JsonDataException::class) {
             // Unexpected null at $
@@ -85,7 +85,7 @@ class HttpApplicationExceptionTest {
     @Test
     fun testNullSafe() {
         val builder: HttpApplicationException.Builder?
-        val json: String = "null"
+        val json = "null"
 
         builder = adapter.nullSafe().fromJson(json)
         assertNull(builder, "null")

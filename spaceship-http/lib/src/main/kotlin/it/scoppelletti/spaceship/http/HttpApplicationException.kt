@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
+        "RemoveRedundantQualifierName")
+
 package it.scoppelletti.spaceship.http
 
 import com.squareup.moshi.JsonAdapter
@@ -22,7 +25,6 @@ import com.squareup.moshi.Moshi
 import it.scoppelletti.spaceship.io.closeQuietly
 import it.scoppelletti.spaceship.types.StringExt
 import it.scoppelletti.spaceship.types.trimRaw
-import mu.KLogger
 import mu.KotlinLogging
 import okhttp3.ResponseBody
 import okio.BufferedSource
@@ -30,7 +32,7 @@ import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
 
-private val logger: KLogger = KotlinLogging.logger {}
+private val logger = KotlinLogging.logger {}
 
 /**
  * HTTP application exception.
@@ -144,6 +146,7 @@ public class HttpApplicationException private constructor(
  * @return   Converted exception.
  * @since    1.0.0
  */
+@Suppress("unused")
 public fun HttpException.toHttpApplicationException(
 ): HttpApplicationException =
         makeBuilder(this)

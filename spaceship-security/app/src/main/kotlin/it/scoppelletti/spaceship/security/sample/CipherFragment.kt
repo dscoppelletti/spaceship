@@ -112,6 +112,6 @@ class CipherFragment : Fragment(),
     }
 
     companion object {
-        fun newInstance(): CipherFragment = CipherFragment()
+        fun newInstance() = CipherFragment()
     }
 }

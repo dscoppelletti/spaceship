@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier", "unused")
+
 package it.scoppelletti.spaceship.ads.inject
 
 import dagger.Binds
@@ -29,9 +31,9 @@ import it.scoppelletti.spaceship.ads.consent.DefaultConsentDataLoader
 import it.scoppelletti.spaceship.ads.consent.DefaultConsentDataStore
 import it.scoppelletti.spaceship.inject.CoreModule
 import it.scoppelletti.spaceship.inject.IOModule
+import it.scoppelletti.spaceship.inject.TimeModule
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Named
 
@@ -40,7 +42,7 @@ import javax.inject.Named
  *
  * @since 1.0.0
  */
-@Module(includes = [ CoreModule::class, IOModule::class ])
+@Module(includes = [ CoreModule::class, IOModule::class, TimeModule::class ])
 public abstract class AdsModule {
 
     @Binds
@@ -87,7 +89,6 @@ public abstract class AdsModule {
         ): Retrofit {
             return Retrofit.Builder()
                     .baseUrl(adsConfig.serviceUrl)
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(MoshiConverterFactory.create())
                     .callFactory { req -> httpClient.get().newCall(req) }
                     .build()

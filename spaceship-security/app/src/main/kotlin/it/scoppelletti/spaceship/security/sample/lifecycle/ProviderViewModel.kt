@@ -1,74 +1,81 @@
+
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.security.sample.lifecycle
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import it.scoppelletti.spaceship.CoreExt
 import it.scoppelletti.spaceship.html.fromHtml
 import it.scoppelletti.spaceship.types.StringExt
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.security.Security
 import javax.inject.Inject
+import javax.inject.Named
+import kotlin.coroutines.CoroutineContext
 
-class ProviderViewModel @Inject constructor() : ViewModel() {
-    private val _state: MutableLiveData<CharSequence>
-    private val disposables: CompositeDisposable
+class ProviderViewModel @Inject constructor(
 
-    val state: LiveData<CharSequence>
-        get() = _state
+        @Named(CoreExt.DEP_MAINDISPATCHER)
+        dispatcher: CoroutineDispatcher
+) : ViewModel(), CoroutineScope {
+    private val _state = MutableLiveData<CharSequence>()
+    private val job = Job()
 
-    init {
-        _state = MutableLiveData()
-        disposables = CompositeDisposable()
+    override val coroutineContext: CoroutineContext = dispatcher + job
+
+    val state: LiveData<CharSequence> = _state
+
+    fun load() = launch {
+        _state.value = loadProviders()
     }
+
+    private suspend fun loadProviders(): CharSequence =
+            withContext(Dispatchers.Default) {
+                val collector = AlgorithmCollector()
+                val list: MutableList<Algorithm> = mutableListOf()
+
+                Security.getProviders().forEach { provider ->
+                    if (!isActive) {
+                        throw CancellationException()
+                    }
+
+                    provider.services.forEach { service ->
+                        if (!isActive) {
+                            throw CancellationException()
+                        }
+
+                        list.add(Algorithm(provider.name, service.type,
+                                service.algorithm))
+                    }
+                }
+
+                list.sorted().forEach {
+                    if (!isActive) {
+                        throw CancellationException()
+                    }
+
+                    collector.collect(it)
+                }
+
+                if (!isActive) {
+                    throw CancellationException()
+                }
+
+                fromHtml(collector.toString(), null, null)
+            }
 
     override fun onCleared() {
-        disposables.clear()
+        job.cancel()
         super.onCleared()
-    }
-
-    fun load() {
-        val subscription: Disposable
-
-        subscription = Observable.create<Algorithm> { emitter ->
-            onLoadSubscribe(emitter)
-        }
-                .sorted()
-                .collectInto(AlgorithmCollector()) { collector, alg ->
-                    collector.collect(alg)
-                }
-                .map {
-                    fromHtml(it.toString(), null, null)
-                }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { text ->
-                    _state.value = text
-                }
-        disposables.add(subscription)
-    }
-
-    private fun onLoadSubscribe(emitter: ObservableEmitter<Algorithm>) {
-        Security.getProviders().forEach { provider ->
-            if (emitter.isDisposed) {
-                return
-            }
-
-            provider.services.forEach { service ->
-                if (emitter.isDisposed) {
-                    return
-                }
-
-                emitter.onNext(Algorithm(provider.name, service.type,
-                        service.algorithm))
-            }
-        }
-
-        emitter.onComplete()
     }
 }
 
@@ -101,15 +108,9 @@ private data class Algorithm(
 }
 
 private class AlgorithmCollector {
-    private val buf: StringBuilder
-    private var provider: String
-    private var service: String
-
-    init {
-        buf = StringBuilder()
-        provider = StringExt.EMPTY
-        service = StringExt.EMPTY
-    }
+    private val buf = StringBuilder()
+    private var provider: String = StringExt.EMPTY
+    private var service: String = StringExt.EMPTY
 
     fun collect(alg: Algorithm) {
         if (alg.provider != provider) {

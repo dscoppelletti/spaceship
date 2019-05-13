@@ -1,7 +1,10 @@
+
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.security
 
 import it.scoppelletti.spaceship.io.closeQuietly
-import it.scoppelletti.spaceship.time.FakeTimeProvider
+import it.scoppelletti.spaceship.types.FakeTimeProvider
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
 import java.security.Key
@@ -20,10 +23,10 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
-private const val EXPIRE: Int = 30
-private const val ALIAS_KEY: String = "key"
-private const val ALIAS_KEYPAIR: String = "keypair"
-private val DATA: ByteArray = ByteArray(16) { 13 }
+private const val EXPIRE = 30
+private const val ALIAS_KEY = "key"
+private const val ALIAS_KEYPAIR = "keypair"
+private val DATA = ByteArray(16) { 13 }
 
 class SecuirtyBridgeTest {
 
@@ -38,9 +41,9 @@ class SecuirtyBridgeTest {
 
     @Test
     fun encrypt() {
-        val cipher: Cipher
         val outputStream: ByteArrayOutputStream
         val encryptor: OutputStream
+        val cipher: Cipher
 
         cipher = securityBridge.createCipher(SecurityExt.KEY_ALGORITHM_AES)
         cipher.init(Cipher.ENCRYPT_MODE, getSecretKey())
@@ -55,9 +58,9 @@ class SecuirtyBridgeTest {
 
     @Test
     fun decrypt() {
-        val cipher: Cipher
         val outputStream: ByteArrayOutputStream
         val decryptor: OutputStream
+        val cipher: Cipher
 
         cipher = securityBridge.createCipher(SecurityExt.KEY_ALGORITHM_AES)
         cipher.init(Cipher.ENCRYPT_MODE, getSecretKey())
@@ -80,7 +83,8 @@ class SecuirtyBridgeTest {
         assertTrue(secretKey.encoded contentEquals StubKeyGenerator.ENCODED,
                 "Generated key is not well-known.")
 
-        keyStore = securityBridge.createKeyStore(SecurityExtTest.KEYSTORE_TYPE)
+        keyStore = securityBridge.createKeyStore(
+                SecurityExtTest.KEYSTORE_TYPE)
         key = keyStore.getKey(ALIAS_KEY, null)
         assertTrue(key is SecretKey, "Read key is not a SecretKey.")
 
@@ -93,7 +97,6 @@ class SecuirtyBridgeTest {
         val params: AlgorithmParameterSpec
 
         params = securityBridge.createKeyGenParameterSpec(ALIAS_KEY, EXPIRE)
-
         keyGen = securityBridge.createKeyGenerator(
                 SecurityExt.KEY_ALGORITHM_AES, SecurityExtTest.KEYSTORE_TYPE)
                 .apply {
@@ -129,7 +132,8 @@ class SecuirtyBridgeTest {
                 StubKeyPairGenerator.PRIVATE_ENCODED,
                 "Generated private key is not well-known.")
 
-        keyStore = securityBridge.createKeyStore(SecurityExtTest.KEYSTORE_TYPE)
+        keyStore = securityBridge.createKeyStore(
+                SecurityExtTest.KEYSTORE_TYPE)
         key = keyStore.getKey(ALIAS_KEYPAIR, null)
         assertTrue(key is PrivateKey, "Read key is not a PrivateKey.")
 

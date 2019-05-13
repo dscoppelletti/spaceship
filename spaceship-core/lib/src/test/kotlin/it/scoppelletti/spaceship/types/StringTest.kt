@@ -8,6 +8,6 @@ class StringTest {
     @Test
     fun testTrimRaw() {
         assertEquals("foo bar", """foo
-            |bar""".trimMargin().trimRaw())
+            |bar""".trimRaw())
     }
 }

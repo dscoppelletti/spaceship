@@ -1,3 +1,6 @@
+
+@file:Suppress("unused")
+
 package it.scoppelletti.spaceship.preference.sample.inject
 
 import dagger.Module
@@ -8,10 +11,10 @@ import it.scoppelletti.spaceship.preference.sample.SettingsFragment
 @Module
 abstract class ViewsModule {
 
-    @ContributesAndroidInjector(modules = [])
+    @ContributesAndroidInjector
     abstract fun contributeSettingsActivity(): SettingsActivity
 
-    @ContributesAndroidInjector(modules = [])
+    @ContributesAndroidInjector
     abstract fun contributeSettingsFragment(): SettingsFragment
 }
 

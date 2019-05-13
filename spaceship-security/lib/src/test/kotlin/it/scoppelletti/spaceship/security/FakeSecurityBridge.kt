@@ -1,3 +1,6 @@
+
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.security
 
 import it.scoppelletti.spaceship.types.TimeProvider

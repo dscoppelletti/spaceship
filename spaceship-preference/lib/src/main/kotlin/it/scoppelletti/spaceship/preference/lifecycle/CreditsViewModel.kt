@@ -14,20 +14,26 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.preference.lifecycle
 
 import androidx.annotation.XmlRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import it.scoppelletti.spaceship.CoreExt
 import it.scoppelletti.spaceship.lifecycle.SingleEvent
 import it.scoppelletti.spaceship.preference.credit.CreditsLoader
 import it.scoppelletti.spaceship.preference.model.Credit
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
+import kotlin.coroutines.CoroutineContext
 
 /**
  * ViewModel of the `CreditsActivity` view.
@@ -37,52 +43,50 @@ import javax.inject.Inject
  *
  * @property state State of the view.
  *
- * @constructor        Constructor.
- * @param       loader Loads the credits.
+ * @constructor            Constructor.
+ * @param       dispatcher Coroutine dispatcher.
+ * @param       loader     Loads the credits.
  */
 public class CreditsViewModel @Inject constructor(
+
+        @Named(CoreExt.DEP_MAINDISPATCHER)
+        dispatcher: CoroutineDispatcher,
+
         private val loader: CreditsLoader
-): ViewModel() {
+): ViewModel(), CoroutineScope {
 
-    private val _state: MutableLiveData<CreditsState>
-    private val disposables: CompositeDisposable
+    private val _state = MutableLiveData<CreditsState>()
+    private val job = Job()
 
-    public val state: LiveData<CreditsState>
-        get() = _state
+    override val coroutineContext: CoroutineContext = dispatcher + job
 
-    init {
-        _state = MutableLiveData()
-        disposables = CompositeDisposable()
-    }
+    public val state: LiveData<CreditsState> = _state
 
     /**
      * Loads the credits.
      *
      * @param creditId ID of the XML resource.
      */
-    public fun load(@XmlRes creditId: Int) {
-        val subscription: Disposable
+    public fun load(@XmlRes creditId: Int) = launch {
+        val items: List<Credit>
 
         if (_state.value != null) {
-            return
+            return@launch
         }
 
-        _state.value = CreditsState(emptyList(), true, null)
-
-        subscription = loader.load(creditId)
-                .toList()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ items ->
-                    _state.value = CreditsState.create(items)
-                }, { ex ->
-                    _state.value = _state.value?.withError(ex)
-                })
-        disposables.add(subscription)
+        try {
+            _state.value = CreditsState(emptyList(), true, null)
+            items = loader.load(creditId)
+            _state.value = CreditsState.create(items)
+        } catch (ex: CancellationException) {
+            throw ex
+        } catch (ex: Exception) {
+            _state.value = _state.value?.withError(ex)
+        }
     }
 
     override fun onCleared() {
-        disposables.clear()
+        job.cancel()
         super.onCleared()
     }
 }
@@ -96,13 +100,11 @@ public class CreditsViewModel @Inject constructor(
  * @property items   Collection of credits.
  * @property waiting Whether a work is in progress.
  * @property error   Error to show.
- *
- * @constructor Constructor.
  */
 public data class CreditsState(
         public val items: List<Credit>,
-        val waiting: Boolean,
-        val error: SingleEvent<Throwable>?
+        public val waiting: Boolean,
+        public val error: SingleEvent<Throwable>?
 ) {
 
     /**

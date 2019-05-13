@@ -3,51 +3,60 @@ package it.scoppelletti.spaceship.sample.lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import it.scoppelletti.spaceship.CoreExt
+import it.scoppelletti.spaceship.sample.model.Item
 import it.scoppelletti.spaceship.sample.model.ItemRepo
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
+import kotlin.coroutines.CoroutineContext
 
 class ListViewModel @Inject constructor(
+
+        @Named(CoreExt.DEP_MAINDISPATCHER)
+        dispatcher: CoroutineDispatcher,
+
         private val repo: ItemRepo
-) : ViewModel() {
-    private val _state: MutableLiveData<ListState> = MutableLiveData()
-    private val disposables: CompositeDisposable = CompositeDisposable()
+) : ViewModel(), CoroutineScope {
+    private val _state = MutableLiveData<ListState>()
+    private val job: Job = Job()
 
     init {
         _state.value = ListState.empty()
     }
 
-    val state : LiveData<ListState>
-        get() = _state
+    override val coroutineContext: CoroutineContext = dispatcher + job
 
-    fun list() {
+    val state : LiveData<ListState> = _state
+
+    fun list() = launch {
         val ts: Long
         val lastLoad: Long
-        val subscription: Disposable
+        val items: List<Item>
 
-        lastLoad = _state.value?.lastLoad ?: 0
-        if (lastLoad >= repo.lastUpdate) {
-            return
+        try {
+            lastLoad = _state.value?.lastLoad ?: 0
+            if (lastLoad >= repo.lastUpdate) {
+                return@launch
+            }
+
+            _state.value = _state.value?.withWaiting()
+            ts = System.currentTimeMillis()
+            items = repo.listItems()
+            _state.value = ListState.create(items, ts)
+        } catch (ex: CancellationException) {
+            throw ex
+        } catch (ex: Exception) {
+            _state.value = _state.value?.withError(ex)
         }
-
-        _state.value = _state.value?.withWaiting()
-        ts = System.currentTimeMillis()
-        subscription = repo.listItems()
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ items ->
-                    _state.value = ListState.create(items, ts)
-                }, { ex ->
-                    _state.value = _state.value?.withError(ex)
-                })
-        disposables.add(subscription)
     }
 
     override fun onCleared() {
-        disposables.clear()
+        job.cancel()
         super.onCleared()
     }
 }

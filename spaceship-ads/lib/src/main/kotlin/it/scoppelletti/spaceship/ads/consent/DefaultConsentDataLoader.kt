@@ -14,20 +14,26 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.ads.consent
 
-import androidx.annotation.WorkerThread
-import io.reactivex.Observable
-import io.reactivex.Single
-import io.reactivex.functions.BiFunction
 import it.scoppelletti.spaceship.ads.AdsConfig
 import it.scoppelletti.spaceship.ads.R
 import it.scoppelletti.spaceship.ads.model.AdNetworkLookupResponse
+import it.scoppelletti.spaceship.ads.model.AdProvider
 import it.scoppelletti.spaceship.ads.model.ConsentData
 import it.scoppelletti.spaceship.ads.model.ServerResponse
 import it.scoppelletti.spaceship.applicationException
 import it.scoppelletti.spaceship.http.toHttpApplicationException
+import it.scoppelletti.spaceship.types.TimeProvider
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import java.lang.Exception
 import java.util.Calendar
 import javax.inject.Inject
 
@@ -37,12 +43,14 @@ import javax.inject.Inject
  * @since 1.0.0
  *
  * @constructor                  Constructor.
+ * @param       timeProvider     Provides components for operations on dates and
+ *                               times.
  * @param       consentDataStore Local store for the `ConsentData` object.
  * @param       adService        Client interface to Ad Service.
  * @param       adsConfig        Configuration of AdMob.
  */
-@WorkerThread
 public class DefaultConsentDataLoader @Inject constructor(
+        timeProvider: TimeProvider,
         private val consentDataStore: ConsentDataStore,
         private val adService: AdService,
         private val adsConfig: AdsConfig
@@ -50,15 +58,26 @@ public class DefaultConsentDataLoader @Inject constructor(
     private val currentYear: Int
 
     init {
-        currentYear = Calendar.getInstance().get(Calendar.YEAR)
+        currentYear = timeProvider.currentTime().get(Calendar.YEAR)
     }
 
-    override fun load(): Single<ConsentData> =
-            Single.zip(consentDataStore.load(), getServerConfig(),
-                    BiFunction<ConsentData, ConsentData, ConsentData> {
-                consentData, serverConfig ->
-                merge(consentData, serverConfig)
-            })
+    public override suspend fun load(): ConsentData =
+            withContext(Dispatchers.Default) {
+                coroutineScope {
+                    val consentData: Deferred<ConsentData>
+                    val serverConfig: Deferred<ConsentData>
+
+                    consentData = async {
+                        consentDataStore.load()
+                    }
+
+                    serverConfig = async {
+                        getServerConfig()
+                    }
+
+                    merge(consentData.await(), serverConfig.await())
+                }
+            }
 
     /**
      * Compares the last locally stored configuration to the server
@@ -98,173 +117,164 @@ public class DefaultConsentDataLoader @Inject constructor(
     /**
      * Gets the AdMob server configuration.
      *
-     * @return The new observable.
+     * @return The configuration
      */
-    private fun getServerConfig(): Single<ConsentData> {
-        return adService.getConfig(adsConfig.publisherId,
-                adsConfig.debugGeography.code)
-                .onErrorResumeNext { ex ->
-                    Single.error(applicationException {
-                        message(R.string.it_scoppelletti_ads_err_user)
-                        cause = (ex as? HttpException)
-                                ?.toHttpApplicationException() ?: ex
-                    })
+    private suspend fun getServerConfig(): ConsentData {
+        val serverConfig: ServerResponse
+
+        serverConfig = withContext(Dispatchers.IO) {
+            try {
+                adService.getConfig(adsConfig.publisherId,
+                        adsConfig.debugGeography.code)
+            } catch (ex: Exception) {
+                throw applicationException {
+                    message(R.string.it_scoppelletti_ads_err_user)
+                    cause = (ex as? HttpException)
+                            ?.toHttpApplicationException() ?: ex
                 }
-                .flatMap { serverConfig ->
-                    collectLookupFailedIds(serverConfig)
-                            .map { lookupFailedIds ->
-                                Pair(serverConfig, lookupFailedIds)
-                            }
-                }
-                .flatMap { (serverConfig, lookupFailedIds) ->
-                    collectNotFoundIds(serverConfig)
-                            .flatMap { notFoundIds ->
-                                validatePublisherIds(serverConfig,
-                                        lookupFailedIds, notFoundIds)
-                            }
-                }
-                .flatMap { serverConfig ->
-                    collectNPAPublishers(serverConfig)
-                            .map { npaPublishers ->
-                                Pair(serverConfig, npaPublishers)
-                            }
-                }
-                .flatMap { (serverConfig, npaPublishers) ->
-                    collectNPAProviders(serverConfig, npaPublishers)
-                }
+            }
+        }
+
+        coroutineScope {
+            val failedIds: Deferred<List<String>>
+            val notFoundIds: Deferred<List<String>>
+
+            failedIds = async {
+                collectLookupFailedIds(serverConfig)
+            }
+
+            notFoundIds = async {
+                collectNotFoundIds(serverConfig)
+            }
+
+            validatePublisherIds(failedIds.await(), notFoundIds.await())
+        }
+
+        return collectNPAProviders(serverConfig,
+                collectNPAPublishers(serverConfig))
     }
 
     /**
      * Collects the ID of the publishers with any network error.
      *
      * @param  serverConfig Server configuration.
-     * @return              The new observable.
+     * @return              The collection.
      */
     private fun collectLookupFailedIds(
             serverConfig: ServerResponse
-    ): Single<List<String>> {
+    ): List<String> {
         if (!serverConfig.isRequestLocationInEeaOrUnknown) {
-            return Single.just(emptyList())
+            return emptyList()
         }
 
-        return Observable.fromIterable(serverConfig.adNetworkLookupResponses)
+        return serverConfig.adNetworkLookupResponses
                 .filter { it.lookupFailed }
                 .map { it.networkId }
-                .toList()
     }
 
     /**
      * Collects the ID of the not found publishers.
      *
      * @param  serverConfig Server configuration.
-     * @return              The new observable.
+     * @return              The collection.
      */
     private fun collectNotFoundIds(
             serverConfig: ServerResponse
-    ): Single<List<String>> {
+    ): List<String> {
         if (!serverConfig.isRequestLocationInEeaOrUnknown) {
-            return Single.just(emptyList())
+            return emptyList()
         }
 
-        return Observable.fromIterable(serverConfig.adNetworkLookupResponses)
+        return serverConfig.adNetworkLookupResponses
                 .filter { it.notFound }
                 .map { it.networkId }
-                .toList()
     }
 
     /**
      * Validates the publishers.
      *
-     * @param  serverConfig    Server configuration.
      * @param  lookupFailedIds Publishers with any network error.
      * @param  notFoundIds     Not found publishers.
-     * @return                 The new observable.
      */
     private fun validatePublisherIds(
-            serverConfig: ServerResponse,
             lookupFailedIds: List<String>,
             notFoundIds: List<String>
-    ): Single<ServerResponse> {
-        if (!lookupFailedIds.isEmpty() && !notFoundIds.isEmpty())      {
-            return Single.error<ServerResponse>(applicationException {
+    ) {
+        if (lookupFailedIds.isNotEmpty() && notFoundIds.isNotEmpty()) {
+            throw applicationException {
                 message(R.string.it_scoppelletti_ads_err_publisher) {
                     arguments {
                         add(lookupFailedIds.toTypedArray().contentToString())
                         add(notFoundIds.toTypedArray().contentToString())
                     }
                 }
-            })
+            }
         }
 
-        if (!lookupFailedIds.isEmpty()) {
-            return Single.error<ServerResponse>(applicationException {
+        if (lookupFailedIds.isNotEmpty()) {
+            throw applicationException {
                 message(R.string.it_scoppelletti_ads_err_lookupFailed) {
                     arguments {
                         add(lookupFailedIds.toTypedArray().contentToString())
                     }
                 }
-            })
+            }
         }
 
-        if (!notFoundIds.isEmpty())      {
-            return Single.error<ServerResponse>(applicationException {
+        if (notFoundIds.isNotEmpty())      {
+            throw applicationException {
                 message(R.string.it_scoppelletti_ads_err_notFound) {
                     arguments {
                         add(notFoundIds.toTypedArray().contentToString())
                     }
                 }
-            })
+            }
         }
-
-        return Single.just(serverConfig)
     }
 
     /**
      * Collects the publishers with non personalized Ad providers.
      *
      * @param  serverConfig Server configuration.
-     * @return              The new observable.
+     * @return              The collection.
      */
     private fun collectNPAPublishers(
             serverConfig: ServerResponse
-    ): Single<List<AdNetworkLookupResponse>> {
-        return Observable.fromIterable(serverConfig.adNetworkLookupResponses)
-                .filter { it.isNPA }
-                .toList()
-    }
+    ): List<AdNetworkLookupResponse> = serverConfig.adNetworkLookupResponses
+            .filter { it.isNPA }
 
     /**
      * Collects the non personalized Ad providers.
      *
      * @param  serverConfig  Server configuration.
      * @param  npaPublishers Publishers with non personalized Ad providers.
-     * @return               The new observable.
+     * @return               The data.
      */
     private fun collectNPAProviders(
             serverConfig: ServerResponse,
             npaPublishers: List<AdNetworkLookupResponse>
-    ): Single<ConsentData> {
+    ): ConsentData {
         val consentStatus: ConsentStatus
+        val companies: List<AdProvider>
+        val companyIds: Set<String>
 
         consentStatus = if (serverConfig.isRequestLocationInEeaOrUnknown)
             ConsentStatus.UNKNOWN else ConsentStatus.NOT_IN_EEA
 
         if (npaPublishers.isEmpty()) {
-            return Single.just(ConsentData(consentStatus,
-                    serverConfig.companies, false, currentYear))
+            return ConsentData(consentStatus,
+                    serverConfig.companies, false, currentYear)
         }
 
-        return Observable.fromIterable(npaPublishers)
-                .concatMapIterable { it.companyIds }
-                .distinct()
-                .toList()
-                .flatMapObservable { ids ->
-                    Observable.fromIterable(serverConfig.companies)
-                            .filter { it.companyId in ids }
+        companyIds = npaPublishers
+                .flatMap {
+                    it.companyIds
                 }
-                .toList()
-                .map {
-                    ConsentData(consentStatus, it, true, currentYear)
-                }
+                .toHashSet()
+
+        companies = serverConfig.companies
+                .filter { it.companyId in companyIds }
+
+        return ConsentData(consentStatus, companies, true, currentYear)
     }
 }

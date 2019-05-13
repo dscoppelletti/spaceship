@@ -14,56 +14,91 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.lifecycle
 
 import androidx.lifecycle.ViewModel
-import io.reactivex.schedulers.Schedulers
+import androidx.lifecycle.ViewModelProvider
 import it.scoppelletti.spaceship.ExceptionLogger
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
-import kotlinx.coroutines.CoroutineScope
+import it.scoppelletti.spaceship.widget.ExceptionAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.rx2.asCoroutineDispatcher
-import mu.KLogger
 import mu.KotlinLogging
-import java.lang.Exception
-import javax.inject.Inject
 
 /**
  * `ViewModel` used by an activity to pass an exception to an
  * [ExceptionDialogFragment] fragment.
  *
  * @since 1.0.0
- *
- * @property ex Exception.
- *
- * @constructor                  Constructor.
- * @params      exceptionLoggers Logs an exception.
  */
-@JvmSuppressWildcards
-public class ExceptionViewModel @Inject constructor(
-        private val exceptionLoggers: Set<ExceptionLogger>
-): ViewModel() {
+public class ExceptionViewModel private constructor(
+        private val exceptionLoggers: Set<ExceptionLogger>,
+        private val adapterFactory: ExceptionAdapter.Factory
+): ViewModel(), ViewModelProvider.Factory {
 
-    public var ex: Throwable? = null
+    private var _ex: Throwable? = null
 
     /**
-     * Logs the exception.
+     * Sets the exception.
+     *
+     * @param ex Exception.
      */
-    public fun log() {
-        ex?.let { ex0 ->
-            CoroutineScope(Schedulers.io().asCoroutineDispatcher()).launch {
-                exceptionLoggers.forEach { exLogger ->
-                    try {
-                        exLogger.log(ex0)
-                    } catch (logEx: Exception) {
-                        logger.error(logEx) { "Failure in logger $exLogger." }
-                    }
-                }
+    public fun setException(ex: Throwable) {
+        _ex = ex
+        log(ex)
+    }
+
+    /**
+     * Logs an exception.
+     *
+     * @param ex Exception.
+     */
+    private fun log(ex: Throwable) = GlobalScope.launch(Dispatchers.IO) {
+        exceptionLoggers.forEach { exLogger ->
+            if (!isActive) {
+                return@launch
+            }
+
+            try {
+                exLogger.log(ex)
+            } catch (logEx: Exception) {
+                logger.error(logEx) { "Failure in logger $exLogger." }
             }
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
+    public override fun <T : ViewModel?> create(modelClass: Class<T>): T =
+            (ExceptionListViewModel(Dispatchers.Main, _ex!!,
+                    adapterFactory) as T)
+                    .also {
+                        _ex = null
+                    }
+
+    /**
+     * Creates an `ExceptionViewModel` instance.
+     *
+     * @since 1.0.0
+     *
+     * @constructor                  Constructor.
+     * @param       exceptionLoggers Logs an exception.
+     * @param       adapterFactory   Creates an adapter for an exception class.
+     */
+    public class Factory(
+            private val exceptionLoggers: Set<ExceptionLogger>,
+            private val adapterFactory: ExceptionAdapter.Factory
+    ) : ViewModelProvider.Factory {
+
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T =
+            ExceptionViewModel(exceptionLoggers, adapterFactory) as T
+    }
+
     private companion object {
-        val logger: KLogger = KotlinLogging.logger {}
+        val logger = KotlinLogging.logger {}
     }
 }

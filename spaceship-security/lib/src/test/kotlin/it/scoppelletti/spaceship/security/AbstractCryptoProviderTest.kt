@@ -1,13 +1,11 @@
+
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.security
 
-import android.content.res.Resources
-import io.reactivex.Single
-import io.reactivex.SingleEmitter
-import it.scoppelletti.spaceship.io.FakeIOProvider
-import it.scoppelletti.spaceship.io.IOProvider
 import it.scoppelletti.spaceship.io.closeQuietly
-import it.scoppelletti.spaceship.time.FakeTimeProvider
-import org.mockito.Mock
+import it.scoppelletti.spaceship.types.FakeTimeProvider
+import kotlinx.coroutines.runBlocking
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -19,19 +17,15 @@ import java.security.GeneralSecurityException
 import java.security.SecureRandom
 import java.util.Calendar
 import javax.crypto.Cipher
+import javax.crypto.SecretKey
 import kotlin.test.assertFailsWith
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-private const val EXPIRE: Int = 30
-private const val ALIAS_KEY: String = "key"
-private val DATA: ByteArray = ByteArray(16) { 13 }
+private const val EXPIRE = 30
+private const val ALIAS_KEY = "key"
+private val DATA = ByteArray(16) { 13 }
 
-abstract class AbstractCipherFactoryTest {
-
-    @Mock
-    lateinit var resources: Resources
+abstract class AbstractCryptoProviderTest {
 
     internal lateinit var cryptoProvider: CryptoProvider
     internal lateinit var securityBridge: SecurityBridge
@@ -45,75 +39,44 @@ abstract class AbstractCipherFactoryTest {
     }
 
     fun onValidTest() {
-        var decrypted: ByteArray? = null
-        var err: Throwable? = null
+        val encrypted: ByteArray
+        val decrypted: ByteArray
 
-        encrypt()
-                .flatMap { data ->
-                    decrypt(data)
-                }
-                .subscribe( { data ->
-                    decrypted = data
-                }, { ex ->
-                    err = ex
-                })
+        encrypted = encrypt()
+        decrypted = decrypt(encrypted)
 
-        if (err != null) {
-            throw err!!
-        }
-
-        assertNotNull(decrypted, "No data found.")
-        assertTrue(decrypted!! contentEquals DATA,
+        assertTrue(decrypted contentEquals DATA,
                 "Decrypted object differs from encrypting object.")
     }
 
     fun onExpiredTest() {
         val currentTime: Calendar
-        var decrypted: ByteArray? = null
-        var err: Throwable? = null
+        val encrypted: ByteArray
 
         currentTime = timeProvider.currentTime()
+        encrypted = encrypt()
 
-        encrypt()
-                .flatMap { data ->
-                    decrypt(data)
-                            .doOnSubscribe {
-                                timeProvider.setCurrentTime(
-                                        currentTime.apply {
-                                            add(Calendar.DATE, EXPIRE + 10)
-                                        }
-                                )
-                            }
+        timeProvider.setCurrentTime(
+                currentTime.apply {
+                    add(Calendar.DATE, EXPIRE + 10)
                 }
-                .subscribe( { data ->
-                    decrypted = data
-                }, { ex ->
-                    err = ex
-                })
+        )
 
         assertFailsWith(GeneralSecurityException::class) {
-            if (err != null) {
-                throw err!!
-            }
+            decrypt(encrypted)
         }
-
-        assertNull(decrypted, "Data should be expired.")
     }
 
-    private fun encrypt(): Single<ByteArray> =
-            cryptoProvider.newSecretKey(ALIAS_KEY, EXPIRE)
-                    .flatMap { key ->
-                        cryptoProvider.newEncryptor(key)
-                    }
-                    .flatMap { cipher ->
-                        Single.create<ByteArray> { emitter ->
-                            onEncryptSubscribe(emitter, cipher)
-                        }
-                    }
+    private fun encrypt(): ByteArray = runBlocking {
+        val key: SecretKey
+        val cipher: Cipher
 
-    private fun onEncryptSubscribe(
-            emitter: SingleEmitter<ByteArray>,
-            cipher: Cipher) {
+        key = cryptoProvider.newSecretKey(ALIAS_KEY, EXPIRE)
+        cipher = cryptoProvider.newEncryptor(key)
+        encrypt(cipher)
+    }
+
+    private fun encrypt(cipher: Cipher): ByteArray {
         val outputStream: ByteArrayOutputStream
         val objectStream: ObjectOutputStream
         val encryptor: OutputStream
@@ -131,61 +94,45 @@ abstract class AbstractCipherFactoryTest {
         encryptor.write(DATA)
         encryptor.closeQuietly()
 
-        emitter.onSuccess(outputStream.toByteArray())
+        return outputStream.toByteArray()
     }
 
-    private fun decrypt(data: ByteArray): Single<ByteArray> =
-            cryptoProvider.loadSecretKey(ALIAS_KEY)
-                    .flatMap { key ->
-                        Single.create<ByteArray> { emitter ->
-                            onLoadIVSubscribe(emitter, data)
-                        }.map { iv ->
-                            Pair(key, iv)
-                        }
-                    }
-                    .flatMap { (key, iv) ->
-                        cryptoProvider.newDecryptor(key, iv)
-                    }
-                    .flatMap { cipher ->
-                        Single.create<ByteArray>{ emitter ->
-                            onDecryptSubscribe(emitter, data, cipher)
-                        }
-                    }
+    private fun decrypt(data: ByteArray): ByteArray = runBlocking {
+        val key: SecretKey
+        val cipher: Cipher
+        val iv: ByteArray
 
-    private fun onLoadIVSubscribe(
-            emitter: SingleEmitter<ByteArray>,
-            data: ByteArray
-    ) {
+        key = cryptoProvider.loadSecretKey(ALIAS_KEY)
+        iv = loadIV(data)
+        cipher = cryptoProvider.newDecryptor(key, iv)
+        decrypt(data, cipher)
+    }
+
+    private fun loadIV(data: ByteArray): ByteArray {
         val ivSize: Int
         val iv: ByteArray
-        val inputStream: ByteArrayInputStream
+        val inputStream: InputStream
         val objectStream: ObjectInputStream
 
         inputStream = ByteArrayInputStream(data)
-
         objectStream = ObjectInputStream(inputStream)
         ivSize = objectStream.readInt()
 
         iv = ByteArray(ivSize)
         if (inputStream.read(iv, 0, ivSize) != ivSize) {
-            emitter.tryOnError(IOException("Data corrupted"))
-            return
+            throw IOException("Data corrupted")
         }
 
-        emitter.onSuccess(iv)
+        return iv
     }
 
-    private fun onDecryptSubscribe(
-            emitter: SingleEmitter<ByteArray>,
-            data: ByteArray,
-            cipher: Cipher
-    ) {
+    private fun decrypt(data: ByteArray, cipher: Cipher): ByteArray {
         val ivSize: Long
-        val buf: ByteArray
-        val inputStream: ByteArrayInputStream
+        val inputStream: InputStream
         val objectStream: ObjectInputStream
         val decryptor: InputStream
         val outputStream: ByteArrayOutputStream
+        val buf: ByteArray
         var n: Int
 
         inputStream = ByteArrayInputStream(data)
@@ -193,8 +140,7 @@ abstract class AbstractCipherFactoryTest {
         ivSize = objectStream.readInt().toLong()
 
         if (inputStream.skip(ivSize) != ivSize) {
-            emitter.tryOnError(IOException("Data corrupted"))
-            return
+            throw IOException("Data corrupted")
         }
 
         decryptor = cryptoProvider.cipherInputStream(inputStream, cipher)
@@ -208,7 +154,7 @@ abstract class AbstractCipherFactoryTest {
         }
 
         outputStream.closeQuietly()
-        emitter.onSuccess(outputStream.toByteArray())
+        return outputStream.toByteArray()
     }
 }
 

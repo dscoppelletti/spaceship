@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
+        "RemoveRedundantQualifierName")
+
 package it.scoppelletti.spaceship.app
 
 import android.app.Dialog
@@ -25,14 +28,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import it.scoppelletti.spaceship.CoreExt
+import it.scoppelletti.spaceship.ExceptionLogger
 import it.scoppelletti.spaceship.MessageBuilder
-import it.scoppelletti.spaceship.inject.Injectable
 import it.scoppelletti.spaceship.lifecycle.ExceptionListState
 import it.scoppelletti.spaceship.lifecycle.ExceptionListViewModel
 import it.scoppelletti.spaceship.lifecycle.ExceptionViewModel
+import it.scoppelletti.spaceship.widget.ExceptionAdapter
 import it.scoppelletti.spaceship.widget.ExceptionListAdapter
 import javax.inject.Inject
 
@@ -40,14 +43,9 @@ import javax.inject.Inject
  * Exception dialog.
  *
  * @since 1.0.0
- *
- * @constructor Sole constructor.
  */
 @UiThread
-public class ExceptionDialogFragment : AppCompatDialogFragment(), Injectable {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+public class ExceptionDialogFragment : AppCompatDialogFragment() {
 
     private lateinit var viewModel: ExceptionListViewModel
     private lateinit var adapter: ExceptionListAdapter
@@ -79,22 +77,14 @@ public class ExceptionDialogFragment : AppCompatDialogFragment(), Injectable {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        val ex: Throwable
         val activityModel: ExceptionViewModel
 
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this, viewModelFactory)
+        activityModel = ViewModelProviders.of(requireActivity())
+                .get(ExceptionViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, activityModel)
                 .get(ExceptionListViewModel::class.java)
-
-        if (viewModel.outerEx == null) {
-            activityModel = ViewModelProviders.of(requireActivity())
-                    .get(ExceptionViewModel::class.java)
-            ex = activityModel.ex ?:
-                    throw IllegalStateException("Exception is not set.")
-            activityModel.ex = null
-            viewModel.outerEx = ex
-        }
 
         viewModel.state.observe(this, Observer<ExceptionListState> { state ->
             if (state != null) {
@@ -139,8 +129,8 @@ public class ExceptionDialogFragment : AppCompatDialogFragment(), Injectable {
          */
         public const val TAG: String = CoreExt.TAG_EXCEPTIONDIALOG
 
-        private const val PROP_TITLE: String = "1"
-        private const val PROP_TITLEID: String = "2"
+        private const val PROP_TITLE = "1"
+        private const val PROP_TITLEID = "2"
     }
 
     /**
@@ -176,9 +166,12 @@ public class ExceptionDialogFragment : AppCompatDialogFragment(), Injectable {
     public class BuilderDsl internal constructor(
             private val activity: FragmentActivity,
             private val ex: Throwable,
-            private val viewModelFactory : ViewModelProvider.Factory
+            private val exceptionLoggers: Set<ExceptionLogger>,
+            private val adapterFactory: ExceptionAdapter.Factory
     ) {
+        @Suppress("WeakerAccess")
         public var tag: String = ExceptionDialogFragment.TAG
+
         private var titleBuilder: MessageBuilder? = null
 
         /**
@@ -203,6 +196,7 @@ public class ExceptionDialogFragment : AppCompatDialogFragment(), Injectable {
          * @param  init  Initialization block.
          * @return       The new object.
          */
+        @Suppress("unused")
         public fun title(
                 title: String,
                 init: MessageBuilder.() -> Unit = { }
@@ -218,10 +212,11 @@ public class ExceptionDialogFragment : AppCompatDialogFragment(), Injectable {
             val args: Bundle
             val viewModel: ExceptionViewModel
 
-            viewModel = ViewModelProviders.of(activity, viewModelFactory).get(
-                    ExceptionViewModel::class.java)
-            viewModel.ex = ex
-            viewModel.log()
+            viewModel = ViewModelProviders.of(activity,
+                    ExceptionViewModel.Factory(exceptionLoggers,
+                            adapterFactory))
+                    .get(ExceptionViewModel::class.java)
+            viewModel.setException(ex)
 
             args = Bundle()
 
@@ -258,18 +253,21 @@ public class ExceptionDialogFragment : AppCompatDialogFragment(), Injectable {
  * @since 1.0.0
  *
  * @constructor                  Constructor.
- * @param       viewModelFactory Implementation of the
- *                               `ViewModelProvider.Factory` interface.
+ * @param       exceptionLoggers Logs an exception.
+ * @param       adapterFactory   Creates an adapter for an exception class.
  */
 public class ExceptionDialogBuilder @Inject constructor(
-        private val viewModelFactory : ViewModelProvider.Factory
+        private val exceptionLoggers:
+                @JvmSuppressWildcards Set<ExceptionLogger>,
+        private val adapterFactory: ExceptionAdapter.Factory
 ) : ExceptionDialogFragment.Builder {
 
     override fun show(
             activity: FragmentActivity,
             ex: Throwable,
             init: ExceptionDialogFragment.BuilderDsl.() -> Unit
-    ) = ExceptionDialogFragment.BuilderDsl(activity, ex, viewModelFactory)
+    ) = ExceptionDialogFragment.BuilderDsl(activity, ex, exceptionLoggers,
+            adapterFactory)
             .apply(init)
             .show()
 }

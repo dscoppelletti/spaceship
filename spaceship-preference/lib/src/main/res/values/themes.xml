@@ -17,7 +17,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <eat-comment/>
     <style name="it_scoppelletti_pref_theme_preferenceActivity"
-        parent="it_scoppelletti_theme_app">
+        parent="it_scoppelletti_theme_activityNoActionBar">
         <item name="preferenceTheme">@style/it_scoppelletti_pref_theme_preference</item>
     </style>
     <style name="it_scoppelletti_pref_theme_preference"

@@ -14,22 +14,30 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.ads.lifecycle
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import it.scoppelletti.spaceship.CoreExt
 import it.scoppelletti.spaceship.ads.app.ConsentAgeFragment
 import it.scoppelletti.spaceship.ads.app.ConsentLoadFragment
 import it.scoppelletti.spaceship.ads.consent.ConsentDataLoader
 import it.scoppelletti.spaceship.ads.consent.ConsentDataStore
 import it.scoppelletti.spaceship.ads.consent.ConsentStatus
 import it.scoppelletti.spaceship.ads.model.ConsentData
+import it.scoppelletti.spaceship.types.TimeProvider
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import java.util.Calendar
 import javax.inject.Inject
+import javax.inject.Named
+import kotlin.coroutines.CoroutineContext
 
 /**
  * ViewModel of the `AbstractConsentActivity` view.
@@ -41,48 +49,54 @@ import javax.inject.Inject
  * @property state State of the view.
  *
  * @constructor                   Constructor.
+ * @param       dispatcher        Coroutine dispatcher.
+ * @param       timeProvider      Provides components for operations on dates
+ *                                and times.
  * @param       consentDataStore  Local store for the `ContextData` object.
  * @param       consentDataLoader Loader of the current `ConsentData` object.
  */
 public class ConsentViewModel @Inject constructor(
+
+        @Named(CoreExt.DEP_MAINDISPATCHER)
+        dispatcher: CoroutineDispatcher,
+
+        private val timeProvider: TimeProvider,
         private val consentDataStore: ConsentDataStore,
         private val consentDataLoader: ConsentDataLoader
-) : ViewModel() {
-    private val _state: MutableLiveData<ConsentState>
-    private val disposables: CompositeDisposable
+) : ViewModel(), CoroutineScope {
 
-    public val state: LiveData<ConsentState>
-        get() = _state
+    private val _state = MutableLiveData<ConsentState>()
+    private val job = Job()
 
-    init {
-        _state = MutableLiveData()
-        disposables = CompositeDisposable()
-    }
+    override val coroutineContext: CoroutineContext = dispatcher + job
+
+    public val state: LiveData<ConsentState> = _state
 
     /**
      * Loads the `ConsentData` object.
      */
-    public fun load() {
-        val subscription: Disposable
+    public fun load() = launch {
+        val year: Int
+        val data: ConsentData
 
         if (_state.value != null) {
-            return
+            return@launch
         }
 
+        year = timeProvider.currentTime().get(Calendar.YEAR)
         _state.value = ConsentState(step = ConsentLoadFragment.POS,
-                data = ConsentData(), saved = false, waiting = true,
+                data = ConsentData(year = year), saved = false, waiting = true,
                 error = null)
 
-        subscription = consentDataLoader.load()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ data ->
-                    _state.value = _state.value?.copy(step =
-                        ConsentAgeFragment.POS, data = data, waiting = false)
-                }, { ex ->
-                    _state.value = _state.value?.withError(ex)
-                })
-        disposables.add(subscription)
+        try {
+            data = consentDataLoader.load()
+            _state.value = _state.value?.copy(step =
+                ConsentAgeFragment.POS, data = data, waiting = false)
+        } catch (ex: CancellationException) {
+            throw ex
+        } catch (ex: Exception) {
+            _state.value = _state.value?.withError(ex)
+        }
     }
 
     /**
@@ -90,28 +104,29 @@ public class ConsentViewModel @Inject constructor(
      *
      * @param status The consent status.
      */
-    public fun save(status: ConsentStatus) {
+    public fun save(status: ConsentStatus) = launch {
+        val year: Int
         val data: ConsentData
-        val subscription: Disposable
 
         if (_state.value == null) {
-            return
+            return@launch
         }
 
         _state.value = _state.value?.copy(waiting = true)
 
-        data = (_state.value?.data ?: ConsentData())
+        year = timeProvider.currentTime().get(Calendar.YEAR)
+        data = (_state.value?.data ?: ConsentData(year = year))
                 .copy(consentStatus = status)
-        subscription = consentDataStore.save(data)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    _state.value = _state.value?.copy(data = data,
-                            saved = true, waiting = false)
-                }, { ex ->
-                    _state.value = _state.value?.withError(ex)
-                })
-        disposables.add(subscription)
+
+        try {
+            consentDataStore.save(data)
+            _state.value = _state.value?.copy(data = data,
+                    saved = true, waiting = false)
+        } catch (ex: CancellationException) {
+            throw ex
+        } catch (ex: Exception) {
+            _state.value = _state.value?.withError(ex)
+        }
     }
 
     /**
@@ -139,7 +154,7 @@ public class ConsentViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        disposables.clear()
+        job.cancel()
         super.onCleared()
     }
 }

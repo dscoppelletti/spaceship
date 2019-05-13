@@ -14,6 +14,8 @@
  * limit
  */
 
+@file:Suppress("RedundantVisibilityModifier", "unused")
+
 package it.scoppelletti.spaceship.html.inject
 
 import dagger.Module
@@ -28,6 +30,6 @@ import it.scoppelletti.spaceship.html.app.HtmlViewerActivity
 @Module
 public abstract class HtmlViewsModule {
 
-    @ContributesAndroidInjector(modules = [])
+    @ContributesAndroidInjector
     public abstract fun contributeHtmlViewerActivity(): HtmlViewerActivity
 }

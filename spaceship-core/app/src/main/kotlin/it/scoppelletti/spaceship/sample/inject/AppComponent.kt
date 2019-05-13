@@ -1,3 +1,6 @@
+
+@file:Suppress("unused")
+
 package it.scoppelletti.spaceship.sample.inject
 
 import dagger.Component
@@ -8,7 +11,7 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [ AndroidInjectionModule::class, ViewsModule::class,
-    CoreViewsModule::class, ViewModelsModule::class, AppModule::class ])
+    ViewModelsModule::class, CoreViewsModule::class, AppModule::class ])
 interface AppComponent {
 
     fun inject(app: MainApp)

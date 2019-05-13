@@ -48,11 +48,11 @@ dependencies {
     api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
     api "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
-    api "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"
     api("it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}") {
         changing = true
     }
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versionMap.kotlinx_coroutines}"
     implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
     implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
     testImplementation "junit:junit:${versionMap.junit}"

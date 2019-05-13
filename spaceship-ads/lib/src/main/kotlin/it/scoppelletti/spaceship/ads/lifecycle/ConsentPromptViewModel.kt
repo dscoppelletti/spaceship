@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.ads.lifecycle
 
 import android.text.Html
@@ -21,18 +23,19 @@ import android.text.SpannedString
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import it.scoppelletti.spaceship.CoreExt
 import it.scoppelletti.spaceship.html.HtmlExt
 import it.scoppelletti.spaceship.html.fromHtml
 import it.scoppelletti.spaceship.html.replaceHyperlinks
-import mu.KLogger
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import mu.KotlinLogging
 import javax.inject.Inject
 import javax.inject.Named
+import kotlin.coroutines.CoroutineContext
 
 /**
  * ViewModel of the `ConsentPromptFragment` view.
@@ -43,22 +46,24 @@ import javax.inject.Named
  * @property text Message text.
  *
  * @constructor            Constructor.
+ * @param       dispatcher Coroutine dispatcher.
  * @param       tagHandler Handles the HTML custom tags.
  */
 public class ConsentPromptViewModel @Inject constructor(
+
+        @Named(CoreExt.DEP_MAINDISPATCHER)
+        dispatcher: CoroutineDispatcher,
+
         @Named(HtmlExt.DEP_TAGHANDLER)
         private val tagHandler: Html.TagHandler
-) : ViewModel() {
-    private val _text: MutableLiveData<CharSequence>
-    private val disposables: CompositeDisposable
+) : ViewModel(), CoroutineScope {
 
-    public val text: LiveData<CharSequence>
-        get() = _text
+    private val _text = MutableLiveData<CharSequence>()
+    private val job = Job()
 
-    init {
-        _text = MutableLiveData()
-        disposables = CompositeDisposable()
-    }
+    override val coroutineContext: CoroutineContext = dispatcher + job
+
+    public val text: LiveData<CharSequence> = _text
 
     /**
      * Builds the displayable styled text from the provided HTML string.
@@ -70,36 +75,35 @@ public class ConsentPromptViewModel @Inject constructor(
     public fun buildText(
             source: String,
             url: String,
-            onClick: (String) -> Unit) {
-        val subscription: Disposable
+            onClick: (String) -> Unit
+    ) = launch {
+        val text: CharSequence
 
         if (_text.value != null) {
-            return
+            return@launch
         }
 
-        subscription = Observable.fromCallable {
-            fromHtml(source, null, tagHandler)
-        }.map { s ->
-            s.replaceHyperlinks(onClick) {
-                it == url
-            }
-        }.subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ s ->
-                    _text.value = s
-                }, { ex ->
-                    logger.error("Failed to build text.", ex)
-                    _text.value = SpannedString.valueOf(ex.localizedMessage)
-                })
-        disposables.add(subscription)
+        try {
+            text = fromHtml(source, null, tagHandler)
+                    .replaceHyperlinks(onClick) {
+                        it == url
+                    }
+
+            _text.value = text
+        } catch (ex: CancellationException) {
+            throw ex
+        } catch (ex: Exception) {
+            logger.error("Failed to build text.", ex)
+            _text.value = SpannedString.valueOf(ex.localizedMessage)
+        }
     }
 
     override fun onCleared() {
-        disposables.clear()
+        job.cancel()
         super.onCleared()
     }
 
     private companion object {
-        val logger: KLogger = KotlinLogging.logger {}
+        val logger = KotlinLogging.logger {}
     }
 }

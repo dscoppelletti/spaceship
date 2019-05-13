@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier", "RemoveRedundantQualifierName")
+
 package it.scoppelletti.spaceship.ads.app
 
 import android.os.Bundle
@@ -41,8 +43,6 @@ import it.scoppelletti.spaceship.app.tryFinish
 import it.scoppelletti.spaceship.applicationException
 import it.scoppelletti.spaceship.inject.Injectable
 import kotlinx.android.synthetic.main.it_scoppelletti_ads_consent_activity.*
-import mu.KLogger
-import mu.KotlinLogging
 import javax.inject.Inject
 
 /**
@@ -55,8 +55,6 @@ import javax.inject.Inject
  * @see   it.scoppelletti.spaceship.ads.app.ConsentPrivacyFragment
  * @see   it.scoppelletti.spaceship.ads.app.ConsentReminderFragment
  * @since 1.0.0
- *
- * @constructor Sole constructor.
  */
 @UiThread
 public abstract class AbstractConsentActivity : AppCompatActivity(), Injectable,
@@ -208,7 +206,5 @@ public abstract class AbstractConsentActivity : AppCompatActivity(), Injectable,
          * settings activity.
          */
         public const val PROP_SETTINGS: String = AdsExt.PROP_SETTINGS
-
-        private val logger: KLogger = KotlinLogging.logger {}
     }
 }

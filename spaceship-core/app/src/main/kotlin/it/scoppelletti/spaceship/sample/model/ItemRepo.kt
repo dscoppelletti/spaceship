@@ -1,13 +1,10 @@
 package it.scoppelletti.spaceship.sample.model
 
-import io.reactivex.Completable
-import io.reactivex.Single
-
 interface ItemRepo {
     val lastUpdate: Long
-    fun createItem(item: Item): Single<Item>
-    fun readItem(id: Int) : Single<Item>
-    fun updateItem(item: Item): Single<Item>
-    fun deleteItem(id: Int): Completable
-    fun listItems() : Single<List<Item>>
+    suspend fun createItem(item: Item): Item
+    suspend fun readItem(id: Int) : Item
+    suspend fun updateItem(item: Item): Item
+    suspend fun deleteItem(id: Int)
+    suspend fun listItems() : List<Item>
 }

@@ -1,4 +1,6 @@
 
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.http.sample
 
 import android.content.Context

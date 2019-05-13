@@ -1,3 +1,6 @@
+
+@file:Suppress("unused")
+
 package it.scoppelletti.spaceship.ads.sample.inject
 
 import dagger.Module
@@ -9,17 +12,17 @@ import it.scoppelletti.spaceship.ads.sample.SettingsActivity
 import it.scoppelletti.spaceship.ads.sample.SettingsFragment
 
 @Module(includes = [ AdsViewsModule::class ])
-public abstract class ViewsModule {
+abstract class ViewsModule {
 
     @ContributesAndroidInjector(modules = [])
-    public abstract fun contributeMainActivity(): MainActivity
+    abstract fun contributeMainActivity(): MainActivity
 
     @ContributesAndroidInjector(modules = [])
-    public abstract fun contributeAdConsentActivity(): AdConsentActivity
+    abstract fun contributeAdConsentActivity(): AdConsentActivity
 
     @ContributesAndroidInjector(modules = [])
-    public abstract fun contributeSettingsActivity(): SettingsActivity
+    abstract fun contributeSettingsActivity(): SettingsActivity
 
     @ContributesAndroidInjector(modules = [])
-    public abstract fun contributeSettingsFragment(): SettingsFragment
+    abstract fun contributeSettingsFragment(): SettingsFragment
 }

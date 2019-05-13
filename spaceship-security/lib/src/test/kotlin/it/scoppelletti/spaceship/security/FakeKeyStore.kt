@@ -1,7 +1,9 @@
+
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.security
 
 import it.scoppelletti.spaceship.types.trimRaw
-import mu.KLogger
 import mu.KotlinLogging
 import java.io.InputStream
 import java.io.OutputStream
@@ -9,7 +11,6 @@ import java.security.Key
 import java.security.KeyStore
 import java.security.KeyStoreSpi
 import java.security.PrivateKey
-import java.security.Provider
 import java.security.Security
 import java.security.cert.Certificate
 import java.util.Collections
@@ -17,8 +18,8 @@ import java.util.Date
 import java.util.Enumeration
 import javax.crypto.SecretKey
 
-private val PROVIDER: Provider = Security.getProvider(SecurityExtTest.PROVIDER_SUN)
-private val logger: KLogger = KotlinLogging.logger {}
+private val PROVIDER = Security.getProvider(SecurityExtTest.PROVIDER_SUN)
+private val logger = KotlinLogging.logger {}
 
 class FakeKeyStore(
         type: String,
@@ -29,15 +30,9 @@ private class FakeKeyStoreSpi(
         private val currentTime: () -> Date
 ) : KeyStoreSpi() {
 
-    private val aliasMap: MutableMap<String, Date>
-    private val keyMap: MutableMap<String, Key>
-    private val certMap: MutableMap<String, Certificate>
-
-    init {
-        aliasMap = mutableMapOf()
-        keyMap = mutableMapOf()
-        certMap = mutableMapOf()
-    }
+    private val aliasMap: MutableMap<String, Date> = mutableMapOf()
+    private val keyMap: MutableMap<String, Key> = mutableMapOf()
+    private val certMap: MutableMap<String, Certificate> = mutableMapOf()
 
     override fun engineStore(stream: OutputStream?, password: CharArray?) {
         throw NotImplementedError()
@@ -98,7 +93,7 @@ private class FakeKeyStoreSpi(
         aliasMap[alias] = currentTime()
         keyMap[alias] = key
 
-        if (chain != null && !chain.isEmpty()) {
+        if (chain != null && chain.isNotEmpty()) {
             certMap[alias] = chain[0]
         } else {
             certMap.remove(alias)

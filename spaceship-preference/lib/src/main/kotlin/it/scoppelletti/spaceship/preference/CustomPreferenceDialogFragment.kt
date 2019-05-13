@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RemoveRedundantQualifierName",
+        "RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.preference
 
 import android.os.Bundle
@@ -25,8 +28,6 @@ import androidx.preference.PreferenceDialogFragmentCompat
  * Editor dialog for a custom setting [CustomDialogPreference].
  *
  * @since 1.0.0
- *
- * @constructor Sole constructor.
  */
 @UiThread
 public class CustomPreferenceDialogFragment : PreferenceDialogFragmentCompat() {

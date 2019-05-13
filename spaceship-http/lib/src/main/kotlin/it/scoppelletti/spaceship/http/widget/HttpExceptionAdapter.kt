@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
+        "RemoveRedundantQualifierName")
+
 package it.scoppelletti.spaceship.http.widget
 
 import android.view.LayoutInflater
@@ -23,7 +26,6 @@ import android.widget.TextView
 import it.scoppelletti.spaceship.http.R
 import it.scoppelletti.spaceship.io.closeQuietly
 import it.scoppelletti.spaceship.widget.ExceptionAdapter
-import mu.KLogger
 import mu.KotlinLogging
 import okhttp3.ResponseBody
 import okio.BufferedSource
@@ -36,8 +38,6 @@ import javax.inject.Inject
  * Implementation of the `ExceptionAdapter` interface.
  *
  * @since 1.0.0
- *
- * @constructor Sole constructor.
  */
 public class HttpExceptionAdapter @Inject constructor(
 ): ExceptionAdapter<HttpException> {
@@ -128,6 +128,6 @@ public class HttpExceptionAdapter @Inject constructor(
     }
 
     private companion object {
-        val logger: KLogger = KotlinLogging.logger {}
+        val logger = KotlinLogging.logger {}
     }
 }

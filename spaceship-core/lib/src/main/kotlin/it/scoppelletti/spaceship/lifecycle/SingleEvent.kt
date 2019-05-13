@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.lifecycle
 
 /**
@@ -37,6 +39,7 @@ package it.scoppelletti.spaceship.lifecycle
  */
 public class SingleEvent<out T>(private val content: T) {
 
+    @Suppress("WeakerAccess")
     public var hasBeenHandled: Boolean = false
         private set
 

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.http.widget
 
 import android.text.format.DateFormat
@@ -33,12 +35,11 @@ import javax.inject.Inject
  * Implementation of the `ExceptionAdapter` interface.
  *
  * @since 1.0.0
- *
- * @constructor Sole constructor.
  */
 public class HttpApplicationExceptionAdapter @Inject constructor(
 ): ExceptionAdapter<HttpApplicationException> {
 
+    @Suppress("RemoveRedundantQualifierName")
     override fun getView(
             ex: HttpApplicationException,
             parent: ViewGroup
@@ -72,8 +73,13 @@ public class HttpApplicationExceptionAdapter @Inject constructor(
         timestamp.timeInMillis = ex.timestamp
 
         textView = itemView.findViewById(R.id.txtTimestamp)
-        textView.text = DateFormat.format("yyyy-MM-dd HH:mm:ss", timestamp)
+        textView.text = DateFormat.format(
+                HttpApplicationExceptionAdapter.TIMESTAMP_FORMAT, timestamp)
 
         return itemView
+    }
+
+    private companion object {
+        const val TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss"
     }
 }

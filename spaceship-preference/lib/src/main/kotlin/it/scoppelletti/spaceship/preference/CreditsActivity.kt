@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RemoveRedundantQualifierName",
+        "RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.preference
 
 import android.os.Bundle
@@ -21,15 +24,11 @@ import android.view.MenuItem
 import androidx.annotation.UiThread
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
 import it.scoppelletti.spaceship.app.tryFinish
@@ -38,7 +37,6 @@ import it.scoppelletti.spaceship.preference.lifecycle.CreditsState
 import it.scoppelletti.spaceship.preference.lifecycle.CreditsViewModel
 import it.scoppelletti.spaceship.preference.widget.CreditListAdapter
 import kotlinx.android.synthetic.main.it_scoppelletti_pref_credits_activity.*
-import mu.KLogger
 import mu.KotlinLogging
 import javax.inject.Inject
 
@@ -51,12 +49,7 @@ import javax.inject.Inject
 @UiThread
 public class CreditsActivity : AppCompatActivity(),
         Injectable,
-        HasSupportFragmentInjector,
         OnDialogResultListener {
-
-    @Inject
-    lateinit var fragmentDispatchingAndroidInjector:
-            DispatchingAndroidInjector<Fragment>
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -100,9 +93,6 @@ public class CreditsActivity : AppCompatActivity(),
             }
         })
     }
-
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> =
-            fragmentDispatchingAndroidInjector
 
     private fun stateObserver(state: CreditsState) {
         if (state.waiting) {
@@ -148,6 +138,6 @@ public class CreditsActivity : AppCompatActivity(),
          */
         public const val PROP_CREDITS: String = PreferenceExt.PROP_CREDITS
 
-        private val logger: KLogger = KotlinLogging.logger {}
+        private val logger = KotlinLogging.logger {}
     }
 }

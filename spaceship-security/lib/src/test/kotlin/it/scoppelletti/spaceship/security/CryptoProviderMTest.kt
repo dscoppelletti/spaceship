@@ -1,12 +1,9 @@
 package it.scoppelletti.spaceship.security
 
-import org.junit.runner.RunWith
-import org.mockito.runners.MockitoJUnitRunner
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-@RunWith(MockitoJUnitRunner::class)
-class CryptoProviderMTest : AbstractCipherFactoryTest() {
+class CryptoProviderMTest : AbstractCryptoProviderTest() {
 
     @BeforeTest
     fun setUp() {

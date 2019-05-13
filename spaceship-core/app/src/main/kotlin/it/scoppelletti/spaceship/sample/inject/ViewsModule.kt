@@ -1,3 +1,6 @@
+
+@file:Suppress("unused")
+
 package it.scoppelletti.spaceship.sample.inject
 
 import dagger.Module
@@ -12,21 +15,21 @@ import it.scoppelletti.spaceship.sample.TabbedActivity
 @Module
 abstract class ViewsModule {
 
-    @ContributesAndroidInjector(modules = [])
+    @ContributesAndroidInjector
     abstract fun contributeDrawerActivity(): DrawerActivity
 
-    @ContributesAndroidInjector(modules = [])
+    @ContributesAndroidInjector
     abstract fun contributeListFragment(): ListFragment
 
-    @ContributesAndroidInjector(modules = [])
+    @ContributesAndroidInjector
     abstract fun contributeTabbedActivity(): TabbedActivity
 
-    @ContributesAndroidInjector(modules = [])
+    @ContributesAndroidInjector
     abstract fun contributeItemTabFragment(): ItemTabFragment
 
-    @ContributesAndroidInjector(modules = [])
+    @ContributesAndroidInjector
     abstract fun contributeStubFragment(): StubFragment
 
-    @ContributesAndroidInjector(modules = [])
+    @ContributesAndroidInjector
     abstract fun contributeGoogleApiActivity(): GoogleApiActivity
 }

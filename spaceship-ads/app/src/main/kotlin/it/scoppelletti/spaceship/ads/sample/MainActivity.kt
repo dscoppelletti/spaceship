@@ -16,7 +16,6 @@ import it.scoppelletti.spaceship.ads.consent.ConsentStatus
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentStatusObservable
 import it.scoppelletti.spaceship.inject.Injectable
 import kotlinx.android.synthetic.main.main_activity.*
-import mu.KLogger
 import mu.KotlinLogging
 import java.lang.Exception
 import javax.inject.Inject
@@ -96,6 +95,6 @@ class MainActivity : AppCompatActivity(), Injectable {
     }
 
     private companion object {
-        val logger: KLogger = KotlinLogging.logger {}
+        val logger = KotlinLogging.logger {}
     }
 }

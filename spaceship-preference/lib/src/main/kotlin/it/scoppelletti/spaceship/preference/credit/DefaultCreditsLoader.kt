@@ -14,18 +14,23 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RemoveRedundantQualifierName",
+        "RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.preference.credit
 
 import android.content.res.Resources
 import android.text.Html
-import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
 import it.scoppelletti.spaceship.applicationException
 import it.scoppelletti.spaceship.html.HtmlExt
 import it.scoppelletti.spaceship.html.fromHtml
 import it.scoppelletti.spaceship.preference.R
 import it.scoppelletti.spaceship.preference.model.Credit
 import it.scoppelletti.spaceship.types.StringExt
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.withContext
 import org.xmlpull.v1.XmlPullParser
 import javax.inject.Inject
 import javax.inject.Named
@@ -46,62 +51,44 @@ public class DefaultCreditsLoader @Inject constructor(
         private val tagHandler: Html.TagHandler
 ) : CreditsLoader {
 
-    override fun load(creditId: Int): Observable<Credit> =
-            Observable.create { emitter ->
-                onLoadSubscribe(emitter, creditId)
-            }
+    override suspend fun load(creditId: Int): List<Credit> =
+            withContext(Dispatchers.IO) {
+                val parser: XmlPullParser
+                val state: CreditsState
+                var eventType: Int
 
-    /**
-     * Loads the credits.
-     *
-     * @param emitter  Implements the observable.
-     * @param creditId ID of the XML resource.
-     */
-    private fun onLoadSubscribe(
-            emitter: ObservableEmitter<Credit>,
-            creditId: Int
-    ) {
-        val parser: XmlPullParser
-        val err: Throwable
-        val state: DefaultCreditsLoader.State
-        var eventType: Int
-
-        try {
-            parser = resources.getXml(creditId)
-        } catch (ex: Resources.NotFoundException) {
-            err = applicationException {
-                message(R.string.it_scoppelletti_pref_err_creditFailed)
-                cause = ex
-            }
-
-            emitter.tryOnError(err)
-            return
-        }
-
-        state = DefaultCreditsLoader.State(emitter, parser)
-
-        try {
-            eventType = parser.eventType
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                if (emitter.isDisposed) {
-                    return
+                try {
+                    parser = resources.getXml(creditId)
+                } catch (ex: Resources.NotFoundException) {
+                    throw applicationException {
+                        message(R.string.it_scoppelletti_pref_err_creditFailed)
+                        cause = ex
+                    }
                 }
 
-                onEvent(state, eventType)
-                eventType = parser.next()
-            }
-        } catch (ex: Exception) { // IOException | XmlPullParserException
-            err = applicationException {
-                message(R.string.it_scoppelletti_pref_err_creditFailed)
-                cause = ex
-            }
+                state = CreditsState(mutableListOf(), parser)
 
-            emitter.tryOnError(err)
-            return
-        }
+                try {
+                    eventType = parser.eventType
+                    while (eventType != XmlPullParser.END_DOCUMENT) {
+                        if (!isActive) {
+                            break
+                        }
 
-        emitter.onComplete()
-    }
+                        onEvent(state, eventType)
+                        eventType = parser.next()
+                    }
+                } catch (ex: CancellationException) {
+                    throw ex
+                } catch (ex: Exception) { // IOException | XmlPullParserException
+                    throw applicationException {
+                        message(R.string.it_scoppelletti_pref_err_creditFailed)
+                        cause = ex
+                    }
+                }
+
+                state.list
+            }
 
     /**
      * Handles an event.
@@ -109,7 +96,7 @@ public class DefaultCreditsLoader @Inject constructor(
      * @param state     State.
      * @param eventType Event type.
      */
-    private fun onEvent(state: DefaultCreditsLoader.State, eventType: Int) {
+    private suspend fun onEvent(state: CreditsState, eventType: Int) {
         when (eventType) {
             XmlPullParser.START_TAG ->
                 onStartTag(state)
@@ -125,7 +112,7 @@ public class DefaultCreditsLoader @Inject constructor(
      *
      * @param state State.
      */
-    private fun onStartTag(state: DefaultCreditsLoader.State) {
+    private fun onStartTag(state: CreditsState) {
         when (state.parser.name) {
             DefaultCreditsLoader.ELEMENT_CREDIT ->
                 state.clear()
@@ -145,13 +132,13 @@ public class DefaultCreditsLoader @Inject constructor(
      *
      * @param state State.
      */
-    private fun onEndTag(state: DefaultCreditsLoader.State) {
+    private suspend fun onEndTag(state: CreditsState) {
         val credit: Credit
 
         when (state.parser.name) {
             DefaultCreditsLoader.ELEMENT_CREDIT -> {
                 credit = state.toCredit(tagHandler)
-                state.emitter.onNext(credit)
+                state.list.add(credit)
             }
 
             else ->
@@ -164,7 +151,7 @@ public class DefaultCreditsLoader @Inject constructor(
      *
      * @param state State.
      */
-    private fun onText(state: DefaultCreditsLoader.State) {
+    private fun onText(state: CreditsState) {
         val text: String
 
         text = state.parser.text
@@ -180,75 +167,71 @@ public class DefaultCreditsLoader @Inject constructor(
         state.element = StringExt.EMPTY
     }
 
-    /**
-     * State of the process.
-     *
-     * @property emitter   Implements the observable.
-     * @property parser    XML parser.
-     * @property element   Current element name.
-     * @property component Component.
-     * @property owner     Owner.
-     * @property license   License.
-     *
-     * @constructor Constructor.
-     */
-    private data class State(
-            val emitter:  ObservableEmitter<Credit>,
-            val parser: XmlPullParser,
-            var element: String = StringExt.EMPTY,
-            var component: String = StringExt.EMPTY,
-            var owner: String = StringExt.EMPTY,
-            var license: String = StringExt.EMPTY
-    ) {
-
-        /**
-         * Builds the credit.
-         *
-         * @param  tagHandler Handles the HTML custom tags.
-         * @return            The new object.
-         */
-        fun toCredit(tagHandler: Html.TagHandler): Credit {
-            val credit: Credit
-
-            credit = Credit(fromHtml(component, null, tagHandler),
-                    fromHtml(owner, null, tagHandler),
-                    fromHtml(license, null, tagHandler))
-            clear()
-            return credit
-        }
-
-        /**
-         * Clears the state.
-         */
-        fun clear() {
-            element = StringExt.EMPTY
-            component = StringExt.EMPTY
-            owner = StringExt.EMPTY
-            license = StringExt.EMPTY
-        }
-    }
-
     public companion object {
 
         /**
          * Element `<credit>`.
          */
-        public const val ELEMENT_CREDIT: String = "credit"
+        public const val ELEMENT_CREDIT = "credit"
 
         /**
          * Element `<component>`.
          */
-        public const val ELEMENT_COMPONENT: String = "component"
+        public const val ELEMENT_COMPONENT = "component"
 
         /**
          * Element `<owner>`.
          */
-        public const val ELEMENT_OWNER: String = "owner"
+        public const val ELEMENT_OWNER = "owner"
 
         /**
          * Element `<license>`.
          */
-        public const val ELEMENT_LICENSE: String = "license"
+        public const val ELEMENT_LICENSE = "license"
     }
 }
 
+/**
+ * State of the process.
+ *
+ * @property parser    XML parser.
+ * @property element   Current element name.
+ * @property component Component.
+ * @property owner     Owner.
+ * @property license   License.
+ */
+private data class CreditsState(
+        val list: MutableList<Credit>,
+        val parser: XmlPullParser,
+        var element: String = StringExt.EMPTY,
+        var component: String = StringExt.EMPTY,
+        var owner: String = StringExt.EMPTY,
+        var license: String = StringExt.EMPTY
+) {
+
+    /**
+     * Builds the credit.
+     *
+     * @param  tagHandler Handles the HTML custom tags.
+     * @return            The new object.
+     */
+    suspend fun toCredit(tagHandler: Html.TagHandler): Credit {
+        val credit: Credit
+
+        credit = Credit(fromHtml(component, null, tagHandler),
+                fromHtml(owner, null, tagHandler),
+                fromHtml(license, null, tagHandler))
+        clear()
+        return credit
+    }
+
+    /**
+     * Clears the state.
+     */
+    fun clear() {
+        element = StringExt.EMPTY
+        component = StringExt.EMPTY
+        owner = StringExt.EMPTY
+        license = StringExt.EMPTY
+    }
+}

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
+        "RemoveRedundantQualifierName")
+
 package it.scoppelletti.spaceship.html.app
 
 import android.os.Bundle
@@ -22,13 +25,9 @@ import android.view.MenuItem
 import androidx.annotation.UiThread
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
 import it.scoppelletti.spaceship.app.tryFinish
@@ -38,7 +37,6 @@ import it.scoppelletti.spaceship.html.lifecycle.HtmlViewerState
 import it.scoppelletti.spaceship.html.lifecycle.HtmlViewerViewModel
 import it.scoppelletti.spaceship.inject.Injectable
 import kotlinx.android.synthetic.main.it_scoppelletti_htmlviewer_activity.*
-import mu.KLogger
 import mu.KotlinLogging
 import javax.inject.Inject
 
@@ -46,21 +44,14 @@ import javax.inject.Inject
  * Activity for displaying an HTML text.
  *
  * @since 1.0.0
- *
- * @constructor Sole constructor.
  */
 @UiThread
 public class HtmlViewerActivity : AppCompatActivity(),
         Injectable,
-        HasSupportFragmentInjector,
         OnDialogResultListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    @Inject
-    lateinit var fragmentDispatchingAndroidInjector:
-            DispatchingAndroidInjector<Fragment>
 
     @Inject
     lateinit var exDialog: ExceptionDialogFragment.Builder
@@ -105,9 +96,6 @@ public class HtmlViewerActivity : AppCompatActivity(),
             logger.error { "Metadata ${HtmlViewerActivity.PROP_TEXT} not set." }
         }
     }
-
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> =
-            fragmentDispatchingAndroidInjector
 
     private fun stateObserver(state: HtmlViewerState) {
         txtContent.text = state.text
@@ -154,6 +142,6 @@ public class HtmlViewerActivity : AppCompatActivity(),
          */
         public const val PROP_TITLE: String = HtmlExt.PROP_TITLE
 
-        private val logger: KLogger = KotlinLogging.logger {}
+        private val logger = KotlinLogging.logger {}
     }
 }

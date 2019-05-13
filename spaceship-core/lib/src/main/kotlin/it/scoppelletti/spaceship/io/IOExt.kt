@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier", "unused")
+
 package it.scoppelletti.spaceship.io
 
-import mu.KLogger
 import mu.KotlinLogging
 import java.io.Closeable
 import java.io.IOException
 
-private val logger: KLogger = KotlinLogging.logger {}
+private val logger = KotlinLogging.logger {}
 
 /**
  * Closes a stream ignoring any exceptions.
@@ -36,4 +37,3 @@ public fun Closeable.closeQuietly() {
         logger.error("Failed to close stream.", ex)
     }
 }
-

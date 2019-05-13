@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.widget
 
 import android.util.SparseArray
@@ -46,6 +48,7 @@ public abstract class FragmentPagerAdapterEx(
      * @return          The object. If the fragment has never been instantiated
      *                  or if it has been destroyed, returns {@code null}.
      */
+    @Suppress("unused")
     public fun getFragmentByPosition(position: Int): Fragment? =
             fragments[position]
 

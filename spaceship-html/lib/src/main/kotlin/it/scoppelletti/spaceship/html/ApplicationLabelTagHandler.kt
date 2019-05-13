@@ -14,6 +14,9 @@
  * limit
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
+        "RemoveRedundantQualifierName")
+
 package it.scoppelletti.spaceship.html
 
 import android.content.Context
@@ -21,7 +24,6 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.text.Editable
 import it.scoppelletti.spaceship.types.trimRaw
-import mu.KLogger
 import mu.KotlinLogging
 import org.xml.sax.XMLReader
 import javax.inject.Inject
@@ -48,17 +50,17 @@ public class ApplicationLabelTagHandler @Inject constructor(
     ) {
         val applLabel: CharSequence
         val pkgName: String
-        var applInfo: ApplicationInfo
+        val applInfo: ApplicationInfo
 
         pkgName = context.packageName
 
-        try {
-            applInfo = packageManager.getApplicationInfo(pkgName, 0)
+        applInfo = try {
+            packageManager.getApplicationInfo(pkgName, 0)
         } catch (ex: PackageManager.NameNotFoundException) {
             logger.error(ex) { """Failed to get ApplicationInfo for package
                 |$pkgName.""".trimRaw() }
 
-            applInfo = context.applicationInfo
+            context.applicationInfo
         }
 
         applLabel = packageManager.getApplicationLabel(applInfo)
@@ -70,8 +72,8 @@ public class ApplicationLabelTagHandler @Inject constructor(
         /**
          * Tag.
          */
-        public const val TAG: String = "it-scoppelletti-appLabel"
+        public const val TAG = "it-scoppelletti-appLabel"
 
-        private val logger: KLogger = KotlinLogging.logger {}
+        private val logger = KotlinLogging.logger {}
     }
 }

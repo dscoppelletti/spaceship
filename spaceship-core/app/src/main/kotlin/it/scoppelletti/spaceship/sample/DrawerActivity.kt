@@ -1,3 +1,6 @@
+
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.sample
 
 import android.content.Intent
@@ -60,9 +63,7 @@ class DrawerActivity : AppCompatActivity(),
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-
         drawer.onPostCreate(savedInstanceState)
-        titleAdapter.onPostCreate(savedInstanceState)
 
         val fragment = supportFragmentManager.findFragmentById(
                 R.id.contentFrame)
@@ -75,11 +76,6 @@ class DrawerActivity : AppCompatActivity(),
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> =
             fragmentDispatchingAndroidInjector
-
-    override fun onSaveInstanceState(outState: Bundle?) {
-        super.onSaveInstanceState(outState)
-        titleAdapter.onSaveInstanceState(outState)
-    }
 
     override fun onBackPressed() {
         if (drawer.onBackPressed()) {

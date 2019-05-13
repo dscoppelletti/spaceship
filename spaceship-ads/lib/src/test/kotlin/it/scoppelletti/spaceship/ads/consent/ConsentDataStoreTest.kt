@@ -1,8 +1,14 @@
+
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.ads.consent
 
 import it.scoppelletti.spaceship.ads.model.AdProvider
 import it.scoppelletti.spaceship.ads.model.ConsentData
 import it.scoppelletti.spaceship.io.FakeIOProvider
+import it.scoppelletti.spaceship.types.FakeTimeProvider
+import it.scoppelletti.spaceship.types.TimeProvider
+import kotlinx.coroutines.runBlocking
 import java.util.Calendar
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -12,60 +18,29 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class ConsentDataStoreTest {
-    private var currentYear: Int = 0
+    private var currentYear = 0
+    private lateinit var timeProvider: TimeProvider
     private lateinit var consentDataStore: DefaultConsentDataStore
 
     @BeforeTest
     fun setUp() {
-        currentYear = Calendar.getInstance().get(Calendar.YEAR)
-        consentDataStore = DefaultConsentDataStore(FakeIOProvider())
+        timeProvider = FakeTimeProvider()
+        currentYear = timeProvider.currentTime().get(Calendar.YEAR)
+        consentDataStore = DefaultConsentDataStore(FakeIOProvider(),
+                timeProvider)
     }
 
     @Test
-    fun empty() {
-        var data: ConsentData? = null
-        var err: Throwable? = null
+    fun empty() = runBlocking {
+        var data: ConsentData
 
-        consentDataStore.load()
-                .subscribe({ obj ->
-                    data = obj
-                }, { ex ->
-                    err = ex
-                })
+        data = consentDataStore.load()
+        assertEmpty(data, "Load from scratch.")
 
-        if (err != null) {
-            throw err!!
-        }
+        consentDataStore.save(data)
 
-        assertNotNull(data, "Data not found.")
-        assertEmpty(data!!, "Load from scratch")
-
-        err = null
-        consentDataStore.save(data!!)
-                .subscribe( {
-                }, { ex ->
-                    err = ex
-                })
-
-        if (err != null) {
-            throw err!!
-        }
-
-        data = null
-        err = null
-        consentDataStore.load()
-                .subscribe({ obj ->
-                    data = obj
-                }, { ex ->
-                    err = ex
-                })
-
-        if (err != null) {
-            throw err!!
-        }
-
-        assertNotNull(data, "Data not found.")
-        assertEmpty(data!!, "Load from scratch")
+        data = consentDataStore.load()
+        assertEmpty(data, "Load from scratch.")
     }
 
     private fun assertEmpty(data: ConsentData, msg: String) {
@@ -79,10 +54,9 @@ class ConsentDataStoreTest {
     }
 
     @Test
-    fun notEmpty() {
+    fun notEmpty() = runBlocking {
+        val loaded: ConsentData
         val saving: ConsentData
-        var loaded: ConsentData? = null
-        var err: Throwable? = null
 
         saving = ConsentData(
                 consentStatus = ConsentStatus.PERSONALIZED,
@@ -109,39 +83,20 @@ class ConsentDataStoreTest {
                 year = 2025)
 
         consentDataStore.save(saving)
-                .subscribe( {
-                }, { ex ->
-                    err = ex
-                })
-
-        if (err != null) {
-            throw err!!
-        }
-
-        err = null
-        consentDataStore.load()
-                .subscribe({ obj ->
-                    loaded = obj
-                }, { ex ->
-                    err = ex
-                })
-
-        if (err != null) {
-            throw err!!
-        }
+        loaded = consentDataStore.load()
 
         assertNotNull(loaded, "Data not found.")
-        assertEquals(saving.consentStatus, loaded?.consentStatus,
+        assertEquals(saving.consentStatus, loaded.consentStatus,
                 "Content status differs.")
         assertTrue(saving.adProviders.toTypedArray() contentEquals
-                (loaded?.adProviders?.toTypedArray() ?: emptyArray()),
+                loaded.adProviders.toTypedArray(),
                 "adProviders differs.")
         assertEquals(saving.hasNonPersonalizedPublisherId,
-                loaded?.hasNonPersonalizedPublisherId,
+                loaded.hasNonPersonalizedPublisherId,
                 "hasNonPersonalizedPublisherId differs.")
         assertEquals(saving.hasNonPersonalizedPublisherId,
-                loaded?.hasNonPersonalizedPublisherId,
+                loaded.hasNonPersonalizedPublisherId,
                 "hasNonPersonalizedPublisherId differs.")
-        assertEquals(saving.year, loaded?.year, "year differs.")
+        assertEquals(saving.year, loaded.year, "year differs.")
     }
 }

@@ -14,6 +14,8 @@
  * limit
  */
 
+@file:Suppress("RedundantVisibilityModifier", "unused")
+
 package it.scoppelletti.spaceship.html.inject
 
 import androidx.lifecycle.ViewModel
@@ -34,7 +36,7 @@ public abstract class HtmlViewModelsModule {
     @Binds
     @IntoMap
     @ViewModelKey(HtmlViewerViewModel::class)
-    abstract fun bindHtmlViewerViewModel(
+    public abstract fun bindHtmlViewerViewModel(
             viewModel: HtmlViewerViewModel
     ): ViewModel
 }

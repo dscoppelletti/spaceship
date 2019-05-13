@@ -12,7 +12,7 @@
         android:theme="@style/it_scoppelletti_theme_app">
         <activity android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/it_scoppelletti_theme_drawerActivity">
+            android:theme="@style/it_scoppelletti_theme_activityNavDrawer">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

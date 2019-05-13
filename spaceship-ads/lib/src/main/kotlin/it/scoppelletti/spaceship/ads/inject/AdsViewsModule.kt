@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier", "unused")
+
 package it.scoppelletti.spaceship.ads.inject
 
 import dagger.Module
@@ -32,21 +34,21 @@ import it.scoppelletti.spaceship.ads.app.ConsentUnderageFragment
 @Module
 public abstract class AdsViewsModule {
 
-    @ContributesAndroidInjector(modules = [])
+    @ContributesAndroidInjector
     public abstract fun contributeConsentAgeFragment(): ConsentAgeFragment
 
-    @ContributesAndroidInjector(modules = [])
+    @ContributesAndroidInjector
     public abstract fun contributeConsentUnderageFragment(
     ): ConsentUnderageFragment
 
-    @ContributesAndroidInjector(modules = [])
+    @ContributesAndroidInjector
     public abstract fun contributeConsentPromptFragment(): ConsentPromptFragment
 
-    @ContributesAndroidInjector(modules = [])
+    @ContributesAndroidInjector
     public abstract fun contributeConsentPrivacyFragment(
     ): ConsentPrivacyFragment
 
-    @ContributesAndroidInjector(modules = [])
+    @ContributesAndroidInjector
     public abstract fun contributeConsentReminderFragment(
     ): ConsentReminderFragment
 }

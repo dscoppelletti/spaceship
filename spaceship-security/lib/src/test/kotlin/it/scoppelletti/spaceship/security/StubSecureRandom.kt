@@ -1,3 +1,6 @@
+
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.security
 
 import org.mockito.Mockito
@@ -7,9 +10,7 @@ import java.security.SecureRandom
 object StubSecureRandom {
 
     fun create(): SecureRandom {
-        val mock: SecureRandom
-
-        mock = Mockito.mock(SecureRandom::class.java)
+        val mock = Mockito.mock(SecureRandom::class.java)
         Mockito.doAnswer(::nextBytes)
                 .`when`(mock).nextBytes(Mockito.isA(ByteArray::class.java))
 
@@ -17,8 +18,8 @@ object StubSecureRandom {
     }
 
     private fun nextBytes(invocation: InvocationOnMock): Any? {
-        val args: Array<Any>
         val bytes: ByteArray
+        val args: Array<out Any?>
 
         args = invocation.arguments
         bytes = args[0] as ByteArray

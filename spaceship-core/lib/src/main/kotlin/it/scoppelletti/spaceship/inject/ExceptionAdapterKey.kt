@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.inject
 
 import dagger.MapKey
@@ -27,15 +29,10 @@ import kotlin.reflect.KClass
  * @since 1.0.0
  *
  * @property value The `Throwable` class.
- *
- * @constructor Constructor.
  */
-@MustBeDocumented
-@Target(
-        AnnotationTarget.FUNCTION,
-        AnnotationTarget.PROPERTY_GETTER,
-        AnnotationTarget.PROPERTY_SETTER
-)
-@Retention(AnnotationRetention.RUNTIME)
 @MapKey
+@MustBeDocumented
+@Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER,
+        AnnotationTarget.PROPERTY_SETTER)
 public annotation class ExceptionAdapterKey(val value: KClass<out Throwable>)

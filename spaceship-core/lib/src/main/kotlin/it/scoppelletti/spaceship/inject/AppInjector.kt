@@ -23,6 +23,8 @@
  * Porting to androix namespace.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.inject
 
 import android.app.Activity

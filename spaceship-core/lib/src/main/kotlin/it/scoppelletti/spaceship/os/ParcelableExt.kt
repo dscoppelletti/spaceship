@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.os
 
 import android.os.Parcel
@@ -41,7 +43,7 @@ public inline fun <reified T : Parcelable> parcelableCreator(
 
 // In the article
 // http://medium.com/@BladeCoder/reducing-parcelable-boilerplate-code-using-kotlin-741c3124a49a
-// I can found other extensions for other types.
+// I can find other extensions for other types.
 
 /**
  * Reads a `Boolean` value from a stream.

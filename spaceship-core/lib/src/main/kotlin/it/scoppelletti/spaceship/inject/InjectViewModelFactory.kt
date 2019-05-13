@@ -24,8 +24,9 @@
  * Porting to androix namespace.
  */
 
-package it.scoppelletti.spaceship.inject
+@file:Suppress("RedundantVisibilityModifier")
 
+package it.scoppelletti.spaceship.inject
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

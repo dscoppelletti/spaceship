@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.ads
 
 import com.google.android.gms.ads.AdListener
-import mu.KLogger
 import mu.KotlinLogging
 
 /**
  * Default implementation of the `AdListener` interface.
  *
  * @since 1.0.0
- *
- * @constructor Sole constructor.
  */
 public open class DefaultAdListener : AdListener() {
 
@@ -84,6 +83,6 @@ public open class DefaultAdListener : AdListener() {
     }
 
     private companion object {
-        val logger: KLogger = KotlinLogging.logger {}
+        val logger = KotlinLogging.logger {}
     }
 }

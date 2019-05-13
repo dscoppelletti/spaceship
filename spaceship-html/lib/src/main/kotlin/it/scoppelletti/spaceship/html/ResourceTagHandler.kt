@@ -14,13 +14,15 @@
  * limit
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
+        "RemoveRedundantQualifierName")
+
 package it.scoppelletti.spaceship.html
 
 import android.content.Context
 import android.content.res.Resources
 import android.text.Editable
 import it.scoppelletti.spaceship.types.trimRaw
-import mu.KLogger
 import mu.KotlinLogging
 import org.xml.sax.XMLReader
 import javax.inject.Inject
@@ -34,7 +36,7 @@ import javax.inject.Inject
  * @see   it.scoppelletti.spaceship.html.ContentHandlerTagHandler
  * @since 1.0.0
  *
- * @constructor
+ * @constructor           Constructor.
  * @param       context   Context.
  * @param       resources Resources of this application.
  */
@@ -63,7 +65,7 @@ public class ResourceTagHandler @Inject constructor(
 
         if (name.isNullOrBlank()) {
             logger.error { """Attribute ${ResourceTagHandler.ATTR_NAME} not set
-in tag $tag.""".trimRaw() }
+                |in tag $tag.""".trimRaw() }
             return
         }
 
@@ -73,7 +75,7 @@ in tag $tag.""".trimRaw() }
 
         if (resType.isNullOrBlank()) {
             logger.error { """Attribute ${ResourceTagHandler.ATTR_TYPE} not set
-in tag $tag.""".trimRaw() }
+                |in tag $tag.""".trimRaw() }
             return
         }
 
@@ -99,23 +101,23 @@ in tag $tag.""".trimRaw() }
         /**
          * Tag.
          */
-        public const val TAG: String = "it-scoppelletti-resource"
+        public const val TAG = "it-scoppelletti-resource"
 
         /**
          * Attribute containing the resource name.
          */
-        public const val ATTR_NAME: String = "name"
+        public const val ATTR_NAME = "name"
 
         /**
          * Attribute containing the resource type.
          */
-        public const val ATTR_TYPE: String = "type"
+        public const val ATTR_TYPE = "type"
 
         /**
          * Resource type `string`.
          */
-        public const val TYPE_STRING: String = "string"
+        public const val TYPE_STRING = "string"
 
-        private val logger: KLogger = KotlinLogging.logger {}
+        private val logger = KotlinLogging.logger {}
     }
 }

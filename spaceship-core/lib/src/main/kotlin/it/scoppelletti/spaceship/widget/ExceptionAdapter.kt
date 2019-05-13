@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.widget
 
 import android.view.View
@@ -22,8 +24,8 @@ import android.view.ViewGroup
 /**
  * Renders an exception as an item in a `ListView` widget.
  *
- * @param T  The exception class.
- * @since    1.0.0
+ * @param T The exception class.
+ * @since   1.0.0
  */
 public interface ExceptionAdapter<in T : Throwable> {
 

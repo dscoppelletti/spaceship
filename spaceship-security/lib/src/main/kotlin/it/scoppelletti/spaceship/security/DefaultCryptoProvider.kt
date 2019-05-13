@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.security
 
 import android.os.Build
-import io.reactivex.Single
-import io.reactivex.SingleEmitter
 import it.scoppelletti.spaceship.applicationException
-import mu.KLogger
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.withContext
 import mu.KotlinLogging
 import java.io.InputStream
 import java.io.OutputStream
@@ -34,98 +37,67 @@ import javax.crypto.CipherInputStream
 import javax.crypto.CipherOutputStream
 import javax.crypto.SecretKey
 
+/**
+ * Supports the implementation of the `CryptoProvider` interface.
+ */
 internal class DefaultCryptoProvider(
         private val random: SecureRandom,
         private val securityBridge: SecurityBridge
 ) : CryptoProvider {
 
-    override fun newEncryptor(key: Key): Single<Cipher> =
-            Single.create<Cipher> { emitter ->
-                onNewEncryptorSubscribe(emitter, key)
-            }
-
-    /**
-     * Creates a new `Cipher` instance for an encryption operation.
-     *
-     * @param  emitter The observable implementation.
-     * @param  key     The key.
-     * @return         The new observable object.
-     */
-    private fun onNewEncryptorSubscribe(
-            emitter: SingleEmitter<Cipher>,
-            key: Key
-    ) {
-        val cipher: Cipher
-        val params: AlgorithmParameterSpec
-        val iv: ByteArray
-
-        try {
-            cipher = newCipher().apply {
-                init(Cipher.ENCRYPT_MODE, key, random)
-            }
-
-            if (cipher.iv != null && !cipher.iv.isEmpty()) {
-                logger.debug("Using auto-generated IV.")
-                emitter.onSuccess(cipher)
-                return
-            }
-
-            if (emitter.isDisposed) {
-                return
-            }
-
-            iv = ByteArray(SecurityExt.IV_SIZE)
-            random.nextBytes(iv)
-            logger.debug("IV generated.")
-
-            if (emitter.isDisposed) {
-                return
-            }
-
-            params = securityBridge.createCipherParameterSpec(iv)
-            cipher.init(Cipher.ENCRYPT_MODE, key, params, random)
-        } catch (ex: GeneralSecurityException) {
-            emitter.tryOnError(ex)
-            return
-        }
-
-        emitter.onSuccess(cipher)
+    override suspend fun newSecretKey(alias: String, expire: Int): SecretKey {
+        throw noSuchProviderException()
     }
 
-    override fun newDecryptor(key: Key, iv: ByteArray): Single<Cipher> =
-            Single.create<Cipher> { emitter ->
-                onNewDecryptorSubscribe(emitter, key, iv)
-            }
-
-    /**
-     * Creates a new `Cipher` instance for an decryption operation.
-     *
-     * @param  emitter The observable implementation.
-     * @param  key     The key.
-     * @param  iv      The `IV`.
-     * @return         The new observable object.
-     */
-    private fun onNewDecryptorSubscribe(
-            emitter: SingleEmitter<Cipher>,
-            key: Key,
-            iv: ByteArray
-    ) {
-        val cipher: Cipher
-        val params: AlgorithmParameterSpec
-
-        try {
-            params = securityBridge.createCipherParameterSpec(iv)
-
-            cipher = newCipher().apply {
-                init(Cipher.DECRYPT_MODE, key, params, random)
-            }
-        } catch (ex: GeneralSecurityException) {
-            emitter.tryOnError(ex)
-            return
-        }
-
-        emitter.onSuccess(cipher)
+    override suspend fun loadSecretKey(alias: String): SecretKey {
+        throw noSuchProviderException()
     }
+
+    @Throws(GeneralSecurityException::class)
+    override suspend fun newEncryptor(key: Key): Cipher =
+            withContext(Dispatchers.Default) {
+                val cipher: Cipher
+                val params: AlgorithmParameterSpec
+                val iv: ByteArray
+
+                cipher = newCipher().apply {
+                    init(Cipher.ENCRYPT_MODE, key, random)
+                }
+
+                if (cipher.iv != null && cipher.iv.isNotEmpty()) {
+                    logger.debug("Using auto-generated IV.")
+                    return@withContext cipher
+                }
+
+                if (!isActive) {
+                    throw CancellationException()
+                }
+
+                iv = ByteArray(SecurityExt.IV_SIZE)
+                random.nextBytes(iv)
+                logger.debug("IV generated.")
+
+                if (!isActive) {
+                    throw CancellationException()
+                }
+
+                params = securityBridge.createCipherParameterSpec(iv)
+                cipher.apply {
+                    init(Cipher.ENCRYPT_MODE, key, params, random)
+                }
+            }
+
+    @Throws(GeneralSecurityException::class)
+    override suspend fun newDecryptor(key: Key, iv: ByteArray): Cipher =
+            withContext(Dispatchers.Default) {
+                val params: AlgorithmParameterSpec
+
+                params = securityBridge.createCipherParameterSpec(iv)
+
+                newCipher().apply {
+                    init(Cipher.DECRYPT_MODE, key, params, random)
+                }
+            }
 
     /**
      * Creates a new `Cipher` instance.
@@ -158,12 +130,6 @@ internal class DefaultCryptoProvider(
             cipher: Cipher
     ): OutputStream = CipherOutputStream(outputStream, cipher)
 
-    override fun newSecretKey(alias: String, expire: Int): Single<SecretKey> =
-            Single.error(noSuchProviderException())
-
-    override fun loadSecretKey(alias: String): Single<SecretKey> =
-            Single.error(noSuchProviderException())
-
     private fun noSuchProviderException() =
             applicationException {
                 message(R.string.it_scoppelletti_security_err_providerNotFound) {
@@ -175,6 +141,6 @@ internal class DefaultCryptoProvider(
             }
 
     private companion object {
-        val logger: KLogger = KotlinLogging.logger {}
+        val logger = KotlinLogging.logger {}
     }
 }

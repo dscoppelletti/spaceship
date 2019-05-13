@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/secondaryColor"
-    style="@style/it_scoppelletti_style_drawerHeader">
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/it_scoppelletti_drawer_headerHeight"
+    android:background="?attr/colorSecondary"
+    android:theme="@style/ThemeOverlay.MaterialComponents.Dark">
 </FrameLayout>

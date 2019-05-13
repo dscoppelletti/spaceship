@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.security
 
 import android.content.Context
 import android.os.Build
-import io.reactivex.Single
 import it.scoppelletti.spaceship.io.IOProvider
 import it.scoppelletti.spaceship.types.TimeProvider
 import java.io.InputStream
 import java.io.OutputStream
+import java.security.GeneralSecurityException
 import java.security.Key
 import java.security.SecureRandom
 import javax.crypto.Cipher
@@ -41,34 +43,36 @@ public interface CryptoProvider {
      * @param  alias  Alias of the key.
      * @param  expire Expiration of the key (days). If `<= 0`, the key never
      *                expires.
-     * @return        The new observable object.
+     * @return        The new key.
      */
-    fun newSecretKey(alias: String, expire: Int): Single<SecretKey>
+    suspend fun newSecretKey(alias: String, expire: Int): SecretKey
 
     /**
      * Loads a secret key.
      *
      * @param  alias Alias of the key.
-     * @return       The new observable object.
+     * @return       The new key.
      */
-    fun loadSecretKey(alias: String): Single<SecretKey>
+    suspend fun loadSecretKey(alias: String): SecretKey
 
     /**
      * Creates a new `Cipher` instance for an encryption operation.
      *
      * @param  key A key.
-     * @return     The new observable object.
+     * @return     The new cipher.
      */
-    fun newEncryptor(key: Key): Single<Cipher>
+    @Throws(GeneralSecurityException::class)
+    suspend fun newEncryptor(key: Key): Cipher
 
     /**
      * Creates a new `Cipher` instance for an decryption operation.
      *
      * @param  key The key.
      * @param  iv  The `IV`.
-     * @return     The new observable object.
+     * @return     The new cipher.
      */
-    fun newDecryptor(key: Key, iv: ByteArray): Single<Cipher>
+    @Throws(GeneralSecurityException::class)
+    suspend fun newDecryptor(key: Key, iv: ByteArray): Cipher
 
     /**
      * Returns an input stream that ciphers the data read in from the underlying

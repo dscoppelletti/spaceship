@@ -14,11 +14,12 @@
  * limit
  */
 
+@file:Suppress("RedundantVisibilityModifier", "unused")
+
 package it.scoppelletti.spaceship.inject
 
 import dagger.Binds
 import dagger.Module
-import dagger.android.ContributesAndroidInjector
 import it.scoppelletti.spaceship.app.AlertDialogBuilder
 import it.scoppelletti.spaceship.app.AlertDialogFragment
 import it.scoppelletti.spaceship.app.ExceptionDialogBuilder
@@ -29,21 +30,13 @@ import it.scoppelletti.spaceship.app.ExceptionDialogFragment
  *
  * @since 1.0.0
  */
-@Module
+@Module(includes = [ CoreModule::class ])
 public abstract class CoreViewsModule {
-
-    @ContributesAndroidInjector(modules = [])
-    public abstract fun contributeAlertDialogFragment(
-    ): AlertDialogFragment
 
     @Binds
     public abstract fun bindAlertDialogBuilder(
             obj: AlertDialogBuilder
     ) : AlertDialogFragment.Builder
-
-    @ContributesAndroidInjector(modules = [])
-    public abstract fun contributeExceptionDialogFragment(
-    ): ExceptionDialogFragment
 
     @Binds
     public abstract fun bindExceptionDialogBuilder(

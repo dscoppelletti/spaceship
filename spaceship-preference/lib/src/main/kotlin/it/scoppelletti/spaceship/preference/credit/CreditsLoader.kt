@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.preference.credit
 
 import androidx.annotation.XmlRes
-import io.reactivex.Observable
 import it.scoppelletti.spaceship.preference.model.Credit
 
 /**
@@ -31,7 +32,7 @@ public interface CreditsLoader {
      * Loads the credits.
      *
      * @param  creditId ID of the XML resource.
-     * @return          The new observable.
+     * @return          The collection.
      */
-    fun load(@XmlRes creditId: Int): Observable<Credit>
+    suspend fun load(@XmlRes creditId: Int): List<Credit>
 }

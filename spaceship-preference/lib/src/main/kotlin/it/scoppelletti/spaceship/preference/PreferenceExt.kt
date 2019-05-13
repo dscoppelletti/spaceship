@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.preference
 
 /**
@@ -27,6 +29,5 @@ public object PreferenceExt {
      * Property containing the credits for this application as a XML resource
      * ID.
      */
-    public const val PROP_CREDITS: String =
-            "it.scoppelletti.spaceship.preferences.1"
+    public const val PROP_CREDITS = "it.scoppelletti.spaceship.preferences.1"
 }

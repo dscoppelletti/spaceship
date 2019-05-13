@@ -91,7 +91,7 @@ class KeyForm : BaseObservable() {
     }
 
     fun validate(): Boolean {
-        var valid: Boolean = true
+        var valid = true
 
         if (!validateAlias()) {
             valid = false

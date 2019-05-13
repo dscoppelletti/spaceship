@@ -1,3 +1,6 @@
+
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.ads.sample
 
 import android.content.Intent

@@ -1,15 +1,17 @@
+
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.security
 
 import it.scoppelletti.spaceship.types.trimRaw
-import mu.KLogger
 import mu.KotlinLogging
 import java.lang.UnsupportedOperationException
 import java.security.AlgorithmParameters
 import java.security.Key
-import java.security.Provider
 import java.security.SecureRandom
 import java.security.Security
 import java.security.spec.AlgorithmParameterSpec
+import java.security.spec.KeySpec
 import javax.crypto.Cipher
 import javax.crypto.CipherSpi
 import javax.crypto.NullCipher
@@ -17,9 +19,8 @@ import javax.crypto.SecretKey
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.SecretKeySpec
 
-private val PROVIDER: Provider =
-        Security.getProvider(SecurityExtTest.PROVIDER_SUN)
-private val logger: KLogger = KotlinLogging.logger {}
+private val PROVIDER = Security.getProvider(SecurityExtTest.PROVIDER_SUN)
+private val logger = KotlinLogging.logger {}
 
 class FakeCipher(
         transformation: String
@@ -132,9 +133,8 @@ class FakeCipherSpi : CipherSpi() {
             wrappedKeyAlgorithm: String?,
             wrappedKeyType: Int): Key {
         // NullCipher does not implement unwrap
-
         val keyFactory: SecretKeyFactory
-        val keySpec: SecretKeySpec
+        val keySpec: KeySpec
 
         if (wrappedKeyType != Cipher.SECRET_KEY) {
             throw UnsupportedOperationException(

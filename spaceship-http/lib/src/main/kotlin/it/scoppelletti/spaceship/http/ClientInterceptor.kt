@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
+        "RemoveRedundantQualifierName", "unused")
+
 package it.scoppelletti.spaceship.http
 
 import android.content.Context
@@ -63,11 +66,11 @@ public class ClientInterceptor @Inject constructor(
                 .build())
 
     private companion object {
-        private const val LANG_UND: String = "und"
-        private const val LANG_SEP: Char = '-'
-        private const val LOCALE_SEP: Char = '_'
-        private const val OS_NAME: String = "android"
-        private const val VALUE_SEP: Char = ';'
+        private const val LANG_UND = "und"
+        private const val LANG_SEP = '-'
+        private const val LOCALE_SEP = '_'
+        private const val OS_NAME = "android"
+        private const val VALUE_SEP = ';'
 
         /**
          * Initializes the application name and version.

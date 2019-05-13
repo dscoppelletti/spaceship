@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship
 
 /**
@@ -24,35 +26,34 @@ package it.scoppelletti.spaceship
 public object CoreExt {
 
     /**
+     * Name of the main `CoroutineDispatcher` dependency.
+     */
+    public const val DEP_MAINDISPATCHER = "it.scoppelletti.spaceship.1"
+
+    /**
      * Property indicating whether the user has manually opened the drawer
      * at least once.
      */
-    public const val PROP_LEARNED: String = "it.scoppelletti.spaceship.1"
-
-    /**
-     * Property containing the title of an activity as a string resource ID.
-     */
-    public const val PROP_TITLE: String = "it.scoppelletti.spaceship.2"
+    public const val PROP_LEARNED = "it.scoppelletti.spaceship.1"
 
     /**
      * Tag of `AlertDialogFragment` fragment.
      *
      * @see it.scoppelletti.spaceship.app.AlertDialogFragment
      */
-    public const val TAG_ALERTDIALOG: String = "it.scoppelletti.spaceship.1"
+    public const val TAG_ALERTDIALOG = "it.scoppelletti.spaceship.1"
 
     /**
      * Tag of `ExceptionDialogFragment` fragment.
      *
      * @see it.scoppelletti.spaceship.app.ExceptionDialogFragment
      */
-    public const val TAG_EXCEPTIONDIALOG: String = "it.scoppelletti.spaceship.2"
+    public const val TAG_EXCEPTIONDIALOG = "it.scoppelletti.spaceship.2"
 
     /**
      * Tag of `BottomSheetDialogFragmentEx` fragment.
      *
      * @see it.scoppelletti.spaceship.app.BottonSheetDialogFragmentEx
      */
-    public const val TAG_BOTTOMSHEETDIALOG: String =
-            "it.scoppelletti.spaceship.3"
+    public const val TAG_BOTTOMSHEETDIALOG = "it.scoppelletti.spaceship.3"
 }

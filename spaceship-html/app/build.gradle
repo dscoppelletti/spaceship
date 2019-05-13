@@ -24,7 +24,7 @@ android {
         release {
             minifyEnabled true
             useProguard true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable false
         }
     }
@@ -52,5 +52,6 @@ dependencies {
         changing = true
     }
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versionMap.kotlinx_coroutines}"
     runtimeOnly "com.noveogroup.android:android-logger:${versionMap.android_logger}"
 }

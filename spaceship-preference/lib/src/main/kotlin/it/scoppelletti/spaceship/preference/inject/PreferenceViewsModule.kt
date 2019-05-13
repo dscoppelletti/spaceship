@@ -14,6 +14,8 @@
  * limit
  */
 
+@file:Suppress("RedundantVisibilityModifier", "unused")
+
 package it.scoppelletti.spaceship.preference.inject
 
 import dagger.Module
@@ -28,7 +30,7 @@ import it.scoppelletti.spaceship.preference.CreditsActivity
 @Module
 public abstract class PreferenceViewsModule {
 
-    @ContributesAndroidInjector(modules = [])
+    @ContributesAndroidInjector
     public abstract fun contributeCreditsActivity(): CreditsActivity
 }
 

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.ads.model
 
 import com.squareup.moshi.Json
@@ -31,8 +33,6 @@ import com.squareup.moshi.JsonClass
  * @property isRequestLocationInEeaOrUnknown Indicates whether the user is
  *                                           located in the European Economic
  *                                           Area.
- *
- * @constructor Constructor.
  */
 @JsonClass(generateAdapter = true)
 public class ServerResponse(

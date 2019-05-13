@@ -14,6 +14,9 @@
  * limit
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
+        "RemoveRedundantQualifierName")
+
 package it.scoppelletti.spaceship.html
 
 import android.content.Context
@@ -21,7 +24,6 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.text.Editable
 import it.scoppelletti.spaceship.types.trimRaw
-import mu.KLogger
 import mu.KotlinLogging
 import org.xml.sax.XMLReader
 import javax.inject.Inject
@@ -70,8 +72,8 @@ public class ApplicationVersionTagHandler @Inject constructor(
         /**
          * Tag.
          */
-        public const val TAG: String = "it-scoppelletti-appVersion"
+        public const val TAG = "it-scoppelletti-appVersion"
 
-        private val logger: KLogger = KotlinLogging.logger {}
+        private val logger = KotlinLogging.logger {}
     }
 }

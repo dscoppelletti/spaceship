@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.ads.app
 
 import android.os.Bundle
@@ -29,8 +31,6 @@ import it.scoppelletti.spaceship.ads.R
  *
  * @see   it.scoppelletti.spaceship.ads.app.AbstractConsentActivity
  * @since 1.0.0
- *
- * @constructor Sole constructor.
  */
 @UiThread
 public class ConsentLoadFragment : Fragment() {
@@ -40,15 +40,14 @@ public class ConsentLoadFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? = inflater.inflate(
-            R.layout.it_scoppelletti_ads_consentload_fragment, container,
-            false)
+            R.layout.it_scoppelletti_ads_consentload_fragment, container, false)
 
     public companion object {
 
         /**
          * Fragment position.
          */
-        public const val POS: Int = 0
+        public const val POS = 0
 
 
         /**
@@ -56,7 +55,6 @@ public class ConsentLoadFragment : Fragment() {
          *
          * @return The new object.
          */
-        public fun newInstance(): ConsentLoadFragment =
-                ConsentLoadFragment()
+        public fun newInstance() = ConsentLoadFragment()
     }
 }

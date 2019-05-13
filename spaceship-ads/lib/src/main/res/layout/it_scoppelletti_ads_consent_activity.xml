@@ -21,7 +21,8 @@
     android:layout_height="match_parent"
     tools:context=".app.AbstractConsentActivity">
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        style="@style/it_scoppelletti_style_coordinatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:fitsSystemWindows="true">
         <it.scoppelletti.spaceship.view.ViewPagerEx
             android:id="@+id/contentPager"
@@ -29,12 +30,19 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
         <com.google.android.material.appbar.AppBarLayout
-            style="@style/it_scoppelletti_style_appBarLayout">
-            <androidx.appcompat.widget.Toolbar android:id="@+id/toolbar"
-                style="@style/it_scoppelletti_style_toolbar"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
         </com.google.android.material.appbar.AppBarLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
     <it.scoppelletti.spaceship.widget.ProgressOverlay
         android:id="@+id/progressIndicator"
-        style="@style/it_scoppelletti_style_progressOverlay" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </FrameLayout>

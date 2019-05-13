@@ -68,7 +68,7 @@
                 android:layout_width="@dimen/it_scoppelletti_spacingHorz"
                 android:layout_height="wrap_content"
                 app:barrierDirection="right"
-                app:constraint_referenced_ids="lblStatusCode,lblError,lblClass,lblPath,lblTimestamp" />
+                app:constraint_referenced_ids="lblStatusCode,lblError,lblClass" />
             <TextView android:id="@+id/txtStatusCode"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

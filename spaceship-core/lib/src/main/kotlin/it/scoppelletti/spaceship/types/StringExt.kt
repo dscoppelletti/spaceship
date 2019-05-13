@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.types
 
 /**
@@ -26,7 +28,7 @@ public object StringExt {
     /**
      * Empty string.
      */
-    public const val EMPTY: String = ""
+    public const val EMPTY = ""
 }
 
 /**

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RemoveRedundantQualifierName",
+        "RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.preference
 
 import android.content.Intent
@@ -32,8 +35,6 @@ import javax.inject.Inject
  * Settings fragment for supporting [CustomPreferenceDialogFragment].
  *
  * @since 1.0.0
- *
- * @constructor Sole constructor.
  */
 @UiThread
 public abstract class AbstractPreferenceFragment : PreferenceFragmentCompat(),
@@ -125,7 +126,7 @@ public abstract class AbstractPreferenceFragment : PreferenceFragmentCompat(),
         /**
          * Tag.
          */
-        public const val DIALOG_FRAGMENT_TAG: String =
+        public const val DIALOG_FRAGMENT_TAG =
                 "android.support.v7.preference.PreferenceFragment.DIALOG"
         // - Support library 27.1.1
         // In the base class this constant is private.

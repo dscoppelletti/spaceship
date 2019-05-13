@@ -6,14 +6,9 @@ import androidx.lifecycle.ViewModel
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor() : ViewModel() {
-    private val _state: MutableLiveData<MainState>
+    private val _state = MutableLiveData<MainState>()
 
-    val state: LiveData<MainState>
-        get() = _state
-
-    init {
-        _state = MutableLiveData()
-    }
+    val state: LiveData<MainState> = _state
 
     fun setState(state: MainState) {
         _state.value = state

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.preference
 
 import android.os.Bundle
@@ -34,8 +36,6 @@ import javax.inject.Inject
  * Activity hosting a settings fragment.
  *
  * @since 1.0.0
- *
- * @constructor Sole constructor.
  */
 @UiThread
 public abstract class AbstractSettingsActivity : AppCompatActivity(),

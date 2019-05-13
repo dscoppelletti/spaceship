@@ -40,6 +40,11 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
         test.java.srcDirs += 'src/test/kotlin'
     }
+    testOptions {
+        unitTests.all {
+            jvmArgs '-ea'
+        }
+    }
 }
 
 spaceship {
@@ -63,14 +68,13 @@ dependencies {
     api "com.google.dagger:dagger-android-support:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-android-processor:${versionMap.dagger}"
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versionMap.kotlinx_coroutines}"
     implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
-    implementation "io.reactivex.rxjava2:rxandroid:${versionMap.rxandroid}"
-    implementation "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versionMap.kotlinx_coroutines}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:${versionMap.kotlinx_coroutines}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versionMap.kotlinx_coroutines}"
     implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
     testImplementation "junit:junit:${versionMap.junit}"
     testImplementation "org.jetbrains.kotlin:kotlin-test:${versionMap.kotlin}"
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:${versionMap.kotlin}"
     testImplementation "org.mockito:mockito-core:${versionMap.mockito}"
+    testImplementation "org.slf4j:slf4j-simple:${versionMap.slf4j}"
 }

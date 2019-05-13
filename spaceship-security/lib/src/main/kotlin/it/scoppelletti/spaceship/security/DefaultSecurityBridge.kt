@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.security
 
 import android.annotation.SuppressLint
@@ -35,11 +37,6 @@ import javax.security.auth.x500.X500Principal
 
 /**
  * Default implementation of the `CipherProvider` interface.
- *
- * @constructor              Constructor.
- * @param       context      Context.
- * @param       timeProvider Provides components for operations on dates and
- *                           times.
  */
 internal class DefaultSecurityBridge(
         private val context: Context,

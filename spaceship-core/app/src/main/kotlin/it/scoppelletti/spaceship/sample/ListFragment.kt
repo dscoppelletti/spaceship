@@ -1,3 +1,6 @@
+
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.sample
 
 import android.content.Intent
@@ -105,6 +108,6 @@ class ListFragment : Fragment(),
     }
 
     companion object {
-        fun newInstance(): ListFragment = ListFragment()
+        fun newInstance() = ListFragment()
     }
 }

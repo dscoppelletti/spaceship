@@ -23,7 +23,7 @@ android {
         release {
             minifyEnabled true
             useProguard true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable false
         }
     }
@@ -53,9 +53,8 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-android-processor:${versionMap.dagger}"
     implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
-    implementation "io.reactivex.rxjava2:rxandroid:${versionMap.rxandroid}"
-    implementation "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versionMap.kotlinx_coroutines}"
     implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
     runtimeOnly "com.noveogroup.android:android-logger:${versionMap.android_logger}"
 }

@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.ads.consent
 
-import io.reactivex.Single
 import it.scoppelletti.spaceship.ads.AdsExt
 import it.scoppelletti.spaceship.ads.model.ServerResponse
 import retrofit2.http.GET
@@ -40,12 +41,12 @@ public interface AdService {
      * @return                The new observable.
      */
     @GET("getconfig/pubvendors")
-    fun getConfig(
+    suspend fun getConfig(
             @Query("pubs") publisherId: String,
             @Query("debug_geo") debugGeography: Int =
                     DebugGeography.DISABLED.code,
             @Query("es") es: String = "2",
             @Query("plat") platform: String = AdsExt.API_PLATFORM,
             @Query("v") version: String = AdsExt.API_VERSION
-    ) : Single<ServerResponse>
+    ) : ServerResponse
 }

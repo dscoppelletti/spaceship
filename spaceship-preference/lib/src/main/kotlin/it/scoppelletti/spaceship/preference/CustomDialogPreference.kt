@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.preference
 
 import android.content.Context
@@ -34,6 +36,7 @@ public abstract class CustomDialogPreference : DialogPreference {
      * @constructor         Constructor.
      * @param       context Context.
      */
+    @Suppress("unused")
     public constructor(context: Context) : super(context)
 
     /**
@@ -41,6 +44,7 @@ public abstract class CustomDialogPreference : DialogPreference {
      * @param       context Context.
      * @param       attrs   Attribute set.
      */
+    @Suppress("unused")
     public constructor(
             context: Context,
             attrs: AttributeSet
@@ -52,6 +56,7 @@ public abstract class CustomDialogPreference : DialogPreference {
      * @param       attrs        Attribute set.
      * @param       defStyleAttr Default style attributes as a resource ID.
      */
+    @Suppress("unused")
     public constructor(
             context: Context,
             attrs: AttributeSet,
@@ -65,6 +70,7 @@ public abstract class CustomDialogPreference : DialogPreference {
      * @param       defStyleAttr Default style attributes as a resource ID.
      * @param       defStyleRes  Default style as a resource ID.
      */
+    @Suppress("unused")
     public constructor(
             context: Context,
             attrs: AttributeSet,

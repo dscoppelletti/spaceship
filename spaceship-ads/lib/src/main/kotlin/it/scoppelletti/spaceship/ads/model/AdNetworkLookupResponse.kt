@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.ads.model
 
 import com.squareup.moshi.Json
@@ -30,8 +32,6 @@ import com.squareup.moshi.JsonClass
  * @property notFound     Indicates that the requested publisher is not found.
  * @property isNPA        Indicates whether the publisher has configured any non
  *                        personalized Ad providers.
- *
- * @constructor Constructor.
  */
 @JsonClass(generateAdapter = true)
 public class AdNetworkLookupResponse(

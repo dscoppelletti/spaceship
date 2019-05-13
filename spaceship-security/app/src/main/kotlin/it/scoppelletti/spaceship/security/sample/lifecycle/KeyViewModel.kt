@@ -3,56 +3,59 @@ package it.scoppelletti.spaceship.security.sample.lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import it.scoppelletti.spaceship.CoreExt
 import it.scoppelletti.spaceship.security.CryptoProvider
 import it.scoppelletti.spaceship.security.sample.R
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
+import kotlin.coroutines.CoroutineContext
 
 class KeyViewModel @Inject constructor(
+
+        @Named(CoreExt.DEP_MAINDISPATCHER)
+        dispatcher: CoroutineDispatcher,
+
         private val cryptoProvider: CryptoProvider
-): ViewModel() {
-    private val _state: MutableLiveData<MainState>
-    private val _form: KeyForm
-    private val disposables: CompositeDisposable
+): ViewModel(), CoroutineScope {
 
-    val state: LiveData<MainState>
-        get() = _state
-
-    val form: KeyForm
-        get() = _form
+    private val _state = MutableLiveData<MainState>()
+    private val _form = KeyForm()
+    private val job = Job()
 
     init {
-        _state = MutableLiveData()
         _state.value = MainState.create()
-        _form = KeyForm()
-        disposables = CompositeDisposable()
     }
 
-    override fun onCleared() {
-        disposables.clear()
-        super.onCleared()
+    override val coroutineContext: CoroutineContext = dispatcher + job
+
+    val state: LiveData<MainState> = _state
+
+    val form: KeyForm = _form
+
+    fun createSecretKey(alias: String, expire: Int) = launch {
+        try {
+            _state.value = _state.value?.withWaiting()
+            cryptoProvider.newSecretKey(alias, expire)
+            _state.value = MainState.create(R.string.msg_keyGenerated)
+        } catch (ex: CancellationException) {
+            throw ex
+        } catch (ex: Exception) {
+            _state.value = _state.value?.withError(ex)
+        }
     }
 
     fun setError(ex: Throwable) {
         _state.value = _state.value?.withError(ex)
     }
 
-    fun createSecretKey(alias: String, expire: Int) {
-        val subscription: Disposable
-
-        _state.value = _state.value?.withWaiting()
-        subscription = cryptoProvider.newSecretKey(alias, expire)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    _state.value = MainState.create(R.string.msg_keyGenerated)
-                }, { ex ->
-                    _state.value = _state.value?.withError(ex)
-                })
-        disposables.add(subscription)
+    override fun onCleared() {
+        job.cancel()
+        super.onCleared()
     }
 }
 

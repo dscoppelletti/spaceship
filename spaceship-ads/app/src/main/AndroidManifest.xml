@@ -11,16 +11,19 @@
         android:supportsRtl="true"
         android:theme="@style/it_scoppelletti_theme_app">
         <activity android:name=".AdConsentActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/it_scoppelletti_theme_activityNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:theme="@style/it_scoppelletti_theme_activityNoActionBar" />
         <activity android:name=".SettingsActivity"
-            android:label="@string/it_scoppelletti_pref_cmd_settings" />
+            android:label="@string/it_scoppelletti_pref_cmd_settings"
+            android:theme="@style/it_scoppelletti_pref_theme_preferenceActivity" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="${adsAppId}" />

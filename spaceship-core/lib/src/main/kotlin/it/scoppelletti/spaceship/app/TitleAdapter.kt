@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.app
 
-import android.os.Bundle
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.appbar.CollapsingToolbarLayout
-import it.scoppelletti.spaceship.CoreExt
 
 /**
  * Title adapter.
@@ -54,27 +54,4 @@ public class TitleAdapter(
             activity.setTitle(value)
             field = value
         }
-
-    /**
-     * Should be called by the like-named method of the activity.
-     *
-     * @param savedInstanceState State of the activity.
-     */
-    public fun onPostCreate(savedInstanceState: Bundle?) {
-        val t = savedInstanceState?.getInt(CoreExt.PROP_TITLE, -1) ?: -1
-        if (t > 0) {
-            titleId = t
-        }
-    }
-
-    /**
-     * Should be called by the like-named method of the activity.
-     *
-     * @param outState State of the activity.
-     */
-    public fun onSaveInstanceState(outState: Bundle?) {
-        if (titleId > 0) {
-            outState?.putInt(CoreExt.PROP_TITLE, titleId)
-        }
-    }
 }

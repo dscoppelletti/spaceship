@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
+        "RemoveRedundantQualifierName")
+
 package it.scoppelletti.spaceship.app
 
 import android.app.Dialog
@@ -27,18 +30,15 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.FragmentActivity
 import it.scoppelletti.spaceship.CoreExt
 import it.scoppelletti.spaceship.MessageBuilder
-import it.scoppelletti.spaceship.inject.Injectable
 import javax.inject.Inject
 
 /**
  * Alert dialog.
  *
  * @since 1.0.0
- *
- * @constructor Sole constructor.
  */
 @UiThread
-public class AlertDialogFragment : AppCompatDialogFragment(), Injectable {
+public class AlertDialogFragment : AppCompatDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val args: Bundle
@@ -122,14 +122,14 @@ public class AlertDialogFragment : AppCompatDialogFragment(), Injectable {
          */
         public const val TAG: String = CoreExt.TAG_ALERTDIALOG
 
-        private const val PROP_MSG: String = "1"
-        private const val PROP_MSGID: String = "2"
-        private const val PROP_TITLE: String = "3"
-        private const val PROP_TITLEID: String = "4"
-        private const val PROP_POSITIVEID: String = "5"
-        private const val PROP_NEGATIVEID: String = "6"
-        private const val PROP_NEUTRALID: String = "7"
-        private const val PROP_ICONID: String = "8"
+        private const val PROP_MSG = "1"
+        private const val PROP_MSGID = "2"
+        private const val PROP_TITLE = "3"
+        private const val PROP_TITLEID = "4"
+        private const val PROP_POSITIVEID = "5"
+        private const val PROP_NEGATIVEID = "6"
+        private const val PROP_NEUTRALID = "7"
+        private const val PROP_ICONID = "8"
     }
 
     /**
@@ -239,6 +239,7 @@ public class AlertDialogFragment : AppCompatDialogFragment(), Injectable {
          * @param  init  Initialization block.
          * @return       The new object.
          */
+        @Suppress("unused")
         public fun title(
                 title: String,
                 init: MessageBuilder.() -> Unit = { }
@@ -311,8 +312,6 @@ public class AlertDialogFragment : AppCompatDialogFragment(), Injectable {
  * Implementation of the `AlertDialogBuilder` interface.
  *
  * @since 1.0.0
- *
- * @constructor Sole constructor.
  */
 public class AlertDialogBuilder @Inject constructor(
 ) : AlertDialogFragment.Builder {

@@ -14,18 +14,19 @@
  * limit
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.inject
 
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
-import dagger.multibindings.IntoMap
 import dagger.multibindings.IntoSet
-import it.scoppelletti.spaceship.ApplicationException
+import it.scoppelletti.spaceship.CoreExt
 import it.scoppelletti.spaceship.DefaultExceptionLogger
 import it.scoppelletti.spaceship.ExceptionLogger
-import it.scoppelletti.spaceship.widget.ApplicationExceptionAdapter
-import it.scoppelletti.spaceship.widget.ExceptionAdapter
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import javax.inject.Named
 
 /**
  * Defines the dependencies exported by this library.
@@ -33,27 +34,16 @@ import it.scoppelletti.spaceship.widget.ExceptionAdapter
  * @since 1.0.0
  */
 @Module
-public abstract class CoreModule {
+public object CoreModule {
 
-    @Binds
-    public abstract fun bindExceptionAdapterFactory(
-            factory: InjectExceptionAdapterFactory
-    ): ExceptionAdapter.Factory
+    @Provides
+    @JvmStatic
+    @Named(CoreExt.DEP_MAINDISPATCHER)
+    public fun provideMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
 
-    @Binds
-    @IntoMap
-    @ExceptionAdapterKey(ApplicationException::class)
-    public abstract fun bindApplicationExceptionAdapter(
-            adapter: ApplicationExceptionAdapter
-    ): ExceptionAdapter<*>
-
-    @Module
-    public companion object {
-
-        @IntoSet
-        @Provides
-        @JvmStatic
-        public fun provideExceptionLogger(): ExceptionLogger =
-                DefaultExceptionLogger()
-    }
+    @IntoSet
+    @Provides
+    @JvmStatic
+    public fun provideExceptionLogger(): ExceptionLogger =
+            DefaultExceptionLogger()
 }

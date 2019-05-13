@@ -22,6 +22,8 @@
  * Modify KDoc.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.inject
 
 /**

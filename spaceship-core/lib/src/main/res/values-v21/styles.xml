@@ -17,8 +17,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <eat-comment />
     <!-- App Bar -->
-    <style name="it_scoppelletti_style_collapsingAppBarLayout"
-        parent="it_scoppelletti_baseStyle_collapsingAppBarLayout">
+    <style name="it_scoppelletti_style_collapsingAppBarLayout">
         <item name="android:stateListAnimator">@animator/it_scoppelletti_appbar</item>
     </style>
 </resources>

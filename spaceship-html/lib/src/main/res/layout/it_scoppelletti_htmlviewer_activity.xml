@@ -18,8 +18,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/it_scoppelletti_style_coordinatorLayout"
-    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:ignore="LabelFor"
     tools:context=".app.HtmlViewerActivity">
@@ -38,8 +38,14 @@
     </androidx.core.widget.NestedScrollView>
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
-        style="@style/it_scoppelletti_style_appBarLayout">
-        <androidx.appcompat.widget.Toolbar android:id="@+id/toolbar"
-            style="@style/it_scoppelletti_style_toolbar"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"/>
     </com.google.android.material.appbar.AppBarLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

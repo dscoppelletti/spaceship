@@ -50,7 +50,7 @@ public final class FakeCertificateFactory {
     private FakeCertificateFactory() {
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({ "deprecation", "TryFinallyCanBeTryWithResources" })
     public static X509Certificate create(PublicKey publicKey,
             FakeKeyPairGeneratorSpec spec) throws IOException,
             CertificateParsingException {

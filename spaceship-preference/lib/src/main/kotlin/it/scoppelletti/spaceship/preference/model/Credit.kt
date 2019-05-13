@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.preference.model
 
 /**
@@ -24,8 +26,6 @@ package it.scoppelletti.spaceship.preference.model
  * @property component Component.
  * @property owner     Organization.
  * @property license   License.
- *
- * @constructor Constructor.
  */
 public data class Credit(
         public val component: CharSequence,

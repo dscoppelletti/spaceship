@@ -18,6 +18,7 @@
     package="it.scoppelletti.spaceship.html">
     <application android:supportsRtl="true">
         <activity android:name=".app.HtmlViewerActivity"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:theme="@style/it_scoppelletti_theme_activityNoActionBar" />
     </application>
 </manifest>

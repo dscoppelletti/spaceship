@@ -51,6 +51,6 @@ class ProviderFragment : Fragment(),
     }
 
     companion object {
-        fun newInstance(): ProviderFragment = ProviderFragment()
+        fun newInstance() = ProviderFragment()
     }
 }

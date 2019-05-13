@@ -1,3 +1,6 @@
+
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.sample
 
 import android.content.DialogInterface
@@ -69,7 +72,6 @@ class TabbedActivity : AppCompatActivity(),
         setSupportActionBar(toolbar)
         actionBar = supportActionBar!!
         actionBar.setDisplayHomeAsUpEnabled(true)
-
         titleAdapter = TitleAdapter(this)
 
         viewModel = ViewModelProviders.of(this, viewModelFactory)
@@ -88,17 +90,14 @@ class TabbedActivity : AppCompatActivity(),
         val itemId: Int
 
         super.onPostCreate(savedInstanceState)
-        titleAdapter.onPostCreate(savedInstanceState)
 
         viewPager.adapter = ItemPagerAdapter(this, supportFragmentManager)
         tabLayout.setupWithViewPager(viewPager)
 
-        if (savedInstanceState == null) {
-            itemId = intent.getIntExtra(MainApp.PROP_ITEMID, 0)
-        } else {
-            itemId = savedInstanceState.getInt(MainApp.PROP_ITEMID, 0)
-        }
+        itemId = savedInstanceState?.getInt(MainApp.PROP_ITEMID, 0) ?:
+            intent.getIntExtra(MainApp.PROP_ITEMID, 0)
 
+        setState(itemId)
         viewModel.read(itemId)
     }
 
@@ -107,8 +106,6 @@ class TabbedActivity : AppCompatActivity(),
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-        titleAdapter.onSaveInstanceState(outState)
-
         outState?.putInt(MainApp.PROP_ITEMID, viewModel.form.id)
     }
 
@@ -130,12 +127,7 @@ class TabbedActivity : AppCompatActivity(),
 
         progressIndicator.hide {
             state.item.poll()?.let { item ->
-                if (item.id > 0) {
-                    titleAdapter.titleId = R.string.it_scoppelletti_cmd_edit
-                } else {
-                    titleAdapter.titleId = R.string.it_scoppelletti_cmd_new
-                }
-
+                setState(item.id)
                 viewModel.form.copy(item)
             }
 
@@ -147,6 +139,14 @@ class TabbedActivity : AppCompatActivity(),
             state.error?.poll()?.let { err ->
                 exDialog.show(this, err)
             }
+        }
+    }
+
+    private fun setState(itemId: Int) {
+        if (itemId > 0) {
+            titleAdapter.titleId = R.string.it_scoppelletti_cmd_edit
+        } else {
+            titleAdapter.titleId = R.string.it_scoppelletti_cmd_new
         }
     }
 

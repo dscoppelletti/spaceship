@@ -24,7 +24,7 @@ android {
         release {
             minifyEnabled true
             useProguard true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable false
         }
     }
@@ -52,8 +52,6 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
     implementation "com.google.dagger:dagger-android-support:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-android-processor:${versionMap.dagger}"
-    implementation "io.reactivex.rxjava2:rxjava:${versionMap.rxjava}"
-    implementation "io.reactivex.rxjava2:rxandroid:${versionMap.rxandroid}"
     implementation("it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}") {
         changing = true
     }

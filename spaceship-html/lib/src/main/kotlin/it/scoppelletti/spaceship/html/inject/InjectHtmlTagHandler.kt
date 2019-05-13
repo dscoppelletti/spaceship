@@ -14,6 +14,8 @@
  * limit
  */
 
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.html.inject
 
 import android.text.Editable
@@ -21,7 +23,6 @@ import android.text.Html
 import android.text.Spanned
 import it.scoppelletti.spaceship.html.HtmlTagHandler
 import it.scoppelletti.spaceship.types.trimRaw
-import mu.KLogger
 import mu.KotlinLogging
 import org.xml.sax.XMLReader
 import javax.inject.Inject
@@ -110,7 +111,7 @@ public class InjectHtmlTagHandler @Inject constructor(
     }
 
     private companion object {
-        val logger: KLogger = KotlinLogging.logger {}
+        val logger = KotlinLogging.logger {}
     }
 }
 

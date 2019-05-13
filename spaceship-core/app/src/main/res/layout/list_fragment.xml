@@ -5,15 +5,13 @@
     android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/it_scoppelletti_marginVert"
-    android:layout_marginBottom="@dimen/it_scoppelletti_marginVert"
     tools:context=".ListFragment">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="@dimen/it_scoppelletti_spacingVert"
-        android:paddingBottom="@dimen/it_scoppelletti_spacingVert">
+        android:layout_marginTop="@dimen/it_scoppelletti_marginVert"
+        android:layout_marginBottom="@dimen/it_scoppelletti_marginVert">
     </androidx.recyclerview.widget.RecyclerView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

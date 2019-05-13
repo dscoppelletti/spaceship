@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
-import it.scoppelletti.spaceship.html.HtmlExt
+import it.scoppelletti.spaceship.html.app.HtmlViewerActivity
 import it.scoppelletti.spaceship.preference.AbstractPreferenceFragment
 import it.scoppelletti.spaceship.preference.AbstractSettingsActivity
 import it.scoppelletti.spaceship.preference.CreditsActivity
@@ -47,10 +47,10 @@ class SettingsFragment : AbstractPreferenceFragment() {
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
         findPreference(MainApp.PROP_HELP).startActivityConfig { intent ->
-            intent.putExtra(HtmlExt.PROP_TITLE,
+            intent.putExtra(HtmlViewerActivity.PROP_TITLE,
                     R.string.it_scoppelletti_pref_cmd_help)
-            intent.putExtra(HtmlExt.PROP_HOMEASUP, true)
-            intent.putExtra(HtmlExt.PROP_TEXT, R.string.html_help)
+            intent.putExtra(HtmlViewerActivity.PROP_HOMEASUP, true)
+            intent.putExtra(HtmlViewerActivity.PROP_TEXT, R.string.html_help)
         }
 
         findPreference(MainApp.PROP_FEEDBACK).startActivityConfig()

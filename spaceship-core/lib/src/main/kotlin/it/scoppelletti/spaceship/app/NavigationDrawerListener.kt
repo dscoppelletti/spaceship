@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.app
 
 import android.app.Activity

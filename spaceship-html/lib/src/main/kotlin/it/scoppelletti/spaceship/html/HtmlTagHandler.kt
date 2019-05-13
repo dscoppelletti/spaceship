@@ -14,6 +14,8 @@
  * limit
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.html
 
 import android.text.Editable
@@ -25,8 +27,6 @@ import org.xml.sax.XMLReader
  * @since 1.0.0
  *
  * @property tag Custom tag.
- *
- * @constructor Constructor.
  */
 public abstract class HtmlTagHandler(public val tag: String) {
 

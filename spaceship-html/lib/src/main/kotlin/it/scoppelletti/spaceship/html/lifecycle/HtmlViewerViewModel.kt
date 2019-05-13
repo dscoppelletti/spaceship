@@ -14,22 +14,28 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier")
+
 package it.scoppelletti.spaceship.html.lifecycle
 
 import android.text.Html
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import it.scoppelletti.spaceship.CoreExt
 import it.scoppelletti.spaceship.html.HtmlExt
 import it.scoppelletti.spaceship.html.fromHtml
 import it.scoppelletti.spaceship.lifecycle.SingleEvent
+import it.scoppelletti.spaceship.types.StringExt
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Named
+import kotlin.coroutines.CoroutineContext
 
 /**
  * `ViewModel` for the `HtmlViewerActivity` activity.
@@ -40,46 +46,59 @@ import javax.inject.Named
  * @property state The styled text.
  *
  * @constructor            Constructor.
+ * @param       dispatcher Coroutine dispatcher.
  * @param       tagHandler Handles the HTML custom tags.
  */
 public class HtmlViewerViewModel @Inject constructor(
+
+        @Named(CoreExt.DEP_MAINDISPATCHER)
+        dispatcher: CoroutineDispatcher,
+
         @Named(HtmlExt.DEP_TAGHANDLER)
         private val tagHandler: Html.TagHandler
-) : ViewModel() {
+) : ViewModel(), CoroutineScope {
 
-    private val _state: MutableLiveData<HtmlViewerState>
-    private val disposables: CompositeDisposable
+    private val _state = MutableLiveData<HtmlViewerState>()
+    private val job = Job()
 
-    public val state: LiveData<HtmlViewerState>
-        get() = _state
+    override val coroutineContext: CoroutineContext = dispatcher + job
 
-    init {
-        _state = MutableLiveData()
-        disposables = CompositeDisposable()
-    }
+    public val state: LiveData<HtmlViewerState> = _state
 
     /**
      * Builds the displayable styled text from the provided HTML string.
      *
      * @param source The source HTML string.
      */
-    public fun buildText(source: String) {
-        val subscription: Disposable
+    public fun buildText(source: String) = launch {
+        val text: CharSequence
 
-        subscription = Observable.fromCallable {
-            fromHtml(source, null, tagHandler)
-        }.subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ text ->
-                    _state.value = HtmlViewerState(text = text)
-                }, { ex ->
-                    _state.value = HtmlViewerState(error = SingleEvent(ex))
-                })
-        disposables.add(subscription)
+        try {
+            text = fromHtml(source, null, tagHandler)
+            _state.value = HtmlViewerState(text = text)
+        } catch (ex: CancellationException) {
+            throw ex
+        } catch (ex: Exception) {
+            _state.value = HtmlViewerState(error = SingleEvent(ex))
+        }
     }
 
     override fun onCleared() {
-        disposables.clear()
+        job.cancel()
         super.onCleared()
     }
 }
+
+/**
+ * State for the `HtmlViewerActivity` activity.
+ *
+ * @see    it.scoppelletti.spaceship.html.app.HtmlViewerActivity
+ * @since  1.0.0
+ *
+ * @property text  The styled text.
+ * @property error The error.
+ */
+public data class HtmlViewerState (
+        public val text: CharSequence = StringExt.EMPTY,
+        public val error: SingleEvent<Throwable>? = null
+)

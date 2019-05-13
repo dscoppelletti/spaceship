@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantVisibilityModifier", "RemoveRedundantQualifierName")
+
 package it.scoppelletti.spaceship.ads.consent
 
-import androidx.annotation.WorkerThread
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
-import io.reactivex.Completable
-import io.reactivex.CompletableEmitter
-import io.reactivex.Single
-import io.reactivex.SingleEmitter
 import it.scoppelletti.spaceship.ads.model.ConsentData
 import it.scoppelletti.spaceship.io.IOProvider
 import it.scoppelletti.spaceship.io.closeQuietly
-import mu.KLogger
+import it.scoppelletti.spaceship.types.TimeProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import mu.KotlinLogging
 import okio.BufferedSink
 import okio.BufferedSource
@@ -34,6 +33,7 @@ import okio.Okio
 import okio.Sink
 import okio.Source
 import java.io.File
+import java.util.Calendar
 import javax.inject.Inject
 
 /**
@@ -41,73 +41,65 @@ import javax.inject.Inject
  *
  * @since 1.0.0
  *
- * @constructor            Constructor.
- * @param       ioProvider Provides I/O components.
+ * @constructor              Constructor.
+ * @param       ioProvider   Provides I/O components.
+ * @param       timeProvider Provides components for operations on dates and
+ *                           times.
  */
-@WorkerThread
 public class DefaultConsentDataStore @Inject constructor(
-        ioProvider: IOProvider
+        ioProvider: IOProvider,
+        private val timeProvider: TimeProvider
 ) : ConsentDataStore {
     private val file: File
     private val adapter: JsonAdapter<ConsentData>
-
 
     init {
         file = File(ioProvider.noBackupFilesDir, DefaultConsentDataStore.DATA)
         adapter = Moshi.Builder().build().adapter(ConsentData::class.java)
     }
 
-    override fun load(): Single<ConsentData> =
-            Single.create(::onLoadSubscribe)
+    public override suspend fun load(): ConsentData =
+            withContext(Dispatchers.IO) {
+                var data: ConsentData? = null
+                var stream: Source? = null
+                var reader: BufferedSource? = null
 
-    private fun onLoadSubscribe(emitter: SingleEmitter<ConsentData>) {
-        var data: ConsentData? = null
-        var stream: Source? = null
-        var reader: BufferedSource? = null
+                try {
+                    stream = Okio.source(file)
+                    reader = Okio.buffer(stream!!)
+                    data = adapter.fromJson(reader!!)
+                    logger.debug { "Data loaded from $file." }
+                } catch (ex: Exception) { // IOException | JsonException
+                    logger.error(ex) { "Failed to load file $file." }
+                } finally {
+                    reader?.closeQuietly()
+                    stream?.closeQuietly()
+                }
 
-        try {
-            stream = Okio.source(file)
-            reader = Okio.buffer(stream!!)
-            data = adapter.fromJson(reader!!)
-            logger.debug { "Data loaded from $file." }
-        } catch (ex: Exception) { // IOException | JsonException
-            logger.error(ex) { "Failed to load file $file." }
-        } finally {
-            reader?.closeQuietly()
-            stream?.closeQuietly()
-        }
-
-        emitter.onSuccess(data ?: ConsentData())
-    }
-
-    override fun save(data: ConsentData): Completable =
-            Completable.create { emitter ->
-                onSaveSubscribe(emitter, data)
+                data ?: ConsentData(year = timeProvider.currentTime()
+                        .get(Calendar.YEAR))
             }
 
-    private fun onSaveSubscribe(
-            emitter: CompletableEmitter,
-            data: ConsentData) {
-        var stream: Sink? = null
-        var writer: BufferedSink? = null
+    public override suspend fun save(data: ConsentData) =
+            withContext(Dispatchers.IO) {
+                var stream: Sink? = null
+                var writer: BufferedSink? = null
 
-        try {
-            stream = Okio.sink(file)
-            writer = Okio.buffer(stream!!)
-            adapter.toJson(writer!!, data)
-            logger.debug { "Data saved to $file." }
-        } catch (ex: Exception) { // IOException | JsonException
-            logger.error(ex) { "Failed to save file $file." }
-        } finally {
-            writer?.closeQuietly()
-            stream?.closeQuietly()
-        }
-
-        emitter.onComplete()
-    }
+                try {
+                    stream = Okio.sink(file)
+                    writer = Okio.buffer(stream!!)
+                    adapter.toJson(writer!!, data)
+                    logger.debug { "Data saved to $file." }
+                } catch (ex: Exception) { // IOException | JsonException
+                    logger.error(ex) { "Failed to save file $file." }
+                } finally {
+                    writer?.closeQuietly()
+                    stream?.closeQuietly()
+                }
+            }
 
     private companion object {
-        const val DATA: String = "it-scoppelletti-ads.dat"
-        val logger: KLogger = KotlinLogging.logger {}
+        const val DATA = "it-scoppelletti-ads.dat"
+        val logger = KotlinLogging.logger {}
     }
 }

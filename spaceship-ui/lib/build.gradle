@@ -1,0 +1,80 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply from: '../../gradle-plugins/android-library.gradle'
+
+group 'it.scoppelletti.spaceship'
+description 'Spaceship for UI'
+archivesBaseName = 'spaceship-ui'
+
+android {
+    compileSdkVersion versionMap.sdk_target
+    buildToolsVersion versionMap.build_tools
+    defaultConfig {
+        minSdkVersion versionMap.sdk_min
+        targetSdkVersion versionMap.sdk_target
+        versionCode 1
+        versionName versionMap.spaceship
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            consumerProguardFiles 'consumer-rules.pro'
+            debuggable false
+        }
+        debug {
+            minifyEnabled false
+            debuggable true
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dataBinding {
+        enabled = true
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
+    testOptions {
+        unitTests.all {
+            jvmArgs '-ea'
+        }
+    }
+}
+
+spaceship {
+    copyright '2013-2019'
+}
+
+dependencies {
+    api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
+    api "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
+    api "androidx.cardview:cardview:${versionMap.androidx_cardview}"
+    api "androidx.constraintlayout:constraintlayout:${versionMap.androidx_constraint}"
+    api "androidx.lifecycle:lifecycle-common-java8:${versionMap.androidx_lifecycle}"
+    api "androidx.lifecycle:lifecycle-extensions:${versionMap.androidx_lifecycle}"
+    kapt "androidx.databinding:databinding-compiler:${versionMap.android_gradle}"
+    api "androidx.recyclerview:recyclerview:${versionMap.androidx_recyclerview}"
+    api "com.google.android.material:material:${versionMap.androidx_material}"
+    api "com.google.dagger:dagger:${versionMap.dagger}"
+    kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versionMap.kotlinx_coroutines}"
+    implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
+    api "org.threeten:threetenbp:${versionMap.threetenbp}:no-tzdb"
+    api("it.scoppelletti.spaceship:spaceship-stdlib:${versionMap.spaceship}") {
+        changing = true
+    }
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versionMap.kotlinx_coroutines}"
+    implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
+    testImplementation "junit:junit:${versionMap.junit}"
+    testImplementation "org.jetbrains.kotlin:kotlin-test:${versionMap.kotlin}"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:${versionMap.kotlin}"
+    testImplementation "org.mockito:mockito-core:${versionMap.mockito}"
+    testImplementation "org.slf4j:slf4j-simple:${versionMap.slf4j}"
+}

@@ -1,0 +1,60 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion versionMap.sdk_target
+    buildToolsVersion versionMap.build_tools
+    defaultConfig {
+        applicationId "it.scoppelletti.spaceship.sample"
+        minSdkVersion versionMap.sdk_min
+        targetSdkVersion versionMap.sdk_target
+        versionCode 1
+        versionName versionMap.spaceship
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            debuggable true
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable false
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dataBinding {
+        enabled = true
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+dependencies {
+    implementation project(':lib')
+    implementation "androidx.annotation:annotation:${versionMap.androidx_annotation}"
+    implementation "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
+    implementation "androidx.lifecycle:lifecycle-common-java8:${versionMap.androidx_lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${versionMap.androidx_lifecycle}"
+    kapt "androidx.databinding:databinding-compiler:${versionMap.android_gradle}"
+    implementation "androidx.recyclerview:recyclerview:${versionMap.androidx_recyclerview}"
+    implementation "com.google.android.material:material:${versionMap.androidx_material}"
+    implementation "com.google.dagger:dagger:${versionMap.dagger}"
+    kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
+    implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
+    implementation("it.scoppelletti.spaceship:spaceship-stdlib:${versionMap.spaceship}") {
+        changing = true
+    }
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versionMap.kotlinx_coroutines}"
+    implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
+    runtimeOnly "com.noveogroup.android:android-logger:${versionMap.android_logger}"
+}

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="it_scoppelletti_gms_err_googleApiNotAvailable">I servizi di Google Play non sono disponibili.</string>
+</resources>

@@ -1,0 +1,60 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply from: '../../gradle-plugins/android-library.gradle'
+
+group 'it.scoppelletti.spaceship'
+description 'Spaceship for Google Play Services'
+archivesBaseName = 'spaceship-gms'
+
+android {
+    compileSdkVersion versionMap.sdk_target
+    buildToolsVersion versionMap.build_tools
+    defaultConfig {
+        minSdkVersion versionMap.sdk_min
+        targetSdkVersion versionMap.sdk_target
+        versionCode 1
+        versionName versionMap.spaceship
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            consumerProguardFiles 'consumer-rules.pro'
+            debuggable false
+        }
+        debug {
+            minifyEnabled false
+            debuggable true
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
+}
+
+spaceship {
+    copyright '2019'
+}
+
+dependencies {
+    api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
+    api "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
+    api "com.google.android.gms:play-services-base:${versionMap.playservices_base}"
+    api "com.google.android.gms:play-services-basement:${versionMap.playservices_basement}"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
+    implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
+    api("it.scoppelletti.spaceship:spaceship-stdlib:${versionMap.spaceship}") {
+        changing = true
+    }
+    api("it.scoppelletti.spaceship:spaceship-ui:${versionMap.spaceship}") {
+        changing = true
+    }
+    implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
+}

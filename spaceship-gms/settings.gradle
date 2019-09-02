@@ -1,2 +1,1 @@
 include ':app', ':lib'
-rootProject.name='Spaceship for Google Play Services'

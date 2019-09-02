@@ -44,6 +44,7 @@ public abstract class BottonSheetDialogFragmentEx :
      * @param which  ID of the button that was clicked
      *               (`DialogInterface.BUTTON_NEGATIVE`).
      */
+    @Suppress("SameParameterValue")
     private fun onDialogResult(
             @Suppress("UNUSED_PARAMETER") dialog: DialogInterface?,
             which: Int

@@ -35,7 +35,7 @@ public interface ExceptionItem {
 /**
  * Renders an exception as an item in a `ListView` widget.
  *
- * @param T The exception class.
+ * @param T Exception class.
  * @since   1.0.0
  */
 public interface ExceptionAdapter<in T : ExceptionItem> {
@@ -76,7 +76,7 @@ public interface ExceptionMapper {
 public interface ExceptionMapperHandler<T: Throwable> {
 
     /**
-     * Maps an exception to a `ExceptionIetem` object.
+     * Maps an exception to an `ExceptionItem` object.
      *
      * @param  ex Exception.
      * @return    The new object.

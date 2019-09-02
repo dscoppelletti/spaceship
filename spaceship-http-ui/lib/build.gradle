@@ -2,11 +2,12 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply from: '../../gradle-plugins/common.gradle'
 apply from: '../../gradle-plugins/android-library.gradle'
 
 group 'it.scoppelletti.spaceship'
-description 'Spaceship for UI'
-archivesBaseName = 'spaceship-ui'
+description 'Spaceship for HTTP'
+archivesBaseName = 'spaceship-http-ui'
 
 android {
     compileSdkVersion versionMap.sdk_target
@@ -33,21 +34,14 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    dataBinding {
-        enabled = true
-    }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
-    }
-    testOptions {
-        unitTests.all {
-            jvmArgs '-ea'
-        }
+        test.java.srcDirs += 'src/test/kotlin'
     }
 }
 
 spaceship {
-    copyright '2013-2019'
+    copyright '2017-2018'
 }
 
 dependencies {
@@ -55,20 +49,21 @@ dependencies {
     api "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
     api "androidx.cardview:cardview:${versionMap.androidx_cardview}"
     api "androidx.constraintlayout:constraintlayout:${versionMap.androidx_constraint}"
-    api "androidx.lifecycle:lifecycle-common-java8:${versionMap.androidx_lifecycle}"
-    api "androidx.lifecycle:lifecycle-extensions:${versionMap.androidx_lifecycle}"
-    kapt "androidx.databinding:databinding-compiler:${versionMap.android_gradle}"
-    api "androidx.recyclerview:recyclerview:${versionMap.androidx_recyclerview}"
     api "com.google.android.material:material:${versionMap.material}"
     api "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versionMap.kotlinx_coroutines}"
-    implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
-    api "org.threeten:threetenbp:${versionMap.threetenbp}:no-tzdb"
+    api "com.squareup.okhttp3:okhttp:${versionMap.okhttp}"
+    api "com.squareup.retrofit2:retrofit:${versionMap.retrofit}"
+    api("it.scoppelletti.spaceship:spaceship-http:${versionMap.spaceship}") {
+        changing = true
+    }
     api("it.scoppelletti.spaceship:spaceship-stdlib:${versionMap.spaceship}") {
         changing = true
     }
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versionMap.kotlinx_coroutines}"
+    api("it.scoppelletti.spaceship:spaceship-ui:${versionMap.spaceship}") {
+        changing = true
+    }
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
+    implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
     implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
 }

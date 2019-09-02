@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="it_scoppelletti_http_lbl_error">Errore:</string>
+    <string name="it_scoppelletti_http_lbl_statusCode">Codice di stato HTTP:</string>
+</resources>

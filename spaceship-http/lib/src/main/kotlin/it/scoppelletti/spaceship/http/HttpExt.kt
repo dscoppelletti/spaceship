@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier")
+@file:Suppress("RedundantVisibilityModifier", "unused")
 
 package it.scoppelletti.spaceship.http
 
@@ -28,8 +28,13 @@ public object HttpExt {
     /**
      * Authorization type `Bearer`.
      */
-    @Suppress("unused")
     public const val AUTH_BEARER = "Bearer"
+
+    /**
+     * Name of the `Interceptor` dependency that decorates an HTTP request with
+     * infos describing the client.
+     */
+    public const val DEP_CLIENTINTERCEPTOR = "it.scoppelletti.spaceship.http.1"
 
     /**
      * Header containing the client application name and version.
@@ -39,8 +44,12 @@ public object HttpExt {
     /**
      * Header `Authorization`.
      */
-    @Suppress("unused")
     public const val HEADER_AUTH = "Authorization"
+
+    /**
+     * Header `Content-Type`.
+     */
+    public const val HEADER_CONSUMES = "Content-Type"
 
     /**
      * Header `Accept-Language`.
@@ -51,4 +60,14 @@ public object HttpExt {
      * Header containing the client OS name and version.
      */
     public const val HEADER_OS = "X-scoppelletti-os"
+
+    /**
+     * Header `Accept`.
+     */
+    public const val HEADER_PRODUCES = "Accept"
+
+    /**
+     * Media type JSON.
+     */
+    public const val MEDIATYPE_JSON = "application/json"
 }

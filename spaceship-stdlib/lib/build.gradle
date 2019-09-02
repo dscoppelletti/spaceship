@@ -4,7 +4,7 @@ apply plugin: 'kotlin-kapt'
 apply from: '../../gradle-plugins/java-library.gradle'
 
 group 'it.scoppelletti.spaceship'
-version '1.0.0'
+version versionMap.spaceship
 description 'Spaceship Standard Library'
 archivesBaseName = 'spaceship-stdlib'
 

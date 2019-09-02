@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier")
+@file:Suppress("RedundantVisibilityModifier", "unused")
 
 package it.scoppelletti.spaceship.i18n
 
@@ -26,6 +26,11 @@ import it.scoppelletti.spaceship.R
  * @since 1.0.0
  */
 public object UIMessages {
+
+    public fun errorPackageNotFound(name: String): MessageSpec =
+            AndroidResourceMessageSpec(
+                    R.string.it_scoppelletti_err_packageNotFound,
+                    "Package %1'$'s not found.", arrayOf(name))
 
     public fun promptSaveChanges(): MessageSpec =
             AndroidResourceMessageSpec(

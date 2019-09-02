@@ -32,7 +32,7 @@ import javax.inject.Inject
  *
  * @since 1.0.0
  *
- * @property message   Message.
+ * @property message Message.
  */
 public data class ApplicationExceptionItem(
         public val message: String,

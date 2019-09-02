@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="it_scoppelletti_http_lbl_error">Errore:</string>
-    <string name="it_scoppelletti_http_lbl_path">Percorso:</string>
-    <string name="it_scoppelletti_http_lbl_statusCode">Codice di stato HTTP:</string>
-    <string name="it_scoppelletti_http_lbl_timestamp">Istante:</string>
-</resources>

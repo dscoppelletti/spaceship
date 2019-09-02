@@ -1,68 +1,28 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
 apply plugin: 'kotlin-kapt'
-apply from: '../../gradle-plugins/common.gradle'
-apply from: '../../gradle-plugins/library.gradle'
+apply from: '../../gradle-plugins/java-library.gradle'
 
 group 'it.scoppelletti.spaceship'
-description 'Spaceship Library for HTTP'
+version versionMap.spaceship
+description 'Spaceship for HTTP'
 archivesBaseName = 'spaceship-http'
 
-android {
-    compileSdkVersion versionMap.sdk_target
-    buildToolsVersion versionMap.build_tools
-    defaultConfig {
-        minSdkVersion versionMap.sdk_min
-        targetSdkVersion versionMap.sdk_target
-        versionCode 1
-        versionName versionMap.spaceship
-        vectorDrawables.useSupportLibrary = true
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            consumerProguardFiles 'proguard-rules.pro'
-            debuggable false
-        }
-        debug {
-            minifyEnabled false
-            debuggable true
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
-    }
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+sourceSets {
+    main.java.srcDirs += 'build/generated/source/kapt/main'
+    debug.java.srcDirs += 'build/generated/source/kapt/debug'
 }
 
 spaceship {
-    copyright '2017-2018'
+    copyright '2017-2019'
 }
 
 dependencies {
-    api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
-    api "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
-    api "androidx.cardview:cardview:${versionMap.androidx_cardview}"
-    api "androidx.constraintlayout:constraintlayout:${versionMap.androidx_constraint}"
-    api "com.google.android.material:material:${versionMap.androidx_material}"
-    api "com.google.dagger:dagger:${versionMap.dagger}"
-    kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
-    api "com.squareup.moshi:moshi:${versionMap.moshi}"
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:${versionMap.moshi}"
     api "com.squareup.okhttp3:okhttp:${versionMap.okhttp}"
-    api "com.squareup.retrofit2:retrofit:${versionMap.retrofit}"
-    api("it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}") {
-        changing = true
-    }
+
+    //noinspection DifferentStdlibGradleVersion
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
-    implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
-    implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
-    testImplementation "junit:junit:${versionMap.junit}"
-    testImplementation "org.jetbrains.kotlin:kotlin-test:${versionMap.kotlin}"
-    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:${versionMap.kotlin}"
 }

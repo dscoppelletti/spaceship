@@ -19,6 +19,7 @@
 package it.scoppelletti.spaceship.inject
 
 import it.scoppelletti.spaceship.ExceptionLogger
+import it.scoppelletti.spaceship.i18n.I18NProvider
 
 /**
  * Access to the dependencies provided by this library.
@@ -28,6 +29,8 @@ import it.scoppelletti.spaceship.ExceptionLogger
 public interface StdlibComponent {
 
     fun exceptionLogger(): ExceptionLogger
+
+    fun i18nProvider(): I18NProvider
 }
 
 /**

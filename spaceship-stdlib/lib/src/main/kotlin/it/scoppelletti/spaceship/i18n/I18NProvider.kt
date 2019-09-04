@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier")
+@file:Suppress("RedundantVisibilityModifier", "unused")
 
 package it.scoppelletti.spaceship.i18n
 
+import org.threeten.bp.ZoneId
+import org.threeten.bp.format.DateTimeFormatter
 import java.util.Locale
 
 /**
@@ -33,4 +35,25 @@ public interface I18NProvider {
      * @return The object.
      */
     fun currentLocale(): Locale
+
+    /**
+     * Returns the current `ZoneId`.
+     *
+     * @return The object.
+     */
+    fun currentZoneId(): ZoneId
+
+    /**
+     * Creates a date formatter.
+     *
+     * @return The new object.
+     */
+    fun createDateFormatter(): DateTimeFormatter
+
+    /**
+     * Creates the pattern for formatting dates.
+     *
+     * @return The value.
+     */
+    fun createDatePattern(): String
 }

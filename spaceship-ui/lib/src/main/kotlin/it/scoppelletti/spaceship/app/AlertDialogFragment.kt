@@ -15,7 +15,7 @@
  */
 
 @file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
-        "RemoveRedundantQualifierName")
+        "RemoveRedundantQualifierName", "unused")
 
 package it.scoppelletti.spaceship.app
 
@@ -190,7 +190,6 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
          *
          * @param init Initialization block.
          */
-        @Suppress("unused")
         public fun tag(init: () -> String) {
             _tag = init()
         }
@@ -218,7 +217,6 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
          *
          * @param init Initialization block.
          */
-        @Suppress("unused")
         public fun positiveActionText(init: () -> Int) {
             positiveActionTextId = init()
         }
@@ -228,7 +226,6 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
          *
          * @param init Initialization block.
          */
-        @Suppress("unused")
         public fun negativeActionText(init: () -> Int) {
             negativeActionTextId = init()
         }
@@ -238,7 +235,6 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
          *
          * @param init Initialization block.
          */
-        @Suppress("unused")
         public fun neutralActionText(init: () -> Int) {
             neutralActionTextId = init()
         }
@@ -248,7 +244,6 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
          *
          * @param init Initialization block.
          */
-        @Suppress("unused")
         public fun icon(init: () -> Int) {
             iconId = init()
         }
@@ -303,7 +298,7 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
 }
 
 /**
- * Shows an exception dialog.
+ * Shows an alert dialog.
  *
  * @receiver      Activity.
  * @param    init Initialization block.

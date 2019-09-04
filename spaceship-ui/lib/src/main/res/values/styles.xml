@@ -19,4 +19,9 @@
     <!-- App Bar -->
     <style name="it_scoppelletti_style_collapsingAppBarLayout">
     </style>
+    <!-- Button with just an icon -->
+    <style name="it_scoppelletti_style_imageButton"
+        parent="Widget.MaterialComponents.Button.TextButton.Icon">
+        <item name="android:minWidth">0dp</item>
+    </style>
 </resources>

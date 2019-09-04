@@ -47,23 +47,14 @@ import mu.KotlinLogging
  * @since 1.0.0
  */
 @UiThread
-public class ProgressOverlay : FrameLayout {
+public class ProgressOverlay @JvmOverloads constructor(
+        ctx: Context,
+        attrs: AttributeSet?,
+        defStyleAttr: Int = 0
+): FrameLayout(ctx, attrs, defStyleAttr) {
     private val indicator: ProgressBar
     private val showAnim: ValueAnimator
     private val hideAnim: ValueAnimator
-
-    /**
-     * @constructor     Constructor.
-     * @param       ctx Context.
-     */
-    public constructor(ctx: Context) : super(ctx)
-
-    /**
-     * @constructor       Constructor.
-     * @param       ctx   Context.
-     * @param       attrs Attributes.
-     */
-    public constructor(ctx: Context, attrs: AttributeSet?) : super(ctx, attrs)
 
     init {
         val layout: FrameLayout.LayoutParams

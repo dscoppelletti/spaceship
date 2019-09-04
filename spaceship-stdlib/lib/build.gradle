@@ -28,6 +28,7 @@ dependencies {
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
 
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versionMap.kotlinx_coroutines}"
+    api "org.threeten:threetenbp:${versionMap.threetenbp}:no-tzdb"
     implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
     implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
     testImplementation "junit:junit:${versionMap.junit}"

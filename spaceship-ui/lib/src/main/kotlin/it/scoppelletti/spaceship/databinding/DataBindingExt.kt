@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier")
+@file:Suppress("RedundantVisibilityModifier", "unused")
 
 package it.scoppelletti.spaceship.databinding
 
@@ -74,7 +74,6 @@ public object DataBindingExt {
  * @param   inputType Type and variant of data.
  * @since             1.0.0
  */
-@Suppress("unused")
 @BindingAdapter(DataBindingExt.ATTR_ENABLED, DataBindingExt.ATTR_INPUTTYPE)
 public fun TextInputEditText.setWidgetEnabled(
         enabled: Boolean,
@@ -101,7 +100,6 @@ public fun TextInputEditText.setWidgetEnabled(
  * @param    validator Validator.
  * @since              1.0.0
  */
-@Suppress("unused")
 @BindingAdapter(DataBindingExt.ATTR_VALIDATOR)
 public fun TextInputEditText.setWidgetValidator(validator: (() -> Boolean)?) {
     this.onFocusChangeListener = if (validator == null) null else
@@ -123,7 +121,6 @@ public fun TextInputEditText.setWidgetValidator(validator: (() -> Boolean)?) {
  * @param    enabled Whether this widget is enabled or not.
  * @since            1.0.0
  */
-@Suppress("unused")
 @BindingAdapter(DataBindingExt.ATTR_ENABLED)
 public fun TextInputLayout.setWidgetEnabled(enabled: Boolean) {
     this.isHintAnimationEnabled = enabled
@@ -141,7 +138,6 @@ public fun TextInputLayout.setWidgetEnabled(enabled: Boolean) {
  *                   `ResourcesExt.ID_NULL`, the error message will be cleared.
  * @since            1.0.0
  */
-@Suppress("unused")
 @BindingAdapter(DataBindingExt.ATTR_ERROR)
 public fun TextInputLayout.setWidgetError(errorId: Int) {
     if (errorId == ResourcesExt.ID_NULL) {
@@ -150,5 +146,28 @@ public fun TextInputLayout.setWidgetError(errorId: Int) {
     } else {
         this.isErrorEnabled = true
         this.error = this.context.getString(errorId)
+    }
+}
+
+/**
+ * Sets an error message that will be displayed below the widget within this
+ * decorator.
+ *
+ * The `it_scoppelletti_error` attribute controls both attributes `error` and
+ * `errorEnabled`.
+ *
+ * @receiver              Decorator.
+ * @param    errorMessage Error message as a string resource ID. If `null`, the
+ *                        error message will be cleared.
+ * @since                 1.0.0
+ */
+@BindingAdapter(DataBindingExt.ATTR_ERROR)
+public fun TextInputLayout.setWidgetError(errorMessage: String?) {
+    if (errorMessage.isNullOrBlank()) {
+        this.isErrorEnabled = false
+        this.error = null
+    } else {
+        this.isErrorEnabled = true
+        this.error = errorMessage
     }
 }

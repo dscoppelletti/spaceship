@@ -19,12 +19,8 @@
 
 package it.scoppelletti.spaceship.widget
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
-import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
@@ -39,7 +35,9 @@ import androidx.core.content.ContextCompat
 import it.scoppelletti.spaceship.os.parcelableCreator
 import it.scoppelletti.spaceship.os.readBoolean
 import it.scoppelletti.spaceship.os.writeBoolean
-import mu.KotlinLogging
+
+private const val ALPHA_GONE = 0
+private const val ALPHA_VISIBLE = 102
 
 /**
  * Circular indeterminate progress indicator within a screen overlay.
@@ -52,9 +50,8 @@ public class ProgressOverlay @JvmOverloads constructor(
         attrs: AttributeSet?,
         defStyleAttr: Int = 0
 ): FrameLayout(ctx, attrs, defStyleAttr) {
+
     private val indicator: ProgressBar
-    private val showAnim: ValueAnimator
-    private val hideAnim: ValueAnimator
 
     init {
         val layout: FrameLayout.LayoutParams
@@ -70,268 +67,38 @@ public class ProgressOverlay @JvmOverloads constructor(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER)
         addView(indicator, layout)
-
-        showAnim = if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N)
-            initShowAnimator24() else initShowAnimator()
-        hideAnim = initHideAnimator()
     }
 
     /**
-     * Creates the animation for showing this progress indicator.
-     *
-     * @return The new object.
+     * Indicates whether this progress indicator is running.
      */
-    private fun initShowAnimator(): ValueAnimator {
-        val anim: ValueAnimator
-
-        anim = ValueAnimator.ofInt(ProgressOverlay.ALPHA_GONE,
-                ProgressOverlay.ALPHA_VISIBLE).apply {
-            startDelay = ProgressOverlay.DELAY
-            duration = ProgressOverlay.DURATION
-        }
-
-        anim.addUpdateListener { animation ->
-            val color: Int
-            val f: Float
-
-            f = animation.animatedFraction
-            indicator.scaleX = f
-            indicator.scaleY = f
-
-            color = Color.argb(animation.animatedValue as Int, 0, 0, 0)
-            setBackgroundColor(color)
-        }
-
-        anim.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationStart(animation: Animator?) {
-                logger.trace("Show animation start.")
-                visibility = View.VISIBLE
-            }
-
-            override fun onAnimationEnd(animation: Animator?) {
-                logger.trace("Show animation end.")
-            }
-
-            override fun onAnimationCancel(animation: Animator?) {
-                logger.trace("Show animation cancel.")
-                setRunning(false)
-            }
-        })
-
-        return anim
-    }
-
-    /**
-     * Creates the animation for showing this progress indicator.
-     *
-     * @return The new object.
-     */
-    private fun initShowAnimator24(): ValueAnimator {
-        // - Android 7.0, API 24
-        // Sometime the cancel method doesn't have any effect maybe because the
-        // delay phase is not completed:
-        // Implement the delay phase in the animation phase.
-        val anim: ValueAnimator
-        val durationFrac: Float
-        val delayFrac: Float
-
-        anim = ValueAnimator.ofInt(ProgressOverlay.ALPHA_GONE,
-                ProgressOverlay.ALPHA_VISIBLE).apply {
-            duration = ProgressOverlay.DELAY + ProgressOverlay.DURATION
-        }
-
-        delayFrac = ProgressOverlay.DELAY.toFloat() / anim.duration.toFloat()
-        durationFrac = anim.duration.toFloat() /
-                ProgressOverlay.DURATION.toFloat()
-
-        anim.addUpdateListener { animation ->
-            val color: Int
-            val alpha: Float
-            val f: Float
-            val scale: Float
-
-            f = animation.animatedFraction
-            if (f >= delayFrac) {
-                if (visibility != View.VISIBLE) {
-                    visibility = View.VISIBLE
-                }
-
-                scale = (f - delayFrac) * durationFrac
-                indicator.scaleX = scale
-                indicator.scaleY = scale
-
-                alpha = ProgressOverlay.ALPHA_VISIBLE.toFloat() * scale
-                color = Color.argb(alpha.toInt(), 0, 0, 0)
-                setBackgroundColor(color)
-            }
-        }
-
-        anim.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationStart(animation: Animator?) {
-                logger.trace("Show animation start.")
-            }
-
-            override fun onAnimationEnd(animation: Animator?) {
-                logger.trace("Show animation end.")
-            }
-
-            override fun onAnimationCancel(animation: Animator?) {
-                logger.trace("Show animation cancel.")
-                setRunning(false)
-            }
-        })
-
-        return anim
-    }
-
-    /**
-     * Creates the animation for hiding this progress indicator.
-     *
-     * @return The new object.
-     */
-    private fun initHideAnimator(): ValueAnimator {
-        val anim = ValueAnimator.ofInt(ProgressOverlay.ALPHA_VISIBLE,
-                ProgressOverlay.ALPHA_GONE).apply {
-            duration = ProgressOverlay.DURATION
-        }
-
-        anim.addUpdateListener { animation ->
-            val color: Int
-            val f: Float
-
-            f = 1.0f - animation.animatedFraction
-            indicator.scaleX = f
-            indicator.scaleY = f
-
-            color = Color.argb(animation.animatedValue as Int, 0, 0, 0)
-            setBackgroundColor(color)
-        }
-
-        anim.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationStart(animation: Animator?) {
-                logger.trace("Hide animation start.")
-            }
-
-            override fun onAnimationEnd(animation: Animator?) {
-                logger.trace("Hide animation end.")
-                visibility = View.GONE
-            }
-
-            override fun onAnimationCancel(animation: Animator?) {
-                logger.trace("Hide animation cancel.")
-                setRunning(true)
-            }
-        })
-
-        return anim
-    }
-
-    /**
-     * Sets whether this progress indicator is running or not.
-     *
-     * @param running Whether this progress indicator is running.
-     */
-    private fun setRunning(running: Boolean) {
-        val color: Int
-
-        if (running) {
-            color = Color.argb(ProgressOverlay.ALPHA_VISIBLE, 0, 0, 0)
-            setBackgroundColor(color)
-            indicator.scaleX = 1.0f
-            indicator.scaleY = 1.0f
-            visibility = View.VISIBLE
-        } else {
-            visibility = View.GONE
-            color = Color.argb(ProgressOverlay.ALPHA_GONE, 0, 0, 0)
-            setBackgroundColor(color)
-            indicator.scaleX = 0.0f
-            indicator.scaleY = 0.0f
-        }
-    }
+    @Suppress("WeakerAccess")
+    public val isRunning: Boolean
+        get() = (visibility == View.VISIBLE)
 
     /**
      * Shows this progress indicator.
      */
     public fun show() {
-        if (hideAnim.isStarted) {
-            try {
-                logger.trace("Cancel hide animation")
-                hideAnim.cancel()
-            } catch (ex: RuntimeException) {
-                // This is a problem, but I don't know what to do, yet.
-                logger.error("Failed to cancel hide animation.", ex)
-            }
+        val color: Int
 
-            return
-        }
-
-        if (showAnim.isStarted || visibility == View.VISIBLE) {
-            // Already shown
-            return
-        }
-
-        showAnim.start()
-    }
-
-    /**
-     * Hides this progress indicator.
-     *
-     * @param postAction The action to run when the animation finishes.
-     */
-    public fun hide(postAction: () -> Unit = { }) {
-        if (doHide()) {
-            hideAnim.addListener(createHideListener(postAction))
-            hideAnim.start()
-        } else {
-            postAction()
+        if (visibility != View.VISIBLE) {
+            color = Color.argb(ALPHA_VISIBLE, 0, 0, 0)
+            setBackgroundColor(color)
+            visibility = View.VISIBLE
         }
     }
 
     /**
      * Hides this progress indicator.
-     *
-     * @return Returns `true` if hide animation should start, `false` otherwise.
      */
-    private fun doHide(): Boolean {
-        if (showAnim.isStarted) {
-            try {
-                // - Android 7.0, API 24
-                // Sometime the cancel method doesn't have any effect maybe
-                // because the delay phase is not completed:
-                // See differences between method initShowAnimator and
-                // initShowAnimator24.
-                logger.trace("Cancel show animation.")
-                showAnim.cancel()
-            } catch (ex: RuntimeException) {
-                logger.error("Failed to cancel show animation.", ex)
-            }
+    public fun hide() {
+        val color: Int
 
-            return false
-        }
-
-        if (hideAnim.isStarted || visibility != View.VISIBLE) {
-            // Already hidden
-            return false
-        }
-
-        return true
-    }
-
-    /**
-     * Creates a listener for the hiding animation.
-     *
-     * @param  postAction The action to run when the animation finishes.
-     * @return            The new object.
-     */
-    private fun createHideListener(
-            postAction: () -> Unit
-    ): Animator.AnimatorListener {
-        return object : AnimatorListenerAdapter() {
-
-            override fun onAnimationEnd(animation: Animator?) {
-                hideAnim.removeListener(this)
-                postAction()
-            }
+        if (visibility != View.GONE) {
+            color = Color.argb(ALPHA_GONE, 0, 0, 0)
+            setBackgroundColor(color)
+            visibility = View.GONE
         }
     }
 
@@ -352,42 +119,31 @@ public class ProgressOverlay @JvmOverloads constructor(
     }
 
     override fun onSaveInstanceState(): Parcelable? {
-        val running: Boolean
         val superState: Parcelable?
-        val state: ProgressOverlay.SavedState
 
         superState = super.onSaveInstanceState()
         if (superState == null) {
             return null
         }
 
-        state = ProgressOverlay.SavedState(superState)
-
-        running = when {
-            showAnim.isStarted -> true
-            hideAnim.isStarted -> false
-            else -> (visibility == View.VISIBLE)
-        }
-
-        state.running = running
-        return state
+        return ProgressOverlay.SavedState(superState)
+                .apply {
+                    running = isRunning
+                }
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {
         if (state is ProgressOverlay.SavedState) {
             super.onRestoreInstanceState(state.superState)
-            setRunning(state.running)
+
+            if (state.running) {
+                show()
+            } else {
+                hide()
+            }
         } else {
             super.onRestoreInstanceState(state)
         }
-    }
-
-    private companion object {
-        const val ALPHA_GONE = 0
-        const val ALPHA_VISIBLE = 102
-        const val DELAY = 400L
-        const val DURATION = 400L
-        val logger = KotlinLogging.logger {}
     }
 
     /**

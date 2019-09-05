@@ -52,7 +52,7 @@ public inline fun <reified T : Parcelable> parcelableCreator(
  * @return   The read value.
  * @since    1.0.0
  */
-public fun Parcel.readBoolean(): Boolean = readInt() != 0
+public fun Parcel.readBoolean(): Boolean = this.readInt() != 0
 
 /**
  * Writes a `Boolean` value to a stream.
@@ -61,4 +61,5 @@ public fun Parcel.readBoolean(): Boolean = readInt() != 0
  * @param    value Value.
  * @since          1.0.0
  */
-public fun Parcel.writeBoolean(value: Boolean) = writeInt(if (value) 1 else 0)
+public fun Parcel.writeBoolean(value: Boolean) =
+        this.writeInt(if (value) 1 else 0)

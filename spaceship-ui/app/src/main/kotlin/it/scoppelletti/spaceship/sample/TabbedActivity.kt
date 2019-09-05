@@ -105,20 +105,19 @@ class TabbedActivity : AppCompatActivity(), OnDialogResultListener,
             return
         }
 
-        progressIndicator.hide {
-            state.item.poll()?.let { item ->
-                setState(item.id)
-                viewModel.form.copy(item)
-            }
+        progressIndicator.hide()
+        state.item.poll()?.let { item ->
+            setState(item.id)
+            viewModel.form.copy(item)
+        }
 
-            state.messageId?.poll()?.let { messageId ->
-                Snackbar.make(viewPager, messageId, Snackbar.LENGTH_SHORT)
-                        .show()
-            }
+        state.messageId?.poll()?.let { messageId ->
+            Snackbar.make(viewPager, messageId, Snackbar.LENGTH_SHORT)
+                    .show()
+        }
 
-            state.error?.poll()?.let { err ->
-                showExceptionDialog(err)
-            }
+        state.error?.poll()?.let { err ->
+            showExceptionDialog(err)
         }
     }
 
@@ -243,9 +242,8 @@ class TabbedActivity : AppCompatActivity(), OnDialogResultListener,
                 viewModel.create()
             }
         } catch (ex: RuntimeException) {
-            progressIndicator.hide {
-                showExceptionDialog(ex)
-            }
+            progressIndicator.hide()
+            showExceptionDialog(ex)
         }
     }
 
@@ -254,9 +252,8 @@ class TabbedActivity : AppCompatActivity(), OnDialogResultListener,
             hideSoftKeyboard()
             viewModel.delete()
         } catch (ex: RuntimeException) {
-            progressIndicator.hide {
-                showExceptionDialog(ex)
-            }
+            progressIndicator.hide()
+            showExceptionDialog(ex)
         }
     }
 

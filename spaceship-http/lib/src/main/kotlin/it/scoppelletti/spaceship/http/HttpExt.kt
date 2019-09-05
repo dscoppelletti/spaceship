@@ -70,4 +70,19 @@ public object HttpExt {
      * Media type JSON.
      */
     public const val MEDIATYPE_JSON = "application/json"
+
+    /**
+     * HTTP status Unauthorized.
+     */
+    public const val STATUS_UNAUTHORIZED = 401
+
+    /**
+     * HTTP status Forbidden.
+     */
+    public const val STATUS_FORBIDDEN = 403
+
+    /**
+     * HTTP status Not Found.
+     */
+    public const val STATUS_NOTFOUND = 404
 }

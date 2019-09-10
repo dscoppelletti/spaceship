@@ -37,14 +37,14 @@ public data class AndroidResourceMessageSpec(
         @StringRes
         public val stringId: Int,
 
-        public val def: String,
+        public val resName: String,
         public val args: Array<Any?> = arrayOf()
 ) : MessageSpec {
     override fun hashCode(): Int {
         var value = 17
 
         value += value * 37 + stringId
-        value += value * 37 + def.hashCode()
+        value += value * 37 + resName.hashCode()
         value += value * 37 + args.contentDeepHashCode()
 
         return value
@@ -53,10 +53,10 @@ public data class AndroidResourceMessageSpec(
     override fun equals(other: Any?): Boolean =
             other is AndroidResourceMessageSpec &&
                     stringId == other.stringId &&
-                    def == other.def &&
+                    resName == other.resName &&
                     args contentDeepEquals other.args
 
     override fun toString(): String =
-            """ResourceBundleMessageSpec(stringId=$stringId,def=$def,
+            """ResourceBundleMessageSpec(resName=$resName,
             |args=${args.contentDeepToString()})""".trimMargin().joinLines()
 }

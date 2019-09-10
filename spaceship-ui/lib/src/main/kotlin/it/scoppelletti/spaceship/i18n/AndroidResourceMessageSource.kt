@@ -21,7 +21,6 @@ package it.scoppelletti.spaceship.i18n
 import android.content.res.Resources
 import mu.KotlinLogging
 import java.util.IllegalFormatException
-import java.util.Locale
 import javax.inject.Inject
 
 /**
@@ -40,7 +39,7 @@ public class AndroidResourceMessageSource @Inject constructor(
                     res.getString(obj.stringId)
                 } catch (ex: Resources.NotFoundException) {
                     logger.error(ex) { "Resource $obj not found." }
-                    obj.def
+                    obj.resName
                 }
             } else {
                 try {
@@ -48,7 +47,7 @@ public class AndroidResourceMessageSource @Inject constructor(
                         res.getString(obj.stringId, *obj.args)
                     } catch (ex: Resources.NotFoundException) {
                         logger.error(ex) { "Resource $obj not found." }
-                        obj.def.format(Locale.US, *obj.args)
+                        obj.toString()
                     }
                 } catch (ex: IllegalFormatException) {
                     logger.error(ex) { "Resource $obj cannot be formatted." }

@@ -30,10 +30,10 @@ public object UIMessages {
     public fun errorPackageNotFound(name: String): MessageSpec =
             AndroidResourceMessageSpec(
                     R.string.it_scoppelletti_err_packageNotFound,
-                    "Package %1'$'s not found.", arrayOf(name))
+                    "it_scoppelletti_err_packageNotFound", arrayOf(name))
 
     public fun promptSaveChanges(): MessageSpec =
             AndroidResourceMessageSpec(
                     R.string.it_scoppelletti_prompt_saveChanges,
-                    "Do you want to save the changes?")
+                    "it_scoppelletti_prompt_saveChanges")
 }

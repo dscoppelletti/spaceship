@@ -16,46 +16,39 @@
 
 @file:Suppress("RedundantVisibilityModifier", "unused")
 
-package it.scoppelletti.spaceship.i18n
+package it.scoppelletti.spaceship.types
 
-import it.scoppelletti.spaceship.types.DateConverter
-import it.scoppelletti.spaceship.types.TimeConverter
-import org.threeten.bp.ZoneId
-import java.util.Locale
+import org.threeten.bp.LocalTime
+import org.threeten.bp.format.DateTimeParseException
 
 /**
- * Provides I18N dependencies.
+ * Conversion between times and strings.
  *
  * @since 1.0.0
  */
-public interface I18NProvider {
+public interface TimeConverter {
 
     /**
-     * Returns the current `Locale`.
+     * Formats a time as a string.
      *
-     * @return The object.
+     * @param  value Time.
+     * @return       Corresponding string.
      */
-    fun currentLocale(): Locale
+    fun format(value: LocalTime?): String?
 
     /**
-     * Returns the current `ZoneId`.
+     * Parses a string as a time.
      *
-     * @return The object.
+     * @param  text String.
+     * @return      Resulting time.
      */
-    fun currentZoneId(): ZoneId
+    @Throws(DateTimeParseException::class)
+    fun parse(text: String?): LocalTime?
 
     /**
-     * Returns the converter between dates and strings.
+     * Returns the pattern for formatting times.
      *
-     * @return The object.
+     * @return User notation of the pattern.
      */
-    fun dateConverter(): DateConverter
-
-    /**
-     * Returns the converter between times and strings.
-     *
-     * @param  secs Whether the seconds field is enabled.
-     * @return      The object.
-     */
-    fun timeConverter(secs: Boolean): TimeConverter
+    fun pattern(): String
 }

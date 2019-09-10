@@ -16,8 +16,14 @@
     <string name="it_scoppelletti_err_packageNotFound">Package %1$s not found.</string>
     <string name="it_scoppelletti_err_security">Security failure.</string>
     <string name="it_scoppelletti_err_startActivity">Failed to start activity.</string>
+    <string name="it_scoppelletti_err_timeFormat">The time must comply the format %1$s.</string>
+    <string name="it_scoppelletti_field_ampm">AM/PM</string>
     <string name="it_scoppelletti_field_day">dd</string>
-    <string name="it_scoppelletti_field_month">mm</string>
+    <string name="it_scoppelletti_field_hour12">1&#8211;12</string>
+    <string name="it_scoppelletti_field_hour24">0&#8211;23</string>
+    <string name="it_scoppelletti_field_minute">mm</string>
+    <string name="it_scoppelletti_field_month">MM</string>
+    <string name="it_scoppelletti_field_second">ss</string>
     <string name="it_scoppelletti_field_year">yyyy</string>
     <string name="it_scoppelletti_lbl_class">Class:</string>
     <string name="it_scoppelletti_lbl_message">Message:</string>

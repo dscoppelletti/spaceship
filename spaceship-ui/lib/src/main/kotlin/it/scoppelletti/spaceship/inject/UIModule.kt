@@ -28,7 +28,7 @@ import it.scoppelletti.spaceship.ApplicationException
 import it.scoppelletti.spaceship.StdlibExt
 import it.scoppelletti.spaceship.i18n.AndroidResourceMessageSource
 import it.scoppelletti.spaceship.i18n.AndroidResourceMessageSpec
-import it.scoppelletti.spaceship.i18n.DefaultI18NProvider
+import it.scoppelletti.spaceship.i18n.AndroidI18NProvider
 import it.scoppelletti.spaceship.i18n.I18NProvider
 import it.scoppelletti.spaceship.i18n.MessageSourceHandler
 import it.scoppelletti.spaceship.io.DefaultIOProvider
@@ -57,7 +57,7 @@ public abstract class UIModule {
     public abstract fun bindIOProvider(obj: DefaultIOProvider): IOProvider
 
     @Binds
-    public abstract fun bindI18NProvider(obj: DefaultI18NProvider): I18NProvider
+    public abstract fun bindI18NProvider(obj: AndroidI18NProvider): I18NProvider
 
     @Binds
     @IntoMap

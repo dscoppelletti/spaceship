@@ -14,48 +14,39 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "unused")
+@file:Suppress("RedundantVisibilityModifier")
 
 package it.scoppelletti.spaceship.i18n
 
+import android.content.Context
+import android.content.res.Resources
+import it.scoppelletti.spaceship.types.AndroidDateConverter
+import it.scoppelletti.spaceship.types.AndroidTimeConverter
 import it.scoppelletti.spaceship.types.DateConverter
 import it.scoppelletti.spaceship.types.TimeConverter
 import org.threeten.bp.ZoneId
 import java.util.Locale
+import javax.inject.Inject
 
 /**
- * Provides I18N dependencies.
+ * Implementation of `I18NProvider` interface` for Android.
  *
  * @since 1.0.0
  */
-public interface I18NProvider {
+public class AndroidI18NProvider @Inject constructor(
+        private val context: Context,
+        private val resources: Resources
+): I18NProvider {
 
-    /**
-     * Returns the current `Locale`.
-     *
-     * @return The object.
-     */
-    fun currentLocale(): Locale
+    override fun currentLocale(): Locale = Locale.getDefault()
 
-    /**
-     * Returns the current `ZoneId`.
-     *
-     * @return The object.
-     */
-    fun currentZoneId(): ZoneId
+    override fun currentZoneId(): ZoneId = ZoneId.systemDefault()
 
-    /**
-     * Returns the converter between dates and strings.
-     *
-     * @return The object.
-     */
-    fun dateConverter(): DateConverter
+    override fun dateConverter(): DateConverter =
+            AndroidDateConverter(context, resources, this)
 
-    /**
-     * Returns the converter between times and strings.
-     *
-     * @param  secs Whether the seconds field is enabled.
-     * @return      The object.
-     */
-    fun timeConverter(secs: Boolean): TimeConverter
+    override fun timeConverter(secs: Boolean): TimeConverter =
+            AndroidTimeConverter(secs, context, resources, this)
 }
+
+

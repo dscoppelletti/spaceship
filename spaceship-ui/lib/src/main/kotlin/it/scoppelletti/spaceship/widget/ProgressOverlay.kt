@@ -31,13 +31,13 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import androidx.annotation.UiThread
-import androidx.core.content.ContextCompat
 import it.scoppelletti.spaceship.os.parcelableCreator
 import it.scoppelletti.spaceship.os.readBoolean
 import it.scoppelletti.spaceship.os.writeBoolean
 
 private const val ALPHA_GONE = 0
 private const val ALPHA_VISIBLE = 102
+private const val SHOW_DELAY: Long = 500
 
 /**
  * Circular indeterminate progress indicator within a screen overlay.
@@ -54,15 +54,20 @@ public class ProgressOverlay @JvmOverloads constructor(
     private val indicator: ProgressBar
 
     init {
+        val color: Int
         val layout: FrameLayout.LayoutParams
 
         visibility = View.GONE
         isClickable = true
-        setBackgroundColor(ContextCompat.getColor(context,
-                android.R.color.transparent))
 
-        indicator = ProgressBar(context)
-        indicator.isIndeterminate = true
+        color = Color.argb(ALPHA_GONE, 0, 0, 0)
+        setBackgroundColor(color)
+
+        indicator = ProgressBar(context).apply {
+            isIndeterminate = true
+            visibility = View.GONE
+        }
+
         layout = FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER)
@@ -80,26 +85,52 @@ public class ProgressOverlay @JvmOverloads constructor(
      * Shows this progress indicator.
      */
     public fun show() {
+        if (visibility != View.VISIBLE) {
+            visibility = View.VISIBLE
+            postDelayed(::delayedShow, SHOW_DELAY)
+        }
+    }
+
+    /**
+     * Shows this progress indicator.
+     */
+    private fun delayedShow() {
+        if (visibility == View.VISIBLE) {
+            doShow()
+        }
+    }
+
+    /**
+     * Shows this progress indicator.
+     */
+    private fun doShow() {
         val color: Int
 
-        if (visibility != View.VISIBLE) {
-            color = Color.argb(ALPHA_VISIBLE, 0, 0, 0)
-            setBackgroundColor(color)
-            visibility = View.VISIBLE
-        }
+        visibility = View.VISIBLE
+        color = Color.argb(ALPHA_VISIBLE, 0, 0, 0)
+        setBackgroundColor(color)
+        indicator.visibility = View.VISIBLE
     }
 
     /**
      * Hides this progress indicator.
      */
     public fun hide() {
+        if (visibility != View.GONE) {
+            doHide()
+        }
+    }
+
+    /**
+     * Hides this progress indicator.
+     */
+    private fun doHide() {
         val color: Int
 
-        if (visibility != View.GONE) {
-            color = Color.argb(ALPHA_GONE, 0, 0, 0)
-            setBackgroundColor(color)
-            visibility = View.GONE
-        }
+        indicator.visibility = View.GONE
+        color = Color.argb(ALPHA_GONE, 0, 0, 0)
+        setBackgroundColor(color)
+        visibility = View.GONE
     }
 
     override fun dispatchSaveInstanceState(
@@ -137,9 +168,9 @@ public class ProgressOverlay @JvmOverloads constructor(
             super.onRestoreInstanceState(state.superState)
 
             if (state.running) {
-                show()
+                doShow()
             } else {
-                hide()
+                doHide()
             }
         } else {
             super.onRestoreInstanceState(state)

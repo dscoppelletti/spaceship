@@ -68,6 +68,13 @@ public object AppExt {
      * @see it.scoppelletti.spaceship.app.DateDialogFragment
      */
     public const val TAG_DATEDIALOG = "it.scoppelletti.spaceship.4"
+
+    /**
+     * Tag of `TimeDialogFragment` fragment.
+     *
+     * @see it.scoppelletti.spaceship.app.TimeDialogFragment
+     */
+    public const val TAG_TIMEDIALOG = "it.scoppelletti.spaceship.5"
 }
 
 /**

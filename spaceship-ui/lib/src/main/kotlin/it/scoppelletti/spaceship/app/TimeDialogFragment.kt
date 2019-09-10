@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2019 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ * Copyright (C) 2019 Dario Scoppelletti, <http://www.scoppelletti.it/>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,32 +19,35 @@
 
 package it.scoppelletti.spaceship.app
 
-import android.app.DatePickerDialog
 import android.app.Dialog
+import android.app.TimePickerDialog
 import android.os.Bundle
+import android.text.format.DateFormat
 import androidx.annotation.UiThread
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import it.scoppelletti.spaceship.i18n.I18NProvider
-import org.threeten.bp.LocalDate
+import org.threeten.bp.LocalTime
 
 /**
- * Date picker dialog.
+ * Time picker dialog.
  *
- * * [Creating a Date Picker](http://developer.android.com/guide/topics/ui/controls/pickers#DatePicker)
+ * * [Creating a Time Picker](http://developer.android.com/guide/topics/ui/controls/pickers#TimePicker)
  *
  * @since 1.0.0
  */
-public class DateDialogFragment : DialogFragment() {
+public class TimeDialogFragment : DialogFragment() {
 
-    private lateinit var pickerDlg: DatePickerDialog
+    private lateinit var pickerDlg: TimePickerDialog
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        pickerDlg = DatePickerDialog(requireContext(),
-                DatePickerDialog.OnDateSetListener
-                { _, year, month, dayOfMonth ->
-                    onDateSet(year, month, dayOfMonth)
-                }, 1970, 0, 1)
+        val ctx = requireContext()
+
+        pickerDlg = TimePickerDialog(ctx,
+                TimePickerDialog.OnTimeSetListener
+                { _, hour, minute ->
+                    onTimeSet(hour, minute)
+                }, 0, 0, DateFormat.is24HourFormat(ctx))
 
         return pickerDlg
     }
@@ -52,32 +55,30 @@ public class DateDialogFragment : DialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         val args: Bundle
         val i18NProvider: I18NProvider
-        val epochDay: Long
-        val date: LocalDate
+        val secDay: Int
+        val time: LocalTime
 
         super.onActivityCreated(savedInstanceState)
 
         args = arguments!!
-        epochDay = args.getLong(DateDialogFragment.PROP_EPOCHDAY,
-                Long.MIN_VALUE)
-        date = if (epochDay == Long.MIN_VALUE) {
+        secDay = args.getInt(TimeDialogFragment.PROP_SECDAY, -1)
+        time = if (secDay < 0) {
             i18NProvider = requireActivity().stdlibComponent().i18nProvider()
-            LocalDate.now(i18NProvider.currentZoneId())
+            LocalTime.now(i18NProvider.currentZoneId())
         } else {
-            LocalDate.ofEpochDay(epochDay)
+            LocalTime.ofSecondOfDay(secDay.toLong())
         }
 
-        pickerDlg.updateDate(date.year, date.monthValue - 1, date.dayOfMonth)
+        pickerDlg.updateTime(time.hour, time.minute)
     }
 
     /**
-     * Handles the date set by the user.
+     * Handle the time set by the user.
      *
-     * @param year  Year.
-     * @param month Month.
-     * @param day   Day.
+     * @param hour   Hour.
+     * @param minute Minute.
      */
-    private fun onDateSet(year: Int, month: Int, day: Int) {
+    private fun onTimeSet(hour: Int, minute: Int) {
         val dialogTag: String?
         val activity: FragmentActivity
 
@@ -85,8 +86,8 @@ public class DateDialogFragment : DialogFragment() {
         activity = requireActivity()
 
         if (dialogTag != null &&
-                activity is DateDialogFragment.OnDateSetListener) {
-            activity.onDateSet(dialogTag, LocalDate.of(year, month + 1, day))
+                activity is TimeDialogFragment.OnTimeSetListener) {
+            activity.onTimeSet(dialogTag, LocalTime.of(hour, minute))
         }
     }
 
@@ -95,9 +96,9 @@ public class DateDialogFragment : DialogFragment() {
         /**
          * Fragment tag.
          */
-        public const val TAG: String = AppExt.TAG_DATEDIALOG
+        public const val TAG: String = AppExt.TAG_TIMEDIALOG
 
-        private const val PROP_EPOCHDAY = "1"
+        private const val PROP_SECDAY = "1"
     }
 
     /**
@@ -105,29 +106,29 @@ public class DateDialogFragment : DialogFragment() {
      *
      * @since 1.0.0
      */
-    public interface OnDateSetListener {
+    public interface OnTimeSetListener {
 
         /**
          * This method will be invoked when the user is done filling in the
-         * date.
+         * time.
          *
          * @param tag   Fragment tag.
-         * @param value Date set by the user.
+         * @param value Time set by the user.
          */
-        fun onDateSet(tag: String, value: LocalDate)
+        fun onTimeSet(tag: String, value: LocalTime)
     }
 
     /**
-     * Builds a `DateDialogFragment` fragment.
+     * Builds a `TimeDialogFragment` fragment.
      *
      * @since 1.0.0
      */
-    @DateDialogFragment.Dsl
+    @TimeDialogFragment.Dsl
     public class Builder(
             private val activity: FragmentActivity
     ) {
-        private var _tag: String = DateDialogFragment.TAG
-        private var _initialValue: LocalDate? = null
+        private var _tag: String = TimeDialogFragment.TAG
+        private var _initialValue: LocalTime? = null
 
         /**
          * Defines the fragment tag.
@@ -143,7 +144,7 @@ public class DateDialogFragment : DialogFragment() {
          *
          * @param init Initialization block.
          */
-        public fun initialValue(init: () -> LocalDate?) {
+        public fun initialValue(init: () -> LocalTime?) {
             _initialValue = init()
         }
 
@@ -152,10 +153,10 @@ public class DateDialogFragment : DialogFragment() {
 
             args = Bundle()
             _initialValue?.let {
-                args.putLong(DateDialogFragment.PROP_EPOCHDAY, it.toEpochDay())
+                args.putInt(TimeDialogFragment.PROP_SECDAY, it.toSecondOfDay())
             }
 
-            DateDialogFragment()
+            TimeDialogFragment()
                     .apply {
                         arguments = args
                     }
@@ -164,7 +165,7 @@ public class DateDialogFragment : DialogFragment() {
     }
 
     /**
-     * Marks the `DateDialogFragment` DSL's objects.
+     * Marks the `TimeDialogFragment` DSL's objects.
      *
      * @since 1.0.0
      */
@@ -173,13 +174,13 @@ public class DateDialogFragment : DialogFragment() {
 }
 
 /**
- * Shows a Date Picker dialog.
+ * Shows a Time Picker dialog.
  *
  * @receiver      Activity.
  * @param    init Initialization block.
  * @since         1.0.0
  */
 @UiThread
-public fun FragmentActivity.showDateDialog(
-        init: DateDialogFragment.Builder.() -> Unit = { }
-) = DateDialogFragment.Builder(this).apply(init).show()
+public fun FragmentActivity.showTimeDialog(
+        init: TimeDialogFragment.Builder.() -> Unit = { }
+) = TimeDialogFragment.Builder(this).apply(init).show()

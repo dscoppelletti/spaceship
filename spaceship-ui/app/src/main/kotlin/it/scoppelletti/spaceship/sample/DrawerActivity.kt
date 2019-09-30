@@ -68,7 +68,7 @@ class DrawerActivity : AppCompatActivity() {
         super.onBackPressed()
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration?) {
+    override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         drawer.onConfigurationChanged(newConfig)
     }

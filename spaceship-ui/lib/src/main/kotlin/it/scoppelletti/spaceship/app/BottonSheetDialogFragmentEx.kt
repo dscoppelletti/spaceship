@@ -32,7 +32,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 public abstract class BottonSheetDialogFragmentEx :
         BottomSheetDialogFragment() {
 
-    override fun onCancel(dialog: DialogInterface?) {
+    override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
         onDialogResult(null, DialogInterface.BUTTON_NEGATIVE)
     }

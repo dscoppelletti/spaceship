@@ -39,11 +39,6 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
-    testOptions {
-        unitTests.all {
-            jvmArgs '-ea'
-        }
-    }
 }
 
 spaceship {
@@ -64,11 +59,11 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versionMap.kotlinx_coroutines}"
-    implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
     api "org.threeten:threetenbp:${versionMap.threetenbp}:no-tzdb"
     api("it.scoppelletti.spaceship:spaceship-stdlib:${versionMap.spaceship}") {
         changing = true
     }
+    implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versionMap.kotlinx_coroutines}"
     implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
 }

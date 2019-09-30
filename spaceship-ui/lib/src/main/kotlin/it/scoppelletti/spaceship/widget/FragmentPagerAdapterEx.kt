@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
+        "RemoveRedundantQualifierName")
 
 package it.scoppelletti.spaceship.widget
 
@@ -38,7 +39,8 @@ import androidx.fragment.app.FragmentPagerAdapter
 @UiThread
 public abstract class FragmentPagerAdapterEx(
         fragmentMgr: FragmentManager
-) : FragmentPagerAdapter(fragmentMgr) {
+) : FragmentPagerAdapter(fragmentMgr,
+        FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     private val fragments: SparseArray<Fragment> = SparseArray(1)
 
     /**

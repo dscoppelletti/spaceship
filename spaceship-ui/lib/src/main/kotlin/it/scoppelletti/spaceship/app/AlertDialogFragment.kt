@@ -115,7 +115,7 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
         }
     }
 
-    override fun onCancel(dialog: DialogInterface?) {
+    override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
         onDialogResult(null, DialogInterface.BUTTON_NEGATIVE)
     }

@@ -58,4 +58,12 @@ public interface I18NProvider {
      * @return      The object.
      */
     fun timeConverter(secs: Boolean): TimeConverter
+
+    /**
+     * Resolves a message specification as a string.
+     *
+     * @param  obj Message specification.
+     * @return     The resolved string.
+     */
+    suspend fun resolveMessage(obj: MessageSpec): String
 }

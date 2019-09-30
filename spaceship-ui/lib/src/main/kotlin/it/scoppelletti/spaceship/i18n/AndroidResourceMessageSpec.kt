@@ -27,7 +27,6 @@ import it.scoppelletti.spaceship.types.joinLines
  * @since 1.0.0
  *
  * @property stringId The string resource ID.
- * @property def      Default value used if the string resource is missing.
  * @property args     Arguments for the message. The string resource must be a
  *                    printf-style format string as defined by the JDK class
  *                    `Formatter`.
@@ -37,14 +36,12 @@ public data class AndroidResourceMessageSpec(
         @StringRes
         public val stringId: Int,
 
-        public val resName: String,
         public val args: Array<Any?> = arrayOf()
 ) : MessageSpec {
     override fun hashCode(): Int {
         var value = 17
 
         value += value * 37 + stringId
-        value += value * 37 + resName.hashCode()
         value += value * 37 + args.contentDeepHashCode()
 
         return value
@@ -53,10 +50,20 @@ public data class AndroidResourceMessageSpec(
     override fun equals(other: Any?): Boolean =
             other is AndroidResourceMessageSpec &&
                     stringId == other.stringId &&
-                    resName == other.resName &&
                     args contentDeepEquals other.args
 
     override fun toString(): String =
-            """ResourceBundleMessageSpec(resName=$resName,
+            """AndroidResourceMessageSpec(stringId=$stringId,
             |args=${args.contentDeepToString()})""".trimMargin().joinLines()
+
+    /**
+     * Returns a string representation of the object.
+     *
+     * @param  resName Name of the string resource.
+     * @return         The representation.
+     */
+    public fun toString(resName: String) =
+            """AndroidResourceMessageSpec($resName,
+            |args=${args.contentDeepToString()})""".trimMargin().joinLines()
+
 }

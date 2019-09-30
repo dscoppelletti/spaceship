@@ -19,4 +19,8 @@ class StubI18NProvider(
 
     override fun timeConverter(secs: Boolean): TimeConverter =
             StubTimeConverter(secs, is24HourFormat, this)
+
+    override suspend fun resolveMessage(obj: MessageSpec): String {
+        throw NotImplementedError("resolveMessage")
+    }
 }

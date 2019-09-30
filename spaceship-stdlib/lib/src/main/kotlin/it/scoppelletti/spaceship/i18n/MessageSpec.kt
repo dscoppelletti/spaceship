@@ -24,38 +24,3 @@ package it.scoppelletti.spaceship.i18n
  * @since 1.0.0
  */
 public interface MessageSpec
-
-/**
- * Source for resolving messages specifications as strings.
- *
- * @since 1.0.0
- */
-public interface MessageSource {
-
-    /**
-     * Resolves a message specification as string.
-     *
-     * @param  obj Message specification.
-     * @return     The resolved string.
-     */
-    suspend fun getMessage(obj: MessageSpec): String
-}
-
-/**
- * Source for resolving messages specifications as strings.
- *
- * @param T Message specification.
- *
- * @since 1.0.0
- */
-public interface MessageSourceHandler<in T: MessageSpec> {
-
-    /**
-     * Resolves a message specification as string.
-     *
-     * @param  obj Message specification.
-     * @return     The resolved string.
-     */
-    suspend fun getMessage(obj: T): String
-}
-

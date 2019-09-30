@@ -24,7 +24,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import it.scoppelletti.spaceship.ApplicationException
 import it.scoppelletti.spaceship.R
-import it.scoppelletti.spaceship.i18n.MessageSource
+import it.scoppelletti.spaceship.i18n.I18NProvider
 import javax.inject.Inject
 
 /**
@@ -72,10 +72,11 @@ public class ApplicationExceptionAdapter :
  * @since 1.0.0
  */
 public class ApplicationExceptionMapperHandler @Inject constructor(
-        private val messageSource: MessageSource
+        private val i18NProvider: I18NProvider
 ): ExceptionMapperHandler<ApplicationException> {
 
     override suspend fun map(ex: ApplicationException) : ExceptionItem =
-            ApplicationExceptionItem(messageSource.getMessage(ex.messageSpec),
+            ApplicationExceptionItem(
+                    i18NProvider.resolveMessage(ex.messageSpec),
                     ApplicationExceptionAdapter())
 }

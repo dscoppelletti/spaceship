@@ -23,7 +23,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import it.scoppelletti.spaceship.StdlibExt
 import it.scoppelletti.spaceship.app.AlertDialogFragment
-import it.scoppelletti.spaceship.i18n.MessageSource
+import it.scoppelletti.spaceship.i18n.I18NProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -40,11 +40,10 @@ import javax.inject.Named
  * @property state State.
  */
 public class AlertDialogModel @Inject constructor(
+        private val i18NProvider: I18NProvider,
 
         @Named(StdlibExt.DEP_MAINDISPATCHER)
-        dispatcher: CoroutineDispatcher,
-
-        private val messageSource: MessageSource
+        dispatcher: CoroutineDispatcher
 ): ViewModel() {
 
     private val scope = CoroutineScope(dispatcher + Job())
@@ -58,7 +57,7 @@ public class AlertDialogModel @Inject constructor(
      */
     public fun load(alertState: AlertActivityState) = scope.launch {
         _state.value = AlertDialogState(
-                messageSource.getMessage(alertState.message))
+                i18NProvider.resolveMessage(alertState.message))
     }
 
     override fun onCleared() {

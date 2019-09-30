@@ -20,17 +20,11 @@ package it.scoppelletti.spaceship.inject
 
 import dagger.Binds
 import dagger.Module
-import dagger.multibindings.IntoMap
 import dagger.multibindings.IntoSet
 import it.scoppelletti.spaceship.DefaultExceptionLogger
 import it.scoppelletti.spaceship.DefaultExceptionLoggerHandler
 import it.scoppelletti.spaceship.ExceptionLogger
 import it.scoppelletti.spaceship.ExceptionLoggerHandler
-import it.scoppelletti.spaceship.i18n.DefaultMessageSource
-import it.scoppelletti.spaceship.i18n.MessageSource
-import it.scoppelletti.spaceship.i18n.MessageSourceHandler
-import it.scoppelletti.spaceship.i18n.ResourceBundleMessageSource
-import it.scoppelletti.spaceship.i18n.ResourceBundleMessageSpec
 
 /**
  * Defines the dependencies provided by this library.
@@ -39,18 +33,6 @@ import it.scoppelletti.spaceship.i18n.ResourceBundleMessageSpec
  */
 @Module
 public abstract class StdlibModule {
-
-    @Binds
-    public abstract fun bindMessageSource(
-            obj: DefaultMessageSource
-    ): MessageSource
-
-    @Binds
-    @IntoMap
-    @MessageSourceKey(ResourceBundleMessageSpec::class)
-    public abstract fun bindMessageSourceHandler(
-            obj: ResourceBundleMessageSource
-    ): MessageSourceHandler<*>
 
     @Binds
     public abstract fun bindExceptionLogger(

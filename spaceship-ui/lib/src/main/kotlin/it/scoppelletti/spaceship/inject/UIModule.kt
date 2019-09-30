@@ -26,11 +26,8 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 import it.scoppelletti.spaceship.ApplicationException
 import it.scoppelletti.spaceship.StdlibExt
-import it.scoppelletti.spaceship.i18n.AndroidResourceMessageSource
-import it.scoppelletti.spaceship.i18n.AndroidResourceMessageSpec
 import it.scoppelletti.spaceship.i18n.AndroidI18NProvider
 import it.scoppelletti.spaceship.i18n.I18NProvider
-import it.scoppelletti.spaceship.i18n.MessageSourceHandler
 import it.scoppelletti.spaceship.io.DefaultIOProvider
 import it.scoppelletti.spaceship.io.IOProvider
 import it.scoppelletti.spaceship.lifecycle.AlertDialogModel
@@ -58,13 +55,6 @@ public abstract class UIModule {
 
     @Binds
     public abstract fun bindI18NProvider(obj: AndroidI18NProvider): I18NProvider
-
-    @Binds
-    @IntoMap
-    @MessageSourceKey(AndroidResourceMessageSpec::class)
-    public abstract fun bindMessageSourceHandler(
-            obj: AndroidResourceMessageSource
-    ): MessageSourceHandler<*>
 
     @Binds
     public abstract fun bindViewModelFactory(

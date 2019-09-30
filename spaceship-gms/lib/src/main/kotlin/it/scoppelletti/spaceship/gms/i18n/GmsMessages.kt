@@ -31,6 +31,5 @@ public object GmsMessages {
 
     public fun errorGoogleApiNotAvailable(): MessageSpec =
             AndroidResourceMessageSpec(
-                    R.string.it_scoppelletti_gms_err_googleApiNotAvailable,
-                    "it_scoppelletti_gms_err_googleApiNotAvailable")
+                    R.string.it_scoppelletti_gms_err_googleApiNotAvailable)
 }

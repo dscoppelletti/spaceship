@@ -44,7 +44,7 @@
             android:layout_margin="@dimen/it_scoppelletti_fab_margin"
             android:layout_gravity="bottom|end"
             app:fabSize="normal"
-            app:srcCompat="@drawable/ic_add_menu" />
+            app:srcCompat="@drawable/ic_fab_add" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"

@@ -3,6 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/cmd_googleApi"
         android:title="@string/cmd_googleApi"
-        android:icon="@drawable/ic_android_menu"
+        android:icon="@drawable/ic_menu_android"
         app:showAsAction="ifRoom" />
 </menu>

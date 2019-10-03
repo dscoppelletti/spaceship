@@ -31,6 +31,11 @@ public object HttpExt {
     public const val AUTH_BEARER = "Bearer"
 
     /**
+     * Sets the header `Content-Type` to the media-type `application/json`.
+     */
+    public const val CONSUMES_JSON = "Content-Type: application/json"
+
+    /**
      * Name of the `Interceptor` dependency that decorates an HTTP request with
      * infos describing the client.
      */
@@ -47,11 +52,6 @@ public object HttpExt {
     public const val HEADER_AUTH = "Authorization"
 
     /**
-     * Header `Content-Type`.
-     */
-    public const val HEADER_CONSUMES = "Content-Type"
-
-    /**
      * Header `Accept-Language`.
      */
     public const val HEADER_LOCALE = "Accept-Language"
@@ -62,14 +62,9 @@ public object HttpExt {
     public const val HEADER_OS = "X-scoppelletti-os"
 
     /**
-     * Header `Accept`.
+     * Sets the header `Accept` to the media-type `application/json`.
      */
-    public const val HEADER_PRODUCES = "Accept"
-
-    /**
-     * Media type JSON.
-     */
-    public const val MEDIATYPE_JSON = "application/json"
+    public const val PRODUCES_JSON = "Accept: application/json"
 
     /**
      * HTTP status Unauthorized.

@@ -17,8 +17,8 @@ class TimeConverter12SecsTest {
 
     @BeforeTest
     fun setUp() {
-        val i18NProvider = StubI18NProvider(false)
-        timeConverter = i18NProvider.timeConverter(true)
+        val i18nProvider = StubI18NProvider(false)
+        timeConverter = i18nProvider.timeConverter(true)
     }
 
     @Test

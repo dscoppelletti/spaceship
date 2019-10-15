@@ -86,7 +86,7 @@ class TabbedActivity : AppCompatActivity(), OnDialogResultListener,
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState?.putInt(MainApp.PROP_ITEMID, viewModel.form.id)
+        outState.putInt(MainApp.PROP_ITEMID, viewModel.form.id)
     }
 
     override fun onResume() {

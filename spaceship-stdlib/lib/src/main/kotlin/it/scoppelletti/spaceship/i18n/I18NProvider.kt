@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "unused")
+@file:Suppress("RedundantVisibilityModifier")
 
 package it.scoppelletti.spaceship.i18n
 
+import it.scoppelletti.spaceship.types.CurrencyConverter
 import it.scoppelletti.spaceship.types.DateConverter
+import it.scoppelletti.spaceship.types.DecimalConverter
+import it.scoppelletti.spaceship.types.DefaultCurrencyConverter
+import it.scoppelletti.spaceship.types.DefaultDecimalConverter
 import it.scoppelletti.spaceship.types.TimeConverter
 import org.threeten.bp.ZoneId
 import java.util.Locale
@@ -36,6 +40,35 @@ public interface I18NProvider {
      * @return The object.
      */
     fun currentLocale(): Locale
+
+    /**
+     * Returns the converter between decimal numbers and strings.
+     *
+     * @param  fractionDigits Number of digits in the fraction portion of a
+     *                        number.
+     * @param  groupingUsed   Whether grouping will be used in the converter.
+     * @return                The object.
+     */
+    fun decimalConverter(
+            fractionDigits: Int? = null,
+            groupingUsed: Boolean? = null
+    ): DecimalConverter = DefaultDecimalConverter(fractionDigits, groupingUsed,
+            this)
+
+    /**
+     * Returns the converter between currency amounts and strings.
+     *
+     * @param  fractionDigits Number of digits in the fraction portion of a
+     *                        number.
+     * @param  groupingUsed   Whether grouping will be used in the converter.
+     * @return                The object.
+     */
+    @Suppress("unused")
+    fun currencyConverter(
+            fractionDigits: Int? = null,
+            groupingUsed: Boolean? = null
+    ): CurrencyConverter = DefaultCurrencyConverter(fractionDigits,
+            groupingUsed, this)
 
     /**
      * Returns the current `ZoneId`.

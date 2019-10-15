@@ -20,5 +20,4 @@
     <string name="it_scoppelletti_behavior_bottomNav">it.scoppelletti.spaceship.widget.BottomNavigationBehavior</string>
     <string name="it_scoppelletti_behavior_fabBottomNav">it.scoppelletti.spaceship.widget.BottomNavigationFABBehavior</string>
     <string name="it_scoppelletti_behavior_fabScrollAware">it.scoppelletti.spaceship.widget.FABAwareScrollingBehavior</string>
-    <integer name="it_scoppelletti_width_date">10</integer>
 </resources>

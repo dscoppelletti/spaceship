@@ -18,37 +18,30 @@
 
 package it.scoppelletti.spaceship.types
 
-import org.threeten.bp.LocalDate
-import org.threeten.bp.format.DateTimeParseException
+import java.math.BigDecimal
+import java.text.ParseException
 
 /**
- * Conversion between dates and strings.
+ * Conversion between decimal numbers and strings.
  *
  * @since 1.0.0
  */
-public interface DateConverter {
+public interface DecimalConverter {
 
     /**
-     * Formats a date as a string.
+     * Formats a number as a string.
      *
-     * @param  value Date.
+     * @param  value Number.
      * @return       Corresponding string.
      */
-    fun format(value: LocalDate?): String?
+    fun format(value: BigDecimal?): String?
 
     /**
-     * Parses a string as a date.
+     * Parses a string as a number.
      *
      * @param  text String.
-     * @return      Resulting date.
+     * @return      Resulting number.
      */
-    @Throws(DateTimeParseException::class)
-    fun parse(text: String?): LocalDate?
-
-    /**
-     * Returns the pattern for formatting dates.
-     *
-     * @return User notation of the pattern.
-     */
-    fun pattern(): String
+    @Throws(ParseException::class)
+    fun parse(text: String?): BigDecimal?
 }

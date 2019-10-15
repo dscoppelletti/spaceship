@@ -34,25 +34,25 @@ private const val TIME_SEP = ':'
  *
  * @constructor
  * @param       secs         Whether the seconds field is enabled.
- * @param       i18NProvider Interface `I18NProvider`.
+ * @param       i18nProvider Interface `I18NProvider`.
  */
 public abstract class AbstractTimeConverter protected constructor(
         private val secs: Boolean,
-        private val i18NProvider: I18NProvider
+        private val i18nProvider: I18NProvider
 ) : TimeConverter {
 
-    private val timeFormatter: DateTimeFormatter by lazy {
-        createTimeFormatter()
+    private val formatter: DateTimeFormatter by lazy {
+        createFormatter()
     }
 
-    private val timeParser: DateTimeFormatter by lazy {
-        createTimeParser()
+    private val parser: DateTimeFormatter by lazy {
+        createParser()
     }
 
     override fun format(value: LocalTime?): String? =
-            value?.format(timeFormatter)
+            value?.format(formatter)
 
-    private fun createTimeFormatter(): DateTimeFormatter {
+    private fun createFormatter(): DateTimeFormatter {
         val is24HourFormat: Boolean = is24HourFormat()
 
         val builder = DateTimeFormatterBuilder()
@@ -72,7 +72,7 @@ public abstract class AbstractTimeConverter protected constructor(
                     .appendText(ChronoField.AMPM_OF_DAY)
         }
 
-        return builder.toFormatter(i18NProvider.currentLocale())
+        return builder.toFormatter(i18nProvider.currentLocale())
     }
 
     override fun parse(text: String?): LocalTime? {
@@ -83,10 +83,10 @@ public abstract class AbstractTimeConverter protected constructor(
         val s = text.trim()
                 .replace('.', TIME_SEP)
                 .replace(',', TIME_SEP)
-        return LocalTime.parse(s, timeParser)
+        return LocalTime.parse(s, parser)
     }
 
-    private fun createTimeParser(): DateTimeFormatter {
+    private fun createParser(): DateTimeFormatter {
         val is24HourFormat: Boolean = is24HourFormat()
 
         val builder = DateTimeFormatterBuilder()
@@ -114,7 +114,7 @@ public abstract class AbstractTimeConverter protected constructor(
                     .appendText(ChronoField.AMPM_OF_DAY)
         }
 
-        return builder.toFormatter(i18NProvider.currentLocale())
+        return builder.toFormatter(i18nProvider.currentLocale())
     }
 
     /**

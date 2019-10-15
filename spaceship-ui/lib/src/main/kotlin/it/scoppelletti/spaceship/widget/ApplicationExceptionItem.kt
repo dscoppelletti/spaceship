@@ -72,11 +72,11 @@ public class ApplicationExceptionAdapter :
  * @since 1.0.0
  */
 public class ApplicationExceptionMapperHandler @Inject constructor(
-        private val i18NProvider: I18NProvider
+        private val i18nProvider: I18NProvider
 ): ExceptionMapperHandler<ApplicationException> {
 
     override suspend fun map(ex: ApplicationException) : ExceptionItem =
             ApplicationExceptionItem(
-                    i18NProvider.resolveMessage(ex.messageSpec),
+                    i18nProvider.resolveMessage(ex.messageSpec),
                     ApplicationExceptionAdapter())
 }

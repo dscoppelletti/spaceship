@@ -13,6 +13,8 @@
     <string name="it_scoppelletti_cmd_save">Save</string>
     <string name="it_scoppelletti_cmd_update">Update</string>
     <string name="it_scoppelletti_err_dateFormat">The date must comply the format %1$s.</string>
+    <string name="it_scoppelletti_err_decimalFormat">The value must be a decimal number.</string>
+    <string name="it_scoppelletti_err_intFormat">The value must be an integer number.</string>
     <string name="it_scoppelletti_err_packageNotFound">Package %1$s not found.</string>
     <string name="it_scoppelletti_err_security">Security failure.</string>
     <string name="it_scoppelletti_err_startActivity">Failed to start activity.</string>

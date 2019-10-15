@@ -17,8 +17,8 @@ class DateConverterTest {
 
     @BeforeTest
     fun setUp() {
-        val i18NProvider = StubI18NProvider(false)
-        dateConverter = i18NProvider.dateConverter()
+        val i18nProvider = StubI18NProvider(false)
+        dateConverter = i18nProvider.dateConverter()
     }
 
     @Test

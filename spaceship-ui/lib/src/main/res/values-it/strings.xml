@@ -13,6 +13,8 @@
     <string name="it_scoppelletti_cmd_save">Salva</string>
     <string name="it_scoppelletti_cmd_update">Aggiorna</string>
     <string name="it_scoppelletti_err_dateFormat">La data deve essere nel formato %1$s.</string>
+    <string name="it_scoppelletti_err_decimalFormat">Il valore deve essere un numero decimale.</string>
+    <string name="it_scoppelletti_err_intFormat">Il valore deve essere un numero intero.</string>
     <string name="it_scoppelletti_err_packageNotFound">Il pacchetto %1$s non esiste.</string>
     <string name="it_scoppelletti_err_security">Problema di sicurezza.</string>
     <string name="it_scoppelletti_err_startActivity">Fallito avvio dell\'attività.</string>

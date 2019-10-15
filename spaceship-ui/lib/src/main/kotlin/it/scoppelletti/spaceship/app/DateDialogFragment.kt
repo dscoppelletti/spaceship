@@ -51,7 +51,7 @@ public class DateDialogFragment : DialogFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         val args: Bundle
-        val i18NProvider: I18NProvider
+        val i18nProvider: I18NProvider
         val epochDay: Long
         val date: LocalDate
 
@@ -61,8 +61,8 @@ public class DateDialogFragment : DialogFragment() {
         epochDay = args.getLong(DateDialogFragment.PROP_EPOCHDAY,
                 Long.MIN_VALUE)
         date = if (epochDay == Long.MIN_VALUE) {
-            i18NProvider = requireActivity().stdlibComponent().i18nProvider()
-            LocalDate.now(i18NProvider.currentZoneId())
+            i18nProvider = requireActivity().stdlibComponent().i18nProvider()
+            LocalDate.now(i18nProvider.currentZoneId())
         } else {
             LocalDate.ofEpochDay(epochDay)
         }

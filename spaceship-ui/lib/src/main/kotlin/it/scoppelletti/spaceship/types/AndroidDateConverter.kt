@@ -36,13 +36,13 @@ private const val DATE_SEP = '/'
  * @constructor
  * @param       context      Context.
  * @param       resources    Resources of this application.
- * @param       i18NProvider Interface `I18NProvider`.
+ * @param       i18nProvider Interface `I18NProvider`.
  */
 public class AndroidDateConverter(
         private val context: Context,
         private val resources: Resources,
-        i18NProvider: I18NProvider
-) : AbstractDateConverter(i18NProvider) {
+        i18nProvider: I18NProvider
+) : AbstractDateConverter(i18nProvider) {
 
     override fun pattern(): String {
         val order: Array<ChronoField> = getDateFormatOrder()

@@ -18,37 +18,15 @@
 
 package it.scoppelletti.spaceship.types
 
-import org.threeten.bp.LocalDate
-import org.threeten.bp.format.DateTimeParseException
-
 /**
- * Conversion between dates and strings.
+ * Conversions between currency amounts and strings.
  *
  * @since 1.0.0
+ *
+ * @property currencySymbol Currency code (ISO 4217).
  */
-public interface DateConverter {
+public interface CurrencyConverter : DecimalConverter {
 
-    /**
-     * Formats a date as a string.
-     *
-     * @param  value Date.
-     * @return       Corresponding string.
-     */
-    fun format(value: LocalDate?): String?
-
-    /**
-     * Parses a string as a date.
-     *
-     * @param  text String.
-     * @return      Resulting date.
-     */
-    @Throws(DateTimeParseException::class)
-    fun parse(text: String?): LocalDate?
-
-    /**
-     * Returns the pattern for formatting dates.
-     *
-     * @return User notation of the pattern.
-     */
-    fun pattern(): String
+    val currencySymbol: String
 }
+

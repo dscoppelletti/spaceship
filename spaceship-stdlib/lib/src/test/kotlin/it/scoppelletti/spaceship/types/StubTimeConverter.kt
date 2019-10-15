@@ -5,8 +5,8 @@ import it.scoppelletti.spaceship.i18n.I18NProvider
 class StubTimeConverter(
         secs: Boolean,
         private var _is24HourFormat: Boolean,
-        i18NProvider: I18NProvider
-) : AbstractTimeConverter(secs, i18NProvider) {
+        i18nProvider: I18NProvider
+) : AbstractTimeConverter(secs, i18nProvider) {
 
     override fun pattern(): String {
         throw NotImplementedError()

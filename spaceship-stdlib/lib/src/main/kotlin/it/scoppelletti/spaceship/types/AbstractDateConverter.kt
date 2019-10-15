@@ -34,24 +34,24 @@ private const val DATE_SEP = '/'
  * @since 1.0.0
  *
  * @constructor
- * @param       i18NProvider Provides I18N dependencies.
+ * @param       i18nProvider Provides I18N dependencies.
  */
 public abstract class AbstractDateConverter protected constructor(
-        private val i18NProvider: I18NProvider
+        private val i18nProvider: I18NProvider
 ) : DateConverter {
 
-    private val dateFormatter: DateTimeFormatter by lazy {
-        createDateFormatter()
+    private val formatter: DateTimeFormatter by lazy {
+        createFormatter()
     }
 
-    private val dateParser: DateTimeFormatter by lazy {
-        createDateParser()
+    private val parser: DateTimeFormatter by lazy {
+        createParser()
     }
 
     override fun format(value: LocalDate?): String? =
-            value?.format(dateFormatter)
+            value?.format(formatter)
 
-    private fun createDateFormatter() : DateTimeFormatter {
+    private fun createFormatter() : DateTimeFormatter {
         val order: Array<ChronoField> = getDateFormatOrder()
 
         return DateTimeFormatterBuilder()
@@ -60,7 +60,7 @@ public abstract class AbstractDateConverter protected constructor(
                 .appendValue(order[1], order[1].toMaxWidth())
                 .appendLiteral(DATE_SEP)
                 .appendValue(order[2], order[2].toMaxWidth())
-                .toFormatter(i18NProvider.currentLocale())
+                .toFormatter(i18nProvider.currentLocale())
     }
 
     @Throws(DateTimeParseException::class)
@@ -72,10 +72,10 @@ public abstract class AbstractDateConverter protected constructor(
         val s = text.trim()
                 .replace('-', DATE_SEP)
                 .replace('.', DATE_SEP)
-        return LocalDate.parse(s, dateParser)
+        return LocalDate.parse(s, parser)
     }
 
-    private fun createDateParser() : DateTimeFormatter {
+    private fun createParser() : DateTimeFormatter {
         val order: Array<ChronoField> = getDateFormatOrder()
 
         return DateTimeFormatterBuilder()
@@ -87,7 +87,7 @@ public abstract class AbstractDateConverter protected constructor(
                 .appendLiteral(DATE_SEP)
                 .appendValue(order[2], order[2].toMinWidth(),
                         order[2].toMaxWidth(), SignStyle.NOT_NEGATIVE)
-                .toFormatter(i18NProvider.currentLocale())
+                .toFormatter(i18nProvider.currentLocale())
     }
 
     /**

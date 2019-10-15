@@ -40,7 +40,7 @@ import javax.inject.Named
  * @property state State.
  */
 public class AlertDialogModel @Inject constructor(
-        private val i18NProvider: I18NProvider,
+        private val i18nProvider: I18NProvider,
 
         @Named(StdlibExt.DEP_MAINDISPATCHER)
         dispatcher: CoroutineDispatcher
@@ -57,7 +57,7 @@ public class AlertDialogModel @Inject constructor(
      */
     public fun load(alertState: AlertActivityState) = scope.launch {
         _state.value = AlertDialogState(
-                i18NProvider.resolveMessage(alertState.message))
+                i18nProvider.resolveMessage(alertState.message))
     }
 
     override fun onCleared() {

@@ -35,22 +35,22 @@ private const val TIME_SEP = ':'
  * @param       secs         Whether the seconds field is enabled.
  * @param       context      Context.
  * @param       resources    Resources of this application.
- * @param       i18NProvider Interface `I18NProvider`.
+ * @param       i18nProvider Interface `I18NProvider`.
  */
 public class AndroidTimeConverter(
         private val secs: Boolean,
         private val context: Context,
         private val resources: Resources,
-        i18NProvider: I18NProvider
-) : AbstractTimeConverter(secs, i18NProvider) {
+        i18nProvider: I18NProvider
+) : AbstractTimeConverter(secs, i18nProvider) {
 
     override fun pattern(): String {
         val is24HourFormat: Boolean = is24HourFormat()
 
         return buildString {
             append(resources.getString(if (is24HourFormat)
-                R.string.it_scoppelletti_field_hour12
-                    else R.string.it_scoppelletti_field_hour24))
+                R.string.it_scoppelletti_field_hour24
+                    else R.string.it_scoppelletti_field_hour12))
             append(TIME_SEP)
             append(resources.getString(R.string.it_scoppelletti_field_minute))
 

@@ -4,8 +4,8 @@ import it.scoppelletti.spaceship.i18n.I18NProvider
 import org.threeten.bp.temporal.ChronoField
 
 class StubDateConverter(
-        i18NProvider: I18NProvider
-) : AbstractDateConverter(i18NProvider) {
+        i18nProvider: I18NProvider
+) : AbstractDateConverter(i18nProvider) {
 
     override fun pattern(): String {
         throw NotImplementedError()

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "unused")
+@file:Suppress("RedundantVisibilityModifier")
 
 package it.scoppelletti.spaceship.types
 

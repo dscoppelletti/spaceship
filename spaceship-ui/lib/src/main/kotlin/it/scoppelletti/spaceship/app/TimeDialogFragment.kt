@@ -54,7 +54,7 @@ public class TimeDialogFragment : DialogFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         val args: Bundle
-        val i18NProvider: I18NProvider
+        val i18nProvider: I18NProvider
         val secDay: Int
         val time: LocalTime
 
@@ -63,8 +63,8 @@ public class TimeDialogFragment : DialogFragment() {
         args = arguments!!
         secDay = args.getInt(TimeDialogFragment.PROP_SECDAY, -1)
         time = if (secDay < 0) {
-            i18NProvider = requireActivity().stdlibComponent().i18nProvider()
-            LocalTime.now(i18NProvider.currentZoneId())
+            i18nProvider = requireActivity().stdlibComponent().i18nProvider()
+            LocalTime.now(i18nProvider.currentZoneId())
         } else {
             LocalTime.ofSecondOfDay(secDay.toLong())
         }

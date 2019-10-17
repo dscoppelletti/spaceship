@@ -21,10 +21,10 @@ package it.scoppelletti.spaceship.preference.credit
 
 import android.content.res.Resources
 import android.text.Html
-import it.scoppelletti.spaceship.applicationException
+import it.scoppelletti.spaceship.ApplicationException
 import it.scoppelletti.spaceship.html.HtmlExt
 import it.scoppelletti.spaceship.html.fromHtml
-import it.scoppelletti.spaceship.preference.R
+import it.scoppelletti.spaceship.preference.i18n.PreferenceMessages
 import it.scoppelletti.spaceship.preference.model.Credit
 import it.scoppelletti.spaceship.types.StringExt
 import kotlinx.coroutines.CancellationException
@@ -60,10 +60,8 @@ public class DefaultCreditsLoader @Inject constructor(
                 try {
                     parser = resources.getXml(creditId)
                 } catch (ex: Resources.NotFoundException) {
-                    throw applicationException {
-                        message(R.string.it_scoppelletti_pref_err_creditFailed)
-                        cause = ex
-                    }
+                    throw ApplicationException(
+                            PreferenceMessages.errorCreditFailed(), ex)
                 }
 
                 state = CreditsState(mutableListOf(), parser)
@@ -80,11 +78,10 @@ public class DefaultCreditsLoader @Inject constructor(
                     }
                 } catch (ex: CancellationException) {
                     throw ex
-                } catch (ex: Exception) { // IOException | XmlPullParserException
-                    throw applicationException {
-                        message(R.string.it_scoppelletti_pref_err_creditFailed)
-                        cause = ex
-                    }
+                } catch (ex: Exception) {
+                    // IOException | XmlPullParserException
+                    throw ApplicationException(
+                            PreferenceMessages.errorCreditFailed(), ex)
                 }
 
                 state.list

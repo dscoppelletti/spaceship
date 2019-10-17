@@ -31,14 +31,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
+import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.app.tryFinish
-import it.scoppelletti.spaceship.inject.Injectable
+import it.scoppelletti.spaceship.app.uiComponent
 import it.scoppelletti.spaceship.preference.lifecycle.CreditsState
 import it.scoppelletti.spaceship.preference.lifecycle.CreditsViewModel
 import it.scoppelletti.spaceship.preference.widget.CreditListAdapter
 import kotlinx.android.synthetic.main.it_scoppelletti_pref_credits_activity.*
 import mu.KotlinLogging
-import javax.inject.Inject
 
 /**
  * Shows the credits of this application.
@@ -47,16 +47,9 @@ import javax.inject.Inject
  * @since 1.0.0
  */
 @UiThread
-public class CreditsActivity : AppCompatActivity(),
-        Injectable,
-        OnDialogResultListener {
+public class CreditsActivity : AppCompatActivity(), OnDialogResultListener {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    @Inject
-    lateinit var exDialog: ExceptionDialogFragment.Builder
-
+    private lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: CreditsViewModel
     private lateinit var adapter: CreditListAdapter
 
@@ -77,6 +70,7 @@ public class CreditsActivity : AppCompatActivity(),
         listLayout = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         listView.layoutManager = listLayout
 
+        viewModelFactory = uiComponent().viewModelFactory()
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(CreditsViewModel::class.java)
 
@@ -107,7 +101,7 @@ public class CreditsActivity : AppCompatActivity(),
         }
 
         state.error?.poll()?.let { err ->
-            exDialog.show(this, err)
+            showExceptionDialog(err)
         }
     }
 
@@ -133,7 +127,7 @@ public class CreditsActivity : AppCompatActivity(),
     public companion object {
 
         /**
-         * Property containing the credits for this application as a XML resource
+         * Property containing credits for this application as a XML resource
          * ID.
          */
         public const val PROP_CREDITS: String = PreferenceExt.PROP_CREDITS

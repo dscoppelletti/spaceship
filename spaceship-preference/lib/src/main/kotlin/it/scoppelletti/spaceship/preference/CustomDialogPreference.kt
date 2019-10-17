@@ -30,53 +30,12 @@ import androidx.preference.DialogPreference
  * @since 1.0.0
  */
 @UiThread
-public abstract class CustomDialogPreference : DialogPreference {
-
-    /**
-     * @constructor         Constructor.
-     * @param       context Context.
-     */
-    @Suppress("unused")
-    public constructor(context: Context) : super(context)
-
-    /**
-     * @constructor         Constructor.
-     * @param       context Context.
-     * @param       attrs   Attribute set.
-     */
-    @Suppress("unused")
-    public constructor(
-            context: Context,
-            attrs: AttributeSet
-    ) : super(context, attrs)
-
-    /**
-     * @constructor              Constructor.
-     * @param       context      Context.
-     * @param       attrs        Attribute set.
-     * @param       defStyleAttr Default style attributes as a resource ID.
-     */
-    @Suppress("unused")
-    public constructor(
-            context: Context,
-            attrs: AttributeSet,
-            defStyleAttr: Int
-    ) : super(context, attrs, defStyleAttr)
-
-    /**
-     * @constructor              Constructor.
-     * @param       context      Context.
-     * @param       attrs        Attribute set.
-     * @param       defStyleAttr Default style attributes as a resource ID.
-     * @param       defStyleRes  Default style as a resource ID.
-     */
-    @Suppress("unused")
-    public constructor(
-            context: Context,
-            attrs: AttributeSet,
-            defStyleAttr: Int,
-            defStyleRes: Int
-    ) : super(context, attrs, defStyleAttr, defStyleRes)
+public abstract class CustomDialogPreference @JvmOverloads constructor(
+        ctx: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0,
+        defStyleRes: Int = 0
+) : DialogPreference(ctx, attrs, defStyleAttr, defStyleRes) {
 
     /**
      * Binds views in the content view of the dialog to data.

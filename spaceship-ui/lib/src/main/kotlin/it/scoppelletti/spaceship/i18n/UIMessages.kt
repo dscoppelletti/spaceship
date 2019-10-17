@@ -31,6 +31,10 @@ public object UIMessages {
             AndroidResourceMessageSpec(
                     R.string.it_scoppelletti_err_packageNotFound, arrayOf(name))
 
+    public fun errorStartActivity(): MessageSpec =
+            AndroidResourceMessageSpec(
+                    R.string.it_scoppelletti_err_startActivity)
+
     public fun promptSaveChanges(): MessageSpec =
             AndroidResourceMessageSpec(
                     R.string.it_scoppelletti_prompt_saveChanges)

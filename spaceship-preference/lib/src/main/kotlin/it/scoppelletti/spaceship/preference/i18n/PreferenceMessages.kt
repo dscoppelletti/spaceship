@@ -16,27 +16,20 @@
 
 @file:Suppress("RedundantVisibilityModifier", "unused")
 
-package it.scoppelletti.spaceship.preference.inject
+package it.scoppelletti.spaceship.preference.i18n
 
-import androidx.lifecycle.ViewModel
-import dagger.Binds
-import dagger.Module
-import dagger.multibindings.IntoMap
-import it.scoppelletti.spaceship.inject.ViewModelKey
-import it.scoppelletti.spaceship.preference.lifecycle.CreditsViewModel
+import it.scoppelletti.spaceship.i18n.AndroidResourceMessageSpec
+import it.scoppelletti.spaceship.i18n.MessageSpec
+import it.scoppelletti.spaceship.preference.R
 
 /**
- * Defines the `ViewModel` classes exported by this library.
+ * String resources.
  *
  * @since 1.0.0
  */
-@Module(includes = [ PreferenceModule::class ])
-public abstract class PreferenceViewModelsModule {
+public object PreferenceMessages {
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(CreditsViewModel::class)
-    public abstract fun bindCreditsViewModel(
-            viewModel: CreditsViewModel
-    ): ViewModel
+    public fun errorCreditFailed(): MessageSpec =
+            AndroidResourceMessageSpec(
+                    R.string.it_scoppelletti_pref_err_creditFailed)
 }

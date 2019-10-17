@@ -1,6 +1,6 @@
 # Module spaceship-preference
 
-Spaceship Library for Preferences.
+Spaceship for Preferences.
 
 # Package it.scoppelletti.spaceship.preference
 
@@ -13,6 +13,10 @@ Provides components to appropriately display the notices to comply with
 the license requirements of open source libraries. 
 
 * [Including Open Source notices](http://github.com/dscoppelletti/spaceship/wiki/Including-Open-Source-notices)
+
+# Package it.scoppelletti.spaceship.preference.i18n
+
+Internazionalization.
 
 # Package it.scoppelletti.spaceship.preference.inject
 
@@ -28,7 +32,7 @@ Manages your activity and fragment lifecycles.
 
 Provides models for the Preference domain.
 
-# Package it.scoppelletti.spaceship.ads.widget
+# Package it.scoppelletti.spaceship.preference.widget
 
 The widget package contains (mostly visual) UI elements to use on your
 Application screen.

@@ -1,35 +1,33 @@
 package it.scoppelletti.spaceship.preference.sample
 
-import android.app.Activity
 import android.app.Application
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
-import it.scoppelletti.spaceship.inject.enableInject
+import it.scoppelletti.spaceship.inject.StdlibComponent
+import it.scoppelletti.spaceship.inject.StdlibComponentProvider
+import it.scoppelletti.spaceship.inject.UIComponent
+import it.scoppelletti.spaceship.inject.UIComponentProvider
+import it.scoppelletti.spaceship.preference.sample.inject.AppComponent
 import it.scoppelletti.spaceship.preference.sample.inject.DaggerAppComponent
-import javax.inject.Inject
 
-class MainApp : Application(), HasActivityInjector {
+class MainApp : Application(), StdlibComponentProvider, UIComponentProvider {
 
-    @Inject
-    lateinit var activityInjector: DispatchingAndroidInjector<Activity>
+    private lateinit var _appComponent: AppComponent
 
     override fun onCreate() {
         super.onCreate()
 
-        DaggerAppComponent.builder()
-                .application(this)
-                .build()
-                .inject(this)
-        enableInject()
+        _appComponent = DaggerAppComponent.factory()
+                .create(this)
     }
 
-    override fun activityInjector(): AndroidInjector<Activity> =
-            activityInjector
+    override fun stdlibComponent(): StdlibComponent = _appComponent
+
+    override fun uiComponent(): UIComponent = _appComponent
 
     companion object {
-        const val PROP_CREDITS = "it.scoppelletti.spaceship.preference.sample.credits"
-        const val PROP_FEEDBACK = "it.scoppelletti.spaceship.preference.sample.feedback"
+        const val PROP_CREDITS =
+                "it.scoppelletti.spaceship.preference.sample.credits"
+        const val PROP_FEEDBACK =
+                "it.scoppelletti.spaceship.preference.sample.feedback"
         const val PROP_HELP = "it.scoppelletti.spaceship.preference.sample.help"
     }
 }

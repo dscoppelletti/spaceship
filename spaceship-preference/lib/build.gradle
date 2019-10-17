@@ -3,10 +3,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply from: '../../gradle-plugins/common.gradle'
-apply from: '../../gradle-plugins/library.gradle'
+apply from: '../../gradle-plugins/android-library.gradle'
 
 group 'it.scoppelletti.spaceship'
-description 'Spaceship Library for Preferences'
+description 'Spaceship for Preferences'
 archivesBaseName = 'spaceship-preference'
 
 android {
@@ -22,7 +22,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            consumerProguardFiles 'proguard-rules.pro'
+            consumerProguardFiles 'consumer-rules.pro'
             debuggable false
         }
         debug {
@@ -55,12 +55,13 @@ dependencies {
     api "com.google.android.material:material:${versionMap.androidx_material}"
     api "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
-    api "com.google.dagger:dagger-android-support:${versionMap.dagger}"
-    kapt "com.google.dagger:dagger-android-processor:${versionMap.dagger}"
-    api("it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}") {
+    api("it.scoppelletti.spaceship:spaceship-html:${versionMap.spaceship}") {
         changing = true
     }
-    api("it.scoppelletti.spaceship:spaceship-html:${versionMap.spaceship}") {
+    api("it.scoppelletti.spaceship:spaceship-stdlib:${versionMap.spaceship}") {
+        changing = true
+    }
+    api("it.scoppelletti.spaceship:spaceship-ui:${versionMap.spaceship}") {
         changing = true
     }
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"

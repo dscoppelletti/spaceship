@@ -18,23 +18,37 @@
 
 package it.scoppelletti.spaceship.preference.inject
 
+import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Module
+import dagger.multibindings.IntoMap
 import it.scoppelletti.spaceship.html.inject.HtmlModule
 import it.scoppelletti.spaceship.inject.ContextModule
+import it.scoppelletti.spaceship.inject.StdlibModule
+import it.scoppelletti.spaceship.inject.UIModule
+import it.scoppelletti.spaceship.inject.ViewModelKey
 import it.scoppelletti.spaceship.preference.credit.CreditsLoader
 import it.scoppelletti.spaceship.preference.credit.DefaultCreditsLoader
+import it.scoppelletti.spaceship.preference.lifecycle.CreditsViewModel
 
 /**
  * Defines the dependencies exported by this library.
  *
  * @since 1.0.0
  */
-@Module(includes = [ ContextModule::class, HtmlModule::class ])
+@Module(includes = [ ContextModule::class, HtmlModule::class,
+    StdlibModule::class, UIModule::class ])
 public abstract class PreferenceModule {
 
     @Binds
     public abstract fun bindCreditsLoader(
             obj: DefaultCreditsLoader
     ): CreditsLoader
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreditsViewModel::class)
+    public abstract fun bindCreditsViewModel(
+            viewModel: CreditsViewModel
+    ): ViewModel
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <eat-comment/>
     <!-- Replace private resource preference_seekbar_padding_start -->
     <dimen name="it_scoppelletti_pref_seekbar_padding_start">0dp</dimen>

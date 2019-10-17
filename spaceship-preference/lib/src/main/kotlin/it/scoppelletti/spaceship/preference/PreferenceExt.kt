@@ -29,5 +29,5 @@ public object PreferenceExt {
      * Property containing the credits for this application as a XML resource
      * ID.
      */
-    public const val PROP_CREDITS = "it.scoppelletti.spaceship.preferences.1"
+    public const val PROP_CREDITS = "it.scoppelletti.spaceship.preference.1"
 }

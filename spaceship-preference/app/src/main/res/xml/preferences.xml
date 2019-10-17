@@ -75,7 +75,7 @@
         <androidx.preference.Preference
             android:key="it.scoppelletti.spaceship.preference.sample.help"
             android:title="@string/it_scoppelletti_pref_cmd_help"
-            android:icon="@drawable/ic_help_pref"
+            android:icon="@drawable/ic_pref_help"
             android:persistent="false">
             <intent android:targetClass="it.scoppelletti.spaceship.html.app.HtmlViewerActivity"
                 android:targetPackage="it.scoppelletti.spaceship.preference.sample" />
@@ -83,7 +83,7 @@
         <androidx.preference.Preference
             android:key="it.scoppelletti.spaceship.preference.sample.feedback"
             android:title="@string/it_scoppelletti_pref_cmd_feedback"
-            android:icon="@drawable/ic_feedback_pref"
+            android:icon="@drawable/ic_pref_feedback"
             android:persistent="false">
             <intent android:action="android.intent.action.VIEW"
                 android:data="market://details?id=it.scoppelletti.spaceship.preference.sample" />
@@ -91,7 +91,7 @@
         <androidx.preference.Preference
             android:key="it.scoppelletti.spaceship.preference.sample.about"
             android:title="@string/it_scoppelletti_pref_cmd_about"
-            android:icon="@drawable/ic_about_pref"
+            android:icon="@drawable/ic_pref_about"
             android:persistent="false"
             android:enabled="false">
             <intent android:targetClass="it.scoppelletti.spaceship.html.app.HtmlViewerActivity"
@@ -100,7 +100,7 @@
         <androidx.preference.Preference
             android:key="it.scoppelletti.spaceship.preference.sample.about"
             android:title="@string/it_scoppelletti_pref_cmd_privacy"
-            android:icon="@drawable/ic_privacy_pref"
+            android:icon="@drawable/ic_pref_privacy"
             android:persistent="false"
             android:enabled="false">
             <intent android:targetClass="it.scoppelletti.spaceship.html.app.HtmlViewerActivity"
@@ -109,7 +109,7 @@
         <androidx.preference.Preference
             android:key="it.scoppelletti.spaceship.preference.sample.credits"
             android:title="@string/it_scoppelletti_pref_cmd_credits"
-            android:icon="@drawable/ic_credits_pref"
+            android:icon="@drawable/ic_pref_credits"
             android:persistent="false">
             <intent android:targetClass="it.scoppelletti.spaceship.preference.CreditsActivity"
                 android:targetPackage="it.scoppelletti.spaceship.preference.sample" />

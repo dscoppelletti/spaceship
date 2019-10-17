@@ -22,7 +22,7 @@ import androidx.annotation.XmlRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import it.scoppelletti.spaceship.CoreExt
+import it.scoppelletti.spaceship.StdlibExt
 import it.scoppelletti.spaceship.lifecycle.SingleEvent
 import it.scoppelletti.spaceship.preference.credit.CreditsLoader
 import it.scoppelletti.spaceship.preference.model.Credit
@@ -30,10 +30,10 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
-import kotlin.coroutines.CoroutineContext
 
 /**
  * ViewModel of the `CreditsActivity` view.
@@ -48,17 +48,14 @@ import kotlin.coroutines.CoroutineContext
  * @param       loader     Loads the credits.
  */
 public class CreditsViewModel @Inject constructor(
+        private val loader: CreditsLoader,
 
-        @Named(CoreExt.DEP_MAINDISPATCHER)
-        dispatcher: CoroutineDispatcher,
+        @Named(StdlibExt.DEP_MAINDISPATCHER)
+        dispatcher: CoroutineDispatcher
+): ViewModel() {
 
-        private val loader: CreditsLoader
-): ViewModel(), CoroutineScope {
-
+    private val scope = CoroutineScope(dispatcher + Job())
     private val _state = MutableLiveData<CreditsState>()
-    private val job = Job()
-
-    override val coroutineContext: CoroutineContext = dispatcher + job
 
     public val state: LiveData<CreditsState> = _state
 
@@ -67,7 +64,7 @@ public class CreditsViewModel @Inject constructor(
      *
      * @param creditId ID of the XML resource.
      */
-    public fun load(@XmlRes creditId: Int) = launch {
+    public fun load(@XmlRes creditId: Int) = scope.launch {
         val items: List<Credit>
 
         if (_state.value != null) {
@@ -86,7 +83,7 @@ public class CreditsViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        job.cancel()
+        scope.cancel()
         super.onCleared()
     }
 }

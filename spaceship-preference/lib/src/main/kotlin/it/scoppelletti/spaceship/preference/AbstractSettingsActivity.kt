@@ -23,14 +23,8 @@ import android.view.MenuItem
 import androidx.annotation.UiThread
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
 import it.scoppelletti.spaceship.app.tryFinish
-import it.scoppelletti.spaceship.inject.Injectable
 import kotlinx.android.synthetic.main.it_scoppelletti_pref_settings_activity.*
-import javax.inject.Inject
 
 /**
  * Activity hosting a settings fragment.
@@ -38,13 +32,7 @@ import javax.inject.Inject
  * @since 1.0.0
  */
 @UiThread
-public abstract class AbstractSettingsActivity : AppCompatActivity(),
-        Injectable,
-        HasSupportFragmentInjector {
-
-    @Inject
-    lateinit var fragmentDispatchingAndroidInjector:
-            DispatchingAndroidInjector<Fragment>
+public abstract class AbstractSettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val actionBar: ActionBar
@@ -60,9 +48,6 @@ public abstract class AbstractSettingsActivity : AppCompatActivity(),
                 .replace(R.id.contentFrame, createFragment())
                 .commit()
     }
-
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> =
-            fragmentDispatchingAndroidInjector
 
     /**
      * Creates the settings fragment.

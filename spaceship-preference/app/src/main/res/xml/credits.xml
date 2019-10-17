@@ -21,6 +21,11 @@
         <license><![CDATA[<a href="http://developer.android.com/studio/terms.html">Android Software Development Kit License</a>]]></license>
     </credit>
     <credit>
+        <component><![CDATA[<a href="http://cloud.google.com/maps-platform">Google Maps Platform</a>]]></component>
+        <owner><![CDATA[<a href="http://www.google.com">Google, Inc.</a>]]></owner>
+        <license><![CDATA[<a href="http://cloud.google.com/maps-platform/terms">Google Maps Platform Terms of Service</a>]]></license>
+    </credit>
+    <credit>
         <component><![CDATA[<a href="http://developers.google.com/android/guides/overview">Google Play Services</a>]]></component>
         <owner><![CDATA[<a href="http://www.google.com">Google, Inc.</a>]]></owner>
         <license><![CDATA[<a href="http://developer.android.com/studio/terms.html">Android Software Development Kit License</a>]]></license>
@@ -74,5 +79,10 @@
         <component><![CDATA[<a href="http://www.slf4j.org">SLF4J</a>]]></component>
         <owner><![CDATA[<a href="http://www.qos.ch">QOS.ch</a>]]></owner>
         <license><![CDATA[<a href="http://opensource.org/licenses/MIT">MIT License</a>]]></license>
+    </credit>
+    <credit>
+        <component><![CDATA[<a href="http://www.scoppelletti.it/spaceship">Spaceship</a>]]></component>
+        <owner><![CDATA[<a href="http://www.scoppelletti.it">Dario Scoppelletti</a>]]></owner>
+        <license><![CDATA[<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>]]></license>
     </credit>
 </credits>

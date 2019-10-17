@@ -26,10 +26,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import it.scoppelletti.spaceship.ApplicationException
-import it.scoppelletti.spaceship.app.ExceptionDialogFragment
-import it.scoppelletti.spaceship.applicationException
-import it.scoppelletti.spaceship.inject.Injectable
-import javax.inject.Inject
+import it.scoppelletti.spaceship.app.showExceptionDialog
+import it.scoppelletti.spaceship.i18n.UIMessages
 
 /**
  * Settings fragment for supporting [CustomPreferenceDialogFragment].
@@ -37,11 +35,7 @@ import javax.inject.Inject
  * @since 1.0.0
  */
 @UiThread
-public abstract class AbstractPreferenceFragment : PreferenceFragmentCompat(),
-    Injectable {
-
-    @Inject
-    lateinit var exDialog: ExceptionDialogFragment.Builder
+public abstract class AbstractPreferenceFragment : PreferenceFragmentCompat() {
 
     override fun onDisplayPreferenceDialog(preference: Preference?) {
         val fragment: CustomPreferenceDialogFragment
@@ -108,13 +102,12 @@ public abstract class AbstractPreferenceFragment : PreferenceFragmentCompat(),
         try {
             activity.startActivity(intent)
         } catch (ex: RuntimeException) {
-            err = applicationException {
-                message(R.string.it_scoppelletti_err_startActivity)
-                cause = ex
-            }
+            err = ApplicationException(UIMessages.errorStartActivity(), ex)
 
-            exDialog.show(activity, err) {
-                title(preference.title.toString())
+            activity.showExceptionDialog(err) {
+// TODO           title {
+//                    preference.title
+//                }
             }
         }
 

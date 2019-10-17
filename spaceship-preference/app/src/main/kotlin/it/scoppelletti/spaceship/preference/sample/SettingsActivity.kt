@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.preference.Preference
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import it.scoppelletti.spaceship.html.app.HtmlViewerActivity
 import it.scoppelletti.spaceship.preference.AbstractPreferenceFragment
@@ -46,18 +47,21 @@ class SettingsFragment : AbstractPreferenceFragment() {
     ) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
-        findPreference(MainApp.PROP_HELP).startActivityConfig { intent ->
-            intent.putExtra(HtmlViewerActivity.PROP_TITLE,
-                    R.string.it_scoppelletti_pref_cmd_help)
-            intent.putExtra(HtmlViewerActivity.PROP_HOMEASUP, true)
-            intent.putExtra(HtmlViewerActivity.PROP_TEXT, R.string.html_help)
-        }
+        findPreference<Preference>(MainApp.PROP_HELP)
+                ?.startActivityConfig { intent ->
+                    intent.putExtra(HtmlViewerActivity.PROP_TITLE,
+                            R.string.it_scoppelletti_pref_cmd_help)
+                    intent.putExtra(HtmlViewerActivity.PROP_HOMEASUP, true)
+                    intent.putExtra(HtmlViewerActivity.PROP_TEXT,
+                            R.string.html_help)
+                }
 
-        findPreference(MainApp.PROP_FEEDBACK).startActivityConfig()
+        findPreference<Preference>(MainApp.PROP_FEEDBACK)?.startActivityConfig()
 
-        findPreference(MainApp.PROP_CREDITS).startActivityConfig { intent ->
-            intent.putExtra(CreditsActivity.PROP_CREDITS, R.xml.credits)
-        }
+        findPreference<Preference>(MainApp.PROP_CREDITS)
+                ?.startActivityConfig { intent ->
+                    intent.putExtra(CreditsActivity.PROP_CREDITS, R.xml.credits)
+                }
     }
 }
 

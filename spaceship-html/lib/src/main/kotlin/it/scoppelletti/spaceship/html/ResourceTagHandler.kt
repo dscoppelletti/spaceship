@@ -22,7 +22,6 @@ package it.scoppelletti.spaceship.html
 import android.content.Context
 import android.content.res.Resources
 import android.text.Editable
-import it.scoppelletti.spaceship.types.trimRaw
 import mu.KotlinLogging
 import org.xml.sax.XMLReader
 import javax.inject.Inject
@@ -35,10 +34,6 @@ import javax.inject.Inject
  *
  * @see   it.scoppelletti.spaceship.html.ContentHandlerTagHandler
  * @since 1.0.0
- *
- * @constructor           Constructor.
- * @param       context   Context.
- * @param       resources Resources of this application.
  */
 public class ResourceTagHandler @Inject constructor(
         private val context: Context,
@@ -64,8 +59,10 @@ public class ResourceTagHandler @Inject constructor(
         } ?.value
 
         if (name.isNullOrBlank()) {
-            logger.error { """Attribute ${ResourceTagHandler.ATTR_NAME} not set
-                |in tag $tag.""".trimRaw() }
+            logger.error {
+                "Attribute ${ResourceTagHandler.ATTR_NAME} not set in tag $tag."
+            }
+
             return
         }
 
@@ -74,8 +71,10 @@ public class ResourceTagHandler @Inject constructor(
         } ?.value
 
         if (resType.isNullOrBlank()) {
-            logger.error { """Attribute ${ResourceTagHandler.ATTR_TYPE} not set
-                |in tag $tag.""".trimRaw() }
+            logger.error {
+                "Attribute ${ResourceTagHandler.ATTR_TYPE} not set in tag $tag."
+            }
+
             return
         }
 
@@ -87,8 +86,10 @@ public class ResourceTagHandler @Inject constructor(
         pkgName = context.packageName
         resId = resources.getIdentifier(name, resType, pkgName)
         if (resId == 0) {
-            logger.error { """Resource $name of type $resType not found in
-                |package $pkgName.""".trimRaw() }
+            logger.error {
+                "Resource $name of type $resType not found in package $pkgName."
+            }
+
             return
         }
 

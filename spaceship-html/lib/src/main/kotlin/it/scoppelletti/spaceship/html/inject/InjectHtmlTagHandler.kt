@@ -22,21 +22,16 @@ import android.text.Editable
 import android.text.Html
 import android.text.Spanned
 import it.scoppelletti.spaceship.html.HtmlTagHandler
-import it.scoppelletti.spaceship.types.trimRaw
 import mu.KotlinLogging
 import org.xml.sax.XMLReader
 import javax.inject.Inject
 import javax.inject.Provider
 
 /**
- * Implementation of the `Html.TagHandler` interface for delegating the HTML
- * custom tags to the injected `HtmlTagHandler` implementations.
+ * Implementation of `Html.TagHandler` interface for delegating the HTML custom
+ * tags to the injected `HtmlTagHandler` implementations.
  *
  * @since 1.0.0
- *
- * @constructor          Constructor.
- * @param       creators Map to associate a custom tag with a
- *                       `Provider<TagHtmlHandler>` dependency.
  */
 public class InjectHtmlTagHandler @Inject constructor(
         private val creators: Map<String,
@@ -74,8 +69,10 @@ public class InjectHtmlTagHandler @Inject constructor(
 
             handler = creator.get()
             if (!handler.tag.equals(tag, true)) {
-                logger.error { """HtmlTagHandler has tag ${handler.tag} instead
-                    |of $tag.""".trimRaw() }
+                logger.error {
+                    "HtmlTagHandler has tag ${handler.tag} instead of $tag."
+                }
+
                 return
             }
 

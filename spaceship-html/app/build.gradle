@@ -18,12 +18,10 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-            useProguard false
             debuggable true
         }
         release {
             minifyEnabled true
-            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable false
         }
@@ -46,9 +44,10 @@ dependencies {
     implementation "com.google.android.material:material:${versionMap.androidx_material}"
     implementation "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
-    implementation "com.google.dagger:dagger-android-support:${versionMap.dagger}"
-    kapt "com.google.dagger:dagger-android-processor:${versionMap.dagger}"
-    implementation("it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}") {
+    implementation("it.scoppelletti.spaceship:spaceship-stdlib:${versionMap.spaceship}") {
+        changing = true
+    }
+    implementation("it.scoppelletti.spaceship:spaceship-ui:${versionMap.spaceship}") {
         changing = true
     }
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"

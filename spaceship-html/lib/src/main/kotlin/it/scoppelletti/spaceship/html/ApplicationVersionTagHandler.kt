@@ -23,7 +23,6 @@ import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.text.Editable
-import it.scoppelletti.spaceship.types.trimRaw
 import mu.KotlinLogging
 import org.xml.sax.XMLReader
 import javax.inject.Inject
@@ -32,10 +31,6 @@ import javax.inject.Inject
  * HTML custom tag for inserting the application version.
  *
  * @since 1.0.0
- *
- * @constructor                Constructor.
- * @param       context        Context.
- * @param       packageManager Package Manager.
  */
 public class ApplicationVersionTagHandler @Inject constructor(
         private val context: Context,
@@ -57,8 +52,9 @@ public class ApplicationVersionTagHandler @Inject constructor(
         try {
             pkgInfo = packageManager.getPackageInfo(pkgName, 0)
         } catch (ex: PackageManager.NameNotFoundException) {
-            logger.error(ex) { """"Failed to get PackageInfo for package
-                |$pkgName.""".trimRaw() }
+            logger.error(ex) {
+                "Failed to get PackageInfo for package $pkgName."
+            }
 
             return
         }

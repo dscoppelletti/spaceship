@@ -19,6 +19,7 @@
 package it.scoppelletti.spaceship.html.inject
 
 import android.text.Html
+import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -29,16 +30,18 @@ import it.scoppelletti.spaceship.html.ContentHandlerTagHandler
 import it.scoppelletti.spaceship.html.HtmlExt
 import it.scoppelletti.spaceship.html.HtmlTagHandler
 import it.scoppelletti.spaceship.html.ResourceTagHandler
+import it.scoppelletti.spaceship.html.lifecycle.HtmlViewerViewModel
 import it.scoppelletti.spaceship.inject.ContextModule
-import it.scoppelletti.spaceship.inject.CoreModule
+import it.scoppelletti.spaceship.inject.UIModule
+import it.scoppelletti.spaceship.inject.ViewModelKey
 import javax.inject.Named
 
 /**
- * Defines the HTML custom tags dependencies.
+ * Defines the dependencies provided by this library.
  *
  * @since 1.0.0
  */
-@Module(includes = [ ContextModule::class, CoreModule::class ])
+@Module(includes = [ ContextModule::class, UIModule::class ])
 public abstract class HtmlModule {
 
     @Binds
@@ -74,4 +77,11 @@ public abstract class HtmlModule {
     public abstract fun bindHtmlTagHandler(
             handler: InjectHtmlTagHandler
     ): Html.TagHandler
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(HtmlViewerViewModel::class)
+    public abstract fun bindHtmlViewerViewModel(
+            viewModel: HtmlViewerViewModel
+    ): ViewModel
 }

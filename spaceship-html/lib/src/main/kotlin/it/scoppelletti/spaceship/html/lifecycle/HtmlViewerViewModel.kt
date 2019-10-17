@@ -22,7 +22,7 @@ import android.text.Html
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import it.scoppelletti.spaceship.CoreExt
+import it.scoppelletti.spaceship.StdlibExt
 import it.scoppelletti.spaceship.html.HtmlExt
 import it.scoppelletti.spaceship.html.fromHtml
 import it.scoppelletti.spaceship.lifecycle.SingleEvent
@@ -31,11 +31,11 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Named
-import kotlin.coroutines.CoroutineContext
 
 /**
  * `ViewModel` for the `HtmlViewerActivity` activity.
@@ -44,24 +44,18 @@ import kotlin.coroutines.CoroutineContext
  * @since 1.0.0
  *
  * @property state The styled text.
- *
- * @constructor            Constructor.
- * @param       dispatcher Coroutine dispatcher.
- * @param       tagHandler Handles the HTML custom tags.
  */
 public class HtmlViewerViewModel @Inject constructor(
 
-        @Named(CoreExt.DEP_MAINDISPATCHER)
+        @Named(StdlibExt.DEP_MAINDISPATCHER)
         dispatcher: CoroutineDispatcher,
 
         @Named(HtmlExt.DEP_TAGHANDLER)
         private val tagHandler: Html.TagHandler
-) : ViewModel(), CoroutineScope {
+) : ViewModel() {
 
+    private val scope = CoroutineScope(dispatcher + Job())
     private val _state = MutableLiveData<HtmlViewerState>()
-    private val job = Job()
-
-    override val coroutineContext: CoroutineContext = dispatcher + job
 
     public val state: LiveData<HtmlViewerState> = _state
 
@@ -70,7 +64,7 @@ public class HtmlViewerViewModel @Inject constructor(
      *
      * @param source The source HTML string.
      */
-    public fun buildText(source: String) = launch {
+    public fun buildText(source: String) = scope.launch {
         val text: CharSequence
 
         try {
@@ -84,7 +78,7 @@ public class HtmlViewerViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        job.cancel()
+        scope.cancel()
         super.onCleared()
     }
 }

@@ -30,15 +30,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
+import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.app.tryFinish
+import it.scoppelletti.spaceship.app.uiComponent
 import it.scoppelletti.spaceship.html.HtmlExt
 import it.scoppelletti.spaceship.html.R
 import it.scoppelletti.spaceship.html.lifecycle.HtmlViewerState
 import it.scoppelletti.spaceship.html.lifecycle.HtmlViewerViewModel
-import it.scoppelletti.spaceship.inject.Injectable
 import kotlinx.android.synthetic.main.it_scoppelletti_htmlviewer_activity.*
 import mu.KotlinLogging
-import javax.inject.Inject
 
 /**
  * Activity for displaying an HTML text.
@@ -46,16 +46,9 @@ import javax.inject.Inject
  * @since 1.0.0
  */
 @UiThread
-public class HtmlViewerActivity : AppCompatActivity(),
-        Injectable,
-        OnDialogResultListener {
+public class HtmlViewerActivity : AppCompatActivity(), OnDialogResultListener {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    @Inject
-    lateinit var exDialog: ExceptionDialogFragment.Builder
-
+    private lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: HtmlViewerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,6 +73,7 @@ public class HtmlViewerActivity : AppCompatActivity(),
 
         txtContent.movementMethod = LinkMovementMethod.getInstance()
 
+        viewModelFactory = uiComponent().viewModelFactory()
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(HtmlViewerViewModel::class.java)
 
@@ -101,7 +95,7 @@ public class HtmlViewerActivity : AppCompatActivity(),
         txtContent.text = state.text
 
         state.error?.poll()?.let { ex ->
-            exDialog.show(this, ex)
+            showExceptionDialog(ex)
         }
     }
 
@@ -133,12 +127,12 @@ public class HtmlViewerActivity : AppCompatActivity(),
         public const val PROP_HOMEASUP: String = HtmlExt.PROP_HOMEASUP
 
         /**
-         * Property containing an HTML text as a string resource ID.
+         * Property containing the HTML text as a string resource ID.
          */
         public const val PROP_TEXT: String = HtmlExt.PROP_TEXT
 
         /**
-         * Property containing a title as a string resource ID.
+         * Property containing the title as a string resource ID.
          */
         public const val PROP_TITLE: String = HtmlExt.PROP_TITLE
 

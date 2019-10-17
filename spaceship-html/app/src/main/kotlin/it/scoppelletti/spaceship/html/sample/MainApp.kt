@@ -1,29 +1,26 @@
 package it.scoppelletti.spaceship.html.sample
 
-import android.app.Activity
 import android.app.Application
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
-import it.scoppelletti.spaceship.inject.enableInject
+import it.scoppelletti.spaceship.html.sample.inject.AppComponent
 import it.scoppelletti.spaceship.html.sample.inject.DaggerAppComponent
-import javax.inject.Inject
+import it.scoppelletti.spaceship.inject.StdlibComponent
+import it.scoppelletti.spaceship.inject.StdlibComponentProvider
+import it.scoppelletti.spaceship.inject.UIComponent
+import it.scoppelletti.spaceship.inject.UIComponentProvider
 
-class MainApp : Application(), HasActivityInjector {
+@Suppress("unused")
+class MainApp : Application(), StdlibComponentProvider, UIComponentProvider {
 
-    @Inject
-    lateinit var activityInjector: DispatchingAndroidInjector<Activity>
+    private lateinit var _appComponent: AppComponent
 
     override fun onCreate() {
         super.onCreate()
 
-        DaggerAppComponent.builder()
-                .application(this)
-                .build()
-                .inject(this)
-        enableInject()
+        _appComponent = DaggerAppComponent.factory()
+                .create(this)
     }
 
-    override fun activityInjector(): AndroidInjector<Activity> =
-            activityInjector
+    override fun stdlibComponent(): StdlibComponent = _appComponent
+
+    override fun uiComponent(): UIComponent = _appComponent
 }

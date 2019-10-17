@@ -1,6 +1,6 @@
 # Module spaceship-html
 
-Spaceship Library for HTML.
+Spaceship for HTML.
 
 # Package it.scoppelletti.spaceship.html
 
@@ -19,3 +19,4 @@ Dependency injection.
 # Package it.scoppelletti.spaceship.html.lifecycle
 
 Manages your activity and fragment lifecycles.
+

@@ -21,7 +21,7 @@ package it.scoppelletti.spaceship.security
 import android.content.Context
 import android.os.Build
 import it.scoppelletti.spaceship.io.IOProvider
-import it.scoppelletti.spaceship.types.TimeProvider
+import org.threeten.bp.Clock
 import java.io.InputStream
 import java.io.OutputStream
 import java.security.GeneralSecurityException
@@ -101,27 +101,26 @@ public interface CryptoProvider {
 /**
  * Creates a new `CryptoProvider` instance.
  *
- * @param  context      Context.
- * @param  ioProvider   Provides I/O components.
- * @param  timeProvider Provides components for operations on dates and times.
- * @param  random       CSRNG.
- * @return              The new object.
- * @since               1.0.0
+ * @param  context    Context.
+ * @param  ioProvider Provides I/O components.
+ * @param  clock      Provides access to the current instant.
+ * @param  random     CSRNG.
+ * @return            The new object.
+ * @since             1.0.0
  */
 public fun cryptoProvider(
         context: Context,
         ioProvider: IOProvider,
-        timeProvider: TimeProvider,
+        clock: Clock,
         random: SecureRandom
 ): CryptoProvider =
         when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ->
                 CryptoProviderMarshmallow(random,
-                        DefaultSecurityBridge(context, timeProvider))
+                        DefaultSecurityBridge(context, clock))
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 ->
-                CryptoProviderJellyBeanMR2(ioProvider, timeProvider,
-                        random, DefaultSecurityBridge(context,
-                        timeProvider))
+                CryptoProviderJellyBeanMR2(ioProvider, clock,
+                        random, DefaultSecurityBridge(context, clock))
             else -> DefaultCryptoProvider(random, DefaultSecurityBridge(context,
-                    timeProvider))
+                    clock))
         }

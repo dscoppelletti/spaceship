@@ -9,32 +9,17 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
-import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.NavigationDrawer
 import it.scoppelletti.spaceship.app.TitleAdapter
-import it.scoppelletti.spaceship.inject.Injectable
+import it.scoppelletti.spaceship.app.showExceptionDialog
+import it.scoppelletti.spaceship.app.uiComponent
 import it.scoppelletti.spaceship.security.sample.lifecycle.MainState
 import it.scoppelletti.spaceship.security.sample.lifecycle.MainViewModel
 import kotlinx.android.synthetic.main.main_activity.*
-import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(),
-        Injectable,
-        HasSupportFragmentInjector {
+class MainActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var fragmentDispatchingAndroidInjector:
-            DispatchingAndroidInjector<Fragment>
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    @Inject
-    lateinit var exDialog: ExceptionDialogFragment.Builder
-
+    private lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var drawer: NavigationDrawer
     private lateinit var titleAdapter: TitleAdapter
     private lateinit var viewModel: MainViewModel
@@ -67,6 +52,7 @@ class MainActivity : AppCompatActivity(),
             navigationView.setCheckedItem(R.id.cmd_key)
         }
 
+        viewModelFactory = uiComponent().viewModelFactory()
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(MainViewModel::class.java)
 
@@ -77,9 +63,6 @@ class MainActivity : AppCompatActivity(),
         })
     }
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> =
-            fragmentDispatchingAndroidInjector
-
     override fun onBackPressed() {
         if (drawer.onBackPressed()) {
             return
@@ -88,7 +71,7 @@ class MainActivity : AppCompatActivity(),
         super.onBackPressed()
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration?) {
+    override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         drawer.onConfigurationChanged(newConfig)
     }
@@ -99,15 +82,14 @@ class MainActivity : AppCompatActivity(),
             return
         }
 
-        progressIndicator.hide {
-            state.messageId?.poll()?.let { messageId ->
-                Snackbar.make(contentFrame, messageId, Snackbar.LENGTH_SHORT)
-                        .show()
-            }
+        progressIndicator.hide()
 
-            state.error?.poll()?.let { err ->
-                exDialog.show(this, err)
-            }
+        state.messageId?.poll()?.let { messageId ->
+            Snackbar.make(contentFrame, messageId, Snackbar.LENGTH_SHORT).show()
+        }
+
+        state.error?.poll()?.let { err ->
+            showExceptionDialog(err)
         }
     }
 
@@ -135,7 +117,9 @@ class MainActivity : AppCompatActivity(),
                 fragment = ProviderFragment.newInstance()
             }
 
-            else -> return false
+            else -> {
+                return false
+            }
         }
 
         supportFragmentManager

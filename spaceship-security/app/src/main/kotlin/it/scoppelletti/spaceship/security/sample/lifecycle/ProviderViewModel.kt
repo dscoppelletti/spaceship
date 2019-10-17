@@ -6,7 +6,7 @@ package it.scoppelletti.spaceship.security.sample.lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import it.scoppelletti.spaceship.CoreExt
+import it.scoppelletti.spaceship.StdlibExt
 import it.scoppelletti.spaceship.html.fromHtml
 import it.scoppelletti.spaceship.types.StringExt
 import kotlinx.coroutines.CancellationException
@@ -14,27 +14,26 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.security.Security
 import javax.inject.Inject
 import javax.inject.Named
-import kotlin.coroutines.CoroutineContext
 
 class ProviderViewModel @Inject constructor(
 
-        @Named(CoreExt.DEP_MAINDISPATCHER)
+        @Named(StdlibExt.DEP_MAINDISPATCHER)
         dispatcher: CoroutineDispatcher
-) : ViewModel(), CoroutineScope {
-    private val _state = MutableLiveData<CharSequence>()
-    private val job = Job()
+) : ViewModel() {
 
-    override val coroutineContext: CoroutineContext = dispatcher + job
+    private val scope = CoroutineScope(dispatcher + Job())
+    private val _state = MutableLiveData<CharSequence>()
 
     val state: LiveData<CharSequence> = _state
 
-    fun load() = launch {
+    fun load() = scope.launch {
         _state.value = loadProviders()
     }
 
@@ -74,7 +73,7 @@ class ProviderViewModel @Inject constructor(
             }
 
     override fun onCleared() {
-        job.cancel()
+        scope.cancel()
         super.onCleared()
     }
 }

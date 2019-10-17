@@ -3,7 +3,7 @@
 
 package it.scoppelletti.spaceship.security
 
-import it.scoppelletti.spaceship.types.trimRaw
+import it.scoppelletti.spaceship.types.joinLines
 import mu.KotlinLogging
 import java.lang.UnsupportedOperationException
 import java.security.AlgorithmParameters
@@ -122,7 +122,8 @@ class FakeCipherSpi : CipherSpi() {
 
         if (key !is SecretKey) {
             throw UnsupportedOperationException("""Wrapped key of type
-                |${key?.javaClass?.simpleName} not supported.""".trimRaw())
+                |${key?.javaClass?.simpleName} not supported.""".trimMargin()
+                    .joinLines())
         }
 
         return key.encoded

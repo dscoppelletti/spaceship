@@ -4,7 +4,7 @@
 package it.scoppelletti.spaceship.security
 
 import it.scoppelletti.spaceship.io.closeQuietly
-import it.scoppelletti.spaceship.types.FakeTimeProvider
+import org.threeten.bp.Clock
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
 import java.security.Key
@@ -35,7 +35,7 @@ class SecuirtyBridgeTest {
 
     @BeforeTest
     fun setUp() {
-        securityBridge = FakeSecurityBridge(FakeTimeProvider())
+        securityBridge = FakeSecurityBridge(Clock.systemUTC())
         random = StubSecureRandom.create()
     }
 

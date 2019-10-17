@@ -3,6 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/cmd_ok"
         android:title="@string/cmd_generate"
-        android:icon="@drawable/ic_done_menu"
+        android:icon="@drawable/ic_menu_done"
         app:showAsAction="ifRoom" />
 </menu>

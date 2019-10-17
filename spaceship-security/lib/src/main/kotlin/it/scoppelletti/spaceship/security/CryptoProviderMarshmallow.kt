@@ -21,7 +21,8 @@ package it.scoppelletti.spaceship.security
 import android.os.Build
 import android.security.keystore.KeyProperties
 import androidx.annotation.RequiresApi
-import it.scoppelletti.spaceship.applicationException
+import it.scoppelletti.spaceship.ApplicationException
+import it.scoppelletti.spaceship.security.i18n.SecurityMessages
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.isActive
@@ -102,23 +103,13 @@ internal class CryptoProviderMarshmallow(
                 // expired) will be issued by method init of object Cipher.
                 entry = keyStore.getEntry(alias, null)
                 if (entry == null) {
-                    throw applicationException {
-                        message(R.string.it_scoppelletti_security_err_aliasNotFound) {
-                            arguments {
-                                add(alias)
-                            }
-                        }
-                    }
+                    throw ApplicationException(
+                            SecurityMessages.errorAliasNotFound(alias))
                 }
 
                 if (entry !is KeyStore.SecretKeyEntry) {
-                    throw applicationException {
-                        message(R.string.it_scoppelletti_security_err_aliasNotSecretKey) {
-                            arguments {
-                                add(alias)
-                            }
-                        }
-                    }
+                    throw ApplicationException(
+                            SecurityMessages.errorAliasNotSecretKey(alias))
                 }
 
                 logger.debug { "Secret key $alias loaded." }

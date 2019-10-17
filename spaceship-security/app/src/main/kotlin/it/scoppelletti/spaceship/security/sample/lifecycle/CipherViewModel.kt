@@ -3,18 +3,19 @@ package it.scoppelletti.spaceship.security.sample.lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import it.scoppelletti.spaceship.CoreExt
-import it.scoppelletti.spaceship.applicationException
+import it.scoppelletti.spaceship.ApplicationException
+import it.scoppelletti.spaceship.StdlibExt
 import it.scoppelletti.spaceship.io.IOProvider
 import it.scoppelletti.spaceship.io.closeQuietly
 import it.scoppelletti.spaceship.security.CryptoProvider
-import it.scoppelletti.spaceship.security.sample.R
+import it.scoppelletti.spaceship.security.sample.i18n.SampleMessages
 import it.scoppelletti.spaceship.types.StringExt
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -29,31 +30,27 @@ import javax.crypto.Cipher
 import javax.crypto.SecretKey
 import javax.inject.Inject
 import javax.inject.Named
-import kotlin.coroutines.CoroutineContext
 
 class CipherViewModel @Inject constructor(
-
-        @Named(CoreExt.DEP_MAINDISPATCHER)
-        dispatcher: CoroutineDispatcher,
-
         private val ioProvider: IOProvider,
-        private val cryptoProvider: CryptoProvider
-): ViewModel(), CoroutineScope {
+        private val cryptoProvider: CryptoProvider,
 
+        @Named(StdlibExt.DEP_MAINDISPATCHER)
+        dispatcher: CoroutineDispatcher
+): ViewModel() {
+
+    private val scope = CoroutineScope(dispatcher + Job())
     private val _state: MutableLiveData<MainState> = MutableLiveData()
     private val _form: CipherForm = CipherForm()
-    private val job: Job = Job()
 
     init {
         _state.value = MainState.create()
     }
 
-    override val coroutineContext: CoroutineContext = dispatcher + job
-
     val state: LiveData<MainState> = _state
     val form: CipherForm = _form
 
-    fun encrypt(alias: String, plainText: String) = launch {
+    fun encrypt(alias: String, plainText: String) = scope.launch {
         val key: SecretKey
         val cipher: Cipher
 
@@ -116,7 +113,7 @@ class CipherViewModel @Inject constructor(
                 outputStream.toString()
             }
 
-    fun decrypt(alias: String, cipherText: String) = launch {
+    fun decrypt(alias: String, cipherText: String) = scope.launch {
         val key: SecretKey
         val cipher: Cipher
         val iv: ByteArray
@@ -156,9 +153,8 @@ class CipherViewModel @Inject constructor(
                     ivSize = objectStream.readInt()
                     iv = ByteArray(ivSize)
                     if (decoder.read(iv, 0, ivSize) != ivSize) {
-                        throw applicationException {
-                            message(R.string.err_ciphertext_corrupted)
-                        }
+                        throw ApplicationException(
+                                SampleMessages.errorCipherTextCorrupted())
                     }
                 } finally {
                     inputStream?.closeQuietly()
@@ -190,9 +186,8 @@ class CipherViewModel @Inject constructor(
 
                     ivSize = objectStream.readInt().toLong()
                     if (decoder.skip(ivSize) != ivSize) {
-                        throw applicationException {
-                            message(R.string.err_ciphertext_corrupted)
-                        }
+                        throw ApplicationException(
+                                SampleMessages.errorCipherTextCorrupted())
                     }
 
                     if (!isActive) {
@@ -233,7 +228,7 @@ class CipherViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        job.cancel()
+        scope.cancel()
         super.onCleared()
     }
 }

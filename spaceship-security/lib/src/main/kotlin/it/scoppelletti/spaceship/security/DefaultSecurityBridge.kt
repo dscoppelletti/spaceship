@@ -24,11 +24,12 @@ import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import androidx.annotation.RequiresApi
-import it.scoppelletti.spaceship.types.TimeProvider
+import org.threeten.bp.Clock
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.ZonedDateTime
 import java.security.KeyPairGenerator
 import java.security.KeyStore
 import java.security.spec.AlgorithmParameterSpec
-import java.util.Calendar
 import java.util.Date
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
@@ -40,7 +41,7 @@ import javax.security.auth.x500.X500Principal
  */
 internal class DefaultSecurityBridge(
         private val context: Context,
-        private val timeProvider: TimeProvider
+        private val clock: Clock
 ) : SecurityBridge {
 
     override fun createCipher(transformation: String): Cipher =
@@ -65,7 +66,7 @@ internal class DefaultSecurityBridge(
             keystoreAlias: String,
             expire: Int
     ): AlgorithmParameterSpec {
-        val endDate: Date
+        val endDate: ZonedDateTime
         val builder: KeyGenParameterSpec.Builder
 
         builder = KeyGenParameterSpec.Builder(keystoreAlias,
@@ -83,12 +84,8 @@ internal class DefaultSecurityBridge(
             // If I set the keyValidityStart, the init method of the Cipher
             // object often throws a KeyNotYetValidException exception: I should
             // wait in debug mode for few seconds to avoid that.
-            endDate = timeProvider.currentTime()
-                    .apply {
-                        add(Calendar.DATE, expire)
-                    }
-                    .time
-            builder.setKeyValidityEnd(endDate)
+            endDate = ZonedDateTime.now(clock).plusDays(expire.toLong())
+            builder.setKeyValidityEnd(Date(endDate.toEpochSecond() * 1000L))
         }
 
         return builder.build()
@@ -107,29 +104,25 @@ internal class DefaultSecurityBridge(
             expire: Int
     ): AlgorithmParameterSpec {
         val serialNumber: Long
-        val startDate: Calendar
-        val endDate: Calendar
+        val startDate: ZonedDateTime
+        val endDate: ZonedDateTime
         val subject: X500Principal
         val builder: android.security.KeyPairGeneratorSpec.Builder
 
         subject = X500Principal(SecurityExt.TAG_CN + alias)
         serialNumber = System.currentTimeMillis()
 
-        startDate = timeProvider.currentTime()
-        endDate = startDate.clone() as Calendar
-        if (expire > 0) {
-            endDate.add(Calendar.DATE, expire)
-        } else {
+        startDate = ZonedDateTime.now(clock)
+        endDate = if (expire > 0) startDate.plusDays(expire.toLong()) else
             // Simulate no expiration
-            endDate.set(9999, Calendar.DECEMBER, 31)
-        }
+            ZonedDateTime.of(LocalDateTime.MAX, startDate.zone)
 
         builder = android.security.KeyPairGeneratorSpec.Builder(context)
                 .setAlias(alias)
                 .setSubject(subject)
                 .setSerialNumber(serialNumber.toBigInteger())
-                .setStartDate(startDate.time)
-                .setEndDate(endDate.time)
+                .setStartDate(Date(startDate.toEpochSecond() * 1000L))
+                .setEndDate(Date(endDate.toEpochSecond() * 1000L))
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             builder.setKeyType(SecurityExt.KEY_ALGORITHM_RSA)

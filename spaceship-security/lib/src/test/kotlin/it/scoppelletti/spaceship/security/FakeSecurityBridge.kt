@@ -3,25 +3,27 @@
 
 package it.scoppelletti.spaceship.security
 
-import it.scoppelletti.spaceship.types.TimeProvider
+import org.threeten.bp.Clock
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.ZonedDateTime
 import java.security.KeyPairGenerator
 import java.security.KeyStore
 import java.security.spec.AlgorithmParameterSpec
-import java.util.Calendar
+import java.util.Date
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.spec.IvParameterSpec
 import javax.security.auth.x500.X500Principal
 
 internal class FakeSecurityBridge(
-        private val timeProvider: TimeProvider
+        private val clock: Clock
 ) : SecurityBridge {
 
     private val keyStore: KeyStore
 
     init {
         keyStore = FakeKeyStore(SecurityExtTest.KEYSTORE_TYPE) {
-            timeProvider.currentTime().time
+            Date(ZonedDateTime.now(clock).toEpochSecond() * 1000L)
         }.apply {
             load(null)
         }
@@ -49,21 +51,18 @@ internal class FakeSecurityBridge(
             keystoreAlias: String,
             expire: Int
     ): AlgorithmParameterSpec {
-        val startDate: Calendar
-        val endDate: Calendar?
+        val startDate: ZonedDateTime
+        val endDate: ZonedDateTime?
 
-        startDate = timeProvider.currentTime()
-        if (expire > 0) {
-            endDate = startDate.clone() as Calendar
-            endDate.add(Calendar.DATE, expire)
-        } else {
-            endDate = null
-        }
+        startDate = ZonedDateTime.now(clock)
+        endDate = if (expire > 0) startDate.plusDays(expire.toLong()) else null
 
         // - Android SDK 27.3
         // Methods of the class KeyGenParameterSpec.Builder are not mocked.
-        return FakeKeyGenParameterSpec(keystoreAlias, startDate.time,
-                endDate?.time)
+        return FakeKeyGenParameterSpec(keystoreAlias,
+                Date(startDate.toEpochSecond() * 1000L),
+                if (endDate == null) null else
+                    Date(endDate.toEpochSecond() * 1000L))
     }
 
     override fun createKeyPairGenerator(
@@ -76,21 +75,17 @@ internal class FakeSecurityBridge(
             expire: Int
     ): AlgorithmParameterSpec {
         val serialNumber: Long
-        val startDate: Calendar
-        val endDate: Calendar
+        val startDate: ZonedDateTime
+        val endDate: ZonedDateTime
         val subject: X500Principal
 
         subject = X500Principal(SecurityExt.TAG_CN + alias)
         serialNumber = System.currentTimeMillis()
 
-        startDate = timeProvider.currentTime()
-        endDate = startDate.clone() as Calendar
-        if (expire > 0) {
-            endDate.add(Calendar.DATE, expire)
-        } else {
+        startDate = ZonedDateTime.now(clock)
+        endDate = if (expire > 0) startDate.plusDays(expire.toLong()) else
             // Simulate no expiration
-            endDate.set(9999, Calendar.DECEMBER, 31)
-        }
+            ZonedDateTime.of(LocalDateTime.MAX, startDate.zone)
 
         // - Android SDK 27.3
         // The class KeyGenPairParameterSpec.Builder needs the Context
@@ -99,7 +94,8 @@ internal class FakeSecurityBridge(
         // mocked just like the methods of the class
         // KeyGenParameterSpec.Builder.
         return FakeKeyPairGeneratorSpec(alias, subject, serialNumber,
-                startDate.time, endDate.time)
+                Date(startDate.toEpochSecond() * 1000L),
+                Date(endDate.toEpochSecond() * 1000L))
     }
 
     override fun createKeyStore(type: String): KeyStore = keyStore

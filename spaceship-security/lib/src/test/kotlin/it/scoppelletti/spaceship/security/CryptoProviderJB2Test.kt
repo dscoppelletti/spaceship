@@ -2,6 +2,7 @@ package it.scoppelletti.spaceship.security
 
 import it.scoppelletti.spaceship.io.FakeIOProvider
 import it.scoppelletti.spaceship.io.IOProvider
+import org.threeten.bp.Clock
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
@@ -14,8 +15,8 @@ class CryptoProviderJB2Test : AbstractCryptoProviderTest() {
         onSetUp()
 
         ioProvider = FakeIOProvider()
-        cryptoProvider = CryptoProviderJellyBeanMR2(ioProvider,
-                timeProvider, random, securityBridge)
+        cryptoProvider = CryptoProviderJellyBeanMR2(ioProvider, clock, random,
+                securityBridge)
     }
 
     @Test

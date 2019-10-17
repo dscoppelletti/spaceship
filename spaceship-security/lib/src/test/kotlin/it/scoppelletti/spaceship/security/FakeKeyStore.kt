@@ -3,7 +3,7 @@
 
 package it.scoppelletti.spaceship.security
 
-import it.scoppelletti.spaceship.types.trimRaw
+import it.scoppelletti.spaceship.types.joinLines
 import mu.KotlinLogging
 import java.io.InputStream
 import java.io.OutputStream
@@ -87,8 +87,8 @@ private class FakeKeyStoreSpi(
         }
 
         logger.debug { """engineSetKeyEntry(alias=$alias, key=$key,
-            |password=$password, chain=${chain?.contentToString()}
-            """.trimRaw() }
+            |password=$password,
+            |chain=${chain?.contentToString()}""".trimMargin().joinLines() }
 
         aliasMap[alias] = currentTime()
         keyMap[alias] = key

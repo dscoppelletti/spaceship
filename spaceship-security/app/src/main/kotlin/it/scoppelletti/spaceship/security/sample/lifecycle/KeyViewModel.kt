@@ -3,41 +3,38 @@ package it.scoppelletti.spaceship.security.sample.lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import it.scoppelletti.spaceship.CoreExt
+import it.scoppelletti.spaceship.StdlibExt
 import it.scoppelletti.spaceship.security.CryptoProvider
 import it.scoppelletti.spaceship.security.sample.R
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
-import kotlin.coroutines.CoroutineContext
 
 class KeyViewModel @Inject constructor(
+        private val cryptoProvider: CryptoProvider,
 
-        @Named(CoreExt.DEP_MAINDISPATCHER)
-        dispatcher: CoroutineDispatcher,
+        @Named(StdlibExt.DEP_MAINDISPATCHER)
+        dispatcher: CoroutineDispatcher
+): ViewModel() {
 
-        private val cryptoProvider: CryptoProvider
-): ViewModel(), CoroutineScope {
-
+    private val scope = CoroutineScope(dispatcher + Job())
     private val _state = MutableLiveData<MainState>()
     private val _form = KeyForm()
-    private val job = Job()
 
     init {
         _state.value = MainState.create()
     }
 
-    override val coroutineContext: CoroutineContext = dispatcher + job
-
     val state: LiveData<MainState> = _state
 
     val form: KeyForm = _form
 
-    fun createSecretKey(alias: String, expire: Int) = launch {
+    fun createSecretKey(alias: String, expire: Int) = scope.launch {
         try {
             _state.value = _state.value?.withWaiting()
             cryptoProvider.newSecretKey(alias, expire)
@@ -54,7 +51,7 @@ class KeyViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        job.cancel()
+        scope.cancel()
         super.onCleared()
     }
 }

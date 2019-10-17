@@ -4,8 +4,9 @@
 package it.scoppelletti.spaceship.security
 
 import it.scoppelletti.spaceship.io.closeQuietly
-import it.scoppelletti.spaceship.types.FakeTimeProvider
 import kotlinx.coroutines.runBlocking
+import org.threeten.bp.Clock
+import org.threeten.bp.ZonedDateTime
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -15,7 +16,6 @@ import java.io.ObjectOutputStream
 import java.io.OutputStream
 import java.security.GeneralSecurityException
 import java.security.SecureRandom
-import java.util.Calendar
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
 import kotlin.test.assertFailsWith
@@ -29,16 +29,16 @@ abstract class AbstractCryptoProviderTest {
 
     internal lateinit var cryptoProvider: CryptoProvider
     internal lateinit var securityBridge: SecurityBridge
-    internal lateinit var timeProvider: FakeTimeProvider
     internal lateinit var random: SecureRandom
+    internal lateinit var clock: FakeClock
 
-    fun onSetUp() {
-        timeProvider = FakeTimeProvider()
+    protected fun onSetUp() {
         random = StubSecureRandom.create()
-        securityBridge = FakeSecurityBridge(timeProvider)
+        clock = FakeClock(Clock.systemUTC())
+        securityBridge = FakeSecurityBridge(clock)
     }
 
-    fun onValidTest() {
+    protected fun onValidTest() {
         val encrypted: ByteArray
         val decrypted: ByteArray
 
@@ -49,18 +49,15 @@ abstract class AbstractCryptoProviderTest {
                 "Decrypted object differs from encrypting object.")
     }
 
-    fun onExpiredTest() {
-        val currentTime: Calendar
+    protected fun onExpiredTest() {
+        val currentTime: ZonedDateTime
         val encrypted: ByteArray
 
-        currentTime = timeProvider.currentTime()
+        currentTime = ZonedDateTime.now(clock)
         encrypted = encrypt()
 
-        timeProvider.setCurrentTime(
-                currentTime.apply {
-                    add(Calendar.DATE, EXPIRE + 10)
-                }
-        )
+        clock.impl = Clock.fixed(currentTime.plusDays(EXPIRE + 10L).toInstant(),
+                currentTime.zone)
 
         assertFailsWith(GeneralSecurityException::class) {
             decrypt(encrypted)
@@ -89,8 +86,7 @@ abstract class AbstractCryptoProviderTest {
         outputStream.write(cipher.iv)
         outputStream.flush()
 
-        encryptor = cryptoProvider.cipherOutputStream(
-                outputStream, cipher)
+        encryptor = cryptoProvider.cipherOutputStream(outputStream, cipher)
         encryptor.write(DATA)
         encryptor.closeQuietly()
 

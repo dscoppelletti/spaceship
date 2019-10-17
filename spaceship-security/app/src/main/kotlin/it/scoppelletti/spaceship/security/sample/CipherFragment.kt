@@ -1,3 +1,5 @@
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.security.sample
 
 import android.os.Bundle
@@ -9,25 +11,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import it.scoppelletti.spaceship.app.hideSoftKeyboard
-import it.scoppelletti.spaceship.inject.Injectable
+import it.scoppelletti.spaceship.app.uiComponent
 import it.scoppelletti.spaceship.security.sample.databinding.CipherFragmentBinding
 import it.scoppelletti.spaceship.security.sample.lifecycle.CipherForm
 import it.scoppelletti.spaceship.security.sample.lifecycle.CipherViewModel
 import it.scoppelletti.spaceship.security.sample.lifecycle.MainState
 import it.scoppelletti.spaceship.security.sample.lifecycle.MainViewModel
-import javax.inject.Inject
 
-class CipherFragment : Fragment(),
-        Injectable,
-        DrawerFragment {
+class CipherFragment : Fragment(), DrawerFragment {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
+    private lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var mainModel: MainViewModel
     private lateinit var cipherModel: CipherViewModel
     private lateinit var binding: CipherFragmentBinding
@@ -50,27 +48,32 @@ class CipherFragment : Fragment(),
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        val activity: FragmentActivity
+
         super.onActivityCreated(savedInstanceState)
 
-        mainModel = ViewModelProviders.of(requireActivity(), viewModelFactory)
+        activity = requireActivity()
+        viewModelFactory = activity.uiComponent().viewModelFactory()
+        mainModel = ViewModelProviders.of(activity, viewModelFactory)
                 .get(MainViewModel::class.java)
         cipherModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(CipherViewModel::class.java)
         binding.model = cipherModel.form
 
-        cipherModel.state.observe(this, Observer<MainState> { state ->
-            if (state != null) {
-                mainModel.setState(state)
-            }
-        })
+        cipherModel.state.observe(viewLifecycleOwner,
+                Observer<MainState> { state ->
+                    if (state != null) {
+                        mainModel.setState(state)
+                    }
+                })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.cipher, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.cipher, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.cmd_encrypt -> {
                 onEncrypt(cipherModel.form)
                 return true

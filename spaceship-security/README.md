@@ -1,10 +1,14 @@
 # Module spaceship-security
 
-Spaceship Security Library.
+Spaceship for Security.
 
 # Package it.scoppelletti.spaceship.security
 
 Provides the classes and interfaces for the security framework.
+
+# Package it.scoppelletti.spaceship.security.i18n
+
+Internazionalization.
 
 # Package it.scoppelletti.spaceship.security.inject
 

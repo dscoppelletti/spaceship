@@ -7,15 +7,18 @@ import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import it.scoppelletti.spaceship.inject.CoreViewModelsModule
+import it.scoppelletti.spaceship.inject.StdlibModule
+import it.scoppelletti.spaceship.inject.UIModule
 import it.scoppelletti.spaceship.inject.ViewModelKey
+import it.scoppelletti.spaceship.security.inject.SecurityModule
 import it.scoppelletti.spaceship.security.sample.lifecycle.CipherViewModel
 import it.scoppelletti.spaceship.security.sample.lifecycle.KeyViewModel
 import it.scoppelletti.spaceship.security.sample.lifecycle.MainViewModel
 import it.scoppelletti.spaceship.security.sample.lifecycle.ProviderViewModel
 
-@Module(includes = [ CoreViewModelsModule::class ])
-abstract class ViewModelsModule {
+@Module(includes = [ SecurityModule::class, StdlibModule::class,
+    UIModule::class ])
+abstract class AppModule {
 
     @Binds
     @IntoMap

@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier")
+@file:Suppress("RedundantVisibilityModifier", "unused")
 
 package it.scoppelletti.spaceship.security.inject
 
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import it.scoppelletti.spaceship.StdlibExt
 import it.scoppelletti.spaceship.inject.ContextModule
-import it.scoppelletti.spaceship.inject.CoreModule
-import it.scoppelletti.spaceship.inject.IOModule
-import it.scoppelletti.spaceship.inject.TimeModule
+import it.scoppelletti.spaceship.inject.StdlibModule
+import it.scoppelletti.spaceship.inject.UIModule
 import it.scoppelletti.spaceship.io.IOProvider
 import it.scoppelletti.spaceship.security.CryptoProvider
 import it.scoppelletti.spaceship.security.cryptoProvider
-import it.scoppelletti.spaceship.types.TimeProvider
+import org.threeten.bp.Clock
 import java.security.SecureRandom
+import javax.inject.Named
 import javax.inject.Singleton
 
 /**
@@ -37,8 +38,8 @@ import javax.inject.Singleton
  *
  * @since 1.0.0
  */
-@Module(includes = [ ContextModule::class, CoreModule::class, IOModule::class,
-    TimeModule::class ])
+@Module(includes = [ ContextModule::class, StdlibModule::class,
+    UIModule::class ])
 public object SecurityModule {
 
     @Provides
@@ -51,8 +52,11 @@ public object SecurityModule {
     public fun provideCryptoProvider(
             context: Context,
             ioProvider: IOProvider,
-            timeProvider: TimeProvider,
+
+            @Named(StdlibExt.DEP_UTCCLOCK)
+            clock: Clock,
+
             random: SecureRandom
     ): CryptoProvider =
-            cryptoProvider(context, ioProvider, timeProvider, random)
+            cryptoProvider(context, ioProvider, clock, random)
 }

@@ -20,16 +20,18 @@ package it.scoppelletti.spaceship.security
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import it.scoppelletti.spaceship.applicationException
+import it.scoppelletti.spaceship.ApplicationException
 import it.scoppelletti.spaceship.io.IOProvider
 import it.scoppelletti.spaceship.io.closeQuietly
-import it.scoppelletti.spaceship.types.TimeProvider
-import it.scoppelletti.spaceship.types.trimRaw
+import it.scoppelletti.spaceship.security.i18n.SecurityMessages
+import it.scoppelletti.spaceship.types.joinLines
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import mu.KotlinLogging
+import org.threeten.bp.Clock
+import org.threeten.bp.ZonedDateTime
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -45,6 +47,7 @@ import java.security.SecureRandom
 import java.security.cert.Certificate
 import java.security.cert.X509Certificate
 import java.security.spec.AlgorithmParameterSpec
+import java.util.Date
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
@@ -55,7 +58,7 @@ import javax.crypto.SecretKey
 @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 internal class CryptoProviderJellyBeanMR2(
         private val ioProvider: IOProvider,
-        private val timeProvider: TimeProvider,
+        private val clock: Clock,
         private val random: SecureRandom,
         private val securityBridge: SecurityBridge
 ) : CryptoProvider by DefaultCryptoProvider(random, securityBridge) {
@@ -132,53 +135,34 @@ internal class CryptoProviderJellyBeanMR2(
 
         cert = keyStore.getCertificate(alias)
         if (cert == null) {
-            throw applicationException {
-                message(R.string.it_scoppelletti_security_err_certificateNotFound) {
-                    arguments {
-                        add(alias)
-                    }
-                }
-            }
+            throw ApplicationException(
+                    SecurityMessages.errorCertificateNotFound(alias))
         }
 
         if (cert !is X509Certificate) {
-            throw applicationException {
-                message(R.string.it_scoppelletti_security_err_aliasNotCertificate) {
-                    arguments {
-                        add(alias)
-                    }
-                }
-            }
+            throw ApplicationException(
+                    SecurityMessages.errorAliasNotCertificate(alias))
         }
 
-        logger.debug { """Found certificate $alias valid from
-            |${cert.notBefore} to ${cert.notAfter}.""".trimRaw() }
+        logger.debug { """Found certificate $alias valid from ${cert.notBefore}
+            |to ${cert.notAfter}.""".trimMargin().joinLines() }
 
         // If the certificate is expired, the method checkValidity issues
         // a CertificateExpiredException.
         // It seems that the expiration of the certificate is ignored by
         // any further use of the public or private key.
-        cert.checkValidity(timeProvider.currentTime().time)
+        cert.checkValidity(
+                Date(ZonedDateTime.now(clock).toEpochSecond() * 1000L))
 
         entry = keyStore.getEntry(alias, null)
         if (entry == null) {
-            throw applicationException {
-                message(R.string.it_scoppelletti_security_err_aliasNotFound) {
-                    arguments {
-                        add(alias)
-                    }
-                }
-            }
+            throw ApplicationException(
+                    SecurityMessages.errorAliasNotFound(alias))
         }
 
         if (entry !is KeyStore.PrivateKeyEntry) {
-            throw applicationException {
-                message(R.string.it_scoppelletti_security_err_aliasNotPrivateKey) {
-                    arguments {
-                        add(alias)
-                    }
-                }
-            }
+            throw ApplicationException(
+                    SecurityMessages.errorAliasNotPrivateKey(alias))
         }
 
         logger.debug { "Key pair $alias loaded." }
@@ -229,14 +213,8 @@ internal class CryptoProviderJellyBeanMR2(
             encoder.flush()
         } catch (ex: Exception) {
             // GeneralSecurityException|IllegalStateException|IOException
-            throw applicationException {
-                message(R.string.it_scoppelletti_security_err_saveSecretKey) {
-                    arguments {
-                        add(file)
-                    }
-                }
-                cause = ex
-            }
+            throw ApplicationException(
+                    SecurityMessages.errorSaveSecretKey(file), ex)
         } finally {
             outputStream?.closeQuietly()
             encoder?.closeQuietly()
@@ -293,24 +271,12 @@ internal class CryptoProviderJellyBeanMR2(
             secretKey = cipher.unwrap(buf, SecurityExt.KEY_ALGORITHM_AES,
                     Cipher.SECRET_KEY) as SecretKey
         } catch (ex: FileNotFoundException) {
-            throw applicationException {
-                message(R.string.it_scoppelletti_security_err_secretKeyNotFound) {
-                    arguments {
-                        add(file)
-                    }
-                }
-                cause = ex
-            }
+            throw ApplicationException(
+                    SecurityMessages.errorSecretKeyNotFound(file), ex)
         } catch (ex: Exception) {
             // GeneralSecurityException|IllegalStateException|IOException
-            throw applicationException {
-                message(R.string.it_scoppelletti_security_err_loadSecretKey) {
-                    arguments {
-                        add(file)
-                    }
-                }
-                cause = ex
-            }
+            throw ApplicationException(
+                    SecurityMessages.errorLoadSecretKey(file), ex)
         } finally {
             inputStream?.closeQuietly()
             decoder?.closeQuietly()
@@ -334,13 +300,8 @@ internal class CryptoProviderJellyBeanMR2(
 
         if (alias.indexOfAny(charArrayOf('/', '.'), 0, true) >= 0 ||
                 alias.endsWith(CryptoProviderJellyBeanMR2.EXT_KEYSTORE, true)) {
-            throw applicationException {
-                message(R.string.it_scoppelletti_security_err_aliasInvalid) {
-                    arguments {
-                        add(alias)
-                    }
-                }
-            }
+            throw ApplicationException(
+                    SecurityMessages.errorAliasInvalid(alias))
         }
 
         dir = File(ioProvider.noBackupFilesDir, CryptoProviderJellyBeanMR2.DIR)

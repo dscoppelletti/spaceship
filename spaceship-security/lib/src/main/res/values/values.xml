@@ -17,6 +17,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation">
     <eat-comment />
-    <string name="app_name">Spaceship Security Library</string>
-    <integer name="it_scoppelletti_security_ivLen">12</integer>
+    <string name="app_name">Spaceship for Security</string>
 </resources>

@@ -19,7 +19,8 @@
 package it.scoppelletti.spaceship.security
 
 import android.os.Build
-import it.scoppelletti.spaceship.applicationException
+import it.scoppelletti.spaceship.ApplicationException
+import it.scoppelletti.spaceship.security.i18n.SecurityMessages
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.isActive
@@ -131,14 +132,9 @@ internal class DefaultCryptoProvider(
     ): OutputStream = CipherOutputStream(outputStream, cipher)
 
     private fun noSuchProviderException() =
-            applicationException {
-                message(R.string.it_scoppelletti_security_err_providerNotFound) {
-                    arguments {
-                        add(SecurityExt.PROVIDER_ANDROID)
-                    }
-                }
-                cause = NoSuchProviderException(SecurityExt.PROVIDER_ANDROID)
-            }
+            ApplicationException(SecurityMessages.errorProviderNotFound(
+                    SecurityExt.PROVIDER_ANDROID),
+                    NoSuchProviderException(SecurityExt.PROVIDER_ANDROID))
 
     private companion object {
         val logger = KotlinLogging.logger {}

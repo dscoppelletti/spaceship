@@ -18,8 +18,47 @@
 
 package it.scoppelletti.spaceship.os
 
+import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
+
+/**
+ * Operations on `Parcelable`.
+ *
+ * @since 1.0.0
+ */
+public object ParcelableExt {
+    // In the article
+    // http://medium.com/@BladeCoder/reducing-parcelable-boilerplate-code-using-kotlin-741c3124a49a
+    // I can find other extensions for other types.
+
+    /**
+     * Reads a `Boolean` value from a stream.
+     *
+     * @receiver Stream.
+     * @return   The read value.
+     */
+    public fun readBoolean(source: Parcel): Boolean =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                source.readBoolean()
+            } else {
+                source.readInt() != 0
+            }
+
+    /**
+     * Writes a `Boolean` value to a stream.
+     *
+     * @receiver       Stream.
+     * @param    value Value.
+     */
+    public fun writeBoolean(out: Parcel, value: Boolean) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            out.writeBoolean(value)
+        } else {
+            out.writeInt(if (value) 1 else 0)
+        }
+    }
+}
 
 /**
  * Implements the `Parcelable.Creator` interface.
@@ -41,25 +80,4 @@ public inline fun <reified T : Parcelable> parcelableCreator(
                     arrayOfNulls<T>(size)
         }
 
-// In the article
-// http://medium.com/@BladeCoder/reducing-parcelable-boilerplate-code-using-kotlin-741c3124a49a
-// I can find other extensions for other types.
 
-/**
- * Reads a `Boolean` value from a stream.
- *
- * @receiver Stream.
- * @return   The read value.
- * @since    1.0.0
- */
-public fun Parcel.readBoolean(): Boolean = this.readInt() != 0
-
-/**
- * Writes a `Boolean` value to a stream.
- *
- * @receiver       Stream.
- * @param    value Value.
- * @since          1.0.0
- */
-public fun Parcel.writeBoolean(value: Boolean) =
-        this.writeInt(if (value) 1 else 0)

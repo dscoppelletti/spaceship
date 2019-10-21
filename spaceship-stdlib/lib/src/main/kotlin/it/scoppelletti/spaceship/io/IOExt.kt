@@ -27,7 +27,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 
-private val logger = KotlinLogging.logger {}
+private val logger = KotlinLogging.logger { }
 
 /**
  * I/O extensions.

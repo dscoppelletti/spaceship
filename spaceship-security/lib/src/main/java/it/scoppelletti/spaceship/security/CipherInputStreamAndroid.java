@@ -43,6 +43,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NullCipher;
 import javax.crypto.ShortBufferException;
 import android.os.Build;
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 /**
@@ -223,7 +224,7 @@ class CipherInputStreamAndroid extends FilterInputStream {
      * @see        java.io.InputStream#read(byte[], int, int)
      * @since      JCE1.2
      */
-    public int read(byte[] b) throws IOException {
+    public int read(@NonNull byte[] b) throws IOException {
         return read(b, 0, b.length);
     }
     /**
@@ -243,7 +244,7 @@ class CipherInputStreamAndroid extends FilterInputStream {
      * @see        java.io.InputStream#read()
      * @since      JCE1.2
      */
-    public int read(byte[] b, int off, int len) throws IOException {
+    public int read(@NonNull byte[] b, int off, int len) throws IOException {
         if (ostart >= ofinish) {
             // we loop for new data as the spec says we are blocking
             int i = 0;
@@ -255,9 +256,7 @@ class CipherInputStreamAndroid extends FilterInputStream {
         }
         int available = ofinish - ostart;
         if (len < available) available = len;
-        if (b != null) {
-            System.arraycopy(obuffer, ostart, b, off, available);
-        }
+        System.arraycopy(obuffer, ostart, b, off, available);
         ostart = ostart + available;
         return available;
     }

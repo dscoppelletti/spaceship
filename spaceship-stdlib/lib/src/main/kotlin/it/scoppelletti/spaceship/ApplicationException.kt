@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier")
+@file:Suppress("RedundantVisibilityModifier", "unused")
 
 package it.scoppelletti.spaceship
 
@@ -55,7 +55,6 @@ public class ApplicationException constructor(
  * @return   The message.
  * @since    1.0.0
  */
-@Suppress("unused")
 public fun Throwable?.toMessage(): String {
     if (this == null) {
         return "null"

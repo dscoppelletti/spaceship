@@ -19,7 +19,7 @@
     <!-- App Bar -->
     <style name="it_scoppelletti_style_collapsingAppBarLayout">
     </style>
-    <!-- Button with just an icon -->
+    <!-- Button with just an iconId -->
     <style name="it_scoppelletti_style_imageButton"
         parent="Widget.MaterialComponents.Button.TextButton.Icon">
         <item name="android:minWidth">@dimen/it_scoppelletti_imageButton_size</item>

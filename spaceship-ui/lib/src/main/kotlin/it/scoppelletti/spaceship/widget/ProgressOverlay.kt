@@ -32,8 +32,7 @@ import android.widget.FrameLayout
 import android.widget.ProgressBar
 import androidx.annotation.UiThread
 import it.scoppelletti.spaceship.os.parcelableCreator
-import it.scoppelletti.spaceship.os.readBoolean
-import it.scoppelletti.spaceship.os.writeBoolean
+import it.scoppelletti.spaceship.os.ParcelableExt
 
 private const val ALPHA_GONE = 0
 private const val ALPHA_VISIBLE = 102
@@ -198,12 +197,14 @@ public class ProgressOverlay @JvmOverloads constructor(
          * @param       source Input stream.
          */
         private constructor(source: Parcel) : super(source) {
-            running = source.readBoolean()
+            running = ParcelableExt.readBoolean(source)
         }
 
         override fun writeToParcel(out: Parcel?, flags: Int) {
             super.writeToParcel(out, flags)
-            out?.writeBoolean(running)
+            out?.let {
+                ParcelableExt.writeBoolean(it, running)
+            }
         }
 
         public companion object {

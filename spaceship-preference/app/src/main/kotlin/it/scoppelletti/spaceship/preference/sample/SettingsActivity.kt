@@ -27,8 +27,8 @@ class SettingsActivity : AbstractSettingsActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.cmd_oss -> {
                 startActivity(Intent(this, OssLicensesMenuActivity::class.java))
                 return true

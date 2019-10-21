@@ -56,8 +56,8 @@ public abstract class AbstractSettingsActivity : AppCompatActivity() {
      */
     protected abstract fun createFragment(): AbstractPreferenceFragment
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             android.R.id.home -> {
                 tryFinish()
                 return true

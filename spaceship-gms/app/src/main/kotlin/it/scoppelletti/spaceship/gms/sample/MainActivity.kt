@@ -28,8 +28,8 @@ class MainActivity : AppCompatActivity(), OnDialogResultListener {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.cmd_googleApi -> {
                 makeGooglePlayServicesAvailable()
                         .addOnCompleteListener(::onGoogleApiAvailable)

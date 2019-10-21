@@ -2,7 +2,6 @@ package it.scoppelletti.spaceship.security
 
 import it.scoppelletti.spaceship.io.FakeIOProvider
 import it.scoppelletti.spaceship.io.IOProvider
-import org.threeten.bp.Clock
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 

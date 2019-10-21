@@ -70,7 +70,7 @@ class CoroutineSpy(dispatcher: CoroutineDispatcher) : CoroutineScope {
         println(Thread.currentThread().name)
 
         try {
-            withContext(Dispatchers.Default) {
+            withContext<Unit>(Dispatchers.Default) {
                 println(Thread.currentThread().name)
                 throw RuntimeException("MyError")
             }
@@ -88,7 +88,7 @@ class CoroutineSpy(dispatcher: CoroutineDispatcher) : CoroutineScope {
         println(Thread.currentThread().name)
 
         try {
-            withContext(Dispatchers.Default) {
+            withContext<Unit>(Dispatchers.Default) {
                 println(Thread.currentThread().name)
                 throw CancellationException("MyCancel")
             }

@@ -63,6 +63,7 @@ dependencies {
     api("it.scoppelletti.spaceship:spaceship-stdlib:${versionMap.spaceship}") {
         changing = true
     }
+    implementation "androidx.preference:preference:${versionMap.androidx_preference}"
     implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versionMap.kotlinx_coroutines}"
     implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"

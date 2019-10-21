@@ -209,7 +209,7 @@ internal class CryptoProviderJellyBeanMR2(
             encoder = ioProvider.base64OutputStream(outputStream)
             outputStream = null
 
-            encoder.write(key, 0, key.size)
+            encoder.write(key!!, 0, key.size)
             encoder.flush()
         } catch (ex: Exception) {
             // GeneralSecurityException|IllegalStateException|IOException

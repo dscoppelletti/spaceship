@@ -140,7 +140,7 @@ private fun SpannableStringBuilder.replaceHyperlink(
     flags = this.getSpanFlags(urlSpan)
     newSpan = object : ClickableSpan() {
 
-        override fun onClick(widget: View?) {
+        override fun onClick(widget: View) {
             onClick(urlSpan.url)
         }
     }

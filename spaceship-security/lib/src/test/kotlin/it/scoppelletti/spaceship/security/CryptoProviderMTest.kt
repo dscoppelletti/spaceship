@@ -1,6 +1,5 @@
 package it.scoppelletti.spaceship.security
 
-import org.threeten.bp.Clock
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 

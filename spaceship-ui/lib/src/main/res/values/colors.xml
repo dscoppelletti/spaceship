@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <eat-comment />
     <!-- http://www.google.com/design/spec/style/color.html - Color Palette -->
     <!-- Primary: Indigo (500, 100, 700) -->

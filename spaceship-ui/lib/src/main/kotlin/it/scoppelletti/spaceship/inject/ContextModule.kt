@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier")
+@file:Suppress("RedundantVisibilityModifier", "unused")
 
 package it.scoppelletti.spaceship.inject
 

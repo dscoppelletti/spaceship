@@ -34,6 +34,6 @@ public class DefaultExceptionLoggerHandler @Inject constructor(
     }
 
     private companion object {
-        val logger = KotlinLogging.logger {}
+        val logger = KotlinLogging.logger { }
     }
 }

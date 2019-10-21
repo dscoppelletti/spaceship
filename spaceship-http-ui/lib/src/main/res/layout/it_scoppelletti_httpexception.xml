@@ -19,7 +19,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="it.scoppelletti.spaceship.http.widget.HttpApplicationExceptionAdapter">
+    tools:context="it.scoppelletti.spaceship.http.widget.HttpExceptionItem">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

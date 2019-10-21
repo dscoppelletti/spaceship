@@ -53,6 +53,7 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val args: Bundle
+        val title: String?
         val builder: AlertDialog.Builder
         var resId: Int
 
@@ -60,9 +61,14 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
         builder = AlertDialog.Builder(requireActivity())
                 .setMessage(StringExt.EMPTY)
 
-        resId = args.getInt(AlertDialogFragment.PROP_TITLEID,
-                android.R.string.dialog_alert_title)
-        builder.setTitle(resId)
+        title = args.getString(AlertDialogFragment.PROP_TITLE)
+        if (title.isNullOrBlank()) {
+            resId = args.getInt(AlertDialogFragment.PROP_TITLEID,
+                    android.R.string.dialog_alert_title)
+            builder.setTitle(resId)
+        } else {
+            builder.setTitle(title)
+        }
 
         resId = args.getInt(AlertDialogFragment.PROP_POSITIVEID,
                 android.R.string.ok)
@@ -151,11 +157,12 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
          */
         public const val TAG: String = AppExt.TAG_ALERTDIALOG
 
-        private const val PROP_TITLEID = "1"
-        private const val PROP_POSITIVEID = "2"
-        private const val PROP_NEGATIVEID = "3"
-        private const val PROP_NEUTRALID = "4"
-        private const val PROP_ICONID = "5"
+        private const val PROP_TITLE = "1"
+        private const val PROP_TITLEID = "2"
+        private const val PROP_POSITIVEID = "3"
+        private const val PROP_NEGATIVEID = "4"
+        private const val PROP_NEUTRALID = "5"
+        private const val PROP_ICONID = "6"
     }
 
     /**
@@ -171,19 +178,21 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
         private var _msg: MessageSpec? = null
 
         @StringRes
-        private var titleId = ResourcesExt.ID_NULL
+        private var _titleId = ResourcesExt.ID_NULL
+
+        private var _title: String? = null
 
         @StringRes
-        private var positiveActionTextId: Int = ResourcesExt.ID_NULL
+        private var _positiveActionTextId: Int = ResourcesExt.ID_NULL
 
         @StringRes
-        private var negativeActionTextId: Int = ResourcesExt.ID_NULL
+        private var _negativeActionTextId: Int = ResourcesExt.ID_NULL
 
         @StringRes
-        private var neutralActionTextId: Int = ResourcesExt.ID_NULL
+        private var _neutralActionTextId: Int = ResourcesExt.ID_NULL
 
         @DrawableRes
-        private var iconId: Int = ResourcesExt.ID_NULL
+        private var _iconId: Int = ResourcesExt.ID_NULL
 
         /**
          * Defines the fragment tag.
@@ -204,12 +213,21 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
         }
 
         /**
+         * Defines the title as a string resource ID..
+         *
+         * @param init Initialization block.
+         */
+        public fun titleId(init: () -> Int) {
+            _titleId = init()
+        }
+
+        /**
          * Defines the title.
          *
          * @param init Initialization block.
          */
-        public fun title(init: () -> Int) {
-            titleId = init()
+        public fun title(init: () -> String) {
+            _title = init()
         }
 
         /**
@@ -217,8 +235,8 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
          *
          * @param init Initialization block.
          */
-        public fun positiveActionText(init: () -> Int) {
-            positiveActionTextId = init()
+        public fun positiveActionTextId(init: () -> Int) {
+            _positiveActionTextId = init()
         }
 
         /**
@@ -226,8 +244,8 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
          *
          * @param init Initialization block.
          */
-        public fun negativeActionText(init: () -> Int) {
-            negativeActionTextId = init()
+        public fun negativeActionTextId(init: () -> Int) {
+            _negativeActionTextId = init()
         }
 
         /**
@@ -235,17 +253,17 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
          *
          * @param init Initialization block.
          */
-        public fun neutralActionText(init: () -> Int) {
-            neutralActionTextId = init()
+        public fun neutralActionTextId(init: () -> Int) {
+            _neutralActionTextId = init()
         }
 
         /**
-         * Defines the icon as a `Drawable` resource ID..
+         * Defines the icon as a `Drawable` resource ID.
          *
          * @param init Initialization block.
          */
-        public fun icon(init: () -> Int) {
-            iconId = init()
+        public fun iconId(init: () -> Int) {
+            _iconId = init()
         }
 
         internal fun show() {
@@ -257,23 +275,27 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
                     "Missing the MessageSpec object.")
 
             args = Bundle()
-            if (titleId != ResourcesExt.ID_NULL) {
-                args.putInt(AlertDialogFragment.PROP_TITLEID, titleId)
+
+            if (!_title.isNullOrBlank()) {
+                args.putString(AlertDialogFragment.PROP_TITLE, _title)
+            } else if (_titleId != ResourcesExt.ID_NULL) {
+                args.putInt(AlertDialogFragment.PROP_TITLEID, _titleId)
             }
-            if (positiveActionTextId != ResourcesExt.ID_NULL) {
+
+            if (_positiveActionTextId != ResourcesExt.ID_NULL) {
                 args.putInt(AlertDialogFragment.PROP_POSITIVEID,
-                        positiveActionTextId)
+                        _positiveActionTextId)
             }
-            if (negativeActionTextId != ResourcesExt.ID_NULL) {
+            if (_negativeActionTextId != ResourcesExt.ID_NULL) {
                 args.putInt(AlertDialogFragment.PROP_NEGATIVEID,
-                        negativeActionTextId)
+                        _negativeActionTextId)
             }
-            if (neutralActionTextId != ResourcesExt.ID_NULL) {
+            if (_neutralActionTextId != ResourcesExt.ID_NULL) {
                 args.putInt(AlertDialogFragment.PROP_NEUTRALID,
-                        neutralActionTextId)
+                        _neutralActionTextId)
             }
-            if (iconId != ResourcesExt.ID_NULL) {
-                args.putInt(AlertDialogFragment.PROP_ICONID, iconId)
+            if (_iconId != ResourcesExt.ID_NULL) {
+                args.putInt(AlertDialogFragment.PROP_ICONID, _iconId)
             }
 
             viewModel = ViewModelProviders.of(activity)

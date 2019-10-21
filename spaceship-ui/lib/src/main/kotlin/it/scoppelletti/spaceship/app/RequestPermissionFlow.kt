@@ -74,10 +74,10 @@ public class RequestPermissionFlow(
                 message {
                     message
                 }
-                title {
+                titleId {
                     titleId
                 }
-                icon {
+                iconId {
                     android.R.drawable.ic_dialog_info
                 }
             }

@@ -23,6 +23,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
+import androidx.annotation.StringRes
 import androidx.annotation.UiThread
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
@@ -53,18 +54,28 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val args: Bundle
         val titleId: Int
+        val title: String?
+        val builder: AlertDialog.Builder
 
         args = arguments!!
-        titleId = args.getInt(ExceptionDialogFragment.PROP_TITLEID,
-                android.R.string.dialog_alert_title)
+
+        title = args.getString(ExceptionDialogFragment.PROP_TITLE)
         adapter = ExceptionListAdapter(requireContext())
 
-        return AlertDialog.Builder(requireContext())
-                .setTitle(titleId)
+        builder = AlertDialog.Builder(requireContext())
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setAdapter(adapter, null)
                 .setNegativeButton(android.R.string.cancel, ::onDialogResult)
-                .create()
+
+        if (title.isNullOrBlank()) {
+            titleId = args.getInt(ExceptionDialogFragment.PROP_TITLEID,
+                    android.R.string.dialog_alert_title)
+            builder.setTitle(titleId)
+        } else {
+            builder.setTitle(title)
+        }
+
+        return builder.create()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -129,7 +140,8 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
          */
         public const val TAG: String = AppExt.TAG_EXCEPTIONDIALOG
 
-        private const val PROP_TITLEID = "1"
+        private const val PROP_TITLE = "1"
+        private const val PROP_TITLEID = "2"
     }
 
     /**
@@ -143,7 +155,11 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
             private val ex: Throwable
     ) {
         private var _tag: String = ExceptionDialogFragment.TAG
-        private var titleId: Int = ResourcesExt.ID_NULL
+
+        @StringRes
+        private var _titleId: Int = ResourcesExt.ID_NULL
+
+        private var _title: String? = null
 
         /**
          * Defines the fragment tag.
@@ -156,12 +172,22 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
         }
 
         /**
+         * Defines the title as a string resource ID.
+         *
+         * @param init Initialization block.
+         */
+        public fun titleId(init: () -> Int) {
+            _titleId = init()
+        }
+
+        /**
          * Defines the title.
          *
          * @param init Initialization block.
          */
-        public fun title(init: () -> Int) {
-            titleId = init()
+        @Suppress("unused")
+        public fun title(init: () -> String) {
+            _title = init()
         }
 
         internal fun show() {
@@ -173,8 +199,10 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
             exLogger.log(ex)
 
             args = Bundle()
-            if (titleId != ResourcesExt.ID_NULL) {
-                args.putInt(ExceptionDialogFragment.PROP_TITLEID, titleId)
+            if (!_title.isNullOrBlank()) {
+                args.putString(ExceptionDialogFragment.PROP_TITLE, _title)
+            } else if (_titleId != ResourcesExt.ID_NULL) {
+                args.putInt(ExceptionDialogFragment.PROP_TITLEID, _titleId)
             }
 
             viewModel = ViewModelProviders.of(activity)

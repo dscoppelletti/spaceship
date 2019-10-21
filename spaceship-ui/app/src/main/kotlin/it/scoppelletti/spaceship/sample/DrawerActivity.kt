@@ -78,12 +78,12 @@ class DrawerActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (drawer.onOptionItemSelected(item)) {
             return true
         }
 
-        when (item?.itemId) {
+        when (item.itemId) {
             R.id.cmd_exceptionTest -> {
                 onExceptionTest()
                 return true
@@ -137,7 +137,7 @@ class DrawerActivity : AppCompatActivity() {
         showExceptionDialog(
                 ApplicationException(SampleMessages.messageExceptionTest(1),
                         RuntimeException("Runtime message"))) {
-            title {
+            titleId {
                 R.string.cmd_exceptionTest
             }
         }

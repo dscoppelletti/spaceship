@@ -105,9 +105,9 @@ public abstract class AbstractPreferenceFragment : PreferenceFragmentCompat() {
             err = ApplicationException(UIMessages.errorStartActivity(), ex)
 
             activity.showExceptionDialog(err) {
-// TODO           title {
-//                    preference.title
-//                }
+            title {
+                    preference.title.toString()
+                }
             }
         }
 

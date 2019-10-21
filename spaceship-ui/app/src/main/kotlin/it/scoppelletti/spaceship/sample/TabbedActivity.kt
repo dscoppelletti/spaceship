@@ -154,8 +154,8 @@ class TabbedActivity : AppCompatActivity(), OnDialogResultListener,
         return super.onPrepareOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             android.R.id.home -> {
                 onExit()
                 return true
@@ -210,13 +210,13 @@ class TabbedActivity : AppCompatActivity(), OnDialogResultListener,
                 message {
                     UIMessages.promptSaveChanges()
                 }
-                icon {
+                iconId {
                     android.R.drawable.ic_dialog_alert
                 }
-                positiveActionText {
+                positiveActionTextId {
                     R.string.it_scoppelletti_cmd_save
                 }
-                neutralActionText {
+                neutralActionTextId {
                     R.string.it_scoppelletti_cmd_dontSave
                 }
             }
@@ -265,10 +265,10 @@ class TabbedActivity : AppCompatActivity(), OnDialogResultListener,
             message {
                 SampleMessages.promptDeleting()
             }
-            title {
+            titleId {
                 R.string.it_scoppelletti_cmd_delete
             }
-            positiveActionText {
+            positiveActionTextId {
                 R.string.it_scoppelletti_cmd_delete
             }
         }

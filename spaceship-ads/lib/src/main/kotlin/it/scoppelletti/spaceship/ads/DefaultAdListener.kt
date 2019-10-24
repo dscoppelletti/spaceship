@@ -22,7 +22,7 @@ import com.google.android.gms.ads.AdListener
 import mu.KotlinLogging
 
 /**
- * Default implementation of the `AdListener` interface.
+ * Default implementation of `AdListener` interface.
  *
  * @since 1.0.0
  */
@@ -83,6 +83,6 @@ public open class DefaultAdListener : AdListener() {
     }
 
     private companion object {
-        val logger = KotlinLogging.logger {}
+        val logger = KotlinLogging.logger { }
     }
 }

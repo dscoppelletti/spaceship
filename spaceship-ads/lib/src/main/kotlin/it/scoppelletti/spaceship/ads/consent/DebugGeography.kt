@@ -39,10 +39,12 @@ public enum class DebugGeography(public val code: Int) {
     /**
      * Simulates a user located in the European Economic Area.
      */
+    @Suppress("unused")
     EEA(1),
 
     /**
      * Simulates a user not located in the European Economic Area.
      */
+    @Suppress("unused")
     NOT_EEA(2)
 }

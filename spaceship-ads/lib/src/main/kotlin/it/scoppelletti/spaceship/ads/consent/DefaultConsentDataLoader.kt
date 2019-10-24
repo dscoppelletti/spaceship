@@ -18,48 +18,40 @@
 
 package it.scoppelletti.spaceship.ads.consent
 
-import it.scoppelletti.spaceship.ads.AdsConfig
-import it.scoppelletti.spaceship.ads.R
+import it.scoppelletti.spaceship.ApplicationException
+import it.scoppelletti.spaceship.StdlibExt
+import it.scoppelletti.spaceship.ads.AdsConfigWrapper
+import it.scoppelletti.spaceship.ads.i18n.AdsMessages
 import it.scoppelletti.spaceship.ads.model.AdNetworkLookupResponse
 import it.scoppelletti.spaceship.ads.model.AdProvider
 import it.scoppelletti.spaceship.ads.model.ConsentData
 import it.scoppelletti.spaceship.ads.model.ServerResponse
-import it.scoppelletti.spaceship.applicationException
-import it.scoppelletti.spaceship.http.toHttpApplicationException
-import it.scoppelletti.spaceship.types.TimeProvider
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
-import retrofit2.HttpException
+import org.threeten.bp.Clock
+import org.threeten.bp.LocalDateTime
 import java.lang.Exception
-import java.util.Calendar
 import javax.inject.Inject
+import javax.inject.Named
 
 /**
- * Default implementation of the `ConsentDataLoader` interface.
+ * Default implementation of `ConsentDataLoader` interface.
  *
  * @since 1.0.0
- *
- * @constructor                  Constructor.
- * @param       timeProvider     Provides components for operations on dates and
- *                               times.
- * @param       consentDataStore Local store for the `ConsentData` object.
- * @param       adService        Client interface to Ad Service.
- * @param       adsConfig        Configuration of AdMob.
  */
 public class DefaultConsentDataLoader @Inject constructor(
-        timeProvider: TimeProvider,
         private val consentDataStore: ConsentDataStore,
         private val adService: AdService,
-        private val adsConfig: AdsConfig
-) : ConsentDataLoader {
-    private val currentYear: Int
+        private val adsConfigWrapper: AdsConfigWrapper,
 
-    init {
-        currentYear = timeProvider.currentTime().get(Calendar.YEAR)
-    }
+        @Named(StdlibExt.DEP_UTCCLOCK)
+        clock: Clock
+) : ConsentDataLoader {
+
+    private val currentYear: Int = LocalDateTime.now(clock).year
 
     public override suspend fun load(): ConsentData =
             withContext(Dispatchers.Default) {
@@ -121,17 +113,14 @@ public class DefaultConsentDataLoader @Inject constructor(
      */
     private suspend fun getServerConfig(): ConsentData {
         val serverConfig: ServerResponse
+        val adsConfig = adsConfigWrapper.value
 
         serverConfig = withContext(Dispatchers.IO) {
             try {
                 adService.getConfig(adsConfig.publisherId,
                         adsConfig.debugGeography.code)
             } catch (ex: Exception) {
-                throw applicationException {
-                    message(R.string.it_scoppelletti_ads_err_user)
-                    cause = (ex as? HttpException)
-                            ?.toHttpApplicationException() ?: ex
-                }
+                throw ApplicationException(AdsMessages.errorConfig(), ex)
             }
         }
 
@@ -201,34 +190,17 @@ public class DefaultConsentDataLoader @Inject constructor(
             notFoundIds: List<String>
     ) {
         if (lookupFailedIds.isNotEmpty() && notFoundIds.isNotEmpty()) {
-            throw applicationException {
-                message(R.string.it_scoppelletti_ads_err_publisher) {
-                    arguments {
-                        add(lookupFailedIds.toTypedArray().contentToString())
-                        add(notFoundIds.toTypedArray().contentToString())
-                    }
-                }
-            }
+            throw ApplicationException(AdsMessages.errorPublisher(
+                    lookupFailedIds, notFoundIds))
         }
 
         if (lookupFailedIds.isNotEmpty()) {
-            throw applicationException {
-                message(R.string.it_scoppelletti_ads_err_lookupFailed) {
-                    arguments {
-                        add(lookupFailedIds.toTypedArray().contentToString())
-                    }
-                }
-            }
+            throw ApplicationException(AdsMessages.errorLookupFailed(
+                    lookupFailedIds))
         }
 
-        if (notFoundIds.isNotEmpty())      {
-            throw applicationException {
-                message(R.string.it_scoppelletti_ads_err_notFound) {
-                    arguments {
-                        add(notFoundIds.toTypedArray().contentToString())
-                    }
-                }
-            }
+        if (notFoundIds.isNotEmpty()) {
+            throw ApplicationException(AdsMessages.errorNotFound(notFoundIds))
         }
     }
 

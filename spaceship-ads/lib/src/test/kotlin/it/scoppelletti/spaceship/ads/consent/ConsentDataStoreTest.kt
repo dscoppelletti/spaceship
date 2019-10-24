@@ -6,10 +6,9 @@ package it.scoppelletti.spaceship.ads.consent
 import it.scoppelletti.spaceship.ads.model.AdProvider
 import it.scoppelletti.spaceship.ads.model.ConsentData
 import it.scoppelletti.spaceship.io.FakeIOProvider
-import it.scoppelletti.spaceship.types.FakeTimeProvider
-import it.scoppelletti.spaceship.types.TimeProvider
 import kotlinx.coroutines.runBlocking
-import java.util.Calendar
+import org.threeten.bp.Clock
+import org.threeten.bp.LocalDateTime
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -19,15 +18,13 @@ import kotlin.test.assertTrue
 
 class ConsentDataStoreTest {
     private var currentYear = 0
-    private lateinit var timeProvider: TimeProvider
     private lateinit var consentDataStore: DefaultConsentDataStore
 
     @BeforeTest
     fun setUp() {
-        timeProvider = FakeTimeProvider()
-        currentYear = timeProvider.currentTime().get(Calendar.YEAR)
-        consentDataStore = DefaultConsentDataStore(FakeIOProvider(),
-                timeProvider)
+        val clock: Clock = Clock.systemUTC()
+        currentYear = LocalDateTime.now(clock).year
+        consentDataStore = DefaultConsentDataStore(FakeIOProvider(), clock)
     }
 
     @Test
@@ -40,7 +37,7 @@ class ConsentDataStoreTest {
         consentDataStore.save(data)
 
         data = consentDataStore.load()
-        assertEmpty(data, "Load from scratch.")
+        assertEmpty(data, "Load from empty saved.")
     }
 
     private fun assertEmpty(data: ConsentData, msg: String) {

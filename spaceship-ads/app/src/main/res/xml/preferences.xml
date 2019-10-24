@@ -4,7 +4,7 @@
     <androidx.preference.Preference
         android:key="it.scoppelletti.spaceship.ads.sample.ads"
         android:title="@string/it_scoppelletti_ads_cmd_settings"
-        android:icon="@drawable/ic_ads_pref"
+        android:icon="@drawable/ic_pref_ads"
         android:persistent="false">
         <intent android:targetClass="it.scoppelletti.spaceship.ads.sample.AdConsentActivity"
             android:targetPackage="it.scoppelletti.spaceship.ads.sample" />

@@ -25,6 +25,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.UiThread
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -32,9 +33,8 @@ import it.scoppelletti.spaceship.ads.R
 import it.scoppelletti.spaceship.ads.consent.ConsentStatus
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentPromptViewModel
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentViewModel
-import it.scoppelletti.spaceship.inject.Injectable
+import it.scoppelletti.spaceship.app.uiComponent
 import kotlinx.android.synthetic.main.it_scoppelletti_ads_consentprompt_fragment.*
-import javax.inject.Inject
 
 /**
  * Prompts the user for her consent.
@@ -43,11 +43,9 @@ import javax.inject.Inject
  * @since 1.0.0
  */
 @UiThread
-public class ConsentPromptFragment : Fragment(), Injectable {
+public class ConsentPromptFragment : Fragment() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
+    private lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var activityViewModel: ConsentViewModel
     private lateinit var viewModel: ConsentPromptViewModel
 
@@ -68,17 +66,21 @@ public class ConsentPromptFragment : Fragment(), Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         val count: Int
         val url: String
+        val activity: FragmentActivity
 
         super.onActivityCreated(savedInstanceState)
 
-        activityViewModel = ViewModelProviders.of(requireActivity(),
-                viewModelFactory).get(ConsentViewModel::class.java)
+        activity = requireActivity()
+        viewModelFactory = activity.uiComponent().viewModelFactory()
+        activityViewModel = ViewModelProviders.of(activity, viewModelFactory)
+                .get(ConsentViewModel::class.java)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(ConsentPromptViewModel::class.java)
 
-        viewModel.text.observe(this, Observer<CharSequence> { text ->
-            txtMessage.text = text
-        })
+        viewModel.text.observe(viewLifecycleOwner,
+                Observer<CharSequence> { text ->
+                    txtMessage.text = text
+                })
 
         url = getString(R.string.it_scoppelletti_url_privacy)
         count = activityViewModel.state.value?.data?.adProviders?.size ?: 0

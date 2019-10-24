@@ -25,9 +25,9 @@ import it.scoppelletti.spaceship.ads.consent.ConsentStatus
 /**
  * Status for consent to receive perzonalized advertising.
  *
- * @property status The observable status.
- *
  * @since 1.0.0
+ *
+ * @property status The observable status.
  */
 public object ConsentStatusObservable {
 

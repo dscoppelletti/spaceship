@@ -1,3 +1,5 @@
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.ads.sample
 
 import android.content.Intent
@@ -13,27 +15,26 @@ import it.scoppelletti.spaceship.ads.AdsConfig
 import it.scoppelletti.spaceship.ads.DefaultAdListener
 import it.scoppelletti.spaceship.ads.adRequestBuilder
 import it.scoppelletti.spaceship.ads.consent.ConsentStatus
+import it.scoppelletti.spaceship.ads.inject.adsComponent
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentStatusObservable
-import it.scoppelletti.spaceship.inject.Injectable
 import kotlinx.android.synthetic.main.main_activity.*
 import mu.KotlinLogging
 import java.lang.Exception
-import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), Injectable {
-
-    @Inject
-    lateinit var adsConfig: AdsConfig
+class MainActivity : AppCompatActivity() {
 
     private lateinit var adView: AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val adsConfig: AdsConfig
+
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.main_activity)
 
-        setSupportActionBar(toolbar)
+        setSupportActionBar(this.toolbar)
 
+        adsConfig = adsComponent().adsConfigWrapper().value
         MobileAds.initialize(applicationContext, adsConfig.appId)
 
         adView = AdView(this)
@@ -80,10 +81,10 @@ class MainActivity : AppCompatActivity(), Injectable {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val intent: Intent
 
-        when (item?.itemId) {
+        when (item.itemId) {
             R.id.cmd_settings -> {
                 intent = Intent(this, SettingsActivity::class.java)
                 startActivity(intent)

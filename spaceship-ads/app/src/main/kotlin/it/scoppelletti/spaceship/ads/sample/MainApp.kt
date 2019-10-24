@@ -1,48 +1,46 @@
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.ads.sample
 
-import android.app.Activity
 import android.app.Application
-import android.content.Context
-import androidx.multidex.MultiDex
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
 import it.scoppelletti.spaceship.ads.AdsConfig
-import it.scoppelletti.spaceship.ads.inject.AdsModule
-import it.scoppelletti.spaceship.inject.enableInject
+import it.scoppelletti.spaceship.ads.AdsConfigWrapper
+import it.scoppelletti.spaceship.ads.inject.AdsComponent
+import it.scoppelletti.spaceship.ads.inject.AdsComponentProvider
+import it.scoppelletti.spaceship.ads.sample.inject.AppComponent
 import it.scoppelletti.spaceship.ads.sample.inject.DaggerAppComponent
-import javax.inject.Inject
+import it.scoppelletti.spaceship.inject.StdlibComponent
+import it.scoppelletti.spaceship.inject.StdlibComponentProvider
+import it.scoppelletti.spaceship.inject.UIComponent
+import it.scoppelletti.spaceship.inject.UIComponentProvider
 
-class MainApp : Application(), HasActivityInjector {
+class MainApp : Application(), AdsComponentProvider, StdlibComponentProvider,
+        UIComponentProvider {
 
-    @Inject
-    lateinit var activityInjector: DispatchingAndroidInjector<Activity>
+    private lateinit var _appComponent: AppComponent
 
     override fun onCreate() {
+        val adsConfigWrapper: AdsConfigWrapper
+
         super.onCreate()
 
-        AdsModule.registerAdsConfig(
-            AdsConfig(BuildConfig.ADS_SERVICEURL,
-                    BuildConfig.ADS_PUBLISHERID, BuildConfig.ADS_APPID,
-                    listOf(BuildConfig.ADS_UNITID))
-        )
+        _appComponent = DaggerAppComponent.factory()
+                .create(this)
 
-        DaggerAppComponent.builder()
-                .application(this)
-                .build()
-                .inject(this)
-        enableInject()
+        adsConfigWrapper = _appComponent.adsConfigWrapper()
+        adsConfigWrapper.value =  AdsConfig(BuildConfig.ADS_SERVICEURL,
+                BuildConfig.ADS_PUBLISHERID, BuildConfig.ADS_APPID,
+                listOf(BuildConfig.ADS_UNITID))
     }
 
-    override fun activityInjector(): AndroidInjector<Activity> =
-            activityInjector
+    override fun adsComponent(): AdsComponent = _appComponent
 
-    override fun attachBaseContext(base: Context?) {
-        super.attachBaseContext(base)
-        MultiDex.install(this)
-    }
+    override fun stdlibComponent(): StdlibComponent = _appComponent
+
+    override fun uiComponent(): UIComponent = _appComponent
 
     companion object {
         const val PROP_ADS = "it.scoppelletti.spaceship.ads.sample.ads"
     }
 }
+

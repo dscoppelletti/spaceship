@@ -21,23 +21,23 @@ package it.scoppelletti.spaceship.ads.lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import it.scoppelletti.spaceship.CoreExt
+import it.scoppelletti.spaceship.StdlibExt
 import it.scoppelletti.spaceship.ads.app.ConsentAgeFragment
 import it.scoppelletti.spaceship.ads.app.ConsentLoadFragment
 import it.scoppelletti.spaceship.ads.consent.ConsentDataLoader
 import it.scoppelletti.spaceship.ads.consent.ConsentDataStore
 import it.scoppelletti.spaceship.ads.consent.ConsentStatus
 import it.scoppelletti.spaceship.ads.model.ConsentData
-import it.scoppelletti.spaceship.types.TimeProvider
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import java.util.Calendar
+import org.threeten.bp.Clock
+import org.threeten.bp.LocalDateTime
 import javax.inject.Inject
 import javax.inject.Named
-import kotlin.coroutines.CoroutineContext
 
 /**
  * ViewModel of the `AbstractConsentActivity` view.
@@ -47,35 +47,27 @@ import kotlin.coroutines.CoroutineContext
  * @since 1.0.0
  *
  * @property state State of the view.
- *
- * @constructor                   Constructor.
- * @param       dispatcher        Coroutine dispatcher.
- * @param       timeProvider      Provides components for operations on dates
- *                                and times.
- * @param       consentDataStore  Local store for the `ContextData` object.
- * @param       consentDataLoader Loader of the current `ConsentData` object.
  */
 public class ConsentViewModel @Inject constructor(
-
-        @Named(CoreExt.DEP_MAINDISPATCHER)
-        dispatcher: CoroutineDispatcher,
-
-        private val timeProvider: TimeProvider,
         private val consentDataStore: ConsentDataStore,
-        private val consentDataLoader: ConsentDataLoader
-) : ViewModel(), CoroutineScope {
+        private val consentDataLoader: ConsentDataLoader,
 
+        @Named(StdlibExt.DEP_UTCCLOCK)
+        private val clock: Clock,
+
+        @Named(StdlibExt.DEP_MAINDISPATCHER)
+        dispatcher: CoroutineDispatcher
+) : ViewModel() {
+
+    private val scope = CoroutineScope(dispatcher + Job())
     private val _state = MutableLiveData<ConsentState>()
-    private val job = Job()
-
-    override val coroutineContext: CoroutineContext = dispatcher + job
 
     public val state: LiveData<ConsentState> = _state
 
     /**
      * Loads the `ConsentData` object.
      */
-    public fun load() = launch {
+    public fun load() = scope.launch {
         val year: Int
         val data: ConsentData
 
@@ -83,7 +75,7 @@ public class ConsentViewModel @Inject constructor(
             return@launch
         }
 
-        year = timeProvider.currentTime().get(Calendar.YEAR)
+        year = LocalDateTime.now(clock).year
         _state.value = ConsentState(step = ConsentLoadFragment.POS,
                 data = ConsentData(year = year), saved = false, waiting = true,
                 error = null)
@@ -104,7 +96,7 @@ public class ConsentViewModel @Inject constructor(
      *
      * @param status The consent status.
      */
-    public fun save(status: ConsentStatus) = launch {
+    public fun save(status: ConsentStatus) = scope.launch {
         val year: Int
         val data: ConsentData
 
@@ -114,7 +106,7 @@ public class ConsentViewModel @Inject constructor(
 
         _state.value = _state.value?.copy(waiting = true)
 
-        year = timeProvider.currentTime().get(Calendar.YEAR)
+        year = LocalDateTime.now(clock).year
         data = (_state.value?.data ?: ConsentData(year = year))
                 .copy(consentStatus = status)
 
@@ -154,7 +146,7 @@ public class ConsentViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        job.cancel()
+        scope.cancel()
         super.onCleared()
     }
 }

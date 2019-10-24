@@ -13,7 +13,6 @@ android {
         applicationId "it.scoppelletti.consent.sample"
         minSdkVersion versionMap.sdk_min
         targetSdkVersion versionMap.sdk_target
-        multiDexEnabled true
         versionCode 1
         versionName adsConsentVersion
         vectorDrawables.useSupportLibrary = true
@@ -40,14 +39,14 @@ android {
     }
     buildTypes {
         debug {
-            minifyEnabled false
-            useProguard false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-rules.pro', 'debug-rules.pro'
             debuggable true
         }
         release {
-            // ProGuard fails!
-            minifyEnabled false
-            useProguard false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable false
         }
     }
@@ -65,13 +64,15 @@ dependencies {
     implementation "androidx.annotation:annotation:${versionMap.androidx_annotation}"
     implementation "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
     implementation "androidx.browser:browser:${versionMap.androidx_browser}"
-    implementation "androidx.multidex:multidex:${versionMap.androidx_multidex}"
     implementation "com.google.android.ads.consent:consent-library:${adsConsentVersion}"
     implementation "com.google.android.material:material:${versionMap.androidx_material}"
     implementation "com.google.firebase:firebase-ads:${versionMap.firebase_ads}"
     implementation "com.google.firebase:firebase-core:${versionMap.firebase_core}"
     implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
-    implementation("it.scoppelletti.spaceship:spaceship:${versionMap.spaceship}") {
+    implementation("it.scoppelletti.spaceship:spaceship-stdlib:${versionMap.spaceship}") {
+        changing = true
+    }
+    implementation("it.scoppelletti.spaceship:spaceship-ui:${versionMap.spaceship}") {
         changing = true
     }
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
@@ -79,4 +80,3 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
-

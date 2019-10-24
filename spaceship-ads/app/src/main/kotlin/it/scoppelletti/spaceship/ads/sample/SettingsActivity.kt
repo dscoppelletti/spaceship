@@ -1,6 +1,7 @@
 package it.scoppelletti.spaceship.ads.sample
 
 import android.os.Bundle
+import androidx.preference.Preference
 import it.scoppelletti.spaceship.ads.app.AbstractConsentActivity
 import it.scoppelletti.spaceship.preference.AbstractPreferenceFragment
 import it.scoppelletti.spaceship.preference.AbstractSettingsActivity
@@ -19,8 +20,9 @@ class SettingsFragment : AbstractPreferenceFragment() {
     ) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
-        findPreference(MainApp.PROP_ADS).startActivityConfig { intent ->
-            intent.putExtra(AbstractConsentActivity.PROP_SETTINGS, true)
-        }
+        findPreference<Preference>(MainApp.PROP_ADS)
+                ?.startActivityConfig { intent ->
+                    intent.putExtra(AbstractConsentActivity.PROP_SETTINGS, true)
+                }
     }
 }

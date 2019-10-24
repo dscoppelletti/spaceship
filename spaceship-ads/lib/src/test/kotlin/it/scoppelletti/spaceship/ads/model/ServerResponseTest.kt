@@ -3,7 +3,7 @@ package it.scoppelletti.spaceship.ads.model
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import it.scoppelletti.spaceship.io.closeQuietly
-import it.scoppelletti.spaceship.types.trimRaw
+import it.scoppelletti.spaceship.types.joinLines
 import okio.BufferedSource
 import okio.Okio
 import okio.Source
@@ -16,6 +16,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class ServerResponseTest {
+
     private lateinit var moshi: Moshi
     private lateinit var adapter: JsonAdapter<ServerResponse>
 
@@ -63,7 +64,7 @@ class ServerResponseTest {
         assertFalse(publisher.lookupFailed, "Lookup is failed.")
         assertFalse(publisher.notFound, "Publisher not found.")
         assertTrue(publisher.isNPA, """Publisher has not configured any non
-                |personalized Ad providers.""".trimRaw())
+                |personalized Ad providers.""".trimMargin().joinLines())
 
         assertEquals(3, resp.companies.size,
                 "The number of providers is not 3.")

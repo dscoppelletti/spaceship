@@ -20,10 +20,10 @@ package it.scoppelletti.spaceship.ads.consent
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import it.scoppelletti.spaceship.StdlibExt
 import it.scoppelletti.spaceship.ads.model.ConsentData
 import it.scoppelletti.spaceship.io.IOProvider
 import it.scoppelletti.spaceship.io.closeQuietly
-import it.scoppelletti.spaceship.types.TimeProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mu.KotlinLogging
@@ -32,23 +32,22 @@ import okio.BufferedSource
 import okio.Okio
 import okio.Sink
 import okio.Source
+import org.threeten.bp.Clock
+import org.threeten.bp.LocalDateTime
 import java.io.File
-import java.util.Calendar
 import javax.inject.Inject
+import javax.inject.Named
 
 /**
  * Default implementation of the `ConsentDataStore` interface.
  *
  * @since 1.0.0
- *
- * @constructor              Constructor.
- * @param       ioProvider   Provides I/O components.
- * @param       timeProvider Provides components for operations on dates and
- *                           times.
  */
 public class DefaultConsentDataStore @Inject constructor(
         ioProvider: IOProvider,
-        private val timeProvider: TimeProvider
+
+        @Named(StdlibExt.DEP_UTCCLOCK)
+        private val clock: Clock
 ) : ConsentDataStore {
     private val file: File
     private val adapter: JsonAdapter<ConsentData>
@@ -76,8 +75,7 @@ public class DefaultConsentDataStore @Inject constructor(
                     stream?.closeQuietly()
                 }
 
-                data ?: ConsentData(year = timeProvider.currentTime()
-                        .get(Calendar.YEAR))
+                data ?: ConsentData(year = LocalDateTime.now(clock).year)
             }
 
     public override suspend fun save(data: ConsentData) =

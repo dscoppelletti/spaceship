@@ -25,6 +25,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.UiThread
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -32,9 +33,8 @@ import it.scoppelletti.spaceship.ads.R
 import it.scoppelletti.spaceship.ads.consent.ConsentStatus
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentFragmentViewModel
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentViewModel
-import it.scoppelletti.spaceship.inject.Injectable
+import it.scoppelletti.spaceship.app.uiComponent
 import kotlinx.android.synthetic.main.it_scoppelletti_ads_consentreminder_fragment.*
-import javax.inject.Inject
 
 /**
  * Reminds the user that she can change her choice anytime.
@@ -43,11 +43,9 @@ import javax.inject.Inject
  * @since 1.0.0
  */
 @UiThread
-public class ConsentReminderFragment : Fragment(), Injectable {
+public class ConsentReminderFragment : Fragment() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
+    private lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var activityViewModel: ConsentViewModel
     private lateinit var viewModel: ConsentFragmentViewModel
 
@@ -67,17 +65,21 @@ public class ConsentReminderFragment : Fragment(), Injectable {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         val url: String
+        val activity: FragmentActivity
 
         super.onActivityCreated(savedInstanceState)
 
-        activityViewModel = ViewModelProviders.of(requireActivity(),
-                viewModelFactory).get(ConsentViewModel::class.java)
+        activity = requireActivity()
+        viewModelFactory = activity.uiComponent().viewModelFactory()
+        activityViewModel = ViewModelProviders.of(activity, viewModelFactory)
+                .get(ConsentViewModel::class.java)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(ConsentFragmentViewModel::class.java)
 
-        viewModel.text.observe(this, Observer<CharSequence> { text ->
-            txtMessage.text = text
-        })
+        viewModel.text.observe(viewLifecycleOwner,
+                Observer<CharSequence> { text ->
+                    txtMessage.text = text
+                })
 
         url = getString(R.string.it_scoppelletti_url_privacy)
         viewModel.buildText(getString(

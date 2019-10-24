@@ -2,7 +2,7 @@ package it.scoppelletti.consent.sample
 
 import com.google.ads.consent.ConsentFormListener
 import com.google.ads.consent.ConsentStatus
-import it.scoppelletti.spaceship.types.trimRaw
+import it.scoppelletti.spaceship.types.joinLines
 import mu.KLogger
 import mu.KotlinLogging
 
@@ -26,8 +26,11 @@ class DefaultConsentFormListener(
             consentStatus: ConsentStatus?,
             userPrefersAdFree: Boolean?)
     {
-        logger.info { """Consent form was closed (consentStatus: $consentStatus,
-            |userPrefersAdFree: $userPrefersAdFree).""".trimRaw() }
+        logger.info {
+            """Consent form was closed (consentStatus: $consentStatus,
+            |userPrefersAdFree: $userPrefersAdFree).""".trimMargin().joinLines()
+        }
+
         onResult(consentStatus)
     }
 

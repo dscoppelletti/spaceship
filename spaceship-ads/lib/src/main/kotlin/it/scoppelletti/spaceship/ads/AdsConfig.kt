@@ -20,6 +20,7 @@ package it.scoppelletti.spaceship.ads
 
 import com.squareup.moshi.JsonClass
 import it.scoppelletti.spaceship.ads.consent.DebugGeography
+import it.scoppelletti.spaceship.types.StringExt
 
 /**
  * Configuration of AdMob.
@@ -34,9 +35,20 @@ import it.scoppelletti.spaceship.ads.consent.DebugGeography
  */
 @JsonClass(generateAdapter = true)
 public data class AdsConfig(
-        public val serviceUrl: String,
-        public val publisherId: String,
-        public val appId: String,
-        public val unitIds: List<String>,
+        public val serviceUrl: String = StringExt.EMPTY,
+        public val publisherId: String = StringExt.EMPTY,
+        public val appId: String = StringExt.EMPTY,
+        public val unitIds: List<String> = emptyList(),
         public val debugGeography: DebugGeography = DebugGeography.DISABLED
 )
+
+/**
+ * Wrapper for the configuration of AdMob.
+ *
+ * @since 1.0.0
+ */
+public class AdsConfigWrapper {
+
+    @Volatile
+    public var value = AdsConfig()
+}

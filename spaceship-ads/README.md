@@ -1,6 +1,6 @@
 # Module spaceship-ads
 
-Spaceship Library for AdMob.
+Spaceship for AdMob.
 
 * [AdMob](http://www.google.com/admob)
 
@@ -25,6 +25,10 @@ Area (EEA).
 
 * [Requesting Consent from European Users](http://developers.google.com/admob/android/eu-consent)
 * [Ads EU consent](http://github.com/dscoppelletti/spaceship/wiki/Ads-EU-consent)
+
+# Package it.scoppelletti.spaceship.gms.i18n
+
+Internazionalization.
 
 # Package it.scoppelletti.spaceship.ads.inject
 

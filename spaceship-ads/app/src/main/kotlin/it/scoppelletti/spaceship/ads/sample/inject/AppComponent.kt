@@ -6,25 +6,24 @@ package it.scoppelletti.spaceship.ads.sample.inject
 import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
-import dagger.android.AndroidInjectionModule
-import it.scoppelletti.spaceship.ads.inject.AdsViewModelsModule
-import it.scoppelletti.spaceship.ads.sample.MainApp
-import it.scoppelletti.spaceship.inject.CoreViewsModule
+import it.scoppelletti.spaceship.ads.inject.AdsComponent
+import it.scoppelletti.spaceship.ads.inject.AdsModule
+import it.scoppelletti.spaceship.inject.StdlibComponent
+import it.scoppelletti.spaceship.inject.StdlibModule
+import it.scoppelletti.spaceship.inject.UIComponent
+import it.scoppelletti.spaceship.inject.UIModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [ AndroidInjectionModule::class, ViewsModule::class,
-    CoreViewsModule::class, AdsViewModelsModule::class ])
-interface AppComponent {
+@Component(modules = [ AdsModule::class, StdlibModule::class, UIModule::class ])
+interface AppComponent : AdsComponent, StdlibComponent, UIComponent {
 
-    fun inject(app: MainApp)
-
-    @Component.Builder
-    interface Builder
-    {
-        @BindsInstance
-        fun application(application: Application): Builder
-
-        fun build(): AppComponent
+    @Component.Factory
+    interface Factory {
+        fun create(
+                @BindsInstance
+                application: Application
+        ): AppComponent
     }
 }
+

@@ -23,27 +23,24 @@ import android.view.MenuItem
 import androidx.annotation.UiThread
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
+import it.scoppelletti.spaceship.ApplicationException
 import it.scoppelletti.spaceship.ads.AdsExt
 import it.scoppelletti.spaceship.ads.R
 import it.scoppelletti.spaceship.ads.consent.ConsentStatus
+import it.scoppelletti.spaceship.ads.i18n.AdsMessages
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentState
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentStatusObservable
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentViewModel
 import it.scoppelletti.spaceship.ads.widget.ConsentPagerAdapter
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
+import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.app.tryFinish
-import it.scoppelletti.spaceship.applicationException
-import it.scoppelletti.spaceship.inject.Injectable
+import it.scoppelletti.spaceship.app.uiComponent
 import kotlinx.android.synthetic.main.it_scoppelletti_ads_consent_activity.*
-import javax.inject.Inject
 
 /**
  * Prompts the user for consent to receive perzonalized advertising.
@@ -57,21 +54,11 @@ import javax.inject.Inject
  * @since 1.0.0
  */
 @UiThread
-public abstract class AbstractConsentActivity : AppCompatActivity(), Injectable,
-        HasSupportFragmentInjector,
+public abstract class AbstractConsentActivity : AppCompatActivity(),
         OnDialogResultListener {
 
-    @Inject
-    lateinit var fragmentDispatchingAndroidInjector:
-            DispatchingAndroidInjector<Fragment>
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    @Inject
-    lateinit var exDialog: ExceptionDialogFragment.Builder
-
     private var settings: Boolean = false
+    private lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: ConsentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,6 +79,7 @@ public abstract class AbstractConsentActivity : AppCompatActivity(), Injectable,
         contentPager.swipeEnabled = false
         contentPager.adapter = ConsentPagerAdapter(this, supportFragmentManager)
 
+        viewModelFactory = uiComponent().viewModelFactory()
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(ConsentViewModel::class.java)
 
@@ -104,17 +92,13 @@ public abstract class AbstractConsentActivity : AppCompatActivity(), Injectable,
         viewModel.load()
     }
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> =
-            fragmentDispatchingAndroidInjector
-
     private fun stateObserver(state: ConsentState) {
         if (state.waiting) {
             setCurrentItem(state)
             progressIndicator.show()
         } else {
-            progressIndicator.hide {
-                onStateUpdate(state)
-            }
+            progressIndicator.hide()
+            onStateUpdate(state)
         }
     }
 
@@ -127,17 +111,15 @@ public abstract class AbstractConsentActivity : AppCompatActivity(), Injectable,
     private fun onStateUpdate(state: ConsentState) {
         state.error?.poll()?.let { err ->
             setCurrentItem(state)
-            exDialog.show(this, err)
+            showExceptionDialog(err)
             return
         }
 
         if (settings) {
             if (state.data.consentStatus == ConsentStatus.NOT_IN_EEA) {
                 setCurrentItem(state)
-                exDialog.show(this, applicationException {
-                    message(R.string.it_scoppelletti_ads_err_notInEea)
-                })
-
+                showExceptionDialog(ApplicationException(
+                        AdsMessages.errorUserNotLocatedInEea()))
                 return
             }
 
@@ -170,8 +152,8 @@ public abstract class AbstractConsentActivity : AppCompatActivity(), Injectable,
      */
     public abstract fun onComplete(): Boolean
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             android.R.id.home -> {
                 if (!viewModel.backStep()) {
                     tryFinish()

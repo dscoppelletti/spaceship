@@ -23,7 +23,7 @@ import android.text.SpannedString
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import it.scoppelletti.spaceship.CoreExt
+import it.scoppelletti.spaceship.StdlibExt
 import it.scoppelletti.spaceship.html.HtmlExt
 import it.scoppelletti.spaceship.html.fromHtml
 import it.scoppelletti.spaceship.html.replaceHyperlinks
@@ -31,37 +31,31 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import mu.KotlinLogging
 import javax.inject.Inject
 import javax.inject.Named
-import kotlin.coroutines.CoroutineContext
 
 /**
  * ViewModel of the `ConsentPromptFragment` view.
  *
- * @see           it.scoppelletti.spaceship.ads.app.ConsentPromptFragment
- * @since         1.0.0
+ * @see   it.scoppelletti.spaceship.ads.app.ConsentPromptFragment
+ * @since 1.0.0
  *
  * @property text Message text.
- *
- * @constructor            Constructor.
- * @param       dispatcher Coroutine dispatcher.
- * @param       tagHandler Handles the HTML custom tags.
  */
 public class ConsentPromptViewModel @Inject constructor(
 
-        @Named(CoreExt.DEP_MAINDISPATCHER)
-        dispatcher: CoroutineDispatcher,
-
         @Named(HtmlExt.DEP_TAGHANDLER)
-        private val tagHandler: Html.TagHandler
-) : ViewModel(), CoroutineScope {
+        private val tagHandler: Html.TagHandler,
 
+        @Named(StdlibExt.DEP_MAINDISPATCHER)
+        dispatcher: CoroutineDispatcher
+) : ViewModel() {
+
+    private val scope = CoroutineScope(dispatcher + Job())
     private val _text = MutableLiveData<CharSequence>()
-    private val job = Job()
-
-    override val coroutineContext: CoroutineContext = dispatcher + job
 
     public val text: LiveData<CharSequence> = _text
 
@@ -76,7 +70,7 @@ public class ConsentPromptViewModel @Inject constructor(
             source: String,
             url: String,
             onClick: (String) -> Unit
-    ) = launch {
+    ) = scope.launch {
         val text: CharSequence
 
         if (_text.value != null) {
@@ -99,7 +93,7 @@ public class ConsentPromptViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        job.cancel()
+        scope.cancel()
         super.onCleared()
     }
 

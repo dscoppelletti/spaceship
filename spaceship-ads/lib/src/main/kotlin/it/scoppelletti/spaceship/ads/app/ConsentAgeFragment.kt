@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier")
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
 
 package it.scoppelletti.spaceship.ads.app
 
@@ -25,15 +25,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.UiThread
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import it.scoppelletti.spaceship.ads.R
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentFragmentViewModel
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentViewModel
-import it.scoppelletti.spaceship.inject.Injectable
+import it.scoppelletti.spaceship.app.uiComponent
 import kotlinx.android.synthetic.main.it_scoppelletti_ads_consentage_fragment.*
-import javax.inject.Inject
 
 /**
  * Prompts the user for her age status.
@@ -42,11 +42,9 @@ import javax.inject.Inject
  * @since 1.0.0
  */
 @UiThread
-public class ConsentAgeFragment : Fragment(), Injectable {
+public class ConsentAgeFragment : Fragment() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
+    private lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var activityViewModel: ConsentViewModel
     private lateinit var viewModel: ConsentFragmentViewModel
 
@@ -65,16 +63,21 @@ public class ConsentAgeFragment : Fragment(), Injectable {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        val activity: FragmentActivity
+
         super.onActivityCreated(savedInstanceState)
 
-        activityViewModel = ViewModelProviders.of(requireActivity(),
-                viewModelFactory).get(ConsentViewModel::class.java)
+        activity = requireActivity()
+        viewModelFactory = activity.uiComponent().viewModelFactory()
+        activityViewModel = ViewModelProviders.of(activity, viewModelFactory)
+                .get(ConsentViewModel::class.java)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(ConsentFragmentViewModel::class.java)
 
-        viewModel.text.observe(this, Observer<CharSequence> { text ->
-            txtMessage.text = text
-        })
+        viewModel.text.observe(viewLifecycleOwner,
+                Observer<CharSequence> { text ->
+                    txtMessage.text = text
+                })
 
         viewModel.buildText(getString(R.string.it_scoppelletti_ads_html_age))
 

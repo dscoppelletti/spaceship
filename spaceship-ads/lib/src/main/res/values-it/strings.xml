@@ -5,6 +5,7 @@
     <string name="it_scoppelletti_ads_cmd_reminder">No, vedrò annunci che saranno meno rilevanti</string>
     <string name="it_scoppelletti_ads_cmd_settings">Annunci</string>
     <string name="it_scoppelletti_ads_cmd_underage">Ho meno di 16 anni</string>
+    <string name="it_scoppelletti_ads_err_config">Non riesco a leggere la configurazione per la pubblicità. Sei sicuro che la tua connessione Internet sia disponibile?</string>
     <string name="it_scoppelletti_ads_err_internal">%1$d - Errore interno.</string>
     <string name="it_scoppelletti_ads_err_invalid_request">%1$d - Richiesta non valida.</string>
     <string name="it_scoppelletti_ads_err_network">%1$d - Errore di rete.</string>
@@ -14,7 +15,6 @@
     <string name="it_scoppelletti_ads_err_notFound">Agenti non trovati: %2$d: %1$s.</string>
     <string name="it_scoppelletti_ads_err_notInEea">Questa funzione è abilitata solo per gli utenti nell\'Area Economica Europea.</string>
     <string name="it_scoppelletti_ads_err_publisher">Errore di rete per: %1$s. Editori non trovati: %2$s.</string>
-    <string name="it_scoppelletti_ads_err_user">Non riesco a leggere la configurazione per la pubblicità. Sei sicuro che la tua connessione Internet sia disponibile?</string>
     <string name="it_scoppelletti_ads_html_age"><![CDATA[<it-scoppelletti-contentHandler/>
 <p><big><b><it-scoppelletti-resource name="it_scoppelletti_ads_lbl_underage" type="string" /></b></big></p>
 <p>Noi tuteliamo la privacy e la sicurezza dei dati personali dei minori.</p>]]></string>

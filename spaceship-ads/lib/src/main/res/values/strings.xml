@@ -5,6 +5,7 @@
     <string name="it_scoppelletti_ads_cmd_reminder">No, see adds that are less relevant</string>
     <string name="it_scoppelletti_ads_cmd_settings">Advertisements</string>
     <string name="it_scoppelletti_ads_cmd_underage">I am younger than 16</string>
+    <string name="it_scoppelletti_ads_err_config">Cannot load advertising configuration. Are you sure your Internet connections is available?</string>
     <string name="it_scoppelletti_ads_err_internal">%1$d - Internal error.</string>
     <string name="it_scoppelletti_ads_err_invalid_request">%1$d - Invalid request.</string>
     <string name="it_scoppelletti_ads_err_network">%1$d - Network error.</string>
@@ -14,7 +15,6 @@
     <string name="it_scoppelletti_ads_err_notFound">Publisher Ids not found: %2$d: %1$s.</string>
     <string name="it_scoppelletti_ads_err_notInEea">This feature is enabled only for users located in European Economic Area.</string>
     <string name="it_scoppelletti_ads_err_publisher">Lookup failure for: %1$s. Publisher Ids not found: %2$d.</string>
-    <string name="it_scoppelletti_ads_err_user">Cannot load advertising configuration. Are you sure your Internet connections is available?</string>
     <string name="it_scoppelletti_ads_html_age"><![CDATA[<it-scoppelletti-contentHandler/>
 <p><big><b><it-scoppelletti-resource name="it_scoppelletti_ads_lbl_underage" type="string" /></b></big></p>
 <p>We care about privacy and data security of children.</p>]]></string>

@@ -29,21 +29,22 @@ import android.widget.Button
 import androidx.annotation.UiThread
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.chip.Chip
+import it.scoppelletti.spaceship.ApplicationException
 import it.scoppelletti.spaceship.ads.R
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentPrivacyState
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentPrivacyViewModel
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentViewModel
 import it.scoppelletti.spaceship.ads.model.AdProvider
-import it.scoppelletti.spaceship.app.ExceptionDialogFragment
-import it.scoppelletti.spaceship.applicationException
-import it.scoppelletti.spaceship.inject.Injectable
+import it.scoppelletti.spaceship.app.showExceptionDialog
+import it.scoppelletti.spaceship.app.uiComponent
+import it.scoppelletti.spaceship.i18n.UIMessages
 import kotlinx.android.synthetic.main.it_scoppelletti_ads_consentprivacy_fragment.*
 import java.lang.RuntimeException
-import javax.inject.Inject
 
 /**
  * Gives access to the privacy policies.
@@ -52,14 +53,9 @@ import javax.inject.Inject
  * @since 1.0.0
  */
 @UiThread
-public class ConsentPrivacyFragment : Fragment(), Injectable {
+public class ConsentPrivacyFragment : Fragment() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    @Inject
-    lateinit var exDialog: ExceptionDialogFragment.Builder
-
+    private lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var activityViewModel: ConsentViewModel
     private lateinit var viewModel: ConsentPrivacyViewModel
 
@@ -80,18 +76,22 @@ public class ConsentPrivacyFragment : Fragment(), Injectable {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         val url: String
+        val activity: FragmentActivity
 
         super.onActivityCreated(savedInstanceState)
 
-        activityViewModel = ViewModelProviders.of(requireActivity(),
-                viewModelFactory).get(ConsentViewModel::class.java)
+        activity = requireActivity()
+        viewModelFactory = activity.uiComponent().viewModelFactory()
+        activityViewModel = ViewModelProviders.of(activity, viewModelFactory)
+                .get(ConsentViewModel::class.java)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(ConsentPrivacyViewModel::class.java)
 
-        viewModel.state.observe(this, Observer<ConsentPrivacyState> { state ->
-            txtHeader.text = state?.header
-            txtFooter.text = state?.footer
-        })
+        viewModel.state.observe(viewLifecycleOwner,
+                Observer<ConsentPrivacyState> { state ->
+                    txtHeader.text = state?.header
+                    txtFooter.text = state?.footer
+                })
 
         url = getString(R.string.it_scoppelletti_url_privacy)
         viewModel.buildText(getString(R.string.it_scoppelletti_ads_html_header),
@@ -143,10 +143,8 @@ public class ConsentPrivacyFragment : Fragment(), Injectable {
             intent.data = Uri.parse(url)
             startActivity(intent)
         } catch (ex: RuntimeException) {
-            exDialog.show(requireActivity(), applicationException {
-                message(R.string.it_scoppelletti_err_startActivity)
-                cause = ex
-            })
+            requireActivity().showExceptionDialog(
+                    ApplicationException(UIMessages.errorStartActivity(), ex))
         }
     }
 

@@ -18,31 +18,41 @@
 
 package it.scoppelletti.spaceship.ads.inject
 
+import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Lazy
 import dagger.Module
 import dagger.Provides
+import dagger.multibindings.IntoMap
 import it.scoppelletti.spaceship.ads.AdsExt
-import it.scoppelletti.spaceship.ads.AdsConfig
+import it.scoppelletti.spaceship.ads.AdsConfigWrapper
 import it.scoppelletti.spaceship.ads.consent.AdService
 import it.scoppelletti.spaceship.ads.consent.ConsentDataLoader
 import it.scoppelletti.spaceship.ads.consent.ConsentDataStore
 import it.scoppelletti.spaceship.ads.consent.DefaultConsentDataLoader
 import it.scoppelletti.spaceship.ads.consent.DefaultConsentDataStore
-import it.scoppelletti.spaceship.inject.CoreModule
-import it.scoppelletti.spaceship.inject.IOModule
-import it.scoppelletti.spaceship.inject.TimeModule
+import it.scoppelletti.spaceship.ads.lifecycle.ConsentFragmentViewModel
+import it.scoppelletti.spaceship.ads.lifecycle.ConsentPrivacyViewModel
+import it.scoppelletti.spaceship.ads.lifecycle.ConsentPromptViewModel
+import it.scoppelletti.spaceship.ads.lifecycle.ConsentViewModel
+import it.scoppelletti.spaceship.html.inject.HtmlModule
+import it.scoppelletti.spaceship.inject.StdlibModule
+import it.scoppelletti.spaceship.inject.UIModule
+import it.scoppelletti.spaceship.inject.ViewModelKey
+import it.scoppelletti.spaceship.preference.inject.PreferenceModule
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Named
+import javax.inject.Singleton
 
 /**
  * Defines the dependencies exported by this library.
  *
  * @since 1.0.0
  */
-@Module(includes = [ CoreModule::class, IOModule::class, TimeModule::class ])
+@Module(includes = [ PreferenceModule::class, HtmlModule::class,
+    StdlibModule::class, UIModule::class ])
 public abstract class AdsModule {
 
     @Binds
@@ -55,24 +65,41 @@ public abstract class AdsModule {
             obj: DefaultConsentDataStore
     ): ConsentDataStore
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(ConsentViewModel::class)
+    public abstract fun bindConsentViewModel(
+            viewsModel: ConsentViewModel
+    ): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ConsentFragmentViewModel::class)
+    public abstract fun bindConsentFragmentViewModel(
+            viewsModel: ConsentFragmentViewModel
+    ): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ConsentPromptViewModel::class)
+    public abstract fun bindConsentPromptViewModel(
+            viewsModel: ConsentPromptViewModel
+    ): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ConsentPrivacyViewModel::class)
+    public abstract fun bindConsentPrivacyViewModel(
+            viewsModel: ConsentPrivacyViewModel
+    ): ViewModel
+
     @Module
     public companion object {
 
-        @Volatile
-        private lateinit var adsConfig: AdsConfig
-
-        /**
-         * Registers the `AdsConfig` object.
-         *
-         * @param obj The object.
-         */
-        public fun registerAdsConfig(obj: AdsConfig) {
-            adsConfig = obj
-        }
-
         @Provides
+        @Singleton
         @JvmStatic
-        public fun provideAdsConfig(): AdsConfig = adsConfig
+        public fun provideConfig(): AdsConfigWrapper = AdsConfigWrapper()
 
         @Provides
         @JvmStatic
@@ -84,11 +111,11 @@ public abstract class AdsModule {
         @JvmStatic
         @Named(AdsExt.DEP_RETROFIT)
         public fun provideRetrofit(
-                adsConfig: AdsConfig,
+                adsConfigWrapper: AdsConfigWrapper,
                 @Named(AdsExt.DEP_HTTPCLIENT) httpClient: Lazy<OkHttpClient>
         ): Retrofit {
             return Retrofit.Builder()
-                    .baseUrl(adsConfig.serviceUrl)
+                    .baseUrl(adsConfigWrapper.value.serviceUrl)
                     .addConverterFactory(MoshiConverterFactory.create())
                     .callFactory { req -> httpClient.get().newCall(req) }
                     .build()

@@ -20,7 +20,7 @@ import it.scoppelletti.spaceship.ads.DefaultAdListener
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
 import it.scoppelletti.spaceship.app.tryFinish
-import it.scoppelletti.spaceship.types.trimRaw
+import it.scoppelletti.spaceship.types.joinLines
 import kotlinx.android.synthetic.main.main_activity.*
 import mu.KotlinLogging
 import java.net.URL
@@ -64,8 +64,11 @@ class MainActivity : AppCompatActivity(), OnDialogResultListener,
             return
         }
 
-        logger.debug { """The user is located in the European Economic Area
-            |and the consent status is $consentStatus.""".trimRaw() }
+        logger.debug {
+            """The user is located in the European Economic Area and the consent
+                |status is $consentStatus.""".trimMargin().joinLines()
+        }
+
         if (consentStatus in arrayOf(ConsentStatus.PERSONALIZED,
                         ConsentStatus.NON_PERSONALIZED)) {
             onConsentResult(consentStatus)

@@ -1,4 +1,4 @@
-package it.scoppelletti.spaceship.security
+package it.scoppelletti.spaceship.types
 
 import org.threeten.bp.Clock
 import org.threeten.bp.Instant

@@ -13,3 +13,9 @@ Contains high-level classes encapsulating the overall Android application model.
 # Package it.scoppelletti.spaceship.gms.i18n
 
 Internazionalization.
+
+# Package it.scoppelletti.spaceship.ads.inject
+
+Dependency injection.
+
+* [Dagger 2](http://google.github.io/dagger)

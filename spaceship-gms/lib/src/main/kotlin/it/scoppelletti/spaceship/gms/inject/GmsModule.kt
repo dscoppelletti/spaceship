@@ -16,24 +16,26 @@
 
 @file:Suppress("RedundantVisibilityModifier", "unused")
 
-package it.scoppelletti.spaceship.gms
+package it.scoppelletti.spaceship.gms.inject
 
-import com.crashlytics.android.Crashlytics
+import dagger.Binds
+import dagger.Module
+import dagger.multibindings.IntoSet
 import it.scoppelletti.spaceship.ExceptionLoggerHandler
-import javax.inject.Inject
+import it.scoppelletti.spaceship.gms.FirebaseExceptionLoggerHandler
+import it.scoppelletti.spaceship.inject.UIModule
 
 /**
- * Implementation of `ExceptionLoggerHandler` interface using Firebase
- * Crashlytics.
- *
- * * [Firebase Crashlytics](http://firebase.google.com/products/crashlytics)
+ * Defines the dependencies exported by this library.
  *
  * @since 1.0.0
  */
-public class FirebaseExceptionLoggerHandler @Inject constructor(
-): ExceptionLoggerHandler<Throwable> {
+@Module(includes = [ UIModule::class ])
+public abstract class GmsModule {
 
-    override fun log(ex: Throwable) {
-        Crashlytics.logException(ex)
-    }
+    @Binds
+    @IntoSet
+    abstract fun bindExceptionLoggerHandler(
+            obj: FirebaseExceptionLoggerHandler
+    ): ExceptionLoggerHandler<*>
 }

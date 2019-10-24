@@ -14,7 +14,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="it.scoppelletti.spaceship.http">
-    <application android:supportsRtl="true" />
+<manifest package="it.scoppelletti.spaceship.http">
 </manifest>

@@ -8,7 +8,7 @@ Provides common utility classes.
 
 # Package it.scoppelletti.spaceship.i18n
 
-Internazionalization.
+Internationalization.
 
 # Package it.scoppelletti.spaceship.inject
 

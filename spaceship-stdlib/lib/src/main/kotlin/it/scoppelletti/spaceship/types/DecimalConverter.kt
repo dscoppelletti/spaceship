@@ -19,14 +19,22 @@
 package it.scoppelletti.spaceship.types
 
 import java.math.BigDecimal
+import java.math.RoundingMode
 import java.text.ParseException
 
 /**
  * Conversion between decimal numbers and strings.
  *
  * @since 1.0.0
+ *
+ * @property fractionDigits Number of digits in the fraction portion of a
+ *                          number.
+ * @property roundingMode   Rounding behavior.
  */
 public interface DecimalConverter {
+
+    val fractionDigits: Int
+    val roundingMode: RoundingMode
 
     /**
      * Formats a number as a string.

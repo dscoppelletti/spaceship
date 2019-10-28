@@ -20,8 +20,8 @@ package it.scoppelletti.spaceship.types
 
 import it.scoppelletti.spaceship.i18n.I18NProvider
 import mu.KotlinLogging
-import java.lang.Exception
 import java.math.BigDecimal
+import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.ParseException
@@ -34,21 +34,28 @@ import java.text.ParsePosition
  *
  * @property format Provides the interface for formatting and parsing numbers.
  *
- * @constructor                Constructor.
- * @param       fractionDigits Number of digits in the fraction portion of a
- *                             number.
- * @param       groupingUsed   Whether grouping will be used in this converter.
- * @param       i18nProvider   Provides I18N dependencies.
+ * @constructor                     Constructor.
+ * @param       fractionDigitsFixed Number of digits in the fraction portion of
+ *                                  a number.
+ * @param       groupingUsedFixed   Whether grouping will be used in this
+ *                                  converter.
+ * @param       i18nProvider        Provides I18N dependencies.
  */
 public abstract class AbstractDecimalConverter protected constructor(
-        private val fractionDigits: Int?,
-        private val groupingUsed: Boolean?,
+        private val fractionDigitsFixed: Int?,
+        private val groupingUsedFixed: Boolean?,
         private val i18nProvider: I18NProvider
 ) : DecimalConverter {
 
     protected val format: NumberFormat by lazy {
         createFormat()
     }
+
+    override val fractionDigits: Int
+        get() = format.maximumFractionDigits
+
+    override val roundingMode: RoundingMode
+        get() = format.roundingMode
 
     override fun format(value: BigDecimal?): String? =
             if (value == null) null else format.format(value)
@@ -69,7 +76,14 @@ public abstract class AbstractDecimalConverter protected constructor(
                     if (pos.errorIndex >= 0) pos.errorIndex else pos.index)
         }
 
-        return x.setScale(format.maximumFractionDigits, format.roundingMode)
+        return try {
+            x.setScale(format.maximumFractionDigits, format.roundingMode)
+        } catch (ex: ArithmeticException) {
+            throw ParseException("Illegal format.", pos.index)
+                    .apply {
+                        initCause(ex)
+                    }
+        }
     }
 
     private fun createFormat(): NumberFormat {
@@ -78,16 +92,16 @@ public abstract class AbstractDecimalConverter protected constructor(
 
         numberFmt = NumberFormat.getNumberInstance(
                 i18nProvider.currentLocale()).apply {
-            if (fractionDigits == null) {
+            if (fractionDigitsFixed == null) {
                 maximumFractionDigits = defaultFractionDigits(this)
                 minimumFractionDigits = maximumFractionDigits
             } else {
-                minimumFractionDigits = fractionDigits
-                maximumFractionDigits = fractionDigits
+                minimumFractionDigits = fractionDigitsFixed
+                maximumFractionDigits = fractionDigitsFixed
             }
 
-            if (groupingUsed != null) {
-                isGroupingUsed = groupingUsed
+            if (groupingUsedFixed != null) {
+                isGroupingUsed = groupingUsedFixed
             }
         }
 

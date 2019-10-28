@@ -20,10 +20,15 @@ package it.scoppelletti.spaceship.gms.inject
 
 import dagger.Binds
 import dagger.Module
+import dagger.multibindings.IntoMap
 import dagger.multibindings.IntoSet
 import it.scoppelletti.spaceship.ExceptionLoggerHandler
 import it.scoppelletti.spaceship.gms.FirebaseExceptionLoggerHandler
+import it.scoppelletti.spaceship.gms.GmsException
+import it.scoppelletti.spaceship.gms.widget.GmsExceptionMapperHandler
+import it.scoppelletti.spaceship.inject.ExceptionMapperKey
 import it.scoppelletti.spaceship.inject.UIModule
+import it.scoppelletti.spaceship.widget.ExceptionMapperHandler
 
 /**
  * Defines the dependencies exported by this library.
@@ -38,4 +43,11 @@ public abstract class GmsModule {
     abstract fun bindExceptionLoggerHandler(
             obj: FirebaseExceptionLoggerHandler
     ): ExceptionLoggerHandler<*>
+
+    @Binds
+    @IntoMap
+    @ExceptionMapperKey(GmsException::class)
+    public abstract fun bindGmsExceptionMapperHandler(
+            adapter: GmsExceptionMapperHandler
+    ): ExceptionMapperHandler<*>
 }

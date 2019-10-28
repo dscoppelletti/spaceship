@@ -12,10 +12,15 @@ Contains high-level classes encapsulating the overall Android application model.
 
 # Package it.scoppelletti.spaceship.gms.i18n
 
-Internazionalization.
+Internationalization.
 
-# Package it.scoppelletti.spaceship.ads.inject
+# Package it.scoppelletti.spaceship.gms.inject
 
 Dependency injection.
 
 * [Dagger 2](http://google.github.io/dagger)
+
+# Package it.scoppelletti.spaceship.gms.widget
+
+The widget package contains (mostly visual) UI elements to use on your
+Application screen.

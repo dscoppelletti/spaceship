@@ -45,7 +45,10 @@ spaceship {
 dependencies {
     api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
     api "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
+    api "androidx.cardview:cardview:${versionMap.androidx_cardview}"
+    api "androidx.constraintlayout:constraintlayout:${versionMap.androidx_constraint}"
     api "com.google.android.gms:play-services-base:${versionMap.playservices_base}"
+    api "com.google.android.material:material:${versionMap.material}"
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
     implementation "com.crashlytics.sdk.android:crashlytics:${versionMap.firebase_crash}"
     implementation "com.google.firebase:firebase-core:${versionMap.firebase_core}"

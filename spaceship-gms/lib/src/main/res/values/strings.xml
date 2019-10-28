@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="it_scoppelletti_gms_err_googleApiNotAvailable">Google Play services not available.</string>
+    <string name="it_scoppelletti_gms_lbl_canceled">Canceled:</string>
+    <string name="it_scoppelletti_gms_lbl_interrupted">Interrupted:</string>
+    <string name="it_scoppelletti_gms_lbl_statusCode">Status code:</string>
 </resources>

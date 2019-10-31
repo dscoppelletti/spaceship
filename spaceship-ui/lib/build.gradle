@@ -54,6 +54,7 @@ dependencies {
     api "androidx.lifecycle:lifecycle-extensions:${versionMap.androidx_lifecycle}"
     kapt "androidx.databinding:databinding-compiler:${versionMap.android_gradle}"
     api "androidx.recyclerview:recyclerview:${versionMap.androidx_recyclerview}"
+    api "androidx.viewpager:viewpager:${versionMap.androidx_viewpager}"
     api "com.google.android.material:material:${versionMap.material}"
     api "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"

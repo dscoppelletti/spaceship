@@ -5,7 +5,7 @@
     android:clickable="true"
     android:gravity="center_vertical"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/it_scoppelletti_list_twoLineItem_height"
+    android:layout_height="@dimen/item_height"
     android:orientation="vertical"
     android:paddingLeft="@dimen/it_scoppelletti_marginHorz"
     android:paddingRight="@dimen/it_scoppelletti_marginHorz"

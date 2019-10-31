@@ -21,7 +21,7 @@ Contains components used when developing applications with data binding.
 
 # Package it.scoppelletti.spaceship.i18n
 
-Internazionalization.
+Internationalization.
 
 # Package it.scoppelletti.spaceship.inject
 

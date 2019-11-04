@@ -42,6 +42,7 @@ import it.scoppelletti.spaceship.widget.ExceptionListAdapter
 /**
  * Exception dialog.
  *
+ * @see   it.scoppelletti.spaceship.app.OnDialogResultListener
  * @since 1.0.0
  */
 @UiThread

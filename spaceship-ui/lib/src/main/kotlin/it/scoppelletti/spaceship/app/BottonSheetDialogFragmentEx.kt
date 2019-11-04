@@ -26,6 +26,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 /**
  * Extended `BottomSheetDialogFragment` fragment.
  *
+ * @see   it.scoppelletti.spaceship.app.OnDialogResultListener
  * @since 1.0.0
  */
 @UiThread

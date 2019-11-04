@@ -43,6 +43,7 @@ import it.scoppelletti.spaceship.types.StringExt
 /**
  * Alert dialog.
  *
+ * @see   it.scoppelletti.spaceship.app.OnDialogResultListener
  * @since 1.0.0
  */
 @UiThread

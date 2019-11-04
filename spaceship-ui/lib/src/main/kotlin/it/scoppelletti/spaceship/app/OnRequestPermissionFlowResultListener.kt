@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ * Copyright (C) 2019 Dario Scoppelletti, <http://www.scoppelletti.it/>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,23 +19,21 @@
 package it.scoppelletti.spaceship.app
 
 /**
- * Handles the result of a dialog.
+ * Handles the result of a Request App Permissions.
  *
- * @see   it.scoppelletti.spaceship.app.AlertDialogFragment
- * @see   it.scoppelletti.spaceship.app.BottonSheetDialogFragmentEx
- * @see   it.scoppelletti.spaceship.app.ExceptionDialogFragment
+ * * [Request App Permissions](http://developer.android.com/training/permissions/requesting)
+ *
  * @see   it.scoppelletti.spaceship.app.RequestPermissionFlow
  * @since 1.0.0
  */
-public interface OnDialogResultListener {
+public interface OnRequestPermissionFlowResultListener {
 
     /**
-     * This method will be invoked when a dialog is accepted or canceled.
+     * This method will be invoked when a request for permissions is granted or
+     * denied.
      *
-     * @param tag   Fragment tag.
-     * @param which ID of the button that was clicked (ex.
-     *              `DialogInterface.BUTTON_POSITIVE`) or the position of the
-     *              item clicked.
+     * @param requestCode Request code.
+     * @param result      Whether the permission has been granted or not.
      */
-    fun onDialogResult(tag: String, which: Int)
+    fun onRequestPermissionFlowResult(requestCode: Int, result: Boolean)
 }

@@ -21,6 +21,7 @@ package it.scoppelletti.spaceship.app
 import android.content.DialogInterface
 import android.content.pm.PackageManager
 import androidx.annotation.StringRes
+import androidx.annotation.UiThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -32,27 +33,28 @@ import mu.KotlinLogging
  *
  * * [Request App Permissions](http://developer.android.com/training/permissions/requesting)
  *
+ * @see   it.scoppelletti.spaceship.app.OnDialogResultListener
+ * @see   it.scoppelletti.spaceship.app.OnRequestPermissionFlowResultListener
  * @since 1.0.0
  *
- * @constructor
+ * @constructor             Constructor.
  * @param       activity    The activity hosting the flow.
  * @param       permission  The permission requested (one of the costants
  *                          defined by the class `Manifest.permission`).
- * @param       requestCode Request code of the request.
- * @param       tag         Fragment tag of the Alert dialog.
- * @param       message     Message shown by the Alert dialog.
- * @param       titleId     Title of the Alert dialog.
- * @param       action      Action requiring the permission.
+ * @param       requestCode Request code.
+ * @param       tag         Fragment tag of the Alert dialog showing the
+ *                          rationale.
+ * @param       message     Rationale for requesting the permission.
+ * @param       titleId     Title of the Alert dialog showing the rationale.
  */
+@UiThread
 public class RequestPermissionFlow(
         private val activity: AppCompatActivity,
         private val permission: String,
         private val requestCode: Int,
         private val tag: String,
         private val message: MessageSpec,
-        @StringRes private val titleId: Int,
-        private val action: () -> Unit
-) {
+        @StringRes private val titleId: Int) {
 
     /**
      * Starts the flow.
@@ -61,7 +63,7 @@ public class RequestPermissionFlow(
         if (ContextCompat.checkSelfPermission(activity, permission) ==
                 PackageManager.PERMISSION_GRANTED) {
             logger.debug("Permission $permission already granted.")
-            action()
+            onResult(true)
             return
         }
 
@@ -103,11 +105,12 @@ public class RequestPermissionFlow(
                 if (grantResults.isNotEmpty() && grantResults[0] ==
                         PackageManager.PERMISSION_GRANTED) {
                     logger.debug("Permission $permission granted.")
+                    onResult(true)
                 } else {
                     logger.debug("Permission $permission denied.")
+                    onResult(false)
                 }
 
-                action()
                 return true
             }
         }
@@ -136,6 +139,17 @@ public class RequestPermissionFlow(
         }
 
         return false
+    }
+
+    /**
+     * Callback for the result.
+     *
+     * @param result Whether the permission has been granted or not
+     */
+    private fun onResult(result: Boolean) {
+        if (activity is OnRequestPermissionFlowResultListener) {
+            activity.onRequestPermissionFlowResult(requestCode, result)
+        }
     }
 
     /**

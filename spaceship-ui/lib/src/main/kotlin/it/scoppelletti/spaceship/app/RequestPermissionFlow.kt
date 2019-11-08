@@ -130,8 +130,13 @@ public class RequestPermissionFlow(
         when (tag) {
             this.tag -> {
                 when (which) {
-                    DialogInterface.BUTTON_POSITIVE ->
+                    DialogInterface.BUTTON_POSITIVE -> {
                         prompt()
+                    }
+                    else -> {
+                        logger.debug("Permission $permission denied.")
+                        onResult(false)
+                    }
                 }
 
                 return true

@@ -19,6 +19,11 @@ Contains components used when developing applications with data binding.
 
 * [Data Binding Library](http://developer.android.com/topic/libraries/data-binding)
 
+# Package it.scoppelletti.spaceship.graphics
+
+Provides low level graphics tools such as canvases, color filters, points, and
+rectangles that let you handle drawing to the screen directly.
+
 # Package it.scoppelletti.spaceship.i18n
 
 Internationalization.

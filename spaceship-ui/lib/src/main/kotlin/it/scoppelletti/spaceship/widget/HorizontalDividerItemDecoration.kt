@@ -71,6 +71,7 @@ public class HorizontalDividerItemDecoration(
         }
     }
 
+    @Suppress("FoldInitializerAndIfToElvis")
     override fun onDraw(
             c: Canvas,
             parent: RecyclerView,
@@ -78,6 +79,7 @@ public class HorizontalDividerItemDecoration(
     ) {
         val left: Int
         val right: Int
+        var child: View?
 
         if (parent.clipToPadding) {
             left = parent.paddingLeft
@@ -91,7 +93,11 @@ public class HorizontalDividerItemDecoration(
 
         val bounds = Rect()
         for (i in 0 until state.itemCount) {
-            val child = parent.getChildAt(i)
+            child = parent.getChildAt(i)
+            if (child == null) {
+                continue
+            }
+
             val pos = parent.getChildAdapterPosition(child)
             if (pos == state.itemCount - 1) {
                 continue

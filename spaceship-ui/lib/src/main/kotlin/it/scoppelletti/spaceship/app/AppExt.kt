@@ -58,7 +58,7 @@ public object AppExt {
     /**
      * Tag of `BottomSheetDialogFragmentEx` fragment.
      *
-     * @see it.scoppelletti.spaceship.app.BottonSheetDialogFragmentEx
+     * @see it.scoppelletti.spaceship.app.BottomSheetDialogFragmentEx
      */
     public const val TAG_BOTTOMSHEETDIALOG = "it.scoppelletti.spaceship.3"
 

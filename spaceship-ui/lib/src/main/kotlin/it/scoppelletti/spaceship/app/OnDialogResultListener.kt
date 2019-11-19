@@ -22,7 +22,7 @@ package it.scoppelletti.spaceship.app
  * Handles the result of a dialog.
  *
  * @see   it.scoppelletti.spaceship.app.AlertDialogFragment
- * @see   it.scoppelletti.spaceship.app.BottonSheetDialogFragmentEx
+ * @see   it.scoppelletti.spaceship.app.BottomSheetDialogFragmentEx
  * @see   it.scoppelletti.spaceship.app.ExceptionDialogFragment
  * @see   it.scoppelletti.spaceship.app.RequestPermissionFlow
  * @since 1.0.0

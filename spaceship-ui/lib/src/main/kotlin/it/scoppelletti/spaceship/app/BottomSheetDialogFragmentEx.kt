@@ -30,22 +30,33 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
  * @since 1.0.0
  */
 @UiThread
-public abstract class BottonSheetDialogFragmentEx :
+public abstract class BottomSheetDialogFragmentEx :
         BottomSheetDialogFragment() {
+
+    /**
+     * Dismisses the dialog.
+     *
+     * @param which ID of the button that was clicked (i.e.
+     *              `DialogInterface.BUTTON_NEGATIVE`)
+     */
+    @Suppress("unused")
+    protected fun onItemClick(which: Int) {
+        onDialogResult(dialog, which)
+        dismiss()
+    }
 
     override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
-        onDialogResult(null, DialogInterface.BUTTON_NEGATIVE)
+        onDialogResult(dialog, DialogInterface.BUTTON_NEGATIVE)
     }
 
     /**
      * Handles the result of this dialog.
      *
      * @param dialog Dialog that received the click.
-     * @param which  ID of the button that was clicked
-     *               (`DialogInterface.BUTTON_NEGATIVE`).
+     * @param which  ID of the button that was clicked (i.e.
+     *               `DialogInterface.BUTTON_NEGATIVE`).
      */
-    @Suppress("SameParameterValue")
     private fun onDialogResult(
             @Suppress("UNUSED_PARAMETER") dialog: DialogInterface?,
             which: Int

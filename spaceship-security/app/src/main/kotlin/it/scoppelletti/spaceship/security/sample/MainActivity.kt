@@ -1,7 +1,9 @@
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.security.sample
 
-import android.content.res.Configuration
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -9,8 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
-import it.scoppelletti.spaceship.app.NavigationDrawer
-import it.scoppelletti.spaceship.app.TitleAdapter
 import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.app.uiComponent
 import it.scoppelletti.spaceship.security.sample.lifecycle.MainState
@@ -19,37 +19,20 @@ import kotlinx.android.synthetic.main.main_activity.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var drawer: NavigationDrawer
-    private lateinit var titleAdapter: TitleAdapter
     private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val viewModelFactory: ViewModelProvider.Factory
+
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.main_activity)
-
-        drawer = NavigationDrawer(this, drawerLayout, navigationView, toolbar)
         setSupportActionBar(toolbar)
-        drawer.onCreate(savedInstanceState)
-        titleAdapter = TitleAdapter(this, toolbarLayout)
-
-        navigationView.setNavigationItemSelectedListener {
-            drawerLayout.closeDrawers()
-            navigateToFragment(it.itemId)
-        }
-    }
-
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
-
-        drawer.onPostCreate(savedInstanceState)
 
         val fragment = supportFragmentManager.findFragmentById(
                 R.id.contentFrame)
-        if (fragment != null) {
-            setFragment(fragment)
-        } else if (navigateToFragment(R.id.cmd_key)) {
-            navigationView.setCheckedItem(R.id.cmd_key)
+        if (fragment == null) {
+            navigateToFragment(R.id.cmd_key)
         }
 
         viewModelFactory = uiComponent().viewModelFactory()
@@ -61,19 +44,6 @@ class MainActivity : AppCompatActivity() {
                 stateObserver(state)
             }
         })
-    }
-
-    override fun onBackPressed() {
-        if (drawer.onBackPressed()) {
-            return
-        }
-
-        super.onBackPressed()
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        drawer.onConfigurationChanged(newConfig)
     }
 
     private fun stateObserver(state: MainState) {
@@ -93,8 +63,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (drawer.onOptionItemSelected(item)) {
+        if (navigateToFragment(item.itemId)) {
             return true
         }
 
@@ -126,14 +101,28 @@ class MainActivity : AppCompatActivity() {
                 .beginTransaction()
                 .replace(R.id.contentFrame, fragment)
                 .commit()
-        setFragment(fragment)
 
         return true
     }
 
-    private fun setFragment(fragment: Fragment) {
-        if (fragment is DrawerFragment) {
-            titleAdapter.titleId = fragment.titleId
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        val fragment: Fragment?
+
+        fragment = supportFragmentManager.findFragmentById(R.id.contentFrame)
+        when (fragment) {
+            is KeyFragment -> {
+                menu?.findItem(R.id.cmd_key)?.isChecked = true
+            }
+
+            is CipherFragment -> {
+                menu?.findItem(R.id.cmd_cipher)?.isChecked = true
+            }
+
+            is ProviderFragment -> {
+                menu?.findItem(R.id.cmd_providers)?.isChecked = true
+            }
         }
+
+        return super.onPrepareOptionsMenu(menu)
     }
 }

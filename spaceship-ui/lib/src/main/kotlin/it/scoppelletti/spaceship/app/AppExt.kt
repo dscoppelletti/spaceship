@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
+        "unused")
 
 package it.scoppelletti.spaceship.app
 
@@ -34,12 +35,6 @@ import it.scoppelletti.spaceship.inject.StdlibComponentProvider
  * @since 1.0.0
  */
 public object AppExt {
-
-    /**
-     * Property indicating whether the user has manually opened the drawer
-     * at least once.
-     */
-    public const val PROP_LEARNED = "it.scoppelletti.spaceship.1"
 
     /**
      * Tag of `AlertDialogFragment` fragment.
@@ -78,7 +73,7 @@ public object AppExt {
 }
 
 /**
- * Returns the `CoreComponent` component.
+ * Returns the `UIComponent` component.
  *
  * @receiver Activity.
  * @return   The object.

@@ -16,13 +16,10 @@ import it.scoppelletti.spaceship.app.uiComponent
 import it.scoppelletti.spaceship.security.sample.lifecycle.ProviderViewModel
 import kotlinx.android.synthetic.main.provider_fragment.*
 
-class ProviderFragment : Fragment(), DrawerFragment {
+class ProviderFragment : Fragment() {
 
     private lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: ProviderViewModel
-
-    override val titleId: Int
-        get() = R.string.cmd_providers
 
     override fun onCreateView(
             inflater: LayoutInflater,

@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:checkableBehavior="single">
         <item android:id="@+id/cmd_key"
-            android:title="@string/cmd_keygenerator" />
+            android:title="@string/cmd_keygenerator"
+            android:orderInCategory="20"
+            app:showAsAction="never" />
         <item android:id="@+id/cmd_cipher"
-            android:title="@string/cmd_cipher" />
+            android:title="@string/cmd_cipher"
+            android:orderInCategory="21"
+            app:showAsAction="never" />
         <item android:id="@+id/cmd_providers"
-            android:title="@string/cmd_providers" />
+            android:orderInCategory="22"
+            android:title="@string/cmd_providers"
+            app:showAsAction="never" />
     </group>
 </menu>

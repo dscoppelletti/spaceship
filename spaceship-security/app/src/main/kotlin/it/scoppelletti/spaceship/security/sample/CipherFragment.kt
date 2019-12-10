@@ -23,15 +23,12 @@ import it.scoppelletti.spaceship.security.sample.lifecycle.CipherViewModel
 import it.scoppelletti.spaceship.security.sample.lifecycle.MainState
 import it.scoppelletti.spaceship.security.sample.lifecycle.MainViewModel
 
-class CipherFragment : Fragment(), DrawerFragment {
+class CipherFragment : Fragment() {
 
     private lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var mainModel: MainViewModel
     private lateinit var cipherModel: CipherViewModel
     private lateinit var binding: CipherFragmentBinding
-
-    override val titleId: Int
-        get() = R.string.cmd_cipher
 
     init {
         setHasOptionsMenu(true)

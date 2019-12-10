@@ -3,50 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawerLayout"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_height="match_parent">
+        <androidx.core.widget.NestedScrollView android:id="@+id/contentFrame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <androidx.core.widget.NestedScrollView android:id="@+id/contentFrame"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="true"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
-            </androidx.core.widget.NestedScrollView>
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/appBarLayout"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/it_scoppelletti_appBar_expandedHeight"
-                android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
-                style="@style/it_scoppelletti_style_collapsingAppBarLayout">
-                <com.google.android.material.appbar.CollapsingToolbarLayout
-                    android:id="@+id/toolbarLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-                    app:contentScrim="?attr/colorPrimary">
-                    <androidx.appcompat.widget.Toolbar
-                        android:id="@+id/toolbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="?android:attr/actionBarSize"
-                        app:layout_collapseMode="pin"
-                        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-                        app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
-                </com.google.android.material.appbar.CollapsingToolbarLayout>
-            </com.google.android.material.appbar.AppBarLayout>
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/navigationView"
-            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:fitsSystemWindows="true"
-            app:menu="@menu/main" />
-    </androidx.drawerlayout.widget.DrawerLayout>
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        </androidx.core.widget.NestedScrollView>
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"/>
+        </com.google.android.material.appbar.AppBarLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
     <it.scoppelletti.spaceship.widget.ProgressOverlay
         android:id="@+id/progressIndicator"
         android:layout_width="match_parent"

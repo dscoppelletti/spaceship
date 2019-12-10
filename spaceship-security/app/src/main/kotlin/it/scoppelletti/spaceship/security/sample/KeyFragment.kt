@@ -23,15 +23,12 @@ import it.scoppelletti.spaceship.security.sample.lifecycle.KeyViewModel
 import it.scoppelletti.spaceship.security.sample.lifecycle.MainState
 import it.scoppelletti.spaceship.security.sample.lifecycle.MainViewModel
 
-class KeyFragment : Fragment(), DrawerFragment {
+class KeyFragment : Fragment() {
 
     private lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var mainModel: MainViewModel
     private lateinit var keyModel: KeyViewModel
     private lateinit var binding: KeyFragmentBinding
-
-    override val titleId: Int
-        get() = R.string.cmd_keygenerator
 
     init {
         setHasOptionsMenu(true)

@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
+        "unused")
 
 package it.scoppelletti.spaceship.widget
 
@@ -39,7 +40,6 @@ import kotlin.math.roundToInt
  * @param       marginLeft  Left margin for the divider (px).
  * @param       marginRight Right margin for the divider (px).
  */
-@Suppress("unused")
 public class HorizontalDividerItemDecoration(
         ctx: Context,
         private val marginLeft: Int = 0,

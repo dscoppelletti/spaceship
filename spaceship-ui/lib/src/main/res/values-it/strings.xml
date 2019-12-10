@@ -4,8 +4,6 @@
     <string name="it_scoppelletti_cmd_back">Indietro</string>
     <string name="it_scoppelletti_cmd_delete">Cancella</string>
     <string name="it_scoppelletti_cmd_dontSave">Non salvare</string>
-    <string name="it_scoppelletti_cmd_drawerClose">Chiudi il cassetto di navigazione</string>
-    <string name="it_scoppelletti_cmd_drawerOpen">Apri il cassetto di navigazione</string>
     <string name="it_scoppelletti_cmd_edit">Modifica</string>
     <string name="it_scoppelletti_cmd_list">Elenco</string>
     <string name="it_scoppelletti_cmd_new">Nuovo</string>
@@ -19,13 +17,8 @@
     <string name="it_scoppelletti_err_security">Problema di sicurezza.</string>
     <string name="it_scoppelletti_err_startActivity">Fallito avvio dell\'attività.</string>
     <string name="it_scoppelletti_err_timeFormat">L\'ora deve essere nel formato %1$s.</string>
-    <string name="it_scoppelletti_field_ampm">AM/PM</string>
     <string name="it_scoppelletti_field_day">gg</string>
-    <string name="it_scoppelletti_field_hour12">1&#8211;12</string>
-    <string name="it_scoppelletti_field_hour24">0&#8211;23</string>
-    <string name="it_scoppelletti_field_minute">mm</string>
     <string name="it_scoppelletti_field_month">MM</string>
-    <string name="it_scoppelletti_field_second">ss</string>
     <string name="it_scoppelletti_field_year">aaaa</string>
     <string name="it_scoppelletti_lbl_class">Classe:</string>
     <string name="it_scoppelletti_lbl_message">Messaggio:</string>

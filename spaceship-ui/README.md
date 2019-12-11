@@ -48,6 +48,10 @@ Manages your activity and fragment lifecycles.
 Provides basic operating system services, message passing, and inter-process
 communication on the device.
 
+# Package it.scoppelletti.spaceship.text
+
+Provides classes used to render or track text and text spans on the screen.
+
 # Package it.scoppelletti.spaceship.types
 
 Provides data types.

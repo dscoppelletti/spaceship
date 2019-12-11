@@ -8,7 +8,7 @@ Provides the classes and interfaces for the security framework.
 
 # Package it.scoppelletti.spaceship.security.i18n
 
-Internazionalization.
+Internationalization.
 
 # Package it.scoppelletti.spaceship.security.inject
 

@@ -28,7 +28,7 @@ Area (EEA).
 
 # Package it.scoppelletti.spaceship.gms.i18n
 
-Internazionalization.
+Internationalization.
 
 # Package it.scoppelletti.spaceship.ads.inject
 

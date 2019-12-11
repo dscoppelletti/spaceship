@@ -16,7 +16,7 @@ the license requirements of open source libraries.
 
 # Package it.scoppelletti.spaceship.preference.i18n
 
-Internazionalization.
+Internationalization.
 
 # Package it.scoppelletti.spaceship.preference.inject
 

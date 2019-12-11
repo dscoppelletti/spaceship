@@ -41,8 +41,10 @@ import javax.crypto.SecretKey
 @RequiresApi(Build.VERSION_CODES.M)
 internal class CryptoProviderMarshmallow(
         private val random: SecureRandom,
-        private val securityBridge: SecurityBridge
-) : CryptoProvider by DefaultCryptoProvider(random, securityBridge) {
+        private val securityBridge: SecurityBridge,
+        private val securityMessages: SecurityMessages
+) : CryptoProvider by DefaultCryptoProvider(random, securityBridge,
+        securityMessages) {
 
     @Throws(GeneralSecurityException::class)
     override suspend fun newSecretKey(
@@ -104,12 +106,12 @@ internal class CryptoProviderMarshmallow(
                 entry = keyStore.getEntry(alias, null)
                 if (entry == null) {
                     throw ApplicationException(
-                            SecurityMessages.errorAliasNotFound(alias))
+                            securityMessages.errorAliasNotFound(alias))
                 }
 
                 if (entry !is KeyStore.SecretKeyEntry) {
                     throw ApplicationException(
-                            SecurityMessages.errorAliasNotSecretKey(alias))
+                            securityMessages.errorAliasNotSecretKey(alias))
                 }
 
                 logger.debug { "Secret key $alias loaded." }

@@ -18,18 +18,14 @@
 
 package it.scoppelletti.spaceship.preference.i18n
 
-import it.scoppelletti.spaceship.i18n.AndroidResourceMessageSpec
 import it.scoppelletti.spaceship.i18n.MessageSpec
-import it.scoppelletti.spaceship.preference.R
 
 /**
  * String resources.
  *
  * @since 1.0.0
  */
-public object PreferenceMessages {
+public interface PreferenceMessages {
 
-    public fun errorCreditFailed(): MessageSpec =
-            AndroidResourceMessageSpec(
-                    R.string.it_scoppelletti_pref_err_creditFailed)
+    fun errorCreditFailed(): MessageSpec
 }

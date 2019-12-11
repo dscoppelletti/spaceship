@@ -18,24 +18,16 @@
 
 package it.scoppelletti.spaceship.i18n
 
-import it.scoppelletti.spaceship.R
-
 /**
  * String resources.
  *
  * @since 1.0.0
  */
-public object UIMessages {
+public interface UIMessages {
 
-    public fun errorPackageNotFound(name: String): MessageSpec =
-            AndroidResourceMessageSpec(
-                    R.string.it_scoppelletti_err_packageNotFound, arrayOf(name))
+    fun errorPackageNotFound(name: String): MessageSpec
 
-    public fun errorStartActivity(): MessageSpec =
-            AndroidResourceMessageSpec(
-                    R.string.it_scoppelletti_err_startActivity)
+    fun errorStartActivity(): MessageSpec
 
-    public fun promptSaveChanges(): MessageSpec =
-            AndroidResourceMessageSpec(
-                    R.string.it_scoppelletti_prompt_saveChanges)
+    fun promptSaveChanges(): MessageSpec
 }

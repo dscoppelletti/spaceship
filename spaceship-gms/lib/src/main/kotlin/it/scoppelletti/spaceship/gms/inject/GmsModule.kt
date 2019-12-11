@@ -25,6 +25,8 @@ import dagger.multibindings.IntoSet
 import it.scoppelletti.spaceship.ExceptionLoggerHandler
 import it.scoppelletti.spaceship.gms.FirebaseExceptionLoggerHandler
 import it.scoppelletti.spaceship.gms.GmsException
+import it.scoppelletti.spaceship.gms.i18n.DefaultGmsMessages
+import it.scoppelletti.spaceship.gms.i18n.GmsMessages
 import it.scoppelletti.spaceship.gms.widget.GmsExceptionMapperHandler
 import it.scoppelletti.spaceship.inject.ExceptionMapperKey
 import it.scoppelletti.spaceship.inject.UIModule
@@ -37,6 +39,11 @@ import it.scoppelletti.spaceship.widget.ExceptionMapperHandler
  */
 @Module(includes = [ UIModule::class ])
 public abstract class GmsModule {
+
+    @Binds
+    public abstract fun bindGmsMessages(
+            obj: DefaultGmsMessages
+    ): GmsMessages
 
     @Binds
     @IntoSet

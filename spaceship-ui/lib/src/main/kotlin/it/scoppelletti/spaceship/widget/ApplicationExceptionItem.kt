@@ -75,7 +75,7 @@ public class ApplicationExceptionMapperHandler @Inject constructor(
         private val i18nProvider: I18NProvider
 ): ExceptionMapperHandler<ApplicationException> {
 
-    override suspend fun map(ex: ApplicationException) : ExceptionItem =
+    override fun map(ex: ApplicationException) : ExceptionItem =
             ApplicationExceptionItem(
                     i18nProvider.resolveMessage(ex.messageSpec),
                     ApplicationExceptionAdapter())

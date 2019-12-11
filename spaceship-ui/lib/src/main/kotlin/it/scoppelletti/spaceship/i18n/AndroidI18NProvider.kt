@@ -50,7 +50,7 @@ public class AndroidI18NProvider @Inject constructor(
     override fun timeConverter(secs: Boolean): TimeConverter =
             AndroidTimeConverter(secs, context, resources, this)
 
-    override suspend fun resolveMessage(obj: MessageSpec): String {
+    override fun resolveMessage(obj: MessageSpec): String {
         if (obj !is AndroidResourceMessageSpec) {
             return obj.toString()
         }
@@ -60,7 +60,7 @@ public class AndroidI18NProvider @Inject constructor(
                 resources.getString(obj.stringId)
             } catch (ex: Resources.NotFoundException) {
                 logger.error(ex) { "Resource $obj not found." }
-                obj.toString(resources.getResourceName(obj.stringId))
+                obj.toString()
             }
         }
 
@@ -69,11 +69,11 @@ public class AndroidI18NProvider @Inject constructor(
                     resources.getString(obj.stringId, *obj.args)
                 } catch (ex: Resources.NotFoundException) {
                     logger.error(ex) { "Resource $obj not found." }
-                    obj.toString(resources.getResourceName(obj.stringId))
+                    obj.toString()
                 }
         } catch (ex: IllegalFormatException) {
             logger.error(ex) { "Resource $obj cannot be formatted." }
-            obj.toString(resources.getResourceName(obj.stringId))
+            obj.toString()
         }
     }
 

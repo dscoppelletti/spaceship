@@ -33,7 +33,7 @@ public class DefaultExceptionMapper @Inject constructor(
                 @JvmSuppressWildcards Provider<ExceptionMapperHandler<*>>>
 ) : ExceptionMapper {
 
-    override suspend fun map(ex: Throwable) : ExceptionItem {
+    override fun map(ex: Throwable) : ExceptionItem {
         val handler: ExceptionMapperHandler<Throwable>
         val provider: Provider<ExceptionMapperHandler<*>>?
 

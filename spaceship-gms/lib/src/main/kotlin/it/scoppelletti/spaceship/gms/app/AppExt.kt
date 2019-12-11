@@ -26,6 +26,8 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
+import it.scoppelletti.spaceship.gms.inject.GmsComponent
+import it.scoppelletti.spaceship.gms.inject.GmsComponentProvider
 
 /**
  * Attempts to make Google Play services available on this device.
@@ -50,3 +52,13 @@ public fun Activity.makeGooglePlayServicesAvailable() : Task<Void> {
 
     return googleApi.makeGooglePlayServicesAvailable(this)
 }
+
+/**
+ * Returns the `GmsComponent` component.
+ *
+ * @receiver Activity.
+ * @return   The object.
+ * @since    1.0.0
+ */
+public fun Activity.gmsComponent(): GmsComponent =
+        (this.application as GmsComponentProvider).gmsComponent()

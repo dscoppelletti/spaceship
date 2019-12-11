@@ -31,6 +31,8 @@ import it.scoppelletti.spaceship.ads.consent.ConsentDataLoader
 import it.scoppelletti.spaceship.ads.consent.ConsentDataStore
 import it.scoppelletti.spaceship.ads.consent.DefaultConsentDataLoader
 import it.scoppelletti.spaceship.ads.consent.DefaultConsentDataStore
+import it.scoppelletti.spaceship.ads.i18n.AdsMessages
+import it.scoppelletti.spaceship.ads.i18n.DefaultAdsMessages
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentFragmentViewModel
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentPrivacyViewModel
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentPromptViewModel
@@ -51,7 +53,7 @@ import javax.inject.Singleton
  *
  * @since 1.0.0
  */
-@Module(includes = [ PreferenceModule::class, HtmlModule::class,
+@Module(includes = [ HtmlModule::class, PreferenceModule::class,
     StdlibModule::class, UIModule::class ])
 public abstract class AdsModule {
 
@@ -64,6 +66,11 @@ public abstract class AdsModule {
     public abstract fun bindConsentDataStore(
             obj: DefaultConsentDataStore
     ): ConsentDataStore
+
+    @Binds
+    public abstract fun bindAdsMessages(
+            obj: DefaultAdsMessages
+    ): AdsMessages
 
     @Binds
     @IntoMap

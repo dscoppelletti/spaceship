@@ -20,6 +20,7 @@
 package it.scoppelletti.spaceship.preference
 
 import android.content.Intent
+import android.os.Bundle
 import androidx.annotation.UiThread
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -27,6 +28,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import it.scoppelletti.spaceship.ApplicationException
 import it.scoppelletti.spaceship.app.showExceptionDialog
+import it.scoppelletti.spaceship.app.uiComponent
 import it.scoppelletti.spaceship.i18n.UIMessages
 
 /**
@@ -36,6 +38,14 @@ import it.scoppelletti.spaceship.i18n.UIMessages
  */
 @UiThread
 public abstract class AbstractPreferenceFragment : PreferenceFragmentCompat() {
+
+    private lateinit var uiMessages: UIMessages
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        uiMessages = requireActivity().uiComponent().uiMessages()
+    }
 
     override fun onDisplayPreferenceDialog(preference: Preference?) {
         val fragment: CustomPreferenceDialogFragment
@@ -102,10 +112,10 @@ public abstract class AbstractPreferenceFragment : PreferenceFragmentCompat() {
         try {
             activity.startActivity(intent)
         } catch (ex: RuntimeException) {
-            err = ApplicationException(UIMessages.errorStartActivity(), ex)
+            err = ApplicationException(uiMessages.errorStartActivity(), ex)
 
             activity.showExceptionDialog(err) {
-            title {
+                title {
                     preference.title.toString()
                 }
             }

@@ -47,6 +47,8 @@ import javax.inject.Named
 public class DefaultCreditsLoader @Inject constructor(
         private val resources: Resources,
 
+        private val preferenceMessages: PreferenceMessages,
+
         @Named(HtmlExt.DEP_TAGHANDLER)
         private val tagHandler: Html.TagHandler
 ) : CreditsLoader {
@@ -61,7 +63,7 @@ public class DefaultCreditsLoader @Inject constructor(
                     parser = resources.getXml(creditId)
                 } catch (ex: Resources.NotFoundException) {
                     throw ApplicationException(
-                            PreferenceMessages.errorCreditFailed(), ex)
+                            preferenceMessages.errorCreditFailed(), ex)
                 }
 
                 state = CreditsState(mutableListOf(), parser)
@@ -81,7 +83,7 @@ public class DefaultCreditsLoader @Inject constructor(
                 } catch (ex: Exception) {
                     // IOException | XmlPullParserException
                     throw ApplicationException(
-                            PreferenceMessages.errorCreditFailed(), ex)
+                            preferenceMessages.errorCreditFailed(), ex)
                 }
 
                 state.list

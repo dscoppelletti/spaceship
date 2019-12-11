@@ -16,33 +16,24 @@
 
 @file:Suppress("RedundantVisibilityModifier")
 
-package it.scoppelletti.spaceship.ads.inject
+package it.scoppelletti.spaceship.gms.i18n
 
-import android.app.Activity
-import it.scoppelletti.spaceship.ads.AdsConfigWrapper
-import it.scoppelletti.spaceship.ads.i18n.AdsMessages
+import android.content.res.Resources
+import it.scoppelletti.spaceship.gms.R
+import it.scoppelletti.spaceship.i18n.AndroidResourceMessageSpec
+import it.scoppelletti.spaceship.i18n.MessageSpec
+import javax.inject.Inject
 
 /**
- * Access to the dependencies provided by this library.
+ * Default implementation of the `GmsMessages` interface.
  *
  * @since 1.0.0
  */
-public interface AdsComponent {
+public class DefaultGmsMessages @Inject constructor(
+        private val resources: Resources
+) : GmsMessages {
 
-    fun adsConfigWrapper(): AdsConfigWrapper
-
-    fun adsMessages(): AdsMessages
+    override fun errorGoogleApiNotAvailable(): MessageSpec =
+            AndroidResourceMessageSpec(resources,
+                    R.string.it_scoppelletti_gms_err_googleApiNotAvailable)
 }
-
-/**
- * Provides the `AdsComponent` component.
- *
- * @since 1.0.0
- */
-public interface AdsComponentProvider {
-
-    fun adsComponent(): AdsComponent
-}
-
-public fun Activity.adsComponent(): AdsComponent =
-        (this.application as AdsComponentProvider).adsComponent()

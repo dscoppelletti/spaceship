@@ -19,6 +19,7 @@
 package it.scoppelletti.spaceship.security.inject
 
 import android.content.Context
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import it.scoppelletti.spaceship.StdlibExt
@@ -28,6 +29,8 @@ import it.scoppelletti.spaceship.inject.UIModule
 import it.scoppelletti.spaceship.io.IOProvider
 import it.scoppelletti.spaceship.security.CryptoProvider
 import it.scoppelletti.spaceship.security.cryptoProvider
+import it.scoppelletti.spaceship.security.i18n.DefaultSecurityMessages
+import it.scoppelletti.spaceship.security.i18n.SecurityMessages
 import org.threeten.bp.Clock
 import java.security.SecureRandom
 import javax.inject.Named
@@ -40,23 +43,33 @@ import javax.inject.Singleton
  */
 @Module(includes = [ ContextModule::class, StdlibModule::class,
     UIModule::class ])
-public object SecurityModule {
+public abstract class SecurityModule {
 
-    @Provides
-    @Singleton
-    @JvmStatic
-    public fun provideSecureRandom(): SecureRandom = SecureRandom()
+    @Binds
+    public abstract fun bindSecurityMessages(
+            obj: DefaultSecurityMessages
+    ): SecurityMessages
 
-    @Provides
-    @JvmStatic
-    public fun provideCryptoProvider(
-            context: Context,
-            ioProvider: IOProvider,
+    @Module
+    public companion object {
 
-            @Named(StdlibExt.DEP_UTCCLOCK)
-            clock: Clock,
+        @Provides
+        @Singleton
+        @JvmStatic
+        public fun provideSecureRandom(): SecureRandom = SecureRandom()
 
-            random: SecureRandom
-    ): CryptoProvider =
-            cryptoProvider(context, ioProvider, clock, random)
+        @Provides
+        @JvmStatic
+        public fun provideCryptoProvider(
+                context: Context,
+                ioProvider: IOProvider,
+                random: SecureRandom,
+                securityMessages: SecurityMessages,
+
+                @Named(StdlibExt.DEP_UTCCLOCK)
+                clock: Clock
+        ): CryptoProvider =
+                cryptoProvider(context, ioProvider, clock, random,
+                        securityMessages)
+    }
 }

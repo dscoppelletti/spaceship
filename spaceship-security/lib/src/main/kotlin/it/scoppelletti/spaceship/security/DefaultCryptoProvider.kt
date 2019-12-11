@@ -43,7 +43,8 @@ import javax.crypto.SecretKey
  */
 internal class DefaultCryptoProvider(
         private val random: SecureRandom,
-        private val securityBridge: SecurityBridge
+        private val securityBridge: SecurityBridge,
+        private val securityMessages: SecurityMessages
 ) : CryptoProvider {
 
     override suspend fun newSecretKey(alias: String, expire: Int): SecretKey {
@@ -132,7 +133,7 @@ internal class DefaultCryptoProvider(
     ): OutputStream = CipherOutputStream(outputStream, cipher)
 
     private fun noSuchProviderException() =
-            ApplicationException(SecurityMessages.errorProviderNotFound(
+            ApplicationException(securityMessages.errorProviderNotFound(
                     SecurityExt.PROVIDER_ANDROID),
                     NoSuchProviderException(SecurityExt.PROVIDER_ANDROID))
 

@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier")
+@file:Suppress("RedundantVisibilityModifier", "unused")
 
 package it.scoppelletti.spaceship.inject
 
 import androidx.lifecycle.ViewModelProvider
+import it.scoppelletti.spaceship.i18n.UIMessages
 
 /**
  * Access to the dependencies provided by this library.
@@ -26,6 +27,8 @@ import androidx.lifecycle.ViewModelProvider
  * @since 1.0.0
  */
 public interface UIComponent {
+
+    fun uiMessages(): UIMessages
 
     fun viewModelFactory(): ViewModelProvider.Factory
 }

@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier")
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
 
 package it.scoppelletti.spaceship.i18n
 
+import android.content.res.Resources
 import androidx.annotation.StringRes
 import it.scoppelletti.spaceship.types.joinLines
+import mu.KotlinLogging
 
 /**
  * Message specification that can be resolved by an Android string resource.
@@ -32,12 +34,14 @@ import it.scoppelletti.spaceship.types.joinLines
  *                    `Formatter`.
  */
 public data class AndroidResourceMessageSpec(
+        private val resources: Resources,
 
         @StringRes
         public val stringId: Int,
 
         public val args: Array<Any?> = arrayOf()
 ) : MessageSpec {
+
     override fun hashCode(): Int {
         var value = 17
 
@@ -52,18 +56,21 @@ public data class AndroidResourceMessageSpec(
                     stringId == other.stringId &&
                     args contentDeepEquals other.args
 
-    override fun toString(): String =
-            """AndroidResourceMessageSpec(stringId=$stringId,
-            |args=${args.contentDeepToString()})""".trimMargin().joinLines()
+    override fun toString(): String {
+        val resName: String
 
-    /**
-     * Returns a string representation of the object.
-     *
-     * @param  resName Name of the string resource.
-     * @return         The representation.
-     */
-    public fun toString(resName: String) =
-            """AndroidResourceMessageSpec($resName,
-            |args=${args.contentDeepToString()})""".trimMargin().joinLines()
+        resName = try {
+            resources.getResourceName(stringId)
+        } catch (ex: Resources.NotFoundException) {
+            logger.error(ex) { "Resource $stringId not found." }
+            stringId.toString()
+        }
 
+        return """AndroidResourceMessageSpec($resName,
+            |args=${args.contentDeepToString()})""".trimMargin().joinLines()
+    }
+
+    private companion object {
+        val logger = KotlinLogging.logger { }
+    }
 }

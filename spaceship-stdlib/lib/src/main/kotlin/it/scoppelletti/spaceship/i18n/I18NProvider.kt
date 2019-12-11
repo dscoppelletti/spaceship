@@ -98,5 +98,5 @@ public interface I18NProvider {
      * @param  obj Message specification.
      * @return     The resolved string.
      */
-    suspend fun resolveMessage(obj: MessageSpec): String
+    fun resolveMessage(obj: MessageSpec): String
 }

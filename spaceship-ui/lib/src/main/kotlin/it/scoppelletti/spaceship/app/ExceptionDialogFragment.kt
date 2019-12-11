@@ -15,7 +15,7 @@
  */
 
 @file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
-        "RemoveRedundantQualifierName")
+        "RemoveRedundantQualifierName", "unused")
 
 package it.scoppelletti.spaceship.app
 

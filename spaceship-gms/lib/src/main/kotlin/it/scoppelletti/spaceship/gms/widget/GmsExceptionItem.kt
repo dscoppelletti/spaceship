@@ -101,7 +101,7 @@ public class GmsExceptionAdapter : ExceptionAdapter<GmsExceptionItem> {
 public class GmsExceptionMapperHandler @Inject constructor(
 ): ExceptionMapperHandler<GmsException> {
 
-    override suspend fun map(ex: GmsException) : ExceptionItem =
+    override fun map(ex: GmsException) : ExceptionItem =
             GmsExceptionItem(
                     statusCode = ex.statusCode,
                     statusMessage = ex.statusMessage.orEmpty(),

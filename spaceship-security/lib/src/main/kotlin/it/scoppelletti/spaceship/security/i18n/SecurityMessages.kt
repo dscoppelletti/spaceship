@@ -18,9 +18,7 @@
 
 package it.scoppelletti.spaceship.security.i18n
 
-import it.scoppelletti.spaceship.i18n.AndroidResourceMessageSpec
 import it.scoppelletti.spaceship.i18n.MessageSpec
-import it.scoppelletti.spaceship.security.R
 import java.io.File
 
 /**
@@ -28,56 +26,25 @@ import java.io.File
  *
  * @since 1.0.0
  */
-public object SecurityMessages {
+public interface SecurityMessages {
 
-    public fun errorAliasInvalid(alias: String): MessageSpec =
-            AndroidResourceMessageSpec(
-                    R.string.it_scoppelletti_security_err_aliasInvalid,
-                    arrayOf(alias))
+    fun errorAliasInvalid(alias: String): MessageSpec
 
-    public fun errorAliasNotCertificate(alias: String): MessageSpec =
-            AndroidResourceMessageSpec(
-                    R.string.it_scoppelletti_security_err_aliasNotCertificate,
-                    arrayOf(alias))
+    fun errorAliasNotCertificate(alias: String): MessageSpec
 
-    public fun errorAliasNotFound(alias: String): MessageSpec =
-            AndroidResourceMessageSpec(
-                    R.string.it_scoppelletti_security_err_aliasNotFound,
-                    arrayOf(alias))
+    fun errorAliasNotFound(alias: String): MessageSpec
 
-    public fun errorAliasNotPrivateKey(alias: String): MessageSpec =
-            AndroidResourceMessageSpec(
-                    R.string.it_scoppelletti_security_err_aliasNotPrivateKey,
-                    arrayOf(alias))
+    fun errorAliasNotPrivateKey(alias: String): MessageSpec
 
-    public fun errorAliasNotSecretKey(alias: String): MessageSpec =
-            AndroidResourceMessageSpec(
-                    R.string.it_scoppelletti_security_err_aliasNotSecretKey,
-                    arrayOf(alias))
+    fun errorAliasNotSecretKey(alias: String): MessageSpec
 
-    public fun errorCertificateNotFound(alias: String): MessageSpec =
-            AndroidResourceMessageSpec(
-                    R.string.it_scoppelletti_security_err_certificateNotFound,
-                    arrayOf(alias))
+    fun errorCertificateNotFound(alias: String): MessageSpec
 
-    public fun errorLoadSecretKey(file: File): MessageSpec =
-            AndroidResourceMessageSpec(
-                    R.string.it_scoppelletti_security_err_loadSecretKey,
-                    arrayOf(file))
+    fun errorLoadSecretKey(file: File): MessageSpec
 
-    public fun errorProviderNotFound(name: String): MessageSpec =
-            AndroidResourceMessageSpec(
-                    R.string.it_scoppelletti_security_err_providerNotFound,
-                    arrayOf(name))
+    fun errorProviderNotFound(name: String): MessageSpec
 
-    public fun errorSaveSecretKey(file: File): MessageSpec =
-            AndroidResourceMessageSpec(
-                    R.string.it_scoppelletti_security_err_saveSecretKey,
-                    arrayOf(file))
+    fun errorSaveSecretKey(file: File): MessageSpec
 
-    public fun errorSecretKeyNotFound(file: File): MessageSpec =
-            AndroidResourceMessageSpec(
-                    R.string.it_scoppelletti_security_err_secretKeyNotFound,
-                    arrayOf(file))
-
+    fun errorSecretKeyNotFound(file: File): MessageSpec
 }

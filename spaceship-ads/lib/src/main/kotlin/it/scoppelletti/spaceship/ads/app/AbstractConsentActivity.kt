@@ -31,6 +31,7 @@ import it.scoppelletti.spaceship.ads.AdsExt
 import it.scoppelletti.spaceship.ads.R
 import it.scoppelletti.spaceship.ads.consent.ConsentStatus
 import it.scoppelletti.spaceship.ads.i18n.AdsMessages
+import it.scoppelletti.spaceship.ads.inject.adsComponent
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentState
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentStatusObservable
 import it.scoppelletti.spaceship.ads.lifecycle.ConsentViewModel
@@ -60,6 +61,7 @@ public abstract class AbstractConsentActivity : AppCompatActivity(),
     private var settings: Boolean = false
     private lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: ConsentViewModel
+    private lateinit var adsMessages: AdsMessages
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val actionBar: ActionBar
@@ -82,6 +84,7 @@ public abstract class AbstractConsentActivity : AppCompatActivity(),
         viewModelFactory = uiComponent().viewModelFactory()
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(ConsentViewModel::class.java)
+        adsMessages = adsComponent().adsMessages()
 
         viewModel.state.observe(this, Observer<ConsentState> { state ->
             if (state != null) {
@@ -119,7 +122,7 @@ public abstract class AbstractConsentActivity : AppCompatActivity(),
             if (state.data.consentStatus == ConsentStatus.NOT_IN_EEA) {
                 setCurrentItem(state)
                 showExceptionDialog(ApplicationException(
-                        AdsMessages.errorUserNotLocatedInEea()))
+                        adsMessages.errorUserNotLocatedInEea()))
                 return
             }
 

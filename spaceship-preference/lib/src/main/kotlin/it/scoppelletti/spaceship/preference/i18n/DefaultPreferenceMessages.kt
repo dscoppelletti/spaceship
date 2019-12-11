@@ -14,29 +14,26 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier")
+@file:Suppress("RedundantVisibilityModifier", "unused")
 
-package it.scoppelletti.spaceship.ads.i18n
+package it.scoppelletti.spaceship.preference.i18n
 
+import android.content.res.Resources
+import it.scoppelletti.spaceship.i18n.AndroidResourceMessageSpec
 import it.scoppelletti.spaceship.i18n.MessageSpec
+import it.scoppelletti.spaceship.preference.R
+import javax.inject.Inject
 
 /**
- * String resources.
+ * Default implementation of the `PreferenceMessages` interface.
  *
  * @since 1.0.0
  */
-public interface AdsMessages {
+public class DefaultPreferenceMessages @Inject constructor(
+        private val resources: Resources
+) : PreferenceMessages{
 
-    fun errorConfig(): MessageSpec
-
-    fun errorLookupFailed(lookupFailedIds: List<String>): MessageSpec
-
-    fun errorNotFound(notFoundIds: List<String>): MessageSpec
-
-    fun errorPublisher(
-            lookupFailedIds: List<String>,
-            notFoundIds: List<String>
-    ): MessageSpec
-
-    fun errorUserNotLocatedInEea(): MessageSpec
+    override fun errorCreditFailed(): MessageSpec =
+            AndroidResourceMessageSpec(resources,
+                    R.string.it_scoppelletti_pref_err_creditFailed)
 }

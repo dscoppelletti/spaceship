@@ -31,9 +31,11 @@ import javax.crypto.SecretKey
 import javax.inject.Inject
 import javax.inject.Named
 
+@Suppress("BlockingMethodInNonBlockingContext")
 class CipherViewModel @Inject constructor(
         private val ioProvider: IOProvider,
         private val cryptoProvider: CryptoProvider,
+        private val sampleMessages: SampleMessages,
 
         @Named(StdlibExt.DEP_MAINDISPATCHER)
         dispatcher: CoroutineDispatcher
@@ -154,7 +156,7 @@ class CipherViewModel @Inject constructor(
                     iv = ByteArray(ivSize)
                     if (decoder.read(iv, 0, ivSize) != ivSize) {
                         throw ApplicationException(
-                                SampleMessages.errorCipherTextCorrupted())
+                                sampleMessages.errorCipherTextCorrupted())
                     }
                 } finally {
                     inputStream?.closeQuietly()
@@ -187,7 +189,7 @@ class CipherViewModel @Inject constructor(
                     ivSize = objectStream.readInt().toLong()
                     if (decoder.skip(ivSize) != ivSize) {
                         throw ApplicationException(
-                                SampleMessages.errorCipherTextCorrupted())
+                                sampleMessages.errorCipherTextCorrupted())
                     }
 
                     if (!isActive) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ * Copyright (C) 2018 Dario Scoppelletti, <http://www.scoppelletti.it/>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,33 +16,28 @@
 
 @file:Suppress("RedundantVisibilityModifier")
 
-package it.scoppelletti.spaceship.ads.inject
+package it.scoppelletti.spaceship.gms.inject
 
-import android.app.Activity
-import it.scoppelletti.spaceship.ads.AdsConfigWrapper
-import it.scoppelletti.spaceship.ads.i18n.AdsMessages
+import it.scoppelletti.spaceship.gms.i18n.GmsMessages
 
 /**
  * Access to the dependencies provided by this library.
  *
  * @since 1.0.0
  */
-public interface AdsComponent {
+public interface GmsComponent {
 
-    fun adsConfigWrapper(): AdsConfigWrapper
-
-    fun adsMessages(): AdsMessages
+    fun gmsMessages(): GmsMessages
 }
 
 /**
- * Provides the `AdsComponent` component.
+ * Provides the `GmsComponent` component.
  *
  * @since 1.0.0
  */
-public interface AdsComponentProvider {
+public interface GmsComponentProvider {
 
-    fun adsComponent(): AdsComponent
+    fun gmsComponent(): GmsComponent
 }
 
-public fun Activity.adsComponent(): AdsComponent =
-        (this.application as AdsComponentProvider).adsComponent()
+

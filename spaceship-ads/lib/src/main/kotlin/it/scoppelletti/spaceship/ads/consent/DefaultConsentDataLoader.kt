@@ -46,6 +46,7 @@ public class DefaultConsentDataLoader @Inject constructor(
         private val consentDataStore: ConsentDataStore,
         private val adService: AdService,
         private val adsConfigWrapper: AdsConfigWrapper,
+        private val adsMessages: AdsMessages,
 
         @Named(StdlibExt.DEP_UTCCLOCK)
         clock: Clock
@@ -120,7 +121,7 @@ public class DefaultConsentDataLoader @Inject constructor(
                 adService.getConfig(adsConfig.publisherId,
                         adsConfig.debugGeography.code)
             } catch (ex: Exception) {
-                throw ApplicationException(AdsMessages.errorConfig(), ex)
+                throw ApplicationException(adsMessages.errorConfig(), ex)
             }
         }
 
@@ -190,17 +191,17 @@ public class DefaultConsentDataLoader @Inject constructor(
             notFoundIds: List<String>
     ) {
         if (lookupFailedIds.isNotEmpty() && notFoundIds.isNotEmpty()) {
-            throw ApplicationException(AdsMessages.errorPublisher(
+            throw ApplicationException(adsMessages.errorPublisher(
                     lookupFailedIds, notFoundIds))
         }
 
         if (lookupFailedIds.isNotEmpty()) {
-            throw ApplicationException(AdsMessages.errorLookupFailed(
+            throw ApplicationException(adsMessages.errorLookupFailed(
                     lookupFailedIds))
         }
 
         if (notFoundIds.isNotEmpty()) {
-            throw ApplicationException(AdsMessages.errorNotFound(notFoundIds))
+            throw ApplicationException(adsMessages.errorNotFound(notFoundIds))
         }
     }
 

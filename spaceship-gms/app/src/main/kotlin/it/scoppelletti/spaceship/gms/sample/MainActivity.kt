@@ -11,6 +11,7 @@ import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
 import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.app.tryFinish
+import it.scoppelletti.spaceship.gms.app.gmsComponent
 import it.scoppelletti.spaceship.gms.app.makeGooglePlayServicesAvailable
 import it.scoppelletti.spaceship.gms.i18n.GmsMessages
 import mu.KotlinLogging
@@ -18,9 +19,13 @@ import java.util.concurrent.CancellationException
 
 class MainActivity : AppCompatActivity(), OnDialogResultListener {
 
+    private lateinit var gmsMessages: GmsMessages
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
+
+        gmsMessages = gmsComponent().gmsMessages()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -56,7 +61,7 @@ class MainActivity : AppCompatActivity(), OnDialogResultListener {
         }
 
         showExceptionDialog(ApplicationException(
-                GmsMessages.errorGoogleApiNotAvailable(), ex))
+                gmsMessages.errorGoogleApiNotAvailable(), ex))
     }
 
     override fun onDialogResult(tag: String, which: Int) {

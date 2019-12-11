@@ -96,7 +96,7 @@ public class HttpExceptionAdapter : ExceptionAdapter<HttpExceptionItem> {
 public class HttpExceptionMapperHandler @Inject constructor(
 ): ExceptionMapperHandler<HttpException> {
 
-    override suspend fun map(ex: HttpException) : ExceptionItem {
+    override fun map(ex: HttpException) : ExceptionItem {
         val message: String
         val resp: Response<*>?
         val body: ResponseBody?

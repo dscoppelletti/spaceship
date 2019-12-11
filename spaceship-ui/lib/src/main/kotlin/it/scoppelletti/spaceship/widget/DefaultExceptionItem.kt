@@ -72,7 +72,7 @@ public class DefaultExceptionAdapter : ExceptionAdapter<DefaultExceptionItem> {
  */
 public class DefaultExceptionMapperHandler : ExceptionMapperHandler<Throwable> {
 
-    override suspend fun map(ex: Throwable) : ExceptionItem =
+    override fun map(ex: Throwable) : ExceptionItem =
             DefaultExceptionItem(ex.javaClass.name,
                     ex.toMessage(), DefaultExceptionAdapter())
 }

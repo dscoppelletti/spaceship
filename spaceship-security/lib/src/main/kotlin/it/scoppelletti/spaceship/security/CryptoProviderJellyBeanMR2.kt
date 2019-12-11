@@ -60,8 +60,10 @@ internal class CryptoProviderJellyBeanMR2(
         private val ioProvider: IOProvider,
         private val clock: Clock,
         private val random: SecureRandom,
-        private val securityBridge: SecurityBridge
-) : CryptoProvider by DefaultCryptoProvider(random, securityBridge) {
+        private val securityBridge: SecurityBridge,
+        private val securityMessages: SecurityMessages
+) : CryptoProvider by DefaultCryptoProvider(random, securityBridge,
+        securityMessages) {
 
     @Throws(GeneralSecurityException::class)
     override suspend fun newSecretKey(
@@ -136,12 +138,12 @@ internal class CryptoProviderJellyBeanMR2(
         cert = keyStore.getCertificate(alias)
         if (cert == null) {
             throw ApplicationException(
-                    SecurityMessages.errorCertificateNotFound(alias))
+                    securityMessages.errorCertificateNotFound(alias))
         }
 
         if (cert !is X509Certificate) {
             throw ApplicationException(
-                    SecurityMessages.errorAliasNotCertificate(alias))
+                    securityMessages.errorAliasNotCertificate(alias))
         }
 
         logger.debug { """Found certificate $alias valid from ${cert.notBefore}
@@ -157,12 +159,12 @@ internal class CryptoProviderJellyBeanMR2(
         entry = keyStore.getEntry(alias, null)
         if (entry == null) {
             throw ApplicationException(
-                    SecurityMessages.errorAliasNotFound(alias))
+                    securityMessages.errorAliasNotFound(alias))
         }
 
         if (entry !is KeyStore.PrivateKeyEntry) {
             throw ApplicationException(
-                    SecurityMessages.errorAliasNotPrivateKey(alias))
+                    securityMessages.errorAliasNotPrivateKey(alias))
         }
 
         logger.debug { "Key pair $alias loaded." }
@@ -214,7 +216,7 @@ internal class CryptoProviderJellyBeanMR2(
         } catch (ex: Exception) {
             // GeneralSecurityException|IllegalStateException|IOException
             throw ApplicationException(
-                    SecurityMessages.errorSaveSecretKey(file), ex)
+                    securityMessages.errorSaveSecretKey(file), ex)
         } finally {
             outputStream?.closeQuietly()
             encoder?.closeQuietly()
@@ -272,11 +274,11 @@ internal class CryptoProviderJellyBeanMR2(
                     Cipher.SECRET_KEY) as SecretKey
         } catch (ex: FileNotFoundException) {
             throw ApplicationException(
-                    SecurityMessages.errorSecretKeyNotFound(file), ex)
+                    securityMessages.errorSecretKeyNotFound(file), ex)
         } catch (ex: Exception) {
             // GeneralSecurityException|IllegalStateException|IOException
             throw ApplicationException(
-                    SecurityMessages.errorLoadSecretKey(file), ex)
+                    securityMessages.errorLoadSecretKey(file), ex)
         } finally {
             inputStream?.closeQuietly()
             decoder?.closeQuietly()
@@ -301,7 +303,7 @@ internal class CryptoProviderJellyBeanMR2(
         if (alias.indexOfAny(charArrayOf('/', '.'), 0, true) >= 0 ||
                 alias.endsWith(CryptoProviderJellyBeanMR2.EXT_KEYSTORE, true)) {
             throw ApplicationException(
-                    SecurityMessages.errorAliasInvalid(alias))
+                    securityMessages.errorAliasInvalid(alias))
         }
 
         dir = File(ioProvider.noBackupFilesDir, CryptoProviderJellyBeanMR2.DIR)

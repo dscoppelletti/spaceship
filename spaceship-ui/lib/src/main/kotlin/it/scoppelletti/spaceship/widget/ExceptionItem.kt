@@ -63,7 +63,7 @@ public interface ExceptionMapper {
      * @param  ex Exception.
      * @return    The new object.
      */
-    suspend fun map(ex: Throwable): ExceptionItem
+    fun map(ex: Throwable): ExceptionItem
 }
 
 /**
@@ -81,5 +81,5 @@ public interface ExceptionMapperHandler<T: Throwable> {
      * @param  ex Exception.
      * @return    The new object.
      */
-    suspend fun map(ex: T): ExceptionItem
+    fun map(ex: T): ExceptionItem
 }

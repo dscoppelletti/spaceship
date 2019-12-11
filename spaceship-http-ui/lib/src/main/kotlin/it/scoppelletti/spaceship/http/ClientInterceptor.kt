@@ -43,9 +43,10 @@ private const val VALUE_SEP = ';'
  * @since 1.0.0
  */
 public class ClientInterceptor @Inject constructor(
-        context: Context,
-        packageMgr: PackageManager,
-        private val i18nProvider: I18NProvider
+        private val context: Context,
+        private val packageMgr: PackageManager,
+        private val i18nProvider: I18NProvider,
+        private val uiMessages: UIMessages
 ) : Interceptor {
 
     private val osName: String
@@ -58,7 +59,32 @@ public class ClientInterceptor @Inject constructor(
             append(Build.VERSION.SDK_INT)
         }
 
-        applName = getApplName(context, packageMgr)
+        applName = initApplName()
+    }
+
+    /**
+     * Init the application name and version.
+     *
+     * @return            The value.
+     */
+    @Suppress("Deprecation")
+    private fun initApplName(): String {
+        val name: String
+        val packageInfo: PackageInfo
+
+        name = context.packageName
+        try {
+            packageInfo = packageMgr.getPackageInfo(name, 0)
+        } catch (ex: PackageManager.NameNotFoundException) {
+            throw ApplicationException(uiMessages.errorPackageNotFound(name), ex)
+        }
+
+        return buildString {
+            append(name)
+            append(VALUE_SEP)
+            append(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                packageInfo.longVersionCode else packageInfo.versionCode)
+        }
     }
 
     override fun intercept(chain: Interceptor.Chain): Response =
@@ -68,36 +94,6 @@ public class ClientInterceptor @Inject constructor(
                     .header(HttpExt.HEADER_LOCALE, toLanguageTag(
                             i18nProvider.currentLocale()))
                     .build())
-}
-
-/**
- * Gets an application name and version.
- *
- * @param  context    Context
- * @param  packageMgr Package manager.
- * @return            The value.
- */
-@Suppress("Deprecation")
-private fun getApplName(
-        context: Context,
-        packageMgr: PackageManager
-): String {
-    val name: String
-    val packageInfo: PackageInfo
-
-    name = context.packageName
-    try {
-        packageInfo = packageMgr.getPackageInfo(name, 0)
-    } catch (ex: PackageManager.NameNotFoundException) {
-        throw ApplicationException(UIMessages.errorPackageNotFound(name), ex)
-    }
-
-    return buildString {
-        append(name)
-        append(VALUE_SEP)
-        append(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
-            packageInfo.longVersionCode else packageInfo.versionCode)
-    }
 }
 
 /**

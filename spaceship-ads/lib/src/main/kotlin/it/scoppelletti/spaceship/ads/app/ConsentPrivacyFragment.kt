@@ -58,6 +58,7 @@ public class ConsentPrivacyFragment : Fragment() {
     private lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var activityViewModel: ConsentViewModel
     private lateinit var viewModel: ConsentPrivacyViewModel
+    private lateinit var uiMessages: UIMessages
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -86,6 +87,7 @@ public class ConsentPrivacyFragment : Fragment() {
                 .get(ConsentViewModel::class.java)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(ConsentPrivacyViewModel::class.java)
+        uiMessages = activity.uiComponent().uiMessages()
 
         viewModel.state.observe(viewLifecycleOwner,
                 Observer<ConsentPrivacyState> { state ->
@@ -144,7 +146,7 @@ public class ConsentPrivacyFragment : Fragment() {
             startActivity(intent)
         } catch (ex: RuntimeException) {
             requireActivity().showExceptionDialog(
-                    ApplicationException(UIMessages.errorStartActivity(), ex))
+                    ApplicationException(uiMessages.errorStartActivity(), ex))
         }
     }
 

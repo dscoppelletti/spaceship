@@ -29,6 +29,8 @@ import it.scoppelletti.spaceship.inject.UIModule
 import it.scoppelletti.spaceship.inject.ViewModelKey
 import it.scoppelletti.spaceship.preference.credit.CreditsLoader
 import it.scoppelletti.spaceship.preference.credit.DefaultCreditsLoader
+import it.scoppelletti.spaceship.preference.i18n.DefaultPreferenceMessages
+import it.scoppelletti.spaceship.preference.i18n.PreferenceMessages
 import it.scoppelletti.spaceship.preference.lifecycle.CreditsViewModel
 
 /**
@@ -44,6 +46,11 @@ public abstract class PreferenceModule {
     public abstract fun bindCreditsLoader(
             obj: DefaultCreditsLoader
     ): CreditsLoader
+
+    @Binds
+    public abstract fun bindPreferenceMessages(
+            obj: DefaultPreferenceMessages
+    ): PreferenceMessages
 
     @Binds
     @IntoMap

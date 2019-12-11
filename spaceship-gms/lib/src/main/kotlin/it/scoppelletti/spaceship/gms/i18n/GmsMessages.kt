@@ -18,8 +18,6 @@
 
 package it.scoppelletti.spaceship.gms.i18n
 
-import it.scoppelletti.spaceship.gms.R
-import it.scoppelletti.spaceship.i18n.AndroidResourceMessageSpec
 import it.scoppelletti.spaceship.i18n.MessageSpec
 
 /**
@@ -27,9 +25,7 @@ import it.scoppelletti.spaceship.i18n.MessageSpec
  *
  * @since 1.0.0
  */
-public object GmsMessages {
+public interface GmsMessages {
 
-    public fun errorGoogleApiNotAvailable(): MessageSpec =
-            AndroidResourceMessageSpec(
-                    R.string.it_scoppelletti_gms_err_googleApiNotAvailable)
+    fun errorGoogleApiNotAvailable(): MessageSpec
 }

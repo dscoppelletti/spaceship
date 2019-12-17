@@ -24,3 +24,7 @@
 
 # http://stackoverflow.com/questions/55702672 - April 16, 2019
 -dontwarn kotlinx.atomicfu.**
+
+# Moshi
+-keep @com.squareup.moshi.JsonClass class * { *; }
+

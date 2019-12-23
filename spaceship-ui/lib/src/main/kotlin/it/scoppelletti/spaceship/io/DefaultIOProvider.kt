@@ -19,13 +19,8 @@
 package it.scoppelletti.spaceship.io
 
 import android.content.Context
-import android.util.Base64
-import android.util.Base64InputStream
-import android.util.Base64OutputStream
 import androidx.core.content.ContextCompat
 import java.io.File
-import java.io.InputStream
-import java.io.OutputStream
 import javax.inject.Inject
 
 /**
@@ -38,11 +33,7 @@ public class DefaultIOProvider @Inject constructor(
 ) : IOProvider {
 
     override val noBackupFilesDir: File
-        get() = ContextCompat.getNoBackupFilesDir(context)!!
-
-    override fun base64InputStream(inputStream: InputStream): InputStream =
-            Base64InputStream(inputStream, Base64.DEFAULT)
-
-    override fun base64OutputStream(outputStream: OutputStream): OutputStream =
-            Base64OutputStream(outputStream, Base64.DEFAULT)
+        get() = checkNotNull(ContextCompat.getNoBackupFilesDir(context)) {
+            "Missing noBackuFilesDir."
+        }
 }

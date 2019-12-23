@@ -30,15 +30,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import mu.KotlinLogging
+import okio.BufferedSink
+import okio.BufferedSource
+import okio.ByteString
+import okio.Okio
+import okio.Sink
+import okio.Source
 import org.threeten.bp.Clock
 import org.threeten.bp.ZonedDateTime
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.OutputStream
+import java.io.IOException
 import java.security.GeneralSecurityException
 import java.security.KeyPair
 import java.security.KeyPairGenerator
@@ -98,9 +100,9 @@ internal class CryptoProviderJellyBeanMR2(
     /**
      * Generates a new key pair.
      *
-     * @param  alias   Alias of the key.
-     * @param  expire  Expiration of the key (days).
-     * @return         The new key pair.
+     * @param  alias  Alias of the key.
+     * @param  expire Expiration of the key (days).
+     * @return        The new key pair.
      */
     @Throws(GeneralSecurityException::class)
     private fun newKeyPair(alias: String, expire: Int): KeyPair {
@@ -183,9 +185,10 @@ internal class CryptoProviderJellyBeanMR2(
         val secretKey: SecretKey
         val keyGen: KeyGenerator
         val cipher: Cipher
+        val source: ByteString
         var key: ByteArray? = null
-        var outputStream: OutputStream? = null
-        var encoder: OutputStream? = null
+        var sink: Sink? = null
+        var bufSink: BufferedSink? = null
 
         file = getKeystoreFile(alias)
 
@@ -206,20 +209,21 @@ internal class CryptoProviderJellyBeanMR2(
                     }
 
             key = cipher.wrap(secretKey)
+            source = ByteString.of(key!!, 0, key.size)
 
-            outputStream = FileOutputStream(file, false)
-            encoder = ioProvider.base64OutputStream(outputStream)
-            outputStream = null
+            sink = Okio.sink(file)
+            bufSink = Okio.buffer(sink!!)
+            sink = null
 
-            encoder.write(key!!, 0, key.size)
-            encoder.flush()
+            bufSink.writeUtf8(source.base64())
+            bufSink.flush()
         } catch (ex: Exception) {
             // GeneralSecurityException|IllegalStateException|IOException
             throw ApplicationException(
                     securityMessages.errorSaveSecretKey(file), ex)
         } finally {
-            outputStream?.closeQuietly()
-            encoder?.closeQuietly()
+            sink?.closeQuietly()
+            bufSink?.closeQuietly()
             key?.fill(0x0)
         }
 
@@ -238,11 +242,10 @@ internal class CryptoProviderJellyBeanMR2(
         val file: File
         val secretKey: SecretKey
         val cipher: Cipher
-        var n: Int
+        val sink: ByteString?
         var buf: ByteArray? = null
-        var inputStream: InputStream? = null
-        var decoder: InputStream? = null
-        var outputStream: ByteArrayOutputStream? = null
+        var source: Source? = null
+        var bufSource: BufferedSource? = null
 
         file = getKeystoreFile(alias)
 
@@ -253,23 +256,16 @@ internal class CryptoProviderJellyBeanMR2(
                         init(Cipher.UNWRAP_MODE, keyPair.private)
                     }
 
-            inputStream = FileInputStream(file)
-            decoder = ioProvider.base64InputStream(inputStream)
-            inputStream = null
+            source = Okio.source(file)
+            bufSource = Okio.buffer(source!!)
+            source = null
 
-            outputStream = ByteArrayOutputStream()
-
-            buf = ByteArray(DEFAULT_BUFFER_SIZE)
-            n = decoder.read(buf, 0, DEFAULT_BUFFER_SIZE)
-            while (n > 0) {
-                outputStream.write(buf, 0, n)
-                n = decoder.read(buf, 0, DEFAULT_BUFFER_SIZE)
+            sink = ByteString.decodeBase64(bufSource.readUtf8())
+            if (sink == null) {
+                throw IOException("No Base64 data.")
             }
 
-            outputStream.flush()
-            buf.fill(0x0)
-            buf = outputStream.toByteArray()
-
+            buf = sink.toByteArray()
             secretKey = cipher.unwrap(buf, SecurityExt.KEY_ALGORITHM_AES,
                     Cipher.SECRET_KEY) as SecretKey
         } catch (ex: FileNotFoundException) {
@@ -280,9 +276,8 @@ internal class CryptoProviderJellyBeanMR2(
             throw ApplicationException(
                     securityMessages.errorLoadSecretKey(file), ex)
         } finally {
-            inputStream?.closeQuietly()
-            decoder?.closeQuietly()
-            outputStream?.closeQuietly()
+            source?.closeQuietly()
+            bufSource?.closeQuietly()
             buf?.fill(0x0)
         }
 

@@ -24,6 +24,7 @@ dependencies {
     api "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
     api "com.squareup.moshi:moshi:${versionMap.moshi}"
+    api "com.squareup.okio:okio:${versionMap.okio}"
 
     //noinspection DifferentStdlibGradleVersion
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"

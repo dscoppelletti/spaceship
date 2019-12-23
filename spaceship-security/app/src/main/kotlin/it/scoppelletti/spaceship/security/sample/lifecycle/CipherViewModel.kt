@@ -1,14 +1,13 @@
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.security.sample.lifecycle
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import it.scoppelletti.spaceship.ApplicationException
 import it.scoppelletti.spaceship.StdlibExt
-import it.scoppelletti.spaceship.io.IOProvider
 import it.scoppelletti.spaceship.io.closeQuietly
 import it.scoppelletti.spaceship.security.CryptoProvider
-import it.scoppelletti.spaceship.security.sample.i18n.SampleMessages
 import it.scoppelletti.spaceship.types.StringExt
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
@@ -19,13 +18,17 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okio.BufferedSink
+import okio.BufferedSource
+import okio.ByteString
+import okio.Okio
+import okio.Sink
+import okio.Source
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.io.IOException
 import java.io.InputStream
-import java.io.ObjectInputStream
-import java.io.ObjectOutputStream
 import java.io.OutputStream
-import java.lang.Exception
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
 import javax.inject.Inject
@@ -33,9 +36,7 @@ import javax.inject.Named
 
 @Suppress("BlockingMethodInNonBlockingContext")
 class CipherViewModel @Inject constructor(
-        private val ioProvider: IOProvider,
         private val cryptoProvider: CryptoProvider,
-        private val sampleMessages: SampleMessages,
 
         @Named(StdlibExt.DEP_MAINDISPATCHER)
         dispatcher: CoroutineDispatcher
@@ -81,38 +82,37 @@ class CipherViewModel @Inject constructor(
 
     private suspend fun encrypt(plainText: String, cipher: Cipher): String =
             withContext(Dispatchers.Default) {
-                var outputStream: ByteArrayOutputStream? = null
-                var objectStream: ObjectOutputStream? = null
-                var encoder: OutputStream? = null
-                var encryptor: OutputStream? = null
+                val buf: ByteString
+                val data: ByteArray
+                val sink: Sink
+                val bufSink: BufferedSink
+                val encryptor: OutputStream
+                val outputStream: ByteArrayOutputStream
 
-                try {
-                    outputStream = ByteArrayOutputStream()
-                    encoder = ioProvider.base64OutputStream(outputStream)
+                outputStream = ByteArrayOutputStream()
+                sink = Okio.sink(outputStream)
+                bufSink = Okio.buffer(sink)
 
-                    objectStream = ObjectOutputStream(encoder)
-                    objectStream.writeInt(cipher.iv.size)
-                    objectStream.flush()
+                bufSink.writeInt(cipher.iv.size)
+                bufSink.write(cipher.iv)
+                bufSink.flush()
 
-                    encoder.write(cipher.iv)
-                    encoder.flush()
-
-                    encryptor = cryptoProvider.cipherOutputStream(encoder,
-                            cipher)
-                    encoder = null
-                    objectStream = null // Don't close this! Leave closing
-                        // encoder to the encryptor
-
-                    encryptor.write(plainText.toByteArray())
-                    encryptor.flush()
-                } finally {
-                    outputStream?.closeQuietly()
-                    objectStream?.closeQuietly()
-                    encoder?.closeQuietly()
-                    encryptor?.closeQuietly()
+                if (!isActive) {
+                    throw CancellationException()
                 }
 
-                outputStream.toString()
+                encryptor = cryptoProvider.cipherOutputStream(
+                        bufSink.outputStream(), cipher)
+                encryptor.write(plainText.toByteArray())
+                encryptor.closeQuietly()
+
+                if (!isActive) {
+                    throw CancellationException()
+                }
+
+                data = outputStream.toByteArray()
+                buf = ByteString.of(data, 0, data.size)
+                buf.base64()
             }
 
     fun decrypt(alias: String, cipherText: String) = scope.launch {
@@ -140,89 +140,76 @@ class CipherViewModel @Inject constructor(
     private suspend fun loadIV(cipherText: String): ByteArray =
             withContext(Dispatchers.Default) {
                 val ivSize: Int
-                val iv: ByteArray
-                var inputStream: ByteArrayInputStream? = null
-                var decoder: InputStream? = null
-                var objectStream: ObjectInputStream? = null
+                val inputStream: InputStream
+                val source: Source
+                val bufSource: BufferedSource
+                val buf: ByteString?
 
-                try {
-                    inputStream = ByteArrayInputStream(cipherText.toByteArray())
-                    decoder = ioProvider.base64InputStream(inputStream)
-                    inputStream = null
-
-                    objectStream = ObjectInputStream(decoder)
-
-                    ivSize = objectStream.readInt()
-                    iv = ByteArray(ivSize)
-                    if (decoder.read(iv, 0, ivSize) != ivSize) {
-                        throw ApplicationException(
-                                sampleMessages.errorCipherTextCorrupted())
-                    }
-                } finally {
-                    inputStream?.closeQuietly()
-                    objectStream?.closeQuietly()
-                    decoder?.closeQuietly()
-                    objectStream?.closeQuietly()
+                buf = ByteString.decodeBase64(cipherText)
+                if (buf == null) {
+                    throw IOException("No base64 data.")
                 }
 
-                iv
+                if (!isActive) {
+                    throw CancellationException()
+                }
+
+                inputStream = ByteArrayInputStream(buf.toByteArray())
+                source = Okio.source(inputStream)
+                bufSource = Okio.buffer(source)
+
+                ivSize = bufSource.readInt()
+
+                if (!isActive) {
+                    throw CancellationException()
+                }
+
+                bufSource.readByteArray(ivSize.toLong())
             }
 
     private suspend fun decrypt(cipherText: String, cipher: Cipher): String =
             withContext(Dispatchers.Default) {
-                val ivSize: Long
-                val buf: ByteArray
-                var n: Int
-                var inputStream: ByteArrayInputStream? = null
-                var decoder: InputStream? = null
-                var objectStream: ObjectInputStream? = null
-                var decryptor: InputStream? = null
-                var outputStream: ByteArrayOutputStream? = null
+                val ivSize: Int
+                val data: ByteArray
+                val buf: ByteString?
+                val decryptor: InputStream
+                var source: Source
+                var bufSource: BufferedSource
+                var inputStream: InputStream
 
-                try {
-                    inputStream = ByteArrayInputStream(cipherText.toByteArray())
-                    decoder = ioProvider.base64InputStream(inputStream)
-                    inputStream = null
-
-                    objectStream = ObjectInputStream(decoder)
-
-                    ivSize = objectStream.readInt().toLong()
-                    if (decoder.skip(ivSize) != ivSize) {
-                        throw ApplicationException(
-                                sampleMessages.errorCipherTextCorrupted())
-                    }
-
-                    if (!isActive) {
-                        throw CancellationException()
-                    }
-
-                    decryptor = cryptoProvider.cipherInputStream(decoder, cipher)
-                    outputStream = ByteArrayOutputStream()
-                    buf = ByteArray(DEFAULT_BUFFER_SIZE)
-
-                    n = decryptor.read(buf, 0, DEFAULT_BUFFER_SIZE)
-                    while (n > 0) {
-                        if (!isActive) {
-                            throw CancellationException()
-                        }
-
-                        outputStream.write(buf, 0, n)
-                        if (!isActive) {
-                            throw CancellationException()
-                        }
-
-                        n = decryptor.read(buf, 0, DEFAULT_BUFFER_SIZE)
-                    }
-                } finally {
-                    inputStream?.closeQuietly()
-                    objectStream?.closeQuietly()
-                    decoder?.closeQuietly()
-                    objectStream?.closeQuietly()
-                    decryptor?.closeQuietly()
-                    outputStream?.closeQuietly()
+                buf = ByteString.decodeBase64(cipherText)
+                if (buf == null) {
+                    throw IOException("No base64 data.")
                 }
 
-                outputStream.toString()
+                if (!isActive) {
+                    throw CancellationException()
+                }
+
+                inputStream = ByteArrayInputStream(buf.toByteArray())
+                source = Okio.source(inputStream)
+                bufSource = Okio.buffer(source)
+
+                ivSize = bufSource.readInt()
+                bufSource.readByteArray(ivSize.toLong())
+
+                if (!isActive) {
+                    throw CancellationException()
+                }
+
+                data = bufSource.readByteArray()
+
+                if (!isActive) {
+                    throw CancellationException()
+                }
+
+                inputStream = ByteArrayInputStream(data)
+                decryptor = cryptoProvider.cipherInputStream(inputStream,
+                        cipher)
+                source = Okio.source(decryptor)
+                bufSource = Okio.buffer(source)
+
+                bufSource.readUtf8()
             }
 
     fun setError(ex: Throwable) {

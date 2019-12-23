@@ -8,7 +8,6 @@
     <string name="cmd_keygenerator">Key generator</string>
     <string name="cmd_providers">Providers</string>
     <string name="err_alias_required">Alias is required.</string>
-    <string name="err_ciphertext_corrupted">Cipher text is corrupted.</string>
     <string name="err_expire_required">Expire is required.</string>
     <string name="err_expire_integer">Expire must be an integer.</string>
     <string name="err_expire_valid">Expire must be greater or equal to 0.</string>

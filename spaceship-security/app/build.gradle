@@ -48,6 +48,7 @@ dependencies {
     implementation "com.google.android.material:material:${versionMap.androidx_material}"
     implementation "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
+    implementation "com.squareup.okio:okio:${versionMap.okio}"
     implementation("it.scoppelletti.spaceship:spaceship-html:${versionMap.spaceship}") {
         changing = true
     }

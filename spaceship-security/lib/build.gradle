@@ -48,6 +48,7 @@ dependencies {
     api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
     api "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
+    api "com.squareup.okio:okio:${versionMap.okio}"
     api("it.scoppelletti.spaceship:spaceship-stdlib:${versionMap.spaceship}") {
         changing = true
     }

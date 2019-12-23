@@ -19,8 +19,6 @@
 package it.scoppelletti.spaceship.io
 
 import java.io.File
-import java.io.InputStream
-import java.io.OutputStream
 
 /**
  * Provides I/O components.
@@ -37,21 +35,4 @@ import java.io.OutputStream
 public interface IOProvider {
 
     val noBackupFilesDir: File
-
-    /**
-     * Returns an input stream for decoding Base64 encoded byte stream.
-     *
-     * @param  inputStream Original input stream.
-     * @return             Decoder stream.
-     */
-    fun base64InputStream(inputStream: InputStream): InputStream
-
-    /**
-     * Returns an output stream for encoding byte data using the Base64 encoding
-     * scheme.
-     *
-     * @param  outputStream Original output stream.
-     * @return              Encoder stream.
-     */
-    fun base64OutputStream(outputStream: OutputStream): OutputStream
 }

@@ -22,10 +22,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import mu.KotlinLogging
+import okio.Buffer
+import okio.Sink
+import okio.Source
 import java.io.Closeable
 import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
 
 private val logger = KotlinLogging.logger { }
 
@@ -64,33 +65,33 @@ public fun <T : Closeable> T.closeQuietly(): T? {
 /**
  * Copy a stream to another stream.
  *
- * @param inStream  Input stream.
- * @param outStream Output stream.
- * @param bufSize   Size of the buffer used for copying.
- * @since           1.0.0
+ * @param source  Input stream.
+ * @param sink    Output stream.
+ * @param bufSize Size of the buffer used for copying.
+ * @since         1.0.0
  */
 @Throws(IOException::class)
 public suspend fun copy(
-        inStream: InputStream,
-        outStream: OutputStream,
-        bufSize: Int = DEFAULT_BUFFER_SIZE
+        source: Source,
+        sink: Sink,
+        bufSize: Long = DEFAULT_BUFFER_SIZE.toLong()
 ) = withContext(Dispatchers.IO) {
-    var n: Int
-    val buf: ByteArray = ByteArray(bufSize)
+    var n: Long
+    val buf = Buffer()
 
-    n = inStream.read(buf, 0, bufSize)
+    n = source.read(buf, bufSize)
     while (n > 0) {
-        if (!this.isActive) {
+        if (!isActive) {
             return@withContext
         }
 
-        outStream.write(buf, 0, n)
-        if (!this.isActive) {
+        sink.write(buf, n)
+        if (!isActive) {
             return@withContext
         }
 
-        n = inStream.read(buf, 0, bufSize)
+        n = source.read(buf, bufSize)
     }
 
-    outStream.flush()
+    sink.flush()
 }

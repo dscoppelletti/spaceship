@@ -19,10 +19,3 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-
--dontwarn org.slf4j.**
-
-# http://stackoverflow.com/questions/55702672 - April 16, 2019
--dontwarn kotlinx.atomicfu.**
-
-

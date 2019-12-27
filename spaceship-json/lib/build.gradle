@@ -5,8 +5,8 @@ apply from: '../../gradle-plugins/java-library.gradle'
 
 group 'it.scoppelletti.spaceship'
 version versionMap.spaceship
-description 'Spaceship Standard Library'
-archivesBaseName = 'spaceship-stdlib'
+description 'Spaceship for JSON'
+archivesBaseName = 'spaceship-json'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -14,6 +14,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 sourceSets {
     main.java.srcDirs += 'build/generated/source/kapt/main'
     debug.java.srcDirs += 'build/generated/source/kapt/debug'
+    test.java.srcDirs += 'build/generated/source/kapt/test'
 }
 
 spaceship {
@@ -21,17 +22,15 @@ spaceship {
 }
 
 dependencies {
-    api "com.google.dagger:dagger:${versionMap.dagger}"
-    kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
-    api "com.squareup.okio:okio:${versionMap.okio}"
+    api "com.squareup.moshi:moshi:${versionMap.moshi}"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:${versionMap.moshi}"
 
     //noinspection DifferentStdlibGradleVersion
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
 
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versionMap.kotlinx_coroutines}"
-    api "org.threeten:threetenbp:${versionMap.threetenbp}:no-tzdb"
     implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
     implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
+    kaptTest "com.squareup.moshi:moshi-kotlin-codegen:${versionMap.moshi}"
     testImplementation "junit:junit:${versionMap.junit}"
     testImplementation "org.jetbrains.kotlin:kotlin-test:${versionMap.kotlin}"
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:${versionMap.kotlin}"

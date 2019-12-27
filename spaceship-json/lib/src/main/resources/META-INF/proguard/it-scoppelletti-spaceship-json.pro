@@ -20,9 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--dontwarn org.slf4j.**
-
-# http://stackoverflow.com/questions/55702672 - April 16, 2019
--dontwarn kotlinx.atomicfu.**
-
+# Moshi
+-keep @com.squareup.moshi.JsonClass class * { *; }
 

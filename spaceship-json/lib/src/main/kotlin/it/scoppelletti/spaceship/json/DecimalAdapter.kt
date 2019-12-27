@@ -17,7 +17,7 @@
 @file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
         "unused")
 
-package it.scoppelletti.spaceship.types
+package it.scoppelletti.spaceship.json
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonDataException

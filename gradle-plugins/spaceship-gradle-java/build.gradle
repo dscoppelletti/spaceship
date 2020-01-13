@@ -1,0 +1,97 @@
+
+buildscript {
+    apply from: '../versionMap.gradle'
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.github.ben-manes:gradle-versions-plugin:${versionMap.gradle_versions}"
+    }
+}
+
+plugins {
+    id 'java-library'
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+}
+
+apply plugin: 'com.github.ben-manes.versions'
+
+group 'it.scoppelletti.spaceship'
+version '1.0.0'
+description 'Spaceship Gradle Plugin for Java libraries'
+archivesBaseName = 'spaceship-gradle-java'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+gradlePlugin {
+    plugins {
+        spaceshipJava {
+            id = 'it.scoppelletti.spaceship.spaceship-gradle-java'
+            implementationClass = 'it.scoppelletti.spaceship.gradle.java.SpaceshipJavaPlugin'
+        }
+    }
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+
+    if (project.hasProperty('it.scoppelletti.tools.devRepoUrl')) {
+        maven {
+            url project.property('it.scoppelletti.tools.devRepoUrl')
+        }
+    }
+}
+
+dependencies {
+    api gradleApi()
+    api "it.scoppelletti.spaceship:spaceship-gradle:${versionMap.spaceship}"
+    api "org.jetbrains.dokka:dokka-gradle-plugin:${versionMap.dokka}"
+    implementation "org.apache.commons:commons-lang3:${versionMap.commons_lang}"
+    testImplementation "junit:junit:${versionMap.junit}"
+}
+
+if (project.hasProperty('it.scoppelletti.tools.devRepoUrl')) {
+    publishing {
+        publications {
+            plugin(MavenPublication) {
+                from components.java
+
+                artifactId project.archivesBaseName
+
+                pom {
+                    description = project.description
+                    url = 'http://github.com/dscoppelletti/spaceship'
+                    inceptionYear = '2019-2020'
+                    developers {
+                        developer {
+                            name = 'Dario Scoppelletti'
+                            email = 'dario@scoppelletti.it'
+                            url = 'http://www.scoppelletti.it'
+                        }
+                    }
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:git@github.com:dscoppelletti/spaceship.git'
+                        developerConnection = 'scm:git:git@github.com:dscoppelletti/spaceship.git'
+                        url = 'git@github.com:dscoppelletti/spaceship.git'
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = 'dev'
+                url = project.property('it.scoppelletti.tools.devRepoUrl')
+            }
+        }
+    }
+}

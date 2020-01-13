@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply from: '../../gradle-plugins/common.gradle'
 
 android {
     compileSdkVersion versionMap.sdk_target
@@ -74,6 +73,7 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
     implementation "com.google.firebase:firebase-ads:${versionMap.firebase_ads}"
     implementation "com.google.firebase:firebase-core:${versionMap.firebase_core}"
+    implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
     implementation("it.scoppelletti.spaceship:spaceship-preference:${versionMap.spaceship}") {
         changing = true
     }
@@ -84,6 +84,7 @@ dependencies {
         changing = true
     }
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
+    implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
     runtimeOnly "com.noveogroup.android:android-logger:${versionMap.android_logger}"
 }
 

@@ -2,8 +2,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply from: '../../gradle-plugins/common.gradle'
-apply from: '../../gradle-plugins/android-library.gradle'
+apply plugin: 'org.jetbrains.dokka'
+apply plugin: 'it.scoppelletti.spaceship.spaceship-gradle-android'
 
 group 'it.scoppelletti.spaceship'
 description 'Spaceship for HTML'
@@ -40,7 +40,7 @@ android {
 }
 
 spaceship {
-    copyright '2018'
+    inceptionYear = '2018'
 }
 
 dependencies {
@@ -48,7 +48,7 @@ dependencies {
     api "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
     api "androidx.lifecycle:lifecycle-common-java8:${versionMap.androidx_lifecycle}"
     api "androidx.lifecycle:lifecycle-extensions:${versionMap.androidx_lifecycle}"
-    api "com.google.android.material:material:${versionMap.androidx_material}"
+    api "com.google.android.material:material:${versionMap.material}"
     api "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
     api("it.scoppelletti.spaceship:spaceship-stdlib:${versionMap.spaceship}") {

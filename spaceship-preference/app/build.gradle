@@ -3,7 +3,6 @@ apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply from: '../../gradle-plugins/common.gradle'
 
 ext.ossLibVersion = '17.0.0'
 
@@ -44,7 +43,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
     implementation "androidx.preference:preference:${versionMap.androidx_preference}"
     implementation "com.google.android.gms:play-services-oss-licenses:${ossLibVersion}"
-    implementation "com.google.android.material:material:${versionMap.androidx_material}"
+    implementation "com.google.android.material:material:${versionMap.material}"
     implementation "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
     implementation("it.scoppelletti.spaceship:spaceship-stdlib:${versionMap.spaceship}") {

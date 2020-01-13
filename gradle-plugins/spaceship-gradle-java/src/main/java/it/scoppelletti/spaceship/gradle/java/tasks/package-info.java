@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ * Copyright (C) 2020 Dario Scoppelletti, <http://www.scoppelletti.it/>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-configurations.all {
-    // - http://stackoverflow.com/questions/13565082 - November 26, 2012
-    // Check for updates every build
-    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-}
+/**
+ * Tasks.
+ *
+ * @version 1.0.0
+ */
+package it.scoppelletti.spaceship.gradle.java.tasks;

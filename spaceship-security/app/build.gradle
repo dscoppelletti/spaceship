@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply from: '../../gradle-plugins/common.gradle'
 
 android {
     compileSdkVersion versionMap.sdk_target
@@ -45,7 +44,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common-java8:${versionMap.androidx_lifecycle}"
     implementation "androidx.lifecycle:lifecycle-extensions:${versionMap.androidx_lifecycle}"
     kapt "androidx.databinding:databinding-compiler:${versionMap.android_gradle}"
-    implementation "com.google.android.material:material:${versionMap.androidx_material}"
+    implementation "com.google.android.material:material:${versionMap.material}"
     implementation "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
     implementation "com.squareup.okio:okio:${versionMap.okio}"

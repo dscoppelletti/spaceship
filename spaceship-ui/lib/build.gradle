@@ -2,7 +2,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply from: '../../gradle-plugins/android-library.gradle'
+apply plugin: 'org.jetbrains.dokka'
+apply plugin: 'it.scoppelletti.spaceship.spaceship-gradle-android'
 
 group 'it.scoppelletti.spaceship'
 description 'Spaceship for UI'
@@ -42,7 +43,7 @@ android {
 }
 
 spaceship {
-    copyright '2013-2019'
+    inceptionYear = '2013-2019'
 }
 
 dependencies {

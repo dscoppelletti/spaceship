@@ -2,7 +2,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply from: '../../gradle-plugins/android-library.gradle'
+apply plugin: 'org.jetbrains.dokka'
+apply plugin: 'it.scoppelletti.spaceship.spaceship-gradle-android'
 
 group 'it.scoppelletti.spaceship'
 description 'Spaceship for Google Play Services'
@@ -39,7 +40,7 @@ android {
 }
 
 spaceship {
-    copyright '2019'
+    inceptionYear = '2019'
 }
 
 dependencies {
@@ -49,15 +50,15 @@ dependencies {
     api "androidx.constraintlayout:constraintlayout:${versionMap.androidx_constraint}"
     api "com.google.android.gms:play-services-base:${versionMap.playservices_base}"
     api "com.google.android.material:material:${versionMap.material}"
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
-    implementation "com.crashlytics.sdk.android:crashlytics:${versionMap.firebase_crash}"
-    implementation "com.google.firebase:firebase-core:${versionMap.firebase_core}"
-    implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
     api("it.scoppelletti.spaceship:spaceship-stdlib:${versionMap.spaceship}") {
         changing = true
     }
     api("it.scoppelletti.spaceship:spaceship-ui:${versionMap.spaceship}") {
         changing = true
     }
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
+    implementation "com.crashlytics.sdk.android:crashlytics:${versionMap.firebase_crash}"
+    implementation "com.google.firebase:firebase-core:${versionMap.firebase_core}"
+    implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
     implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
 }

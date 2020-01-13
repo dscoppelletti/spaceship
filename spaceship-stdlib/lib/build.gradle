@@ -1,7 +1,9 @@
+
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
 apply plugin: 'kotlin-kapt'
-apply from: '../../gradle-plugins/java-library.gradle'
+apply plugin: 'org.jetbrains.dokka'
+apply plugin: 'it.scoppelletti.spaceship.spaceship-gradle-java'
 
 group 'it.scoppelletti.spaceship'
 version versionMap.spaceship
@@ -17,7 +19,7 @@ sourceSets {
 }
 
 spaceship {
-    copyright '2019'
+    inceptionYear = '2019'
 }
 
 dependencies {
@@ -37,3 +39,4 @@ dependencies {
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:${versionMap.kotlin}"
     testRuntimeOnly "org.slf4j:slf4j-simple:${versionMap.slf4j}"
 }
+

@@ -5,17 +5,25 @@ apply plugin: 'com.github.ben-manes.versions'
 buildscript {
     apply from: '../gradle-plugins/versionMap.gradle'
     ext.kotlin_version = versionMap.kotlin
-    ext.ossPluginVersion = '0.9.4'
+    ext.ossPluginVersion = '0.10.0'
     repositories {
         google()
         jcenter()
+
+        if (project.hasProperty('it.scoppelletti.tools.devRepoUrl')) {
+            maven {
+                url project.property('it.scoppelletti.tools.devRepoUrl')
+            }
+        }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:${versionMap.android_gradle}"
         classpath "com.github.ben-manes:gradle-versions-plugin:${versionMap.gradle_versions}"
-        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:${versionMap.dokka}"
+        classpath "it.scoppelletti.spaceship:spaceship-gradle-android:${versionMap.spaceship}"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${versionMap.dokka}"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versionMap.kotlin}"
         classpath "com.google.android.gms:oss-licenses-plugin:${ossPluginVersion}"
+
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

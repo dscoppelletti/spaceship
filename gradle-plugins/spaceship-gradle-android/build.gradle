@@ -1,0 +1,68 @@
+
+buildscript {
+    apply from: '../versionMap.gradle'
+    repositories {
+        jcenter()
+
+        if (project.hasProperty('it.scoppelletti.tools.devRepoUrl')) {
+            maven {
+                url project.property('it.scoppelletti.tools.devRepoUrl')
+            }
+        }
+    }
+    dependencies {
+        classpath "com.github.ben-manes:gradle-versions-plugin:${versionMap.gradle_versions}"
+        classpath "it.scoppelletti.spaceship:spaceship-gradle-java:${versionMap.spaceship}"
+    }
+}
+
+plugins {
+    id 'java-library'
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+}
+
+apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'it.scoppelletti.spaceship.spaceship-gradle-java'
+
+group 'it.scoppelletti.spaceship'
+version '1.0.0'
+description 'Spaceship Gradle Plugin for Android libraries'
+archivesBaseName = 'spaceship-gradle-android'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+gradlePlugin {
+    plugins {
+        spaceshipAndroid {
+            id = 'it.scoppelletti.spaceship.spaceship-gradle-android'
+            implementationClass = 'it.scoppelletti.spaceship.gradle.android.SpaceshipAndroidPlugin'
+        }
+    }
+}
+
+spaceship {
+    inceptionYear = '2019-2020'
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+    google()
+
+    if (project.hasProperty('it.scoppelletti.tools.devRepoUrl')) {
+        maven {
+            url project.property('it.scoppelletti.tools.devRepoUrl')
+        }
+    }
+}
+
+dependencies {
+    api gradleApi()
+    api "com.android.tools.build:gradle:${versionMap.android_gradle}"
+    api "it.scoppelletti.spaceship:spaceship-gradle:${versionMap.spaceship}"
+    implementation "org.apache.commons:commons-lang3:${versionMap.commons_lang}"
+    compileOnly "org.projectlombok:lombok:${versionMap.lombok}"
+    annotationProcessor "org.projectlombok:lombok:${versionMap.lombok}"
+}

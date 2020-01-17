@@ -24,34 +24,13 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Status
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.Tasks
+import it.scoppelletti.spaceship.ApplicationException
+import it.scoppelletti.spaceship.gms.coroutines.suspendTask
+import it.scoppelletti.spaceship.gms.i18n.GmsMessages
 import it.scoppelletti.spaceship.gms.inject.GmsComponent
 import it.scoppelletti.spaceship.gms.inject.GmsComponentProvider
-
-/**
- * Attempts to make Google Play services available on this device.
- *
- * @receiver Activity
- * @return   The new task.
- * @since    1.0.0
- */
-@UiThread
-public fun Activity.makeGooglePlayServicesAvailable() : Task<Void> {
-    val result: Int
-    val googleApi: GoogleApiAvailability
-    val ex: Exception
-
-    googleApi = GoogleApiAvailability.getInstance()
-    result = googleApi.isGooglePlayServicesAvailable(this)
-    if (result == ConnectionResult.SERVICE_INVALID) {
-        // http://issuetracker.google.com/issues/120871359 - Dec 12, 2018
-        ex = ApiException(Status(result))
-        return Tasks.forException(ex)
-    }
-
-    return googleApi.makeGooglePlayServicesAvailable(this)
-}
+import java.lang.Exception
+import java.util.concurrent.CancellationException
 
 /**
  * Returns the `GmsComponent` component.
@@ -62,3 +41,32 @@ public fun Activity.makeGooglePlayServicesAvailable() : Task<Void> {
  */
 public fun Activity.gmsComponent(): GmsComponent =
         (this.application as GmsComponentProvider).gmsComponent()
+
+/**
+ * Attempts to make Google Play services available on this device.
+ *
+ * @param activity Activity
+ * @since          1.0.0
+ */
+@UiThread
+public suspend fun makeGooglePlayServicesAvailable(activity: Activity) {
+    val result: Int
+    val googleApi: GoogleApiAvailability
+    val gmsMessages: GmsMessages
+
+    gmsMessages = activity.gmsComponent().gmsMessages()
+    try {
+        googleApi = GoogleApiAvailability.getInstance()
+        result = googleApi.isGooglePlayServicesAvailable(activity)
+        if (result == ConnectionResult.SERVICE_INVALID) {
+            // http://issuetracker.google.com/issues/120871359 - Dec 12, 2018
+            throw ApiException(Status(result))
+        }
+
+        suspendTask(googleApi::makeGooglePlayServicesAvailable, activity)
+    } catch (ex: CancellationException) {
+        throw ex
+    } catch (ex: Exception) {
+        throw ApplicationException(gmsMessages.errorGoogleApiNotAvailable(), ex)
+    }
+}

@@ -14,7 +14,8 @@ import it.scoppelletti.spaceship.inject.StdlibModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [ GmsModule::class, StdlibModule::class, UIModule::class ])
+@Component(modules = [ AppModule::class, GmsModule::class, StdlibModule::class,
+    UIModule::class ])
 interface AppComponent : GmsComponent, StdlibComponent, UIComponent {
 
     @Component.Factory

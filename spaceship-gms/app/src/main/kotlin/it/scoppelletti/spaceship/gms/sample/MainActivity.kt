@@ -1,3 +1,5 @@
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package it.scoppelletti.spaceship.gms.sample
 
 import android.os.Bundle
@@ -5,27 +7,41 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.tasks.Task
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import it.scoppelletti.spaceship.ApplicationException
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
 import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.app.tryFinish
+import it.scoppelletti.spaceship.app.uiComponent
 import it.scoppelletti.spaceship.gms.app.gmsComponent
-import it.scoppelletti.spaceship.gms.app.makeGooglePlayServicesAvailable
 import it.scoppelletti.spaceship.gms.i18n.GmsMessages
-import mu.KotlinLogging
-import java.util.concurrent.CancellationException
+import it.scoppelletti.spaceship.lifecycle.SingleEvent
 
 class MainActivity : AppCompatActivity(), OnDialogResultListener {
 
+    private lateinit var viewModel: MainViewModel
     private lateinit var gmsMessages: GmsMessages
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val viewModelFactory: ViewModelProvider.Factory
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
+        viewModelFactory = uiComponent().viewModelFactory()
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+                .get(MainViewModel::class.java)
         gmsMessages = gmsComponent().gmsMessages()
+
+        viewModel.state.observe(this,
+                Observer<SingleEvent<GoogleApiState>> { state ->
+                    state?.poll()?.let {
+                        stateObserver(it)
+                    }
+                })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -36,8 +52,7 @@ class MainActivity : AppCompatActivity(), OnDialogResultListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.cmd_googleApi -> {
-                makeGooglePlayServicesAvailable()
-                        .addOnCompleteListener(::onGoogleApiAvailable)
+                viewModel.makeGmsAvailable(this)
                 return true
             }
         }
@@ -45,23 +60,14 @@ class MainActivity : AppCompatActivity(), OnDialogResultListener {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun onGoogleApiAvailable(task: Task<Void>) {
-        val ex: Throwable?
-
-        if (task.isSuccessful) {
+    private fun stateObserver(state: GoogleApiState) {
+        if (state.err == null) {
             Toast.makeText(this, R.string.msg_googleApiAvailable,
                     Toast.LENGTH_SHORT).show()
-            return
+        } else {
+            showExceptionDialog(ApplicationException(
+                    gmsMessages.errorGoogleApiNotAvailable(), state.err))
         }
-
-        ex = task.exception
-        if (ex is CancellationException) {
-            logger.warn("Activity has been completed before the task.")
-            return
-        }
-
-        showExceptionDialog(ApplicationException(
-                gmsMessages.errorGoogleApiNotAvailable(), ex))
     }
 
     override fun onDialogResult(tag: String, which: Int) {
@@ -70,9 +76,5 @@ class MainActivity : AppCompatActivity(), OnDialogResultListener {
                 tryFinish()
             }
         }
-    }
-
-    private companion object {
-        val logger = KotlinLogging.logger {}
     }
 }

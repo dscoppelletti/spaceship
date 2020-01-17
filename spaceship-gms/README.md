@@ -10,6 +10,12 @@ Provides common utility classes.
 
 Contains high-level classes encapsulating the overall Android application model.
 
+# Package it.scoppelletti.spaceship.gms.coroutines
+
+Support for Kotlin coroutines.
+
+* [Coroutines Guide](http://kotlinlang.org/docs/reference/coroutines/coroutines-guide.html)
+
 # Package it.scoppelletti.spaceship.gms.i18n
 
 Internationalization.

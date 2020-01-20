@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
+        "unused")
 
 package it.scoppelletti.spaceship.app
 
 import android.content.DialogInterface
 import androidx.annotation.UiThread
-import androidx.fragment.app.FragmentActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 /**
@@ -39,7 +39,6 @@ public abstract class BottomSheetDialogFragmentEx :
      * @param which ID of the button that was clicked (i.e.
      *              `DialogInterface.BUTTON_NEGATIVE`)
      */
-    @Suppress("unused")
     protected fun onItemClick(which: Int) {
         onDialogResult(dialog, which)
         dismiss()
@@ -60,16 +59,11 @@ public abstract class BottomSheetDialogFragmentEx :
     private fun onDialogResult(
             @Suppress("UNUSED_PARAMETER") dialog: DialogInterface?,
             which: Int
-    ) {
-        val dialogTag: String?
-        val activity: FragmentActivity
+    ) = tag?.let { dialogTag ->
+        val parent: OnDialogResultListener?
 
-        dialogTag = tag
-        activity = requireActivity()
-
-        if (dialogTag != null && activity is OnDialogResultListener) {
-            activity.onDialogResult(dialogTag, which)
-        }
+        parent = (parentFragment ?: activity) as? OnDialogResultListener
+        parent?.onDialogResult(dialogTag, which)
     }
 
     public companion object {
@@ -77,7 +71,6 @@ public abstract class BottomSheetDialogFragmentEx :
         /**
          * Fragment tag.
          */
-        @Suppress("unused")
         public const val TAG: String = AppExt.TAG_BOTTOMSHEETDIALOG
     }
 }

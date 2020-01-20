@@ -25,6 +25,7 @@ import androidx.annotation.UiThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import it.scoppelletti.spaceship.i18n.MessageSpec
 import mu.KotlinLogging
 
@@ -36,20 +37,11 @@ import mu.KotlinLogging
  * @see   it.scoppelletti.spaceship.app.OnDialogResultListener
  * @see   it.scoppelletti.spaceship.app.OnRequestPermissionFlowResultListener
  * @since 1.0.0
- *
- * @constructor             Constructor.
- * @param       activity    The activity hosting the flow.
- * @param       permission  The permission requested (one of the costants
- *                          defined by the class `Manifest.permission`).
- * @param       requestCode Request code.
- * @param       tag         Fragment tag of the Alert dialog showing the
- *                          rationale.
- * @param       message     Rationale for requesting the permission.
- * @param       titleId     Title of the Alert dialog showing the rationale.
  */
 @UiThread
-public class RequestPermissionFlow(
-        private val activity: AppCompatActivity,
+public class RequestPermissionFlow private constructor(
+        private val host: RequestPermissionHost,
+        private val resultListener: OnRequestPermissionFlowResultListener?,
         private val permission: String,
         private val requestCode: Int,
         private val tag: String,
@@ -57,19 +49,61 @@ public class RequestPermissionFlow(
         @StringRes private val titleId: Int) {
 
     /**
+     * @constructor             Constructor.
+     * @param       activity    The activity hosting the flow.
+     * @param       permission  The permission requested (one of the costants
+     *                          defined by the class `Manifest.permission`).
+     * @param       requestCode Request code.
+     * @param       tag         Fragment tag of the Alert dialog showing the
+     *                          rationale.
+     * @param       message     Rationale for requesting the permission.
+     * @param       titleId     Title of the Alert dialog showing the rationale.
+     */
+    public constructor(
+            activity: AppCompatActivity,
+            permission: String,
+            requestCode: Int,
+            tag: String,
+            message: MessageSpec,
+            titleId: Int
+    ) : this(ActivityRequestPermissionHost(activity),
+            activity as? OnRequestPermissionFlowResultListener,
+            permission, requestCode, tag, message, titleId)
+
+    /**
+     * @constructor             Constructor.
+     * @param       fragment    The fragment hosting the flow.
+     * @param       permission  The permission requested (one of the costants
+     *                          defined by the class `Manifest.permission`).
+     * @param       requestCode Request code.
+     * @param       tag         Fragment tag of the Alert dialog showing the
+     *                          rationale.
+     * @param       message     Rationale for requesting the permission.
+     * @param       titleId     Title of the Alert dialog showing the rationale.
+     */
+    public constructor(
+            fragment: Fragment,
+            permission: String,
+            requestCode: Int,
+            tag: String,
+            message: MessageSpec,
+            titleId: Int
+    ) : this(FragmentRequestPermissionHost(fragment),
+            fragment as? OnRequestPermissionFlowResultListener,
+            permission, requestCode, tag, message, titleId)
+
+    /**
      * Starts the flow.
      */
     public fun start() {
-        if (ContextCompat.checkSelfPermission(activity, permission) ==
-                PackageManager.PERMISSION_GRANTED) {
+        if (host.checkSelfPermission(permission)) {
             logger.debug("Permission $permission already granted.")
             onResult(true)
             return
         }
 
-        if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
-                        permission)) {
-            activity.showAlertDialog {
+        if (host.shouldShowRequestPermissionRationale(permission)) {
+            host.showRequestPermissionRationale {
                 tag {
                     tag
                 }
@@ -86,11 +120,11 @@ public class RequestPermissionFlow(
             return
         }
 
-        prompt()
+        requestPermission()
     }
 
     /**
-     * Should be called by the like-named method of the activity.
+     * Should be called by the like-named method of the activity/fragment.
      *
      * If it returns `true`, the calling method should skip further processing.
      *
@@ -120,7 +154,7 @@ public class RequestPermissionFlow(
 
     /**
      * Should be called by the like-named method of the interface
-     * `OnDialogResultListener` implemented by the activity.
+     * `OnDialogResultListener` implemented by the activity/fragment.
      *
      * If it returns `true`, the calling method should skip further processing.
      *
@@ -131,7 +165,7 @@ public class RequestPermissionFlow(
             this.tag -> {
                 when (which) {
                     DialogInterface.BUTTON_POSITIVE -> {
-                        prompt()
+                        requestPermission()
                     }
                     else -> {
                         logger.debug("Permission $permission denied.")
@@ -152,21 +186,115 @@ public class RequestPermissionFlow(
      * @param result Whether the permission has been granted or not
      */
     private fun onResult(result: Boolean) {
-        if (activity is OnRequestPermissionFlowResultListener) {
-            activity.onRequestPermissionFlowResult(requestCode, result)
-        }
+        resultListener?.onRequestPermissionFlowResult(requestCode, result)
     }
 
     /**
      * Requests the permission.
      */
-    private fun prompt() {
+    private fun requestPermission() {
         logger.debug("Prompting for permission $permission.")
-        ActivityCompat.requestPermissions(activity, arrayOf(permission),
-                requestCode)
+        host.requestPermission(permission, requestCode)
     }
 
     private companion object {
         val logger = KotlinLogging.logger { }
     }
+}
+
+/**
+ * Interface for abstracting `Activity` and `Fragment`.
+ */
+private interface RequestPermissionHost {
+
+    /**
+     * Requests a permission to be granted to this application
+     *
+     * @param permission  The permission requested (one of the costants
+     *                    defined by the class `Manifest.permission`).
+     * @param requestCode Request code.
+     */
+    fun requestPermission(permission: String, requestCode: Int)
+
+    /**
+     * Determine whether you have been granted a permission.
+     *
+     * @return Returns `true` if you have the permission, `false` otherwise.
+     */
+    fun checkSelfPermission(permission: String): Boolean
+
+    /**
+     * Shows UI with rationale for requesting a permission.
+     *
+     * @param init Initialization block.
+     */
+    fun showRequestPermissionRationale(
+            init: AlertDialogFragment.Builder.() -> Unit = { }
+    )
+
+    /**
+     * Checks whether you should show UI with rationale for requesting a
+     * permission.
+     *
+     * @param permission  The permission requested (one of the costants
+     *                    defined by the class `Manifest.permission`).
+     * @return            Return `true` if you can show UI with rationale for
+     *                    requesting the permission, `false` otherwise.
+     */
+    fun shouldShowRequestPermissionRationale(permission: String): Boolean
+}
+
+/**
+ * Implementation of the `RequestPermissionSupport` interface for
+ * `Activity` objects.
+ */
+private class ActivityRequestPermissionHost(
+        private val activity: AppCompatActivity
+) : RequestPermissionHost {
+
+    override fun requestPermission(permission: String, requestCode: Int) =
+            ActivityCompat.requestPermissions(activity, arrayOf(permission),
+                    requestCode)
+
+    override fun checkSelfPermission(permission: String): Boolean =
+            (ContextCompat.checkSelfPermission(activity, permission) ==
+                    PackageManager.PERMISSION_GRANTED)
+
+    override fun showRequestPermissionRationale(
+            init: AlertDialogFragment.Builder.() -> Unit
+    ) = AlertDialogFragment.Builder(activity, activity.supportFragmentManager)
+            .apply(init)
+            .show()
+
+    override fun shouldShowRequestPermissionRationale(
+            permission: String
+    ): Boolean = ActivityCompat.shouldShowRequestPermissionRationale(activity,
+            permission)
+}
+
+/**
+ * Implementation of the `RequestPermissionSupport` interface for
+ * `Fragment` objects.
+ */
+private class FragmentRequestPermissionHost(
+        private val fragment: Fragment
+) : RequestPermissionHost {
+
+    override fun requestPermission(permission: String, requestCode: Int) =
+            fragment.requestPermissions(arrayOf(permission), requestCode)
+
+    override fun checkSelfPermission(permission: String): Boolean =
+            (ContextCompat.checkSelfPermission(fragment.requireContext(),
+                    permission) == PackageManager.PERMISSION_GRANTED)
+
+    override fun showRequestPermissionRationale(
+            init: AlertDialogFragment.Builder.() -> Unit
+    ) = AlertDialogFragment.Builder(fragment.requireActivity(),
+            fragment.childFragmentManager)
+            .apply(init)
+            .show()
+
+    override fun shouldShowRequestPermissionRationale(
+            permission: String
+    ): Boolean = fragment.shouldShowRequestPermissionRationale(permission)
 }

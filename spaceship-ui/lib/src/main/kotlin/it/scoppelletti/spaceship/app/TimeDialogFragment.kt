@@ -25,7 +25,9 @@ import android.os.Bundle
 import android.text.format.DateFormat
 import androidx.annotation.UiThread
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import it.scoppelletti.spaceship.i18n.I18NProvider
 import org.threeten.bp.LocalTime
 
@@ -79,15 +81,12 @@ public class TimeDialogFragment : DialogFragment() {
      * @param minute Minute.
      */
     private fun onTimeSet(hour: Int, minute: Int) {
-        val dialogTag: String?
-        val activity: FragmentActivity
+        tag?.let { dialogTag ->
+            val parent: TimeDialogFragment.OnTimeSetListener?
 
-        dialogTag = tag
-        activity = requireActivity()
-
-        if (dialogTag != null &&
-                activity is TimeDialogFragment.OnTimeSetListener) {
-            activity.onTimeSet(dialogTag, LocalTime.of(hour, minute))
+            parent = (parentFragment ?: activity) as?
+                    TimeDialogFragment.OnTimeSetListener
+            parent?.onTimeSet(dialogTag, LocalTime.of(hour, minute))
         }
     }
 
@@ -125,7 +124,7 @@ public class TimeDialogFragment : DialogFragment() {
      */
     @TimeDialogFragment.Dsl
     public class Builder(
-            private val activity: FragmentActivity
+            private val framentMgr: FragmentManager
     ) {
         private var _tag: String = TimeDialogFragment.TAG
         private var _initialValue: LocalTime? = null
@@ -160,7 +159,7 @@ public class TimeDialogFragment : DialogFragment() {
                     .apply {
                         arguments = args
                     }
-                    .show(activity.supportFragmentManager, _tag)
+                    .show(framentMgr, _tag)
         }
     }
 
@@ -183,4 +182,16 @@ public class TimeDialogFragment : DialogFragment() {
 @UiThread
 public fun FragmentActivity.showTimeDialog(
         init: TimeDialogFragment.Builder.() -> Unit = { }
-) = TimeDialogFragment.Builder(this).apply(init).show()
+) = TimeDialogFragment.Builder(this.supportFragmentManager).apply(init).show()
+
+/**
+ * Shows a Time Picker dialog.
+ *
+ * @receiver      Fragment.
+ * @param    init Initialization block.
+ * @since         1.0.0
+ */
+@UiThread
+public fun Fragment.showTimeDialog(
+        init: TimeDialogFragment.Builder.() -> Unit = { }
+) = TimeDialogFragment.Builder(this.childFragmentManager).apply(init).show()

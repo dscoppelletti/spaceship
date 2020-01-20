@@ -19,7 +19,6 @@
 
 package it.scoppelletti.spaceship.app
 
-import android.app.Activity
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
@@ -28,7 +27,9 @@ import androidx.annotation.StringRes
 import androidx.annotation.UiThread
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -50,7 +51,6 @@ import it.scoppelletti.spaceship.types.StringExt
 public class AlertDialogFragment : AppCompatDialogFragment() {
 
     private lateinit var viewModel: AlertDialogModel
-    private lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val args: Bundle
@@ -95,9 +95,9 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        val activity: Activity
-        val alertState: AlertActivityState?
+        val activity: FragmentActivity
         val activityModel: AlertActivityModel
+        val viewModelFactory: ViewModelProvider.Factory
 
         super.onActivityCreated(savedInstanceState)
 
@@ -115,10 +115,9 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
             }
         })
 
-        alertState = activityModel.state
-        if (alertState != null) {
+        activityModel.state?.let {
             activityModel.state = null
-            viewModel.load(alertState)
+            viewModel.load(it)
         }
     }
 
@@ -140,14 +139,11 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
             @Suppress("UNUSED_PARAMETER") dialog: DialogInterface?,
             which: Int
     ) {
-        val dialogTag: String?
-        val activity: FragmentActivity
+        tag?.let { dialogTag ->
+            val parent: OnDialogResultListener?
 
-        dialogTag = tag
-        activity = requireActivity()
-
-        if (dialogTag != null && activity is OnDialogResultListener) {
-            activity.onDialogResult(dialogTag, which)
+            parent = (parentFragment ?: activity) as? OnDialogResultListener
+            parent?.onDialogResult(dialogTag, which)
         }
     }
 
@@ -173,7 +169,8 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
      */
     @AlertDialogFragment.Dsl
     public class Builder(
-            private val activity: FragmentActivity
+            private val activity: FragmentActivity,
+            private val fragmentMgr: FragmentManager
     ) {
         private var _tag: String = AlertDialogFragment.TAG
         private var _msg: MessageSpec? = null
@@ -269,8 +266,8 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
 
         internal fun show() {
             val args: Bundle
-            val msg: MessageSpec
             val viewModel: AlertActivityModel
+            val msg: MessageSpec
 
             msg = _msg ?: throw NullPointerException(
                     "Missing the MessageSpec object.")
@@ -307,7 +304,7 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
                     .apply {
                         arguments = args
                     }
-                    .show(activity.supportFragmentManager, _tag)
+                    .show(fragmentMgr, _tag)
         }
     }
 
@@ -330,4 +327,22 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
 @UiThread
 public fun FragmentActivity.showAlertDialog(
         init: AlertDialogFragment.Builder.() -> Unit = { }
-) = AlertDialogFragment.Builder(this).apply(init).show()
+) = AlertDialogFragment.Builder(this, this.supportFragmentManager)
+        .apply(init)
+        .show()
+
+/**
+ * Shows an alert dialog.
+ *
+ * @receiver      Fragment.
+ * @param    init Initialization block.
+ * @since         1.0.0
+ */
+@UiThread
+public fun Fragment.showAlertDialog(
+        init: AlertDialogFragment.Builder.() -> Unit = { }
+) = AlertDialogFragment.Builder(this.requireActivity(),
+        this.childFragmentManager)
+        .apply(init)
+        .show()
+

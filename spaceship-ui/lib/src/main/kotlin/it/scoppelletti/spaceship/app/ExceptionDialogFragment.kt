@@ -27,7 +27,9 @@ import androidx.annotation.StringRes
 import androidx.annotation.UiThread
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -123,14 +125,11 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
             @Suppress("UNUSED_PARAMETER") dialog: DialogInterface?,
             which: Int
     ) {
-        val dialogTag: String?
-        val activity: FragmentActivity
+        tag?.let { dialogTag ->
+            val parent: OnDialogResultListener?
 
-        dialogTag = tag
-        activity = requireActivity()
-
-        if (dialogTag != null && activity is OnDialogResultListener) {
-            activity.onDialogResult(dialogTag, which)
+            parent = (parentFragment ?: activity) as? OnDialogResultListener
+            parent?.onDialogResult(dialogTag, which)
         }
     }
 
@@ -153,6 +152,7 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
     @ExceptionDialogFragment.Dsl
     public class Builder internal constructor(
             private val activity: FragmentActivity,
+            private val fragmentMgr: FragmentManager,
             private val ex: Throwable
     ) {
         private var _tag: String = ExceptionDialogFragment.TAG
@@ -214,7 +214,7 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
                     .apply {
                         arguments = args
                     }
-                    .show(activity.supportFragmentManager, _tag)
+                    .show(fragmentMgr, _tag)
         }
     }
 
@@ -239,4 +239,22 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
 public fun FragmentActivity.showExceptionDialog(
         ex: Throwable,
         init: ExceptionDialogFragment.Builder.() -> Unit = { }
-) = ExceptionDialogFragment.Builder(this, ex).apply(init).show()
+) = ExceptionDialogFragment.Builder(this, this.supportFragmentManager, ex)
+        .apply(init)
+        .show()
+
+/**
+ * Shows an alert dialog.
+ *
+ * @receiver      Fragment.
+ * @param    init Initialization block.
+ * @since         1.0.0
+ */
+@UiThread
+public fun Fragment.showExceptionDialog(
+        ex: Throwable,
+        init: ExceptionDialogFragment.Builder.() -> Unit = { }
+) = ExceptionDialogFragment.Builder(this.requireActivity(),
+        this.childFragmentManager, ex)
+        .apply(init)
+        .show()

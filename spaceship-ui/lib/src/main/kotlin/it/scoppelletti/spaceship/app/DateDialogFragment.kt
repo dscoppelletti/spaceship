@@ -24,7 +24,9 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.annotation.UiThread
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import it.scoppelletti.spaceship.i18n.I18NProvider
 import org.threeten.bp.LocalDate
 
@@ -78,15 +80,12 @@ public class DateDialogFragment : DialogFragment() {
      * @param day   Day.
      */
     private fun onDateSet(year: Int, month: Int, day: Int) {
-        val dialogTag: String?
-        val activity: FragmentActivity
+        tag?.let { dialogTag ->
+            val parent: DateDialogFragment.OnDateSetListener?
 
-        dialogTag = tag
-        activity = requireActivity()
-
-        if (dialogTag != null &&
-                activity is DateDialogFragment.OnDateSetListener) {
-            activity.onDateSet(dialogTag, LocalDate.of(year, month + 1, day))
+            parent = (parentFragment ?: activity) as?
+                    DateDialogFragment.OnDateSetListener
+            parent?.onDateSet(dialogTag, LocalDate.of(year, month + 1, day))
         }
     }
 
@@ -124,7 +123,7 @@ public class DateDialogFragment : DialogFragment() {
      */
     @DateDialogFragment.Dsl
     public class Builder(
-            private val activity: FragmentActivity
+            private val fragmentManager: FragmentManager
     ) {
         private var _tag: String = DateDialogFragment.TAG
         private var _initialValue: LocalDate? = null
@@ -159,7 +158,7 @@ public class DateDialogFragment : DialogFragment() {
                     .apply {
                         arguments = args
                     }
-                    .show(activity.supportFragmentManager, _tag)
+                    .show(fragmentManager, _tag)
         }
     }
 
@@ -182,4 +181,16 @@ public class DateDialogFragment : DialogFragment() {
 @UiThread
 public fun FragmentActivity.showDateDialog(
         init: DateDialogFragment.Builder.() -> Unit = { }
-) = DateDialogFragment.Builder(this).apply(init).show()
+) = DateDialogFragment.Builder(this.supportFragmentManager).apply(init).show()
+
+/**
+ * Shows a Date Picker dialog.
+ *
+ * @receiver      Fragment.
+ * @param    init Initialization block.
+ * @since         1.0.0
+ */
+@UiThread
+public fun Fragment.showDateDialog(
+        init: DateDialogFragment.Builder.() -> Unit = { }
+) = DateDialogFragment.Builder(this.childFragmentManager).apply(init).show()

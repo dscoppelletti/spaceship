@@ -43,11 +43,15 @@ public class DecimalAdapter(
 ) : JsonAdapter<BigDecimal>() {
 
     override fun fromJson(reader: JsonReader): BigDecimal? {
-        val value: String?
+        val value: String
         val x: BigDecimal
 
+        if (reader.peek() == JsonReader.Token.NULL) {
+            return reader.nextNull()
+        }
+
         value = reader.nextString()
-        if (value.isNullOrBlank()) {
+        if (value.isBlank()) {
             return null
         }
 

@@ -4,9 +4,6 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class UserData(
-        val firstName: String?,
         val lastName: String,
-
-        @SerializeNulls
-        val nickName: String?
+        val firstName: String?
 )

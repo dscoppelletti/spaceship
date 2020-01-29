@@ -31,7 +31,7 @@ ext.versionMap = [
     facebook : '5.5.1',
     firebase_ads : '18.3.0',
     firebase_auth : '19.2.0',
-    firebase_core : '17.2.1',
+    firebase_core : '17.2.2',
     firebase_crash : '2.10.1',
     firebase_messaging : '20.1.0',
     firebase_plugin : '4.3.3',

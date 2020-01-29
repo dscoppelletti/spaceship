@@ -22,7 +22,22 @@ import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.CancellationException
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
+
+/**
+ * Adapts a Google API that returns a `Task` to a supended coroutine that
+ * handles the callbacks raised by the task.
+ *
+ * @param  func Google API.
+ * @return      Result of the task.
+ * @since       1.0.0
+ */
+public suspend fun <R> suspendTask(
+        func: () -> Task<R>
+): R = suspendCoroutine { continuation ->
+    func().onComplete(continuation)
+}
 
 /**
  * Adapts a Google API that returns a `Task` to a supended coroutine that
@@ -51,9 +66,9 @@ private fun <R> Task<R>.onComplete(continuation: Continuation<R>) {
         continuation.resume(result)
     }
     this.addOnCanceledListener {
-        throw CancellationException()
+        continuation.resumeWithException(CancellationException())
     }
     this.addOnFailureListener { ex ->
-        throw ex
+        continuation.resumeWithException(ex)
     }
 }

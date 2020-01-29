@@ -26,6 +26,10 @@ Dependency injection.
 
 * [Dagger 2](http://google.github.io/dagger)
 
+# Package it.scoppelletti.spaceship.gms.messaging
+
+Support for [Firebase Cloud Messaging](http://firebase.google.com/docs/cloud-messaging).
+
 # Package it.scoppelletti.spaceship.gms.widget
 
 The widget package contains (mostly visual) UI elements to use on your

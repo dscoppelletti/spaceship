@@ -70,3 +70,4 @@ public suspend fun makeGooglePlayServicesAvailable(activity: Activity) {
         throw ApplicationException(gmsMessages.errorGoogleApiNotAvailable(), ex)
     }
 }
+

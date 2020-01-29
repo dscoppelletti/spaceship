@@ -50,6 +50,7 @@ dependencies {
     api "androidx.constraintlayout:constraintlayout:${versionMap.androidx_constraint}"
     api "com.google.android.gms:play-services-base:${versionMap.playservices_base}"
     api "com.google.android.material:material:${versionMap.material}"
+    api "com.google.firebase:firebase-messaging:${versionMap.firebase_messaging}"
     api("it.scoppelletti.spaceship:spaceship-stdlib:${versionMap.spaceship}") {
         changing = true
     }

@@ -54,7 +54,7 @@ public abstract class GmsModule {
     @Binds
     @IntoMap
     @ExceptionMapperKey(GmsException::class)
-    public abstract fun bindGmsExceptionMapperHandler(
+    public abstract fun bindExceptionMapperHandler(
             adapter: GmsExceptionMapperHandler
     ): ExceptionMapperHandler<*>
 }

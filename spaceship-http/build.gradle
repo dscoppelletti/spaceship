@@ -1,12 +1,6 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
-apply plugin: 'com.github.ben-manes.versions'
-
 buildscript {
     apply from: '../gradle-plugins/versionMap.gradle'
-    ext.kotlin_version = versionMap.kotlin
     repositories {
-        google()
         jcenter()
 
         if (project.hasProperty('it.scoppelletti.tools.devRepoUrl')) {
@@ -16,31 +10,53 @@ buildscript {
         }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:${versionMap.android_gradle}"
         classpath "com.github.ben-manes:gradle-versions-plugin:${versionMap.gradle_versions}"
         classpath "it.scoppelletti.spaceship:spaceship-gradle-java:${versionMap.spaceship}"
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:${versionMap.dokka}"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versionMap.kotlin}"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        jcenter()
-        mavenCentral()
+plugins {
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.61'
+}
 
-        if (project.hasProperty('it.scoppelletti.tools.devRepoUrl')) {
-            maven {
-                url project.property('it.scoppelletti.tools.devRepoUrl')
-            }
+apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'org.jetbrains.dokka'
+apply plugin: 'it.scoppelletti.spaceship.spaceship-gradle-java'
+
+group 'it.scoppelletti.spaceship'
+version versionMap.spaceship
+description 'Spaceship for HTTP'
+archivesBaseName = 'spaceship-http'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+spaceship {
+    inceptionYear = '2017-2019'
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+
+    if (project.hasProperty('it.scoppelletti.tools.devRepoUrl')) {
+        maven {
+            url project.property('it.scoppelletti.tools.devRepoUrl')
         }
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+dependencies {
+    api "com.squareup.okhttp3:okhttp:${versionMap.okhttp}"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
 }

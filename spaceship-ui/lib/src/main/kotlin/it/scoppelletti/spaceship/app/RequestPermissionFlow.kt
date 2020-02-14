@@ -289,7 +289,8 @@ private class FragmentRequestPermissionHost(
 
     override fun showRequestPermissionRationale(
             init: AlertDialogFragment.Builder.() -> Unit
-    ) = AlertDialogFragment.Builder(fragment.requireActivity(),
+    ) = AlertDialogFragment.Builder(
+            fragment.requireActivity() as AppCompatActivity,
             fragment.childFragmentManager)
             .apply(init)
             .show()

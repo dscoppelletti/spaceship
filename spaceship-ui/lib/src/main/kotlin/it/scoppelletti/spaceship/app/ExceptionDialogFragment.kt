@@ -19,26 +19,25 @@
 
 package it.scoppelletti.spaceship.app
 
-import android.app.Activity
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import androidx.annotation.StringRes
 import androidx.annotation.UiThread
-import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import it.scoppelletti.spaceship.ExceptionLogger
 import it.scoppelletti.spaceship.content.res.ResourcesExt
-import it.scoppelletti.spaceship.lifecycle.ExceptionActivityState
-import it.scoppelletti.spaceship.lifecycle.ExceptionDialogState
-import it.scoppelletti.spaceship.lifecycle.ExceptionDialogModel
 import it.scoppelletti.spaceship.lifecycle.ExceptionActivityModel
+import it.scoppelletti.spaceship.lifecycle.ExceptionActivityState
+import it.scoppelletti.spaceship.lifecycle.ExceptionDialogModel
+import it.scoppelletti.spaceship.lifecycle.ExceptionDialogState
 import it.scoppelletti.spaceship.widget.ExceptionListAdapter
 
 /**
@@ -51,21 +50,20 @@ import it.scoppelletti.spaceship.widget.ExceptionListAdapter
 public class ExceptionDialogFragment : AppCompatDialogFragment() {
 
     private lateinit var viewModel: ExceptionDialogModel
-    private lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var adapter: ExceptionListAdapter
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val args: Bundle
         val titleId: Int
         val title: String?
-        val builder: AlertDialog.Builder
+        val builder: MaterialAlertDialogBuilder
 
         args = arguments!!
 
         title = args.getString(ExceptionDialogFragment.PROP_TITLE)
         adapter = ExceptionListAdapter(requireContext())
 
-        builder = AlertDialog.Builder(requireContext())
+        builder = MaterialAlertDialogBuilder(requireContext())
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setAdapter(adapter, null)
                 .setNegativeButton(android.R.string.cancel, ::onDialogResult)
@@ -82,18 +80,18 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        val activity: Activity
-        val exState: ExceptionActivityState?
+        val activity: FragmentActivity
         val activityModel: ExceptionActivityModel
+        val exState: ExceptionActivityState?
+        val viewModelFactory: ViewModelProvider.Factory
 
         super.onActivityCreated(savedInstanceState)
 
         activity = requireActivity()
-        activityModel = ViewModelProviders.of(activity)
-                .get(ExceptionActivityModel::class.java)
-
         viewModelFactory = activity.uiComponent().viewModelFactory()
-        viewModel = ViewModelProviders.of(this, viewModelFactory)
+        activityModel = ViewModelProvider(activity)
+                .get(ExceptionActivityModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(ExceptionDialogModel::class.java)
 
         viewModel.state.observe(this, Observer<ExceptionDialogState> { state ->
@@ -103,6 +101,7 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
         })
 
         exState = activityModel.state
+
         if (exState != null) {
             activityModel.state = null
             viewModel.load(exState)
@@ -151,7 +150,7 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
      */
     @ExceptionDialogFragment.Dsl
     public class Builder internal constructor(
-            private val activity: FragmentActivity,
+            private val activity: AppCompatActivity,
             private val fragmentMgr: FragmentManager,
             private val ex: Throwable
     ) {
@@ -206,7 +205,7 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
                 args.putInt(ExceptionDialogFragment.PROP_TITLEID, _titleId)
             }
 
-            viewModel = ViewModelProviders.of(activity)
+            viewModel = ViewModelProvider(activity)
                     .get(ExceptionActivityModel::class.java)
             viewModel.state = ExceptionActivityState(ex)
 
@@ -236,7 +235,7 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
  * @since         1.0.0
  */
 @UiThread
-public fun FragmentActivity.showExceptionDialog(
+public fun AppCompatActivity.showExceptionDialog(
         ex: Throwable,
         init: ExceptionDialogFragment.Builder.() -> Unit = { }
 ) = ExceptionDialogFragment.Builder(this, this.supportFragmentManager, ex)
@@ -254,7 +253,7 @@ public fun FragmentActivity.showExceptionDialog(
 public fun Fragment.showExceptionDialog(
         ex: Throwable,
         init: ExceptionDialogFragment.Builder.() -> Unit = { }
-) = ExceptionDialogFragment.Builder(this.requireActivity(),
+) = ExceptionDialogFragment.Builder(this.requireActivity() as AppCompatActivity,
         this.childFragmentManager, ex)
         .apply(init)
         .show()

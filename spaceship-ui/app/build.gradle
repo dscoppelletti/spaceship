@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion versionMap.sdk_target
     buildToolsVersion versionMap.build_tools
     defaultConfig {
         applicationId "it.scoppelletti.spaceship.sample"
-        minSdkVersion versionMap.sdk_min
+        minSdkVersion 16
         targetSdkVersion versionMap.sdk_target
         versionCode 1
         versionName versionMap.spaceship
@@ -18,4 +19,30 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+dependencies {
+    implementation project(':lib')
+    implementation "androidx.activity:activity-ktx:${versionMap.androidx_activity}"
+    implementation "androidx.annotation:annotation:${versionMap.androidx_annotation}"
+    implementation "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
+    implementation "com.google.android.material:material:${versionMap.material}"
+    implementation "com.google.dagger:dagger:${versionMap.dagger}"
+    kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
+    implementation "com.jakewharton.threetenabp:threetenabp:${versionMap.threetenabp}"
+    implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
+    implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
+    implementation "org.threeten:threetenbp:${versionMap.threetenbp}:no-tzdb"
+    runtimeOnly "com.noveogroup.android:android-logger:${versionMap.android_logger}"
 }

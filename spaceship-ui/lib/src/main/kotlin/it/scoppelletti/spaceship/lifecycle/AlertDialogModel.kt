@@ -21,6 +21,7 @@ package it.scoppelletti.spaceship.lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import it.scoppelletti.spaceship.StdlibExt
 import it.scoppelletti.spaceship.app.AlertDialogFragment
 import it.scoppelletti.spaceship.i18n.I18NProvider
@@ -57,7 +58,7 @@ public class AlertDialogModel @Inject constructor(
      */
     public fun load(alertState: AlertActivityState) = scope.launch {
         _state.value = AlertDialogState(
-                i18nProvider.resolveMessage(alertState.message))
+                alertState.message.buildMessage(i18nProvider))
     }
 
     override fun onCleared() {

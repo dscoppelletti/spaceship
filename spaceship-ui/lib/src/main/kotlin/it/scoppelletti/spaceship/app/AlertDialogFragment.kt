@@ -26,13 +26,14 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.annotation.UiThread
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import it.scoppelletti.spaceship.content.res.ResourcesExt
 import it.scoppelletti.spaceship.i18n.MessageSpec
 import it.scoppelletti.spaceship.lifecycle.AlertActivityModel
@@ -55,11 +56,11 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val args: Bundle
         val title: String?
-        val builder: AlertDialog.Builder
+        val builder: MaterialAlertDialogBuilder
         var resId: Int
 
         args = arguments!!
-        builder = AlertDialog.Builder(requireActivity())
+        builder = MaterialAlertDialogBuilder(requireActivity())
                 .setMessage(StringExt.EMPTY)
 
         title = args.getString(AlertDialogFragment.PROP_TITLE)
@@ -102,11 +103,10 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
         super.onActivityCreated(savedInstanceState)
 
         activity = requireActivity()
-        activityModel = ViewModelProviders.of(activity)
-                .get(AlertActivityModel::class.java)
-
         viewModelFactory = activity.uiComponent().viewModelFactory()
-        viewModel = ViewModelProviders.of(this, viewModelFactory)
+        activityModel = ViewModelProvider(activity)
+                .get(AlertActivityModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(AlertDialogModel::class.java)
 
         viewModel.state.observe(this, Observer<AlertDialogState> { state ->
@@ -169,7 +169,7 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
      */
     @AlertDialogFragment.Dsl
     public class Builder(
-            private val activity: FragmentActivity,
+            private val activity: AppCompatActivity,
             private val fragmentMgr: FragmentManager
     ) {
         private var _tag: String = AlertDialogFragment.TAG
@@ -296,7 +296,7 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
                 args.putInt(AlertDialogFragment.PROP_ICONID, _iconId)
             }
 
-            viewModel = ViewModelProviders.of(activity)
+            viewModel = ViewModelProvider(activity)
                     .get(AlertActivityModel::class.java)
             viewModel.state = AlertActivityState(msg)
 
@@ -325,7 +325,7 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
  * @since         1.0.0
  */
 @UiThread
-public fun FragmentActivity.showAlertDialog(
+public fun AppCompatActivity.showAlertDialog(
         init: AlertDialogFragment.Builder.() -> Unit = { }
 ) = AlertDialogFragment.Builder(this, this.supportFragmentManager)
         .apply(init)
@@ -341,7 +341,7 @@ public fun FragmentActivity.showAlertDialog(
 @UiThread
 public fun Fragment.showAlertDialog(
         init: AlertDialogFragment.Builder.() -> Unit = { }
-) = AlertDialogFragment.Builder(this.requireActivity(),
+) = AlertDialogFragment.Builder(this.requireActivity() as AppCompatActivity,
         this.childFragmentManager)
         .apply(init)
         .show()

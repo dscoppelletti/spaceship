@@ -76,7 +76,6 @@ public class ApplicationExceptionMapperHandler @Inject constructor(
 ): ExceptionMapperHandler<ApplicationException> {
 
     override fun map(ex: ApplicationException) : ExceptionItem =
-            ApplicationExceptionItem(
-                    i18nProvider.resolveMessage(ex.messageSpec),
+            ApplicationExceptionItem(ex.messageSpec.buildMessage(i18nProvider),
                     ApplicationExceptionAdapter())
 }

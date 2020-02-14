@@ -22,6 +22,7 @@
  * Suppress warnings.
  * Add Javadoc.
  * Porting to Android X and Material Design Components.
+ * Upgrade to androidx.coordinatorlayout:coordinatorlayout:1.1.0
  *
  * - Genymotion 2.11.0
  * FAB never hides likely because "pixel perfect" is disabled.
@@ -82,9 +83,10 @@ public class FABAwareScrollingViewBehavior extends
     @Override
     public void onNestedScroll(@NonNull CoordinatorLayout coordinatorLayout,
             @NonNull View child, @NonNull View target, int dxConsumed,
-            int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type) {
+            int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type,
+            @NonNull int[] consumed) {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed,
-                dyConsumed, dxUnconsumed, dyUnconsumed, type);
+                dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed);
         if (dyConsumed > 0) {
             // User scrolled down -> hide the FAB
             List<View> dependencies = coordinatorLayout.getDependencies(child);

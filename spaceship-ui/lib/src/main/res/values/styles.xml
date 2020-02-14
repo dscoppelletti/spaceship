@@ -16,11 +16,8 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <eat-comment />
-    <!-- App Bar -->
-    <style name="it_scoppelletti_style_collapsingAppBarLayout">
-    </style>
     <!-- Image button -->
-    <style name="it_scoppelletti_style_imageButton"
+    <style name="Widget.Scoppelletti.Button.ImageButton"
         parent="Widget.MaterialComponents.Button.TextButton.Icon">
         <item name="android:minWidth">@dimen/it_scoppelletti_imageButton_size</item>
         <item name="android:minHeight">@dimen/it_scoppelletti_imageButton_size</item>
@@ -32,5 +29,25 @@
         <item name="android:insetBottom">0dp</item>
         <item name="cornerRadius">@dimen/it_scoppelletti_imageButton_cornerRadius</item>
         <item name="iconPadding">0dp</item>
+    </style>
+    <!-- Filter chip group -->
+    <style name="Widget.Scoppelletti.ChipGroup.Filter"
+        parent="Widget.MaterialComponents.ChipGroup">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Scoppelletti.ChipGroup.Filter</item>
+    </style>
+    <!-- Primary text -->
+    <style name="Widget.Scoppelletti.TextView.PrimaryText"
+        parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+    </style>
+    <!-- Secondary text -->
+    <style name="Widget.Scoppelletti.TextView.SecondaryText"
+        parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAppearance">?attr/textAppearanceBody2</item>
+    </style>
+    <!-- Overline -->
+    <style name="Widget.Scoppelletti.TextView.Overline"
+        parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAppearance">?attr/textAppearanceOverline</item>
     </style>
 </resources>

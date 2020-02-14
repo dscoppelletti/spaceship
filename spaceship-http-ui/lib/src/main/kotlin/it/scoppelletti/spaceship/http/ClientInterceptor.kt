@@ -76,7 +76,8 @@ public class ClientInterceptor @Inject constructor(
         try {
             packageInfo = packageMgr.getPackageInfo(name, 0)
         } catch (ex: PackageManager.NameNotFoundException) {
-            throw ApplicationException(uiMessages.errorPackageNotFound(name), ex)
+            throw ApplicationException(uiMessages.errorPackageNotFound(name),
+                    ex)
         }
 
         return buildString {

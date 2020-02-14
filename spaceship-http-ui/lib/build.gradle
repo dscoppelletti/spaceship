@@ -34,6 +34,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
         test.java.srcDirs += 'src/test/kotlin'
@@ -47,7 +50,6 @@ spaceship {
 dependencies {
     api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
     api "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
-    api "androidx.cardview:cardview:${versionMap.androidx_cardview}"
     api "androidx.constraintlayout:constraintlayout:${versionMap.androidx_constraint}"
     api "com.google.android.material:material:${versionMap.material}"
     api "com.google.dagger:dagger:${versionMap.dagger}"

@@ -35,52 +35,48 @@ public class DefaultSecurityMessages @Inject constructor(
 ) : SecurityMessages {
 
     override fun errorAliasInvalid(alias: String): MessageSpec =
-            AndroidResourceMessageSpec(resources,
-                    R.string.it_scoppelletti_security_err_aliasInvalid,
-                    arrayOf(alias))
+            AndroidResourceMessageSpec.of(resources,
+                    R.string.it_scoppelletti_security_err_aliasInvalid, alias)
 
     override fun errorAliasNotCertificate(alias: String): MessageSpec =
-            AndroidResourceMessageSpec(resources,
+            AndroidResourceMessageSpec.of(resources,
                     R.string.it_scoppelletti_security_err_aliasNotCertificate,
-                    arrayOf(alias))
+                    alias)
 
     override fun errorAliasNotFound(alias: String): MessageSpec =
-            AndroidResourceMessageSpec(resources,
-                    R.string.it_scoppelletti_security_err_aliasNotFound,
-                    arrayOf(alias))
+            AndroidResourceMessageSpec.of(resources,
+                    R.string.it_scoppelletti_security_err_aliasNotFound, alias)
 
     override fun errorAliasNotPrivateKey(alias: String): MessageSpec =
-            AndroidResourceMessageSpec(resources,
+            AndroidResourceMessageSpec.of(resources,
                     R.string.it_scoppelletti_security_err_aliasNotPrivateKey,
-                    arrayOf(alias))
+                    alias)
 
     override fun errorAliasNotSecretKey(alias: String): MessageSpec =
-            AndroidResourceMessageSpec(resources,
+            AndroidResourceMessageSpec.of(resources,
                     R.string.it_scoppelletti_security_err_aliasNotSecretKey,
-                    arrayOf(alias))
+                    alias)
 
     override fun errorCertificateNotFound(alias: String): MessageSpec =
-            AndroidResourceMessageSpec(resources,
+            AndroidResourceMessageSpec.of(resources,
                     R.string.it_scoppelletti_security_err_certificateNotFound,
-                    arrayOf(alias))
+                    alias)
 
     override fun errorLoadSecretKey(file: File): MessageSpec =
-            AndroidResourceMessageSpec(resources,
-                    R.string.it_scoppelletti_security_err_loadSecretKey,
-                    arrayOf(file))
+            AndroidResourceMessageSpec.of(resources,
+                    R.string.it_scoppelletti_security_err_loadSecretKey, file)
 
     override fun errorProviderNotFound(name: String): MessageSpec =
-            AndroidResourceMessageSpec(resources,
+            AndroidResourceMessageSpec.of(resources,
                     R.string.it_scoppelletti_security_err_providerNotFound,
-                    arrayOf(name))
+                    name)
 
     override fun errorSaveSecretKey(file: File): MessageSpec =
-            AndroidResourceMessageSpec(resources,
-                    R.string.it_scoppelletti_security_err_saveSecretKey,
-                    arrayOf(file))
+            AndroidResourceMessageSpec.of(resources,
+                    R.string.it_scoppelletti_security_err_saveSecretKey, file)
 
     override fun errorSecretKeyNotFound(file: File): MessageSpec =
-            AndroidResourceMessageSpec(resources,
+            AndroidResourceMessageSpec.of(resources,
                     R.string.it_scoppelletti_security_err_secretKeyNotFound,
-                    arrayOf(file))
+                    file)
 }

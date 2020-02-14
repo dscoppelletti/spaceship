@@ -20,26 +20,30 @@ package it.scoppelletti.spaceship.i18n
 
 import android.content.res.Resources
 import androidx.annotation.StringRes
+import it.scoppelletti.spaceship.content.res.ResourcesProvider
 import it.scoppelletti.spaceship.types.joinLines
 import mu.KotlinLogging
+import java.util.IllegalFormatException
 
 /**
  * Message specification that can be resolved by an Android string resource.
  *
  * @since 1.0.0
  *
- * @property stringId The string resource ID.
- * @property args     Arguments for the message. The string resource must be a
- *                    printf-style format string as defined by the JDK class
- *                    `Formatter`.
+ * @property stringId     The string resource ID.
+ * @property resourceName The string resource name.
+ * @property args         Arguments for the message. The string resource must be
+ *                        a printf-style format string as defined by the JDK
+ *                        class `Formatter`.
  */
 public data class AndroidResourceMessageSpec(
-        private val resources: Resources,
 
         @StringRes
         public val stringId: Int,
 
-        public val args: Array<Any?> = arrayOf()
+        public val resourceName: String,
+
+        public val args: Array<Any?>
 ) : MessageSpec {
 
     override fun hashCode(): Int {
@@ -56,21 +60,67 @@ public data class AndroidResourceMessageSpec(
                     stringId == other.stringId &&
                     args contentDeepEquals other.args
 
-    override fun toString(): String {
-        val resName: String
-
-        resName = try {
-            resources.getResourceName(stringId)
-        } catch (ex: Resources.NotFoundException) {
-            logger.error(ex) { "Resource $stringId not found." }
-            stringId.toString()
+    override fun buildMessage(i18nProvider: I18NProvider): String {
+        if (i18nProvider !is ResourcesProvider) {
+            return toString()
         }
 
-        return """AndroidResourceMessageSpec($resName,
-            |args=${args.contentDeepToString()})""".trimMargin().joinLines()
+        if (args.isEmpty()) {
+            return try {
+                i18nProvider.resources.getString(stringId)
+            } catch (ex: Resources.NotFoundException) {
+                logger.error(ex) { "Resource $this not found." }
+                toString()
+            }
+        }
+
+        return try {
+            try {
+                i18nProvider.resources.getString(stringId, *args)
+            } catch (ex: Resources.NotFoundException) {
+                logger.error(ex) { "Resource $this not found." }
+                toString()
+            }
+        } catch (ex: IllegalFormatException) {
+            logger.error(ex) { "Resource $this cannot be formatted." }
+            toString()
+        }
     }
 
-    private companion object {
-        val logger = KotlinLogging.logger { }
+    override fun toString(): String =
+            """AndroidResourceMessageSpec($resourceName,
+                |args=${args.contentDeepToString()})""".trimMargin().joinLines()
+
+    public companion object {
+        private val logger = KotlinLogging.logger { }
+
+        /**
+         * Returns a new instance.
+         *
+         * @param resources Access to this application's resources.
+         * @param stringId  The string resource ID.
+         * @param args      Arguments for the message. The string resource must
+         *                  be a printf-style format string as defined by the
+         *                  JDK class `Formatter`.
+         */
+        public fun of(
+                resources: Resources,
+
+                @StringRes
+                stringId: Int,
+
+                vararg args: Any?
+        ): MessageSpec {
+            val resName: String
+
+            resName = try {
+                resources.getResourceName(stringId)
+            } catch (ex: Resources.NotFoundException) {
+                logger.error(ex) { "Resource $stringId not found." }
+                stringId.toString()
+            }
+
+            return AndroidResourceMessageSpec(stringId, resName, arrayOf(args))
+        }
     }
 }

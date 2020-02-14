@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ * Copyright (C) 2020 Dario Scoppelletti, <http://www.scoppelletti.it/>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier")
 
-package it.scoppelletti.spaceship.i18n
+package it.scoppelletti.spaceship.content.res
+
+import android.content.res.Resources
 
 /**
- * Message specification.
+ * Provides the `Resources` instance for the application's package.
  *
  * @since 1.0.0
+ *
+ * @property resources Access to this application's resources.
  */
-public interface MessageSpec {
+public interface ResourcesProvider {
 
-    /**
-     * Builds the message.
-     *
-     * @param  i18nProvider Provides I18N dependencies.
-     * @return              String.
-     */
-    fun buildMessage(i18nProvider: I18NProvider): String
+    val resources: Resources
 }

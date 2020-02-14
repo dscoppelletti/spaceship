@@ -20,13 +20,12 @@ package it.scoppelletti.spaceship.i18n
 
 import android.content.Context
 import android.content.res.Resources
+import it.scoppelletti.spaceship.content.res.ResourcesProvider
 import it.scoppelletti.spaceship.types.AndroidDateConverter
 import it.scoppelletti.spaceship.types.AndroidTimeConverter
 import it.scoppelletti.spaceship.types.DateConverter
 import it.scoppelletti.spaceship.types.TimeConverter
-import mu.KotlinLogging
 import org.threeten.bp.ZoneId
-import java.util.IllegalFormatException
 import java.util.Locale
 import javax.inject.Inject
 
@@ -37,8 +36,8 @@ import javax.inject.Inject
  */
 public class AndroidI18NProvider @Inject constructor(
         private val context: Context,
-        private val resources: Resources
-): I18NProvider {
+        override val resources: Resources
+): I18NProvider, ResourcesProvider {
 
     override fun currentLocale(): Locale = Locale.getDefault()
 
@@ -49,37 +48,6 @@ public class AndroidI18NProvider @Inject constructor(
 
     override fun timeConverter(secs: Boolean): TimeConverter =
             AndroidTimeConverter(secs, context, resources, this)
-
-    override fun resolveMessage(obj: MessageSpec): String {
-        if (obj !is AndroidResourceMessageSpec) {
-            return obj.toString()
-        }
-
-        if (obj.args.isEmpty()) {
-            return try {
-                resources.getString(obj.stringId)
-            } catch (ex: Resources.NotFoundException) {
-                logger.error(ex) { "Resource $obj not found." }
-                obj.toString()
-            }
-        }
-
-        return try {
-                try {
-                    resources.getString(obj.stringId, *obj.args)
-                } catch (ex: Resources.NotFoundException) {
-                    logger.error(ex) { "Resource $obj not found." }
-                    obj.toString()
-                }
-        } catch (ex: IllegalFormatException) {
-            logger.error(ex) { "Resource $obj cannot be formatted." }
-            obj.toString()
-        }
-    }
-
-    private companion object {
-        val logger = KotlinLogging.logger { }
-    }
 }
 
 

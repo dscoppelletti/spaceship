@@ -34,6 +34,6 @@ public class DefaultGmsMessages @Inject constructor(
 ) : GmsMessages {
 
     override fun errorGoogleApiNotAvailable(): MessageSpec =
-            AndroidResourceMessageSpec(resources,
+            AndroidResourceMessageSpec.of(resources,
                     R.string.it_scoppelletti_gms_err_googleApiNotAvailable)
 }

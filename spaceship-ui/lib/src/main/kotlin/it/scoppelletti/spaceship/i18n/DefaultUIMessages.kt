@@ -32,14 +32,14 @@ public class DefaultUIMessages @Inject constructor(
 ) : UIMessages {
 
     override fun errorPackageNotFound(name: String): MessageSpec =
-            AndroidResourceMessageSpec(resources,
-                    R.string.it_scoppelletti_err_packageNotFound, arrayOf(name))
+            AndroidResourceMessageSpec.of(resources,
+                    R.string.it_scoppelletti_err_packageNotFound, name)
 
     override fun errorStartActivity(): MessageSpec =
-            AndroidResourceMessageSpec(resources,
+            AndroidResourceMessageSpec.of(resources,
                     R.string.it_scoppelletti_err_startActivity)
 
     override fun promptSaveChanges(): MessageSpec =
-            AndroidResourceMessageSpec(resources,
+            AndroidResourceMessageSpec.of(resources,
                     R.string.it_scoppelletti_prompt_saveChanges)
 }

@@ -34,6 +34,6 @@ public class DefaultPreferenceMessages @Inject constructor(
 ) : PreferenceMessages{
 
     override fun errorCreditFailed(): MessageSpec =
-            AndroidResourceMessageSpec(resources,
+            AndroidResourceMessageSpec.of(resources,
                     R.string.it_scoppelletti_pref_err_creditFailed)
 }

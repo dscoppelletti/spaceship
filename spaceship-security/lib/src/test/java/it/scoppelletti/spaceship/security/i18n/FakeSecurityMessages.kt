@@ -1,5 +1,6 @@
 package it.scoppelletti.spaceship.security.i18n
 
+import it.scoppelletti.spaceship.i18n.I18NProvider
 import it.scoppelletti.spaceship.i18n.MessageSpec
 import java.io.File
 
@@ -38,4 +39,7 @@ class FakeSecurityMessages : SecurityMessages {
 
 private data class FakeMessageSpec(
         val message: String
-) : MessageSpec
+) : MessageSpec {
+
+    override fun buildMessage(i18nProvider: I18NProvider): String = message
+}

@@ -62,6 +62,7 @@ dependencies {
     api gradleApi()
     api "com.android.tools.build:gradle:${versionMap.android_gradle}"
     api "it.scoppelletti.spaceship:spaceship-gradle:${versionMap.spaceship}"
+    api "org.jetbrains.dokka:dokka-gradle-plugin:${versionMap.dokka}"
     implementation "org.apache.commons:commons-lang3:${versionMap.commons_lang}"
     compileOnly "org.projectlombok:lombok:${versionMap.lombok}"
     annotationProcessor "org.projectlombok:lombok:${versionMap.lombok}"

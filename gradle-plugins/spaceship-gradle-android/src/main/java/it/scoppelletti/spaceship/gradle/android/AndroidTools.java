@@ -19,6 +19,7 @@ package it.scoppelletti.spaceship.gradle.android;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
@@ -128,7 +129,8 @@ final class AndroidTools extends PlatformTools {
         kdocTask = doGenerateKDoc();
 
         kdocTask.configuration(config -> {
-            config.setAndroidVariant(myVariant.getName());
+            config.setAndroidVariants(
+                    Collections.singletonList(myVariant.getName()));
             config.setNoAndroidSdkLink(true);
         });
 

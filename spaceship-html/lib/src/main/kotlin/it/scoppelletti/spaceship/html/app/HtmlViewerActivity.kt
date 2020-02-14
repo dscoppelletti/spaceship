@@ -27,7 +27,6 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
 import it.scoppelletti.spaceship.app.showExceptionDialog
@@ -74,7 +73,7 @@ public class HtmlViewerActivity : AppCompatActivity(), OnDialogResultListener {
         txtContent.movementMethod = LinkMovementMethod.getInstance()
 
         viewModelFactory = uiComponent().viewModelFactory()
-        viewModel = ViewModelProviders.of(this, viewModelFactory)
+        viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(HtmlViewerViewModel::class.java)
 
         viewModel.state.observe(this, Observer<HtmlViewerState> { state ->

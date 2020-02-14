@@ -8,26 +8,24 @@ android {
     buildToolsVersion versionMap.build_tools
     defaultConfig {
         applicationId "it.scoppelletti.spaceship.html.sample"
-        minSdkVersion versionMap.sdk_min
+        minSdkVersion 16
         targetSdkVersion versionMap.sdk_target
         versionCode 1
         versionName versionMap.spaceship
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
-        debug {
-            minifyEnabled false
-            debuggable true
-        }
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            debuggable false
         }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -36,10 +34,9 @@ android {
 
 dependencies {
     implementation project(':lib')
+    implementation "androidx.activity:activity-ktx:${versionMap.androidx_activity}"
     implementation "androidx.annotation:annotation:${versionMap.androidx_annotation}"
     implementation "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
-    implementation "androidx.lifecycle:lifecycle-common-java8:${versionMap.androidx_lifecycle}"
-    implementation "androidx.lifecycle:lifecycle-extensions:${versionMap.androidx_lifecycle}"
     implementation "com.google.android.material:material:${versionMap.material}"
     implementation "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
@@ -50,6 +47,5 @@ dependencies {
         changing = true
     }
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versionMap.kotlinx_coroutines}"
     runtimeOnly "com.noveogroup.android:android-logger:${versionMap.android_logger}"
 }

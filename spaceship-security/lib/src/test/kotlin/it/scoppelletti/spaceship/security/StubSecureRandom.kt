@@ -1,4 +1,3 @@
-
 @file:Suppress("JoinDeclarationAndAssignment")
 
 package it.scoppelletti.spaceship.security

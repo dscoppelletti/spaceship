@@ -14,6 +14,11 @@ class CryptoProviderMTest : AbstractCryptoProviderTest() {
     }
 
     @Test
+    fun noExpirationTest() {
+        onNoExpirationTest()
+    }
+
+    @Test
     fun validTest() {
         onValidTest()
     }

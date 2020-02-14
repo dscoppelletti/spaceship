@@ -20,6 +20,11 @@ class CryptoProviderJB2Test : AbstractCryptoProviderTest() {
     }
 
     @Test
+    fun noExpirationTest() {
+        onNoExpirationTest()
+    }
+
+    @Test
     fun validTest() {
         onValidTest()
     }

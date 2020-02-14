@@ -22,12 +22,11 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
-private const val EXPIRE = 30
 private const val ALIAS_KEY = "key"
 private const val ALIAS_KEYPAIR = "keypair"
 private val DATA = ByteArray(16) { 13 }
 
-class SecuirtyBridgeTest {
+class SecuirtyBridgeNoExpirationTest {
 
     private lateinit var securityBridge: SecurityBridge
     private lateinit var random: SecureRandom
@@ -95,7 +94,7 @@ class SecuirtyBridgeTest {
         val keyGen: KeyGenerator
         val params: AlgorithmParameterSpec
 
-        params = securityBridge.createKeyGenParameterSpec(ALIAS_KEY, EXPIRE)
+        params = securityBridge.createKeyGenParameterSpec(ALIAS_KEY, 0)
         keyGen = securityBridge.createKeyGenerator(
                 SecurityExt.KEY_ALGORITHM_AES, SecurityExtTest.KEYSTORE_TYPE)
                 .apply {
@@ -113,8 +112,7 @@ class SecuirtyBridgeTest {
         val params: AlgorithmParameterSpec
         val keyStore: KeyStore
 
-        params = securityBridge.createKeyPairGenParameterSpec(ALIAS_KEYPAIR,
-                EXPIRE)
+        params = securityBridge.createKeyPairGenParameterSpec(ALIAS_KEYPAIR, 0)
 
         keyPairGen = securityBridge.createKeyPairGenerator(
                 SecurityExt.KEY_ALGORITHM_RSA, SecurityExtTest.PROVIDER_SUN)

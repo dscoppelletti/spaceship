@@ -1,10 +1,8 @@
-
 @file:Suppress("JoinDeclarationAndAssignment")
 
 package it.scoppelletti.spaceship.security
 
 import org.threeten.bp.Clock
-import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZonedDateTime
 import java.security.KeyPairGenerator
 import java.security.KeyStore
@@ -14,6 +12,8 @@ import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.spec.IvParameterSpec
 import javax.security.auth.x500.X500Principal
+
+private const val YEAR_MAX = 9999
 
 internal class FakeSecurityBridge(
         private val clock: Clock
@@ -85,7 +85,7 @@ internal class FakeSecurityBridge(
         startDate = ZonedDateTime.now(clock)
         endDate = if (expire > 0) startDate.plusDays(expire.toLong()) else
             // Simulate no expiration
-            ZonedDateTime.of(LocalDateTime.MAX, startDate.zone)
+            startDate.withYear(YEAR_MAX)
 
         // - Android SDK 27.3
         // The class KeyGenPairParameterSpec.Builder needs the Context

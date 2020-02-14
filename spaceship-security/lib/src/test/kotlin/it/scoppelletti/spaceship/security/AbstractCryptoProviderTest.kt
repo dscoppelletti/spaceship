@@ -1,4 +1,3 @@
-
 @file:Suppress("JoinDeclarationAndAssignment")
 
 package it.scoppelletti.spaceship.security
@@ -39,11 +38,22 @@ abstract class AbstractCryptoProviderTest {
         securityBridge = FakeSecurityBridge(clock)
     }
 
+    protected fun onNoExpirationTest() {
+        val encrypted: ByteArray
+        val decrypted: ByteArray
+
+        encrypted = encrypt(0)
+        decrypted = decrypt(encrypted)
+
+        assertTrue(decrypted contentEquals DATA,
+                "Decrypted object differs from encrypting object.")
+    }
+
     protected fun onValidTest() {
         val encrypted: ByteArray
         val decrypted: ByteArray
 
-        encrypted = encrypt()
+        encrypted = encrypt(EXPIRE)
         decrypted = decrypt(encrypted)
 
         assertTrue(decrypted contentEquals DATA,
@@ -55,7 +65,7 @@ abstract class AbstractCryptoProviderTest {
         val encrypted: ByteArray
 
         currentTime = ZonedDateTime.now(clock)
-        encrypted = encrypt()
+        encrypted = encrypt(EXPIRE)
 
         clock.impl = Clock.fixed(currentTime.plusDays(EXPIRE + 10L).toInstant(),
                 currentTime.zone)
@@ -65,11 +75,11 @@ abstract class AbstractCryptoProviderTest {
         }
     }
 
-    private fun encrypt(): ByteArray = runBlocking {
+    private fun encrypt(expire: Int): ByteArray = runBlocking {
         val key: SecretKey
         val cipher: Cipher
 
-        key = cryptoProvider.newSecretKey(ALIAS_KEY, EXPIRE)
+        key = cryptoProvider.newSecretKey(ALIAS_KEY, expire)
         cipher = cryptoProvider.newEncryptor(key)
         encrypt(cipher)
     }

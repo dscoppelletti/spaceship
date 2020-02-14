@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import it.scoppelletti.spaceship.app.hideSoftKeyboard
 import it.scoppelletti.spaceship.app.uiComponent
 import it.scoppelletti.spaceship.security.sample.databinding.KeyFragmentBinding
@@ -25,7 +24,6 @@ import it.scoppelletti.spaceship.security.sample.lifecycle.MainViewModel
 
 class KeyFragment : Fragment() {
 
-    private lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var mainModel: MainViewModel
     private lateinit var keyModel: KeyViewModel
     private lateinit var binding: KeyFragmentBinding
@@ -60,14 +58,14 @@ class KeyFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         val activity: FragmentActivity
+        val viewModelFactory: ViewModelProvider.Factory
 
         super.onActivityCreated(savedInstanceState)
 
         activity = requireActivity()
         viewModelFactory = activity.uiComponent().viewModelFactory()
-        mainModel = ViewModelProviders.of(activity, viewModelFactory)
-                .get(MainViewModel::class.java)
-        keyModel = ViewModelProviders.of(this, viewModelFactory)
+        mainModel = ViewModelProvider(activity).get(MainViewModel::class.java)
+        keyModel = ViewModelProvider(this, viewModelFactory)
                 .get(KeyViewModel::class.java)
         binding.model = keyModel.form
 

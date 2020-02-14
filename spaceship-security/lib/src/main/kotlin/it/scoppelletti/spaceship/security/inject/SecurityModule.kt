@@ -23,7 +23,6 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import it.scoppelletti.spaceship.StdlibExt
-import it.scoppelletti.spaceship.inject.ContextModule
 import it.scoppelletti.spaceship.inject.StdlibModule
 import it.scoppelletti.spaceship.inject.UIModule
 import it.scoppelletti.spaceship.io.IOProvider
@@ -41,8 +40,7 @@ import javax.inject.Singleton
  *
  * @since 1.0.0
  */
-@Module(includes = [ ContextModule::class, StdlibModule::class,
-    UIModule::class ])
+@Module(includes = [ StdlibModule::class, UIModule::class ])
 public abstract class SecurityModule {
 
     @Binds

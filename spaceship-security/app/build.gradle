@@ -8,7 +8,7 @@ android {
     buildToolsVersion versionMap.build_tools
     defaultConfig {
         applicationId "it.scoppelletti.spaceship.security.sample"
-        minSdkVersion versionMap.sdk_min
+        minSdkVersion 18
         targetSdkVersion versionMap.sdk_target
         versionCode 1
         versionName versionMap.spaceship
@@ -32,6 +32,9 @@ android {
     dataBinding {
         enabled = true
     }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
@@ -39,14 +42,19 @@ android {
 
 dependencies {
     implementation project(':lib')
+    implementation "androidx.activity:activity-ktx:${versionMap.androidx_activity}"
     implementation "androidx.annotation:annotation:${versionMap.androidx_annotation}"
     implementation "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
+    implementation "androidx.fragment:fragment-ktx:${versionMap.androidx_fragment}"
     implementation "androidx.lifecycle:lifecycle-common-java8:${versionMap.androidx_lifecycle}"
-    implementation "androidx.lifecycle:lifecycle-extensions:${versionMap.androidx_lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versionMap.androidx_lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:${versionMap.androidx_lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versionMap.androidx_lifecycle}"
     kapt "androidx.databinding:databinding-compiler:${versionMap.android_gradle}"
     implementation "com.google.android.material:material:${versionMap.material}"
     implementation "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
+    implementation "com.jakewharton.threetenabp:threetenabp:${versionMap.threetenabp}"
     implementation "com.squareup.okio:okio:${versionMap.okio}"
     implementation("it.scoppelletti.spaceship:spaceship-html:${versionMap.spaceship}") {
         changing = true

@@ -1,6 +1,7 @@
 package it.scoppelletti.spaceship.security.sample
 
 import android.app.Application
+import com.jakewharton.threetenabp.AndroidThreeTen
 import it.scoppelletti.spaceship.inject.StdlibComponent
 import it.scoppelletti.spaceship.inject.StdlibComponentProvider
 import it.scoppelletti.spaceship.inject.UIComponent
@@ -16,6 +17,7 @@ class MainApp : Application(), StdlibComponentProvider, UIComponentProvider {
     override fun onCreate() {
         super.onCreate()
 
+        AndroidThreeTen.init(this)
         _appComponent = DaggerAppComponent.factory()
                 .create(this)
     }

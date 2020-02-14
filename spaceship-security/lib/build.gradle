@@ -13,7 +13,7 @@ android {
     compileSdkVersion versionMap.sdk_target
     buildToolsVersion versionMap.build_tools
     defaultConfig {
-        minSdkVersion versionMap.sdk_min
+        minSdkVersion 18
         targetSdkVersion versionMap.sdk_target
         versionCode 1
         versionName versionMap.spaceship
@@ -34,6 +34,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
         test.java.srcDirs += 'src/test/kotlin'
@@ -46,6 +49,7 @@ spaceship {
 
 dependencies {
     api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
+    api "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
     api "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
     api "com.squareup.okio:okio:${versionMap.okio}"

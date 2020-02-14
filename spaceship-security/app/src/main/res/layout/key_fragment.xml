@@ -19,8 +19,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:it_scoppelletti_error="@{model.aliasError}"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+                app:it_scoppelletti_error="@{model.aliasError}">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txtAlias"
                     android:layout_width="match_parent"
@@ -30,14 +29,12 @@
                     android:inputType="text"
                     android:imeOptions="actionDone"
                     app:it_scoppelletti_validator="@{() -> model.validateAlias()}"
-                    android:drawableRight="@{model.aliasError &gt; 0 ? @drawable/ic_error : null}"
                     android:drawableEnd="@{model.aliasError &gt; 0 ? @drawable/ic_error : null}" />
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:it_scoppelletti_error="@{model.expireError}"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+                app:it_scoppelletti_error="@{model.expireError}">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txtExpire"
                     android:layout_width="match_parent"
@@ -47,7 +44,6 @@
                     android:inputType="number"
                     android:imeOptions="actionDone"
                     app:it_scoppelletti_validator="@{() -> model.validateExpire()}"
-                    android:drawableRight="@{model.expireError &gt; 0 ? @drawable/ic_error : null}"
                     android:drawableEnd="@{model.expireError &gt; 0 ? @drawable/ic_error : null}"/>
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>

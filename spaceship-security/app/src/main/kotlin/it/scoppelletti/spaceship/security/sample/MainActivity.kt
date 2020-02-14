@@ -10,10 +10,8 @@ import androidx.core.view.MenuCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import it.scoppelletti.spaceship.app.showExceptionDialog
-import it.scoppelletti.spaceship.app.uiComponent
 import it.scoppelletti.spaceship.security.sample.lifecycle.MainState
 import it.scoppelletti.spaceship.security.sample.lifecycle.MainViewModel
 import kotlinx.android.synthetic.main.main_activity.*
@@ -23,8 +21,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val viewModelFactory: ViewModelProvider.Factory
-
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.main_activity)
@@ -36,9 +32,7 @@ class MainActivity : AppCompatActivity() {
             navigateToFragment(R.id.cmd_key)
         }
 
-        viewModelFactory = uiComponent().viewModelFactory()
-        viewModel = ViewModelProviders.of(this, viewModelFactory)
-                .get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         viewModel.state.observe(this, Observer<MainState> { state ->
             if (state != null) {

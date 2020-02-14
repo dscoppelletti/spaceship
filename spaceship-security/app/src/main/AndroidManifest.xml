@@ -9,10 +9,9 @@
         android:name=".MainApp"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/it_scoppelletti_theme_app">
+        android:theme="@style/Theme.MyApp">
         <activity android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/it_scoppelletti_theme_activityNoActionBar">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

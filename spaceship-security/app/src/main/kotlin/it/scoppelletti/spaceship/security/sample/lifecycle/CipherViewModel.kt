@@ -62,14 +62,7 @@ class CipherViewModel @Inject constructor(
             _form.cipherText = StringExt.EMPTY
 
             key = cryptoProvider.loadSecretKey(alias)
-            if (!isActive) {
-                throw CancellationException()
-            }
-
             cipher = cryptoProvider.newEncryptor(key)
-            if (!isActive) {
-                throw CancellationException()
-            }
 
             _form.cipherText = encrypt(plainText, cipher)
             _state.value = MainState.create()

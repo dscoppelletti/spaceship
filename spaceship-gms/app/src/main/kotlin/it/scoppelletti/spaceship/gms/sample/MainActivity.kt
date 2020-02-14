@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import it.scoppelletti.spaceship.ApplicationException
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
@@ -32,7 +31,7 @@ class MainActivity : AppCompatActivity(), OnDialogResultListener {
         setContentView(R.layout.main_activity)
 
         viewModelFactory = uiComponent().viewModelFactory()
-        viewModel = ViewModelProviders.of(this, viewModelFactory)
+        viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(MainViewModel::class.java)
         gmsMessages = gmsComponent().gmsMessages()
 

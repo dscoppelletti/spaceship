@@ -11,9 +11,8 @@ import it.scoppelletti.spaceship.inject.StdlibComponent
 import it.scoppelletti.spaceship.inject.StdlibComponentProvider
 
 @Suppress("unused")
-class MainApp : Application(),
-        GmsComponentProvider,
-        StdlibComponentProvider, UIComponentProvider {
+class MainApp : Application(), GmsComponentProvider, StdlibComponentProvider,
+        UIComponentProvider {
 
     private lateinit var _appComponent: AppComponent
 

@@ -20,7 +20,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="it.scoppelletti.spaceship.gms.widget.GmsExceptionAdapter">
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/it_scoppelletti_spacingVert"
@@ -43,7 +43,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/txtStatusCode"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                style="@style/Widget.Scoppelletti.TextView.PrimaryText"
                 tools:text="Message" />
             <TextView android:id="@+id/lblStatusCode"
                 android:layout_width="wrap_content"
@@ -78,7 +78,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txtStatusMessage"
                 app:layout_constraintBottom_toTopOf="@id/txtCanceled"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                style="@style/Widget.Scoppelletti.TextView.PrimaryText"
                 tools:text="500" />
             <TextView android:id="@+id/txtCanceled"
                 android:layout_width="0dp"
@@ -89,7 +89,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txtStatusCode"
                 app:layout_constraintBottom_toTopOf="@id/txtInterrupted"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                style="@style/Widget.Scoppelletti.TextView.PrimaryText"
                 tools:text="No" />
             <TextView android:id="@+id/txtInterrupted"
                 android:layout_width="0dp"
@@ -100,7 +100,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txtCanceled"
                 app:layout_constraintBottom_toTopOf="@id/txtInterrupted"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                style="@style/Widget.Scoppelletti.TextView.PrimaryText"
                 tools:text="No" />
             <TextView android:id="@+id/txtClass"
                 android:layout_width="0dp"
@@ -112,7 +112,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txtInterrupted"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                style="@style/Widget.Scoppelletti.TextView.PrimaryText"
                 tools:text="java.lang.RuntimeException" />
             <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/lblBarrier"
@@ -121,5 +121,5 @@
                 app:barrierDirection="right"
                 app:constraint_referenced_ids="lblStatusCode,lblCanceled,lblInterrupted,lblClass" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </FrameLayout>

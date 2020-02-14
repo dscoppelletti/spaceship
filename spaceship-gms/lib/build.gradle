@@ -13,7 +13,7 @@ android {
     compileSdkVersion versionMap.sdk_target
     buildToolsVersion versionMap.build_tools
     defaultConfig {
-        minSdkVersion versionMap.sdk_min
+        minSdkVersion 16
         targetSdkVersion versionMap.sdk_target
         versionCode 1
         versionName versionMap.spaceship
@@ -34,6 +34,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
@@ -46,7 +49,6 @@ spaceship {
 dependencies {
     api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
     api "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
-    api "androidx.cardview:cardview:${versionMap.androidx_cardview}"
     api "androidx.constraintlayout:constraintlayout:${versionMap.androidx_constraint}"
     api "com.google.android.gms:play-services-base:${versionMap.playservices_base}"
     api "com.google.android.material:material:${versionMap.material}"

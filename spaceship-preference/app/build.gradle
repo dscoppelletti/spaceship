@@ -11,7 +11,7 @@ android {
     buildToolsVersion versionMap.build_tools
     defaultConfig {
         applicationId "it.scoppelletti.spaceship.preference.sample"
-        minSdkVersion versionMap.sdk_min
+        minSdkVersion 16
         targetSdkVersion versionMap.sdk_target
         versionCode 1
         versionName versionMap.spaceship
@@ -32,6 +32,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
@@ -39,13 +42,18 @@ android {
 
 dependencies {
     implementation project(':lib')
+    implementation "androidx.activity:activity-ktx:${versionMap.androidx_activity}"
     implementation "androidx.annotation:annotation:${versionMap.androidx_annotation}"
     implementation "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
-    implementation "androidx.preference:preference:${versionMap.androidx_preference}"
+    implementation "androidx.fragment:fragment-ktx:${versionMap.androidx_fragment}"
+    implementation "androidx.preference:preference-ktx:${versionMap.androidx_preference}"
     implementation "com.google.android.gms:play-services-oss-licenses:${ossLibVersion}"
     implementation "com.google.android.material:material:${versionMap.material}"
     implementation "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
+    implementation("it.scoppelletti.spaceship:spaceship-html:${versionMap.spaceship}") {
+        changing = true
+    }
     implementation("it.scoppelletti.spaceship:spaceship-stdlib:${versionMap.spaceship}") {
         changing = true
     }

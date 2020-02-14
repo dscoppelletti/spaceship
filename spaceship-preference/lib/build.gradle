@@ -13,7 +13,7 @@ android {
     compileSdkVersion versionMap.sdk_target
     buildToolsVersion versionMap.build_tools
     defaultConfig {
-        minSdkVersion versionMap.sdk_min
+        minSdkVersion 16
         targetSdkVersion versionMap.sdk_target
         versionCode 1
         versionName versionMap.spaceship
@@ -34,6 +34,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
@@ -44,14 +47,18 @@ spaceship {
 }
 
 dependencies {
+    api "androidx.activity:activity-ktx:${versionMap.androidx_activity}"
     api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
     api "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
-    api "androidx.cardview:cardview:${versionMap.androidx_cardview}"
     api "androidx.constraintlayout:constraintlayout:${versionMap.androidx_constraint}"
+    api "androidx.fragment:fragment-ktx:${versionMap.androidx_fragment}"
     api "androidx.lifecycle:lifecycle-common-java8:${versionMap.androidx_lifecycle}"
-    api "androidx.lifecycle:lifecycle-extensions:${versionMap.androidx_lifecycle}"
-    api "androidx.preference:preference:${versionMap.androidx_preference}"
+    api "androidx.lifecycle:lifecycle-livedata-ktx:${versionMap.androidx_lifecycle}"
+    api "androidx.lifecycle:lifecycle-runtime-ktx:${versionMap.androidx_lifecycle}"
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:${versionMap.androidx_lifecycle}"
+    api "androidx.preference:preference-ktx:${versionMap.androidx_preference}"
     api "androidx.recyclerview:recyclerview:${versionMap.androidx_recyclerview}"
+    api "androidx.swiperefreshlayout:swiperefreshlayout:${versionMap.androidx_swiperefresh}"
     api "com.google.android.material:material:${versionMap.material}"
     api "com.google.dagger:dagger:${versionMap.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"

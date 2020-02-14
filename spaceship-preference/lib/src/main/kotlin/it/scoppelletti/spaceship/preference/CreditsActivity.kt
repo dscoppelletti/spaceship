@@ -26,7 +26,6 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
@@ -49,7 +48,6 @@ import mu.KotlinLogging
 @UiThread
 public class CreditsActivity : AppCompatActivity(), OnDialogResultListener {
 
-    private lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: CreditsViewModel
     private lateinit var adapter: CreditListAdapter
 
@@ -57,6 +55,7 @@ public class CreditsActivity : AppCompatActivity(), OnDialogResultListener {
         val creditId: Int
         val actionBar: ActionBar
         val listLayout : LinearLayoutManager
+        val viewModelFactory: ViewModelProvider.Factory
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.it_scoppelletti_pref_credits_activity)
@@ -66,12 +65,12 @@ public class CreditsActivity : AppCompatActivity(), OnDialogResultListener {
         actionBar.setDisplayHomeAsUpEnabled(true)
 
         refreshLayout.isEnabled = false
-        refreshLayout.setColorSchemeResources(R.color.secondaryColor)
+
         listLayout = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         listView.layoutManager = listLayout
 
         viewModelFactory = uiComponent().viewModelFactory()
-        viewModel = ViewModelProviders.of(this, viewModelFactory)
+        viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(CreditsViewModel::class.java)
 
         creditId = intent.getIntExtra(CreditsActivity.PROP_CREDITS, 0)
@@ -132,6 +131,6 @@ public class CreditsActivity : AppCompatActivity(), OnDialogResultListener {
          */
         public const val PROP_CREDITS: String = PreferenceExt.PROP_CREDITS
 
-        private val logger = KotlinLogging.logger {}
+        private val logger = KotlinLogging.logger { }
     }
 }

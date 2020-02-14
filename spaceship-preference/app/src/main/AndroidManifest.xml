@@ -9,10 +9,9 @@
         android:name=".MainApp"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/it_scoppelletti_theme_app">
+        android:theme="@style/Theme.MyApp">
         <activity android:name=".SettingsActivity"
-            android:label="@string/it_scoppelletti_pref_cmd_settings"
-            android:theme="@style/it_scoppelletti_pref_theme_preferenceActivity">
+            android:label="@string/it_scoppelletti_pref_cmd_settings">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

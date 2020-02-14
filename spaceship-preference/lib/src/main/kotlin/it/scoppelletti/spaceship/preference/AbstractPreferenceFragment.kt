@@ -22,7 +22,7 @@ package it.scoppelletti.spaceship.preference
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.UiThread
-import androidx.fragment.app.FragmentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -51,7 +51,7 @@ public abstract class AbstractPreferenceFragment : PreferenceFragmentCompat() {
         val fragment: CustomPreferenceDialogFragment
         val fragmentMgr: FragmentManager
 
-        fragmentMgr = requireFragmentManager()
+        fragmentMgr = parentFragmentManager
         if (fragmentMgr.findFragmentByTag(AbstractPreferenceFragment
                         .DIALOG_FRAGMENT_TAG) != null) {
             return
@@ -94,7 +94,7 @@ public abstract class AbstractPreferenceFragment : PreferenceFragmentCompat() {
             config: ((Intent) -> Unit)?): Boolean
     {
         val intent: Intent
-        val activity: FragmentActivity
+        val activity: AppCompatActivity
         val err: ApplicationException
 
         if (preference.intent == null) {
@@ -108,7 +108,7 @@ public abstract class AbstractPreferenceFragment : PreferenceFragmentCompat() {
             config.invoke(intent)
         }
 
-        activity = requireActivity()
+        activity = requireActivity() as AppCompatActivity
         try {
             activity.startActivity(intent)
         } catch (ex: RuntimeException) {

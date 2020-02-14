@@ -18,8 +18,7 @@
     package="it.scoppelletti.spaceship.preference">
     <application>
         <activity android:name=".CreditsActivity"
-            android:label="@string/it_scoppelletti_pref_cmd_credits"
-            android:theme="@style/it_scoppelletti_theme_activityNoActionBar">
+            android:label="@string/it_scoppelletti_pref_cmd_credits">
         </activity>
     </application>
 </manifest>

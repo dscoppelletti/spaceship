@@ -61,6 +61,7 @@ dependencies {
     api "androidx.lifecycle:lifecycle-runtime-ktx:${versionMap.androidx_lifecycle}"
     api "androidx.lifecycle:lifecycle-viewmodel-ktx:${versionMap.androidx_lifecycle}"
     api "androidx.recyclerview:recyclerview:${versionMap.androidx_recyclerview}"
+    api "androidx.swiperefreshlayout:swiperefreshlayout:${versionMap.androidx_swiperefresh}"
     api "androidx.viewpager:viewpager:${versionMap.androidx_viewpager}"
     api "com.google.android.material:material:${versionMap.material}"
     api "com.google.dagger:dagger:${versionMap.dagger}"

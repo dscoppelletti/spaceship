@@ -42,6 +42,11 @@ private const val SHOW_DELAY: Long = 500
  * Circular indeterminate progress indicator within a screen overlay.
  *
  * @since 1.0.0
+ *
+ * @constructor
+ * @param       ctx          Context.
+ * @param       attrs        Attributes.
+ * @param       defStyleAttr Default style as theme attribure ID.
  */
 @UiThread
 public class ProgressOverlay @JvmOverloads constructor(

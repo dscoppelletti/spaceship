@@ -26,7 +26,6 @@ import androidx.annotation.UiThread
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
 import it.scoppelletti.spaceship.app.showExceptionDialog
@@ -36,6 +35,7 @@ import it.scoppelletti.spaceship.html.HtmlExt
 import it.scoppelletti.spaceship.html.R
 import it.scoppelletti.spaceship.html.lifecycle.HtmlViewerState
 import it.scoppelletti.spaceship.html.lifecycle.HtmlViewerViewModel
+import it.scoppelletti.spaceship.lifecycle.ViewModelProviderEx
 import kotlinx.android.synthetic.main.it_scoppelletti_htmlviewer_activity.*
 import mu.KotlinLogging
 
@@ -47,13 +47,13 @@ import mu.KotlinLogging
 @UiThread
 public class HtmlViewerActivity : AppCompatActivity(), OnDialogResultListener {
 
-    private lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: HtmlViewerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val textId: Int
         val titleId: Int
         val actionBar: ActionBar
+        val viewModelProvider: ViewModelProviderEx
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.it_scoppelletti_htmlviewer_activity)
@@ -72,9 +72,8 @@ public class HtmlViewerActivity : AppCompatActivity(), OnDialogResultListener {
 
         txtContent.movementMethod = LinkMovementMethod.getInstance()
 
-        viewModelFactory = uiComponent().viewModelFactory()
-        viewModel = ViewModelProvider(this, viewModelFactory)
-                .get(HtmlViewerViewModel::class.java)
+        viewModelProvider = uiComponent().viewModelProvider()
+        viewModel = viewModelProvider.get(this, HtmlViewerViewModel::class.java)
 
         viewModel.state.observe(this, Observer<HtmlViewerState> { state ->
             if (state != null) {
@@ -128,7 +127,7 @@ public class HtmlViewerActivity : AppCompatActivity(), OnDialogResultListener {
         /**
          * Property containing the HTML text as a string resource ID.
          */
-        public const val PROP_TEXT: String = HtmlExt.PROP_TEXT
+        public const val PROP_TEXT: String = HtmlExt.PROP_HTML
 
         /**
          * Property containing the title as a string resource ID.

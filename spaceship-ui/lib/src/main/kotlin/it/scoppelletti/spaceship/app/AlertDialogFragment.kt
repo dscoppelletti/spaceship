@@ -37,9 +37,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import it.scoppelletti.spaceship.content.res.ResourcesExt
 import it.scoppelletti.spaceship.i18n.MessageSpec
 import it.scoppelletti.spaceship.lifecycle.AlertActivityModel
-import it.scoppelletti.spaceship.lifecycle.AlertActivityState
 import it.scoppelletti.spaceship.lifecycle.AlertDialogModel
-import it.scoppelletti.spaceship.lifecycle.AlertDialogState
+import it.scoppelletti.spaceship.lifecycle.ViewModelProviderEx
 import it.scoppelletti.spaceship.types.StringExt
 
 /**
@@ -59,7 +58,7 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
         val builder: MaterialAlertDialogBuilder
         var resId: Int
 
-        args = arguments!!
+        args = requireArguments()
         builder = MaterialAlertDialogBuilder(requireActivity())
                 .setMessage(StringExt.EMPTY)
 
@@ -98,25 +97,25 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         val activity: FragmentActivity
         val activityModel: AlertActivityModel
-        val viewModelFactory: ViewModelProvider.Factory
+        val viewModelProvider: ViewModelProviderEx
 
         super.onActivityCreated(savedInstanceState)
 
         activity = requireActivity()
-        viewModelFactory = activity.uiComponent().viewModelFactory()
+        viewModelProvider = activity.uiComponent().viewModelProvider()
         activityModel = ViewModelProvider(activity)
                 .get(AlertActivityModel::class.java)
-        viewModel = ViewModelProvider(this, viewModelFactory)
-                .get(AlertDialogModel::class.java)
+        viewModel = viewModelProvider.get(this, AlertDialogModel::class.java)
 
-        viewModel.state.observe(this, Observer<AlertDialogState> { state ->
-            if (state != null) {
-                (dialog as AlertDialog).setMessage(state.message)
+        @Suppress("FragmentLiveDataObserve")
+        viewModel.message.observe(this, Observer<String> { message ->
+            if (message != null) {
+                (dialog as AlertDialog).setMessage(message)
             }
         })
 
-        activityModel.state?.let {
-            activityModel.state = null
+        activityModel.message?.let {
+            activityModel.message = null
             viewModel.load(it)
         }
     }
@@ -298,7 +297,7 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
 
             viewModel = ViewModelProvider(activity)
                     .get(AlertActivityModel::class.java)
-            viewModel.state = AlertActivityState(msg)
+            viewModel.message = msg
 
             AlertDialogFragment()
                     .apply {

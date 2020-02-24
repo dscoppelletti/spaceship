@@ -62,7 +62,7 @@ public class TimeDialogFragment : DialogFragment() {
 
         super.onActivityCreated(savedInstanceState)
 
-        args = arguments!!
+        args = requireArguments()
         secDay = args.getInt(TimeDialogFragment.PROP_SECDAY, -1)
         time = if (secDay < 0) {
             i18nProvider = requireActivity().stdlibComponent().i18nProvider()

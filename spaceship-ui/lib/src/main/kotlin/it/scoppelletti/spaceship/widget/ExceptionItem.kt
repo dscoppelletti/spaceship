@@ -18,6 +18,7 @@
 
 package it.scoppelletti.spaceship.widget
 
+import android.os.Parcelable
 import android.view.View
 import android.view.ViewGroup
 
@@ -28,7 +29,7 @@ import android.view.ViewGroup
  *
  * @property adapter Renders an exception as an item in a `ListView` control.
  */
-public interface ExceptionItem {
+public interface ExceptionItem : Parcelable {
     val adapter: ExceptionAdapter<*>
 }
 
@@ -38,7 +39,7 @@ public interface ExceptionItem {
  * @param T Exception class.
  * @since   1.0.0
  */
-public interface ExceptionAdapter<in T : ExceptionItem> {
+public interface ExceptionAdapter<in T : ExceptionItem> : Parcelable {
 
     /**
      * Get a view that displays the data of an exception.

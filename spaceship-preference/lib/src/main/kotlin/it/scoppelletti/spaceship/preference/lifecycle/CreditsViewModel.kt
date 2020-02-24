@@ -14,49 +14,41 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier")
+@file:Suppress("RedundantVisibilityModifier", "RemoveRedundantQualifierName")
 
 package it.scoppelletti.spaceship.preference.lifecycle
 
+import android.os.Bundle
 import androidx.annotation.XmlRes
+import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import it.scoppelletti.spaceship.StdlibExt
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import androidx.savedstate.SavedStateRegistryOwner
 import it.scoppelletti.spaceship.lifecycle.SingleEvent
+import it.scoppelletti.spaceship.lifecycle.ViewModelProviderEx
+import it.scoppelletti.spaceship.preference.CreditsActivity
 import it.scoppelletti.spaceship.preference.credit.CreditsLoader
 import it.scoppelletti.spaceship.preference.model.Credit
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Named
 
 /**
- * ViewModel of the `CreditsActivity` view.
+ * ViewModel of a [CreditsActivity] view.
  *
- * @see   it.scoppelletti.spaceship.preference.CreditsActivity
  * @since 1.0.0
  *
  * @property state State of the view.
- *
- * @constructor            Constructor.
- * @param       dispatcher Coroutine dispatcher.
- * @param       loader     Loads the credits.
  */
-public class CreditsViewModel @Inject constructor(
-        private val loader: CreditsLoader,
-
-        @Named(StdlibExt.DEP_MAINDISPATCHER)
-        dispatcher: CoroutineDispatcher
+public class CreditsViewModel(
+        private val loader: CreditsLoader
 ): ViewModel() {
 
-    private val scope = CoroutineScope(dispatcher + Job())
     private val _state = MutableLiveData<CreditsState>()
-
     public val state: LiveData<CreditsState> = _state
 
     /**
@@ -64,7 +56,7 @@ public class CreditsViewModel @Inject constructor(
      *
      * @param creditId ID of the XML resource.
      */
-    public fun load(@XmlRes creditId: Int) = scope.launch {
+    public fun load(@XmlRes creditId: Int) = viewModelScope.launch {
         val items: List<Credit>
 
         if (_state.value != null) {
@@ -81,17 +73,11 @@ public class CreditsViewModel @Inject constructor(
             _state.value = _state.value?.withError(ex)
         }
     }
-
-    override fun onCleared() {
-        scope.cancel()
-        super.onCleared()
-    }
 }
 
 /**
- * State of the `CreditsActivity` view.
+ * State of a [CreditsActivity] view.
  *
- * @see   it.scoppelletti.spaceship.preference.CreditsActivity
  * @since 1.0.0
  *
  * @property items   Collection of credits.
@@ -123,5 +109,41 @@ public data class CreditsState(
          */
         internal fun create(items: List<Credit>): CreditsState =
                 CreditsState(items, false, null)
+    }
+}
+
+/**
+ * Implementation of `SavedStateViewModelProvider.Factory` interface for
+ * [CreditsViewModel] class.
+ *
+ * @since 1.0.0
+ */
+public class CreditsViewModelFactory @Inject constructor(
+        private val loader: CreditsLoader
+) : ViewModelProviderEx.Factory {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(
+            owner: SavedStateRegistryOwner,
+            defaultArgs: Bundle?
+    ): T {
+        val delegate: ViewModelProvider.Factory
+
+        delegate = CreditsViewModelFactory.Delegate(owner, defaultArgs, loader)
+        return delegate.create(CreditsViewModel::class.java) as T
+    }
+
+    private class Delegate(
+            owner: SavedStateRegistryOwner,
+            defaultArgs: Bundle?,
+            private val loader: CreditsLoader
+    ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
+
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel?> create(
+                key: String,
+                modelClass: Class<T>,
+                handle: SavedStateHandle
+        ): T = CreditsViewModel(loader) as T
     }
 }

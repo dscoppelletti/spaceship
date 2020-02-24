@@ -14,58 +14,65 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
+        "RemoveRedundantQualifierName")
 
 package it.scoppelletti.spaceship.lifecycle
 
+import android.os.Bundle
+import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import androidx.savedstate.SavedStateRegistryOwner
+import it.scoppelletti.spaceship.app.AppExt
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
-import it.scoppelletti.spaceship.StdlibExt
 import it.scoppelletti.spaceship.widget.ExceptionItem
 import it.scoppelletti.spaceship.widget.ExceptionMapper
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import javax.inject.Named
 
 /**
- * `ViewModel` of an [ExceptionDialogFragment] fragment.
+ * `ViewModel` of an [ExceptionDialogFragment] view.
  *
  * @since 1.0.0
  *
- * @property state State.
+ * @property state State of the view.
  */
-public class ExceptionDialogModel @Inject constructor(
-
-        @Named(StdlibExt.DEP_MAINDISPATCHER)
-        dispatcher: CoroutineDispatcher,
-
-        private val exMapper: ExceptionMapper
+public class ExceptionDialogModel(
+        private val exMapper: ExceptionMapper,
+        private val handle: SavedStateHandle
 ): ViewModel() {
 
-    private val scope = CoroutineScope(dispatcher + Job())
     private val _state = MutableLiveData<ExceptionDialogState>()
     public val state: LiveData<ExceptionDialogState> = _state
+
+    init {
+        val item: ExceptionItem?
+
+        item = handle[ExceptionDialogModel.PROP_ITEM]
+        if (item != null) {
+            _state.value = ExceptionDialogState(listOf(item))
+        }
+    }
 
     /**
      * Loads the state.
      *
-     * @param exState Exception state.
+     * @param source Exception.
      */
-    public fun load(exState: ExceptionActivityState) = scope.launch {
+    public fun load(source: Throwable) = viewModelScope.launch {
         val exList: List<ExceptionItem>
 
         exList = withContext(Dispatchers.Default) {
             val list: MutableList<ExceptionItem>
-            var ex: Throwable? = exState.ex
+            var ex: Throwable? = source
 
             list = mutableListOf()
 
@@ -81,17 +88,20 @@ public class ExceptionDialogModel @Inject constructor(
             list
         }
 
+        if (exList.isNotEmpty()) {
+            handle.set(ExceptionDialogModel.PROP_ITEM, exList[0])
+        }
+
         _state.value = ExceptionDialogState(exList)
     }
 
-    override fun onCleared() {
-        scope.cancel()
-        super.onCleared()
+    private companion object {
+        const val PROP_ITEM = AppExt.PROP_ITEM
     }
 }
 
 /**
- * State of an [ExceptionDialogFragment] fragment.
+ * State of an [ExceptionDialogFragment] view.
  *
  * @since 1.0.0
  *
@@ -100,4 +110,41 @@ public class ExceptionDialogModel @Inject constructor(
 public data class ExceptionDialogState(
         public val exList: List<ExceptionItem>
 )
+
+/**
+ * Implementation of `SavedStateViewModelProvider.Factory` interface for
+ * [ExceptionDialogModel] class.
+ *
+ * @since 1.0.0
+ */
+public class ExceptionDialogModelFactory @Inject constructor(
+        private val exMapper: ExceptionMapper
+) : ViewModelProviderEx.Factory {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(
+            owner: SavedStateRegistryOwner,
+            defaultArgs: Bundle?
+    ): T {
+        val delegate: ViewModelProvider.Factory
+
+        delegate = ExceptionDialogModelFactory.Delegate(owner, defaultArgs,
+                exMapper)
+        return delegate.create(ExceptionDialogModel::class.java) as T
+    }
+
+    private class Delegate(
+            owner: SavedStateRegistryOwner,
+            defaultArgs: Bundle?,
+            private val exMapper: ExceptionMapper
+    ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
+
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel?> create(
+                key: String,
+                modelClass: Class<T>,
+                handle: SavedStateHandle
+        ): T = ExceptionDialogModel(exMapper, handle) as T
+    }
+}
 

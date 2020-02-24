@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RemoveRedundantQualifierName",
-        "RedundantVisibilityModifier")
+@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
+        "RemoveRedundantQualifierName")
 
 package it.scoppelletti.spaceship.preference.credit
 

@@ -2,13 +2,12 @@ package it.scoppelletti.spaceship.preference.sample
 
 import android.app.Application
 import it.scoppelletti.spaceship.inject.StdlibComponent
-import it.scoppelletti.spaceship.inject.StdlibComponentProvider
 import it.scoppelletti.spaceship.inject.UIComponent
 import it.scoppelletti.spaceship.inject.UIComponentProvider
 import it.scoppelletti.spaceship.preference.sample.inject.AppComponent
 import it.scoppelletti.spaceship.preference.sample.inject.DaggerAppComponent
 
-class MainApp : Application(), StdlibComponentProvider, UIComponentProvider {
+class MainApp : Application(), UIComponentProvider {
 
     private lateinit var _appComponent: AppComponent
 

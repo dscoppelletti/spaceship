@@ -14,7 +14,6 @@ import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.app.OnDialogResultListener
 import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.app.tryFinish
-import it.scoppelletti.spaceship.app.uiComponent
 import it.scoppelletti.spaceship.gms.app.gmsComponent
 import it.scoppelletti.spaceship.gms.i18n.GmsMessages
 import it.scoppelletti.spaceship.lifecycle.SingleEvent
@@ -25,14 +24,10 @@ class MainActivity : AppCompatActivity(), OnDialogResultListener {
     private lateinit var gmsMessages: GmsMessages
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val viewModelFactory: ViewModelProvider.Factory
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
-        viewModelFactory = uiComponent().viewModelFactory()
-        viewModel = ViewModelProvider(this, viewModelFactory)
-                .get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         gmsMessages = gmsComponent().gmsMessages()
 
         viewModel.state.observe(this,

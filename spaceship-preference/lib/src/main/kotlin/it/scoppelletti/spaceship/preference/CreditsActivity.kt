@@ -25,7 +25,6 @@ import androidx.annotation.UiThread
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
@@ -33,6 +32,7 @@ import it.scoppelletti.spaceship.app.OnDialogResultListener
 import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.app.tryFinish
 import it.scoppelletti.spaceship.app.uiComponent
+import it.scoppelletti.spaceship.lifecycle.ViewModelProviderEx
 import it.scoppelletti.spaceship.preference.lifecycle.CreditsState
 import it.scoppelletti.spaceship.preference.lifecycle.CreditsViewModel
 import it.scoppelletti.spaceship.preference.widget.CreditListAdapter
@@ -55,7 +55,7 @@ public class CreditsActivity : AppCompatActivity(), OnDialogResultListener {
         val creditId: Int
         val actionBar: ActionBar
         val listLayout : LinearLayoutManager
-        val viewModelFactory: ViewModelProvider.Factory
+        val viewModelProvider: ViewModelProviderEx
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.it_scoppelletti_pref_credits_activity)
@@ -69,9 +69,8 @@ public class CreditsActivity : AppCompatActivity(), OnDialogResultListener {
         listLayout = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         listView.layoutManager = listLayout
 
-        viewModelFactory = uiComponent().viewModelFactory()
-        viewModel = ViewModelProvider(this, viewModelFactory)
-                .get(CreditsViewModel::class.java)
+        viewModelProvider = uiComponent().viewModelProvider()
+        viewModel = viewModelProvider.get(this, CreditsViewModel::class.java)
 
         creditId = intent.getIntExtra(CreditsActivity.PROP_CREDITS, 0)
         if (creditId > 0) {

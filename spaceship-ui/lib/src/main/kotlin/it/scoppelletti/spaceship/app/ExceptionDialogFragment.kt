@@ -35,9 +35,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import it.scoppelletti.spaceship.ExceptionLogger
 import it.scoppelletti.spaceship.content.res.ResourcesExt
 import it.scoppelletti.spaceship.lifecycle.ExceptionActivityModel
-import it.scoppelletti.spaceship.lifecycle.ExceptionActivityState
 import it.scoppelletti.spaceship.lifecycle.ExceptionDialogModel
 import it.scoppelletti.spaceship.lifecycle.ExceptionDialogState
+import it.scoppelletti.spaceship.lifecycle.ViewModelProviderEx
 import it.scoppelletti.spaceship.widget.ExceptionListAdapter
 
 /**
@@ -58,8 +58,7 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
         val title: String?
         val builder: MaterialAlertDialogBuilder
 
-        args = arguments!!
-
+        args = requireArguments()
         title = args.getString(ExceptionDialogFragment.PROP_TITLE)
         adapter = ExceptionListAdapter(requireContext())
 
@@ -82,29 +81,27 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         val activity: FragmentActivity
         val activityModel: ExceptionActivityModel
-        val exState: ExceptionActivityState?
-        val viewModelFactory: ViewModelProvider.Factory
+        val viewModelProvider: ViewModelProviderEx
 
         super.onActivityCreated(savedInstanceState)
 
         activity = requireActivity()
-        viewModelFactory = activity.uiComponent().viewModelFactory()
+        viewModelProvider = activity.uiComponent().viewModelProvider()
         activityModel = ViewModelProvider(activity)
                 .get(ExceptionActivityModel::class.java)
-        viewModel = ViewModelProvider(this, viewModelFactory)
-                .get(ExceptionDialogModel::class.java)
+        viewModel = viewModelProvider.get(this,
+                ExceptionDialogModel::class.java)
 
+        @Suppress("FragmentLiveDataObserve")
         viewModel.state.observe(this, Observer<ExceptionDialogState> { state ->
             if (state != null) {
                 adapter.addAll(state.exList)
             }
         })
 
-        exState = activityModel.state
-
-        if (exState != null) {
-            activityModel.state = null
-            viewModel.load(exState)
+        activityModel.ex?.let {
+            activityModel.ex = null
+            viewModel.load(it)
         }
     }
 
@@ -166,7 +163,6 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
          *
          * @param init Initialization block.
          */
-        @Suppress("unused")
         public fun tag(init: () -> String) {
             _tag = init()
         }
@@ -185,7 +181,6 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
          *
          * @param init Initialization block.
          */
-        @Suppress("unused")
         public fun title(init: () -> String) {
             _title = init()
         }
@@ -207,7 +202,7 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
 
             viewModel = ViewModelProvider(activity)
                     .get(ExceptionActivityModel::class.java)
-            viewModel.state = ExceptionActivityState(ex)
+            viewModel.ex = ex
 
             ExceptionDialogFragment()
                     .apply {

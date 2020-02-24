@@ -59,7 +59,7 @@ public class DateDialogFragment : DialogFragment() {
 
         super.onActivityCreated(savedInstanceState)
 
-        args = arguments!!
+        args = requireArguments()
         epochDay = args.getLong(DateDialogFragment.PROP_EPOCHDAY,
                 Long.MIN_VALUE)
         date = if (epochDay == Long.MIN_VALUE) {

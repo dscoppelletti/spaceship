@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import it.scoppelletti.spaceship.app.hideSoftKeyboard
 import it.scoppelletti.spaceship.app.uiComponent
+import it.scoppelletti.spaceship.lifecycle.ViewModelProviderEx
 import it.scoppelletti.spaceship.security.sample.databinding.CipherFragmentBinding
 import it.scoppelletti.spaceship.security.sample.lifecycle.CipherForm
 import it.scoppelletti.spaceship.security.sample.lifecycle.CipherViewModel
@@ -43,15 +44,14 @@ class CipherFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         val activity: FragmentActivity
-        val viewModelFactory: ViewModelProvider.Factory
+        val viewModelProvider: ViewModelProviderEx
 
         super.onActivityCreated(savedInstanceState)
 
         activity = requireActivity()
-        viewModelFactory = activity.uiComponent().viewModelFactory()
+        viewModelProvider = activity.uiComponent().viewModelProvider()
         mainModel = ViewModelProvider(activity).get(MainViewModel::class.java)
-        cipherModel = ViewModelProvider(this, viewModelFactory)
-                .get(CipherViewModel::class.java)
+        cipherModel = viewModelProvider.get(this, CipherViewModel::class.java)
         binding.model = cipherModel.form
 
         cipherModel.state.observe(viewLifecycleOwner,

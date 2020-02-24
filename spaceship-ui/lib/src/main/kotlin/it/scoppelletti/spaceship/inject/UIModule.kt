@@ -18,8 +18,6 @@
 
 package it.scoppelletti.spaceship.inject
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -33,8 +31,11 @@ import it.scoppelletti.spaceship.i18n.UIMessages
 import it.scoppelletti.spaceship.io.DefaultIOProvider
 import it.scoppelletti.spaceship.io.IOProvider
 import it.scoppelletti.spaceship.lifecycle.AlertDialogModel
-import it.scoppelletti.spaceship.lifecycle.DefaultViewModelFactory
+import it.scoppelletti.spaceship.lifecycle.AlertDialogModelFactory
+import it.scoppelletti.spaceship.lifecycle.DefaultViewModelProviderEx
 import it.scoppelletti.spaceship.lifecycle.ExceptionDialogModel
+import it.scoppelletti.spaceship.lifecycle.ExceptionDialogModelFactory
+import it.scoppelletti.spaceship.lifecycle.ViewModelProviderEx
 import it.scoppelletti.spaceship.widget.ApplicationExceptionMapperHandler
 import it.scoppelletti.spaceship.widget.DefaultExceptionMapper
 import it.scoppelletti.spaceship.widget.ExceptionMapper
@@ -49,7 +50,7 @@ import javax.inject.Named
  *
  * @since 1.0.0
  */
-@Module(includes = [ ContextModule::class ])
+@Module(includes = [ ContextModule::class, StdlibModule::class ])
 public abstract class UIModule {
 
     @Binds
@@ -62,23 +63,23 @@ public abstract class UIModule {
     public abstract fun bindUIMessages(obj: DefaultUIMessages): UIMessages
 
     @Binds
-    public abstract fun bindViewModelFactory(
-            factory: DefaultViewModelFactory
-    ): ViewModelProvider.Factory
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(ExceptionDialogModel::class)
-    public abstract fun bindExceptionDialogModel(
-            viewModel: ExceptionDialogModel
-    ): ViewModel
+    public abstract fun bindViewModelProvider(
+            factory: DefaultViewModelProviderEx
+    ): ViewModelProviderEx
 
     @Binds
     @IntoMap
     @ViewModelKey(AlertDialogModel::class)
-    public abstract fun bindAlertDialogModel(
-            viewModel: AlertDialogModel
-    ): ViewModel
+    public abstract fun bindAlertDialogModelFactory(
+            obj: AlertDialogModelFactory
+    ): ViewModelProviderEx.Factory
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ExceptionDialogModel::class)
+    public abstract fun bindExceptionDialogModelFactory(
+            obj: ExceptionDialogModelFactory
+    ): ViewModelProviderEx.Factory
 
     @Binds
     public abstract fun bindExceptionMapper(

@@ -3,7 +3,6 @@ package it.scoppelletti.spaceship.sample
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import it.scoppelletti.spaceship.ApplicationException
 import it.scoppelletti.spaceship.app.AlertDialogFragment

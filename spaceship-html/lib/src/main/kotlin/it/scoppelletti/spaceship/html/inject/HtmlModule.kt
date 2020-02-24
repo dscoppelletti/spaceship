@@ -19,7 +19,6 @@
 package it.scoppelletti.spaceship.html.inject
 
 import android.text.Html
-import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -31,9 +30,10 @@ import it.scoppelletti.spaceship.html.HtmlExt
 import it.scoppelletti.spaceship.html.HtmlTagHandler
 import it.scoppelletti.spaceship.html.ResourceTagHandler
 import it.scoppelletti.spaceship.html.lifecycle.HtmlViewerViewModel
-import it.scoppelletti.spaceship.inject.ContextModule
+import it.scoppelletti.spaceship.html.lifecycle.HtmlViewerViewModelFactory
 import it.scoppelletti.spaceship.inject.UIModule
 import it.scoppelletti.spaceship.inject.ViewModelKey
+import it.scoppelletti.spaceship.lifecycle.ViewModelProviderEx
 import javax.inject.Named
 
 /**
@@ -41,7 +41,7 @@ import javax.inject.Named
  *
  * @since 1.0.0
  */
-@Module(includes = [ ContextModule::class, UIModule::class ])
+@Module(includes = [ UIModule::class ])
 public abstract class HtmlModule {
 
     @Binds
@@ -81,7 +81,7 @@ public abstract class HtmlModule {
     @Binds
     @IntoMap
     @ViewModelKey(HtmlViewerViewModel::class)
-    public abstract fun bindHtmlViewerViewModel(
-            viewModel: HtmlViewerViewModel
-    ): ViewModel
+    public abstract fun bindHtmlViewerViewModelFactory(
+            obj: HtmlViewerViewModelFactory
+    ): ViewModelProviderEx.Factory
 }

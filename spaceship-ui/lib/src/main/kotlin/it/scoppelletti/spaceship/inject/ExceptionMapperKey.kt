@@ -19,13 +19,14 @@
 package it.scoppelletti.spaceship.inject
 
 import dagger.MapKey
+import it.scoppelletti.spaceship.widget.ExceptionMapperHandler
 import it.scoppelletti.spaceship.widget.DefaultExceptionMapper
 import kotlin.reflect.KClass
 
 /**
  * Used to associate a `Throwable` class as a key with a
- * `Provider<ExceptionMapperHandler>` as a value in order to compose the map
- * used by [DefaultExceptionMapper].
+ * [ExceptionMapperHandler] dependency as a value in order to compose the map
+ * used by the [DefaultExceptionMapper] dependency.
  *
  * @since 1.0.0
  *

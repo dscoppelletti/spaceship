@@ -22,25 +22,14 @@ import androidx.lifecycle.ViewModel
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 
 /**
- * `ViewModel` used by an activity to pass an [ExceptionActivityState] object to
- * an [ExceptionDialogFragment] fragment.
- *
- * @since 1.0.0
- *
- * @property state State.
- */
-public class ExceptionActivityModel : ViewModel() {
-
-    public var state: ExceptionActivityState? = null
-}
-
-/**
- * State of an [ExceptionDialogFragment] fragment.
+ * `ViewModel` used by an activity to pass an exception to an
+ * [ExceptionDialogFragment] fragment.
  *
  * @since 1.0.0
  *
  * @property ex Exception.
  */
-public data class ExceptionActivityState(
-        public val ex: Throwable
-)
+public class ExceptionActivityModel : ViewModel() {
+
+    public var ex: Throwable? = null
+}

@@ -18,8 +18,8 @@
 
 package it.scoppelletti.spaceship.inject
 
-import androidx.lifecycle.ViewModelProvider
 import it.scoppelletti.spaceship.i18n.UIMessages
+import it.scoppelletti.spaceship.lifecycle.ViewModelProviderEx
 
 /**
  * Access to the dependencies provided by this library.
@@ -30,7 +30,7 @@ public interface UIComponent {
 
     fun uiMessages(): UIMessages
 
-    fun viewModelFactory(): ViewModelProvider.Factory
+    fun viewModelProvider(): ViewModelProviderEx
 }
 
 /**
@@ -38,7 +38,7 @@ public interface UIComponent {
  *
  * @since 1.0.0
  */
-public interface UIComponentProvider {
+public interface UIComponentProvider : StdlibComponentProvider {
 
     fun uiComponent(): UIComponent
 }

@@ -1,20 +1,22 @@
-@file:Suppress("JoinDeclarationAndAssignment")
+@file:Suppress("JoinDeclarationAndAssignment", "RemoveRedundantQualifierName")
 
 package it.scoppelletti.spaceship.security.sample.lifecycle
 
+import android.os.Bundle
+import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import it.scoppelletti.spaceship.StdlibExt
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import androidx.savedstate.SavedStateRegistryOwner
 import it.scoppelletti.spaceship.io.closeQuietly
+import it.scoppelletti.spaceship.lifecycle.ViewModelProviderEx
 import it.scoppelletti.spaceship.security.CryptoProvider
 import it.scoppelletti.spaceship.types.StringExt
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -32,17 +34,12 @@ import java.io.OutputStream
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
 import javax.inject.Inject
-import javax.inject.Named
 
 @Suppress("BlockingMethodInNonBlockingContext")
-class CipherViewModel @Inject constructor(
-        private val cryptoProvider: CryptoProvider,
-
-        @Named(StdlibExt.DEP_MAINDISPATCHER)
-        dispatcher: CoroutineDispatcher
+class CipherViewModel(
+        private val cryptoProvider: CryptoProvider
 ): ViewModel() {
 
-    private val scope = CoroutineScope(dispatcher + Job())
     private val _state: MutableLiveData<MainState> = MutableLiveData()
     private val _form: CipherForm = CipherForm()
 
@@ -53,7 +50,7 @@ class CipherViewModel @Inject constructor(
     val state: LiveData<MainState> = _state
     val form: CipherForm = _form
 
-    fun encrypt(alias: String, plainText: String) = scope.launch {
+    fun encrypt(alias: String, plainText: String) = viewModelScope.launch {
         val key: SecretKey
         val cipher: Cipher
 
@@ -108,7 +105,7 @@ class CipherViewModel @Inject constructor(
                 buf.base64()
             }
 
-    fun decrypt(alias: String, cipherText: String) = scope.launch {
+    fun decrypt(alias: String, cipherText: String) = viewModelScope.launch {
         val key: SecretKey
         val cipher: Cipher
         val iv: ByteArray
@@ -208,10 +205,36 @@ class CipherViewModel @Inject constructor(
     fun setError(ex: Throwable) {
         _state.value = _state.value?.withError(ex)
     }
+}
 
-    override fun onCleared() {
-        scope.cancel()
-        super.onCleared()
+class CipherViewModelFactory @Inject constructor(
+        private val cryptoProvider: CryptoProvider
+) : ViewModelProviderEx.Factory {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(
+            owner: SavedStateRegistryOwner,
+            defaultArgs: Bundle?
+    ): T {
+        val delegate: ViewModelProvider.Factory
+
+        delegate = CipherViewModelFactory.Delegate(owner, defaultArgs,
+                cryptoProvider)
+        return delegate.create(CipherViewModel::class.java) as T
+    }
+
+    private class Delegate(
+            owner: SavedStateRegistryOwner,
+            defaultArgs: Bundle?,
+            private val cryptoProvider: CryptoProvider
+    ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
+
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel?> create(
+                key: String,
+                modelClass: Class<T>,
+                handle: SavedStateHandle
+        ): T = CipherViewModel(cryptoProvider) as T
     }
 }
 

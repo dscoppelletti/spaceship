@@ -23,25 +23,15 @@ import it.scoppelletti.spaceship.app.AlertDialogFragment
 import it.scoppelletti.spaceship.i18n.MessageSpec
 
 /**
- * `ViewModel` used by an activity to pass a [AlertActivityState] object to an
- * [AlertDialogFragment] fragment.
- *
- * @since 1.0.0
- *
- * @property state State.
- */
-public class AlertActivityModel : ViewModel() {
-
-    public var state: AlertActivityState? = null
-}
-
-/**
- * State of an [AlertDialogFragment] fragment.
+ * `ViewModel` used by an activity to pass a message to an [AlertDialogFragment]
+ * fragment.
  *
  * @since 1.0.0
  *
  * @property message Message.
  */
-public data class AlertActivityState(
-        public val message: MessageSpec
-)
+public class AlertActivityModel : ViewModel() {
+
+    public var message: MessageSpec? = null
+}
+

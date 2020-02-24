@@ -46,7 +46,7 @@ android {
 }
 
 spaceship {
-    inceptionYear = '2013-2019'
+    inceptionYear = '2013-2020'
 }
 
 dependencies {

@@ -28,6 +28,7 @@ import it.scoppelletti.spaceship.gms.R
 import it.scoppelletti.spaceship.widget.ExceptionAdapter
 import it.scoppelletti.spaceship.widget.ExceptionItem
 import it.scoppelletti.spaceship.widget.ExceptionMapperHandler
+import kotlinx.android.parcel.Parcelize
 import javax.inject.Inject
 
 /**
@@ -40,6 +41,7 @@ import javax.inject.Inject
  * @property isCanceled    Indicates whether the operation is canceled
  * @property isInterrupted Indicates whether the operation is interrupted.
  */
+@Parcelize
 public data class GmsExceptionItem(
         public val statusCode: Int,
         public val statusMessage: String,
@@ -54,6 +56,7 @@ public data class GmsExceptionItem(
  *
  * @since 1.0.0
  */
+@Parcelize
 public class GmsExceptionAdapter : ExceptionAdapter<GmsExceptionItem> {
 
     override fun getView(

@@ -24,6 +24,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import it.scoppelletti.spaceship.R
 import it.scoppelletti.spaceship.toMessage
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Default implementation of the `ExceptionItem` interface.
@@ -33,6 +34,7 @@ import it.scoppelletti.spaceship.toMessage
  * @property className Name of the exception class.
  * @property message   Message.
  */
+@Parcelize
 public data class DefaultExceptionItem(
         public val className: String,
         public val message: String,
@@ -44,6 +46,7 @@ public data class DefaultExceptionItem(
  *
  * @since 1.0.0
  */
+@Parcelize
 public class DefaultExceptionAdapter : ExceptionAdapter<DefaultExceptionItem> {
 
     override fun getView(ex: DefaultExceptionItem, parent: ViewGroup): View {

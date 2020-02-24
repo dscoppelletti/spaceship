@@ -11,7 +11,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import it.scoppelletti.spaceship.app.hideSoftKeyboard
-import it.scoppelletti.spaceship.app.uiComponent
 import it.scoppelletti.spaceship.security.sample.lifecycle.ProviderViewModel
 import kotlinx.android.synthetic.main.provider_fragment.*
 
@@ -29,16 +28,13 @@ class ProviderFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         val activity: FragmentActivity
-        val viewModelFactory: ViewModelProvider.Factory
 
         super.onActivityCreated(savedInstanceState)
 
         activity = requireActivity()
 
         activity.hideSoftKeyboard()
-        viewModelFactory = activity.uiComponent().viewModelFactory()
-        viewModel = ViewModelProvider(this, viewModelFactory)
-                .get(ProviderViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ProviderViewModel::class.java)
         viewModel.state.observe(viewLifecycleOwner,
                 Observer<CharSequence> { state ->
                     if (state != null) {

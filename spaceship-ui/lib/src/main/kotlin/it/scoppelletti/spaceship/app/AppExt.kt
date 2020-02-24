@@ -70,6 +70,16 @@ public object AppExt {
      * @see it.scoppelletti.spaceship.app.TimeDialogFragment
      */
     public const val TAG_TIMEDIALOG = "it.scoppelletti.spaceship.5"
+
+    /**
+     * Property containing an item.
+     */
+    public const val PROP_ITEM = "it.scoppelletti.spaceship.1"
+
+    /**
+     * Property containing a message.
+     */
+    public const val PROP_MESSAGE = "it.scoppelletti.spaceship.2"
 }
 
 /**

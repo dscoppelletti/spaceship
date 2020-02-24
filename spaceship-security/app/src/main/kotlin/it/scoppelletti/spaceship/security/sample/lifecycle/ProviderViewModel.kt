@@ -5,34 +5,23 @@ package it.scoppelletti.spaceship.security.sample.lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import it.scoppelletti.spaceship.StdlibExt
+import androidx.lifecycle.viewModelScope
 import it.scoppelletti.spaceship.html.fromHtml
 import it.scoppelletti.spaceship.types.StringExt
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.security.Security
-import javax.inject.Inject
-import javax.inject.Named
 
-class ProviderViewModel @Inject constructor(
+class ProviderViewModel : ViewModel() {
 
-        @Named(StdlibExt.DEP_MAINDISPATCHER)
-        dispatcher: CoroutineDispatcher
-) : ViewModel() {
-
-    private val scope = CoroutineScope(dispatcher + Job())
     private val _state = MutableLiveData<CharSequence>()
 
     val state: LiveData<CharSequence> = _state
 
-    fun load() = scope.launch {
+    fun load() = viewModelScope.launch {
         _state.value = loadProviders()
     }
 
@@ -70,11 +59,6 @@ class ProviderViewModel @Inject constructor(
 
                 fromHtml(collector.toString(), null, null)
             }
-
-    override fun onCleared() {
-        scope.cancel()
-        super.onCleared()
-    }
 }
 
 private data class Algorithm(

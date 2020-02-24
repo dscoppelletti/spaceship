@@ -5,14 +5,11 @@ import it.scoppelletti.spaceship.gms.inject.GmsComponent
 import it.scoppelletti.spaceship.gms.inject.GmsComponentProvider
 import it.scoppelletti.spaceship.gms.sample.inject.AppComponent
 import it.scoppelletti.spaceship.gms.sample.inject.DaggerAppComponent
-import it.scoppelletti.spaceship.inject.UIComponent
-import it.scoppelletti.spaceship.inject.UIComponentProvider
 import it.scoppelletti.spaceship.inject.StdlibComponent
-import it.scoppelletti.spaceship.inject.StdlibComponentProvider
+import it.scoppelletti.spaceship.inject.UIComponent
 
 @Suppress("unused")
-class MainApp : Application(), GmsComponentProvider, StdlibComponentProvider,
-        UIComponentProvider {
+class MainApp : Application(), GmsComponentProvider {
 
     private lateinit var _appComponent: AppComponent
 

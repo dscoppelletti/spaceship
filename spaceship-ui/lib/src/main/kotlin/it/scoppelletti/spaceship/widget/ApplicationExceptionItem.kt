@@ -25,6 +25,7 @@ import android.widget.TextView
 import it.scoppelletti.spaceship.ApplicationException
 import it.scoppelletti.spaceship.R
 import it.scoppelletti.spaceship.i18n.I18NProvider
+import kotlinx.android.parcel.Parcelize
 import javax.inject.Inject
 
 /**
@@ -34,6 +35,7 @@ import javax.inject.Inject
  *
  * @property message Message.
  */
+@Parcelize
 public data class ApplicationExceptionItem(
         public val message: String,
         override val adapter: ExceptionAdapter<*>
@@ -44,6 +46,7 @@ public data class ApplicationExceptionItem(
  *
  * @since 1.0.0
  */
+@Parcelize
 public class ApplicationExceptionAdapter :
         ExceptionAdapter<ApplicationExceptionItem> {
 

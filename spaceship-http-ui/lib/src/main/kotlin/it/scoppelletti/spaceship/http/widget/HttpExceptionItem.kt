@@ -27,6 +27,7 @@ import it.scoppelletti.spaceship.io.closeQuietly
 import it.scoppelletti.spaceship.widget.ExceptionAdapter
 import it.scoppelletti.spaceship.widget.ExceptionItem
 import it.scoppelletti.spaceship.widget.ExceptionMapperHandler
+import kotlinx.android.parcel.Parcelize
 import mu.KotlinLogging
 import okhttp3.ResponseBody
 import okio.BufferedSource
@@ -45,6 +46,7 @@ import javax.inject.Inject
  * @property error      Description of the status code.
  * @property className  Exception class
  */
+@Parcelize
 public data class HttpExceptionItem(
         public val message: String,
         public val statusCode: Int,
@@ -58,6 +60,7 @@ public data class HttpExceptionItem(
  *
  * @since 1.0.0
  */
+@Parcelize
 public class HttpExceptionAdapter : ExceptionAdapter<HttpExceptionItem> {
 
     override fun getView(

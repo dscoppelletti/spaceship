@@ -19,16 +19,12 @@
 
 package it.scoppelletti.spaceship.html.lifecycle
 
-import android.os.Bundle
 import android.text.Html
-import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.savedstate.SavedStateRegistryOwner
 import it.scoppelletti.spaceship.html.HtmlExt
 import it.scoppelletti.spaceship.html.app.HtmlViewerActivity
 import it.scoppelletti.spaceship.html.fromHtml
@@ -102,7 +98,7 @@ public data class HtmlViewerState (
 )
 
 /**
- * Implementation of `SavedStateViewModelProvider.Factory` interface for
+ * Implementation of `ViewModelProviderEx.Factory` interface for
  * [HtmlViewerViewModel] class.
  *
  * @since 1.0.0
@@ -114,28 +110,6 @@ public class HtmlViewerViewModelFactory @Inject constructor(
 ) : ViewModelProviderEx.Factory {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(
-            owner: SavedStateRegistryOwner,
-            defaultArgs: Bundle?
-    ): T {
-        val delegate: ViewModelProvider.Factory
-
-        delegate = HtmlViewerViewModelFactory.Delegate(owner, defaultArgs,
-                tagHandler)
-        return delegate.create(HtmlViewerViewModel::class.java) as T
-    }
-
-    private class Delegate(
-            owner: SavedStateRegistryOwner,
-            defaultArgs: Bundle?,
-            private val tagHandler: Html.TagHandler
-    ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
-
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel?> create(
-                key: String,
-                modelClass: Class<T>,
-                handle: SavedStateHandle
-        ): T = HtmlViewerViewModel(tagHandler, handle) as T
-    }
+    override fun <T : ViewModel?> create(handle: SavedStateHandle): T =
+            HtmlViewerViewModelFactory(tagHandler) as T
 }

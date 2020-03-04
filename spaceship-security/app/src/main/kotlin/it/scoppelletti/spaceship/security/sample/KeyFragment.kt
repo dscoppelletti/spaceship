@@ -20,7 +20,6 @@ import it.scoppelletti.spaceship.lifecycle.ViewModelProviderEx
 import it.scoppelletti.spaceship.security.sample.databinding.KeyFragmentBinding
 import it.scoppelletti.spaceship.security.sample.lifecycle.KeyForm
 import it.scoppelletti.spaceship.security.sample.lifecycle.KeyViewModel
-import it.scoppelletti.spaceship.security.sample.lifecycle.MainState
 import it.scoppelletti.spaceship.security.sample.lifecycle.MainViewModel
 
 class KeyFragment : Fragment() {
@@ -69,12 +68,11 @@ class KeyFragment : Fragment() {
         keyModel = viewModelProvider.get(this, KeyViewModel::class.java)
         binding.model = keyModel.form
 
-        keyModel.state.observe(viewLifecycleOwner,
-                Observer<MainState> { state ->
-                    if (state != null) {
-                        mainModel.setState(state)
-                    }
-                })
+        keyModel.state.observe(viewLifecycleOwner, Observer { state ->
+            if (state != null) {
+                mainModel.setState(state)
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

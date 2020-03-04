@@ -19,15 +19,11 @@
 
 package it.scoppelletti.spaceship.lifecycle
 
-import android.os.Bundle
-import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.savedstate.SavedStateRegistryOwner
 import it.scoppelletti.spaceship.app.AlertDialogFragment
 import it.scoppelletti.spaceship.app.AppExt
 import it.scoppelletti.spaceship.i18n.I18NProvider
@@ -74,7 +70,7 @@ public class AlertDialogModel(
 }
 
 /**
- * Implementation of `SavedStateViewModelProvider.Factory` interface for
+ * Implementation of `ViewModelProviderEx.Factory` interface for
  * [AlertDialogModel] class.
  *
  * @since 1.0.0
@@ -84,30 +80,8 @@ public class AlertDialogModelFactory @Inject constructor(
 ) : ViewModelProviderEx.Factory {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(
-            owner: SavedStateRegistryOwner,
-            defaultArgs: Bundle?
-    ): T {
-        val delegate: ViewModelProvider.Factory
-
-        delegate = AlertDialogModelFactory.Delegate(owner, defaultArgs,
-                i18nProvider)
-        return delegate.create(AlertDialogModel::class.java) as T
-    }
-
-    private class Delegate(
-            owner: SavedStateRegistryOwner,
-            defaultArgs: Bundle?,
-            private val i18nProvider: I18NProvider
-    ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
-
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel?> create(
-                key: String,
-                modelClass: Class<T>,
-                handle: SavedStateHandle
-        ): T = AlertDialogModel(i18nProvider, handle) as T
-    }
+    override fun <T : ViewModel?> create(handle: SavedStateHandle): T =
+            AlertDialogModel(i18nProvider, handle) as T
 }
 
 

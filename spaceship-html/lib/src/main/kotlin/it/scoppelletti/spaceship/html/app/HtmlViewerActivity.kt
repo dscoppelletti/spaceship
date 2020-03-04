@@ -75,7 +75,7 @@ public class HtmlViewerActivity : AppCompatActivity(), OnDialogResultListener {
         viewModelProvider = uiComponent().viewModelProvider()
         viewModel = viewModelProvider.get(this, HtmlViewerViewModel::class.java)
 
-        viewModel.state.observe(this, Observer<HtmlViewerState> { state ->
+        viewModel.state.observe(this, Observer { state ->
             if (state != null) {
                 stateObserver(state)
             }

@@ -1,4 +1,4 @@
-@file:Suppress("JoinDeclarationAndAssignment")
+@file:Suppress("JoinDeclarationAndAssignment", "RemoveRedundantQualifierName")
 
 package it.scoppelletti.spaceship.sample
 

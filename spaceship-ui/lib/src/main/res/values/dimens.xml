@@ -16,30 +16,25 @@
 -->
 <resources>
     <eat-comment />
+    <dimen name="it_scoppelletti_button_spacing">8dp</dimen>
+    <dimen name="it_scoppelletti_dialog_margin">24dp</dimen>
+    <dimen name="it_scoppelletti_dialog_padding">20dp</dimen>
+    <dimen name="it_scoppelletti_divider_height">1dp</dimen>
+    <dimen name="it_scoppelletti_fab_normalSize">56dp</dimen>
+    <dimen name="it_scoppelletti_fab_miniSize">40dp</dimen>
+    <dimen name="it_scoppelletti_fabIcon_size">24dp</dimen>
+    <dimen name="it_scoppelletti_fab_margin">16dp</dimen>
     <dimen name="it_scoppelletti_imageButton_size">40dp</dimen>
     <dimen name="it_scoppelletti_imageButton_padding">8dp</dimen>
     <dimen name="it_scoppelletti_imageButton_cornerRadius">20dp</dimen>
-    <!-- http://www.google.com/design/spec/layout/metrics-keylines.html#metrics-keylines-keylines-spacing -->
     <dimen name="it_scoppelletti_marginHorz">16dp</dimen>
     <dimen name="it_scoppelletti_marginVert">16dp</dimen>
     <dimen name="it_scoppelletti_spacingHorz">16dp</dimen>
     <dimen name="it_scoppelletti_spacingVert">8dp</dimen>
     <dimen name="it_scoppelletti_statusBar_height">24dp</dimen>
-    <dimen name="it_scoppelletti_fab_margin">16dp</dimen>
-    <!-- http://www.google.com/design/spec/layout/structure.html#structure-app-bar -->
     <dimen name="it_scoppelletti_appBar_height">56dp</dimen>
     <dimen name="it_scoppelletti_appBar_expandedHeight">128dp</dimen>
-    <!-- http://www.google.com/design/spec/layout/structure.html#structure-side-nav -->
     <!-- Side nav: width = screen width - 56dp; max width = 320dp;
     header heigth = 320 / 16 * 9 = 180 -->
     <dimen name="it_scoppelletti_drawer_headerHeight">180dp</dimen>
-    <!-- http://www.google.com/design/spec/components/dialogs.html#dialogs-specs -->
-    <dimen name="it_scoppelletti_fab_normalSize">56dp</dimen>
-    <dimen name="it_scoppelletti_fab_miniSize">40dp</dimen>
-    <dimen name="it_scoppelletti_fabIcon_size">24dp</dimen>
-    <!-- http://www.google.com/design/spec/components/dialogs.html#dialogs-specs -->
-    <dimen name="it_scoppelletti_dialog_margin">24dp</dimen>
-    <dimen name="it_scoppelletti_dialog_padding">20dp</dimen>
-    <!-- http://www.google.com/design/spec/components/dividers.html -->
-    <dimen name="it_scoppelletti_divider_height">1dp</dimen>
 </resources>

@@ -2,15 +2,11 @@
 
 package it.scoppelletti.spaceship.security.sample.lifecycle
 
-import android.os.Bundle
-import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.savedstate.SavedStateRegistryOwner
 import it.scoppelletti.spaceship.io.closeQuietly
 import it.scoppelletti.spaceship.lifecycle.ViewModelProviderEx
 import it.scoppelletti.spaceship.security.CryptoProvider
@@ -212,29 +208,7 @@ class CipherViewModelFactory @Inject constructor(
 ) : ViewModelProviderEx.Factory {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(
-            owner: SavedStateRegistryOwner,
-            defaultArgs: Bundle?
-    ): T {
-        val delegate: ViewModelProvider.Factory
-
-        delegate = CipherViewModelFactory.Delegate(owner, defaultArgs,
-                cryptoProvider)
-        return delegate.create(CipherViewModel::class.java) as T
-    }
-
-    private class Delegate(
-            owner: SavedStateRegistryOwner,
-            defaultArgs: Bundle?,
-            private val cryptoProvider: CryptoProvider
-    ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
-
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel?> create(
-                key: String,
-                modelClass: Class<T>,
-                handle: SavedStateHandle
-        ): T = CipherViewModel(cryptoProvider) as T
-    }
+    override fun <T : ViewModel?> create(handle: SavedStateHandle): T =
+            CipherViewModel(cryptoProvider) as T
 }
 

@@ -19,15 +19,11 @@
 
 package it.scoppelletti.spaceship.lifecycle
 
-import android.os.Bundle
-import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.savedstate.SavedStateRegistryOwner
 import it.scoppelletti.spaceship.app.AppExt
 import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.widget.ExceptionItem
@@ -112,7 +108,7 @@ public data class ExceptionDialogState(
 )
 
 /**
- * Implementation of `SavedStateViewModelProvider.Factory` interface for
+ * Implementation of `ViewModelProviderEx.Factory` interface for
  * [ExceptionDialogModel] class.
  *
  * @since 1.0.0
@@ -122,29 +118,7 @@ public class ExceptionDialogModelFactory @Inject constructor(
 ) : ViewModelProviderEx.Factory {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(
-            owner: SavedStateRegistryOwner,
-            defaultArgs: Bundle?
-    ): T {
-        val delegate: ViewModelProvider.Factory
-
-        delegate = ExceptionDialogModelFactory.Delegate(owner, defaultArgs,
-                exMapper)
-        return delegate.create(ExceptionDialogModel::class.java) as T
-    }
-
-    private class Delegate(
-            owner: SavedStateRegistryOwner,
-            defaultArgs: Bundle?,
-            private val exMapper: ExceptionMapper
-    ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
-
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel?> create(
-                key: String,
-                modelClass: Class<T>,
-                handle: SavedStateHandle
-        ): T = ExceptionDialogModel(exMapper, handle) as T
-    }
+    override fun <T : ViewModel?> create(handle: SavedStateHandle): T =
+            ExceptionDialogModel(exMapper, handle) as T
 }
 

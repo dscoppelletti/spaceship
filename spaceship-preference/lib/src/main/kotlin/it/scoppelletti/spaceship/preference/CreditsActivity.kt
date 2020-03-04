@@ -79,7 +79,7 @@ public class CreditsActivity : AppCompatActivity(), OnDialogResultListener {
             logger.error { "Property ${CreditsActivity.PROP_CREDITS} not set." }
         }
 
-        viewModel.state.observe(this, Observer<CreditsState> { state ->
+        viewModel.state.observe(this, Observer { state ->
             if (state != null) {
                 stateObserver(state)
             }

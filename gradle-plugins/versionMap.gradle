@@ -3,7 +3,7 @@ ext.versionMap = [
     sdk_min : 21,
     build_tools : '29.0.2',
 
-    android_gradle : '3.6.0',
+    android_gradle : '3.6.1',
     android_logger : '1.3.6',
     androidx_activity : '1.1.0', // -ktx
     androidx_annotation : '1.1.0',
@@ -23,6 +23,7 @@ ext.versionMap = [
     androidx_swiperefresh : '1.0.0',
     androidx_test : '1.2.0', // -ktx
     androidx_viewpager : '1.0.0',
+    androidx_viewpager2 : '1.0.0',
     bouncycastle : '1.64',
     commons_lang : '3.9',
     dagger : '2.26',
@@ -38,7 +39,7 @@ ext.versionMap = [
     gradle_versions : '0.27.0',
     hamcrest : '1.3',
     junit : '4.13', // Next 5.x
-    kotlin : '1.3.61',
+    kotlin : '1.3.70',
     kotlin_logging : '1.7.8',
     kotlinx_coroutines : '1.3.3',
     lombok : '1.18.10',

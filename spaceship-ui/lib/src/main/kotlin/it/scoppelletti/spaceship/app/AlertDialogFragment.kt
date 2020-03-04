@@ -108,7 +108,7 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
         viewModel = viewModelProvider.get(this, AlertDialogModel::class.java)
 
         @Suppress("FragmentLiveDataObserve")
-        viewModel.message.observe(this, Observer<String> { message ->
+        viewModel.message.observe(this, Observer { message ->
             if (message != null) {
                 (dialog as AlertDialog).setMessage(message)
             }

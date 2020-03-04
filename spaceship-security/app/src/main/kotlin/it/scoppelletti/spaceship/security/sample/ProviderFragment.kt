@@ -35,12 +35,11 @@ class ProviderFragment : Fragment() {
 
         activity.hideSoftKeyboard()
         viewModel = ViewModelProvider(this).get(ProviderViewModel::class.java)
-        viewModel.state.observe(viewLifecycleOwner,
-                Observer<CharSequence> { state ->
-                    if (state != null) {
-                        txtContent.text = state
-                    }
-                })
+        viewModel.state.observe(viewLifecycleOwner, Observer { state ->
+            if (state != null) {
+                txtContent.text = state
+            }
+        })
 
         viewModel.load()
     }

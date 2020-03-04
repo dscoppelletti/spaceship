@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        viewModel.state.observe(this, Observer<MainState> { state ->
+        viewModel.state.observe(this, Observer { state ->
             if (state != null) {
                 stateObserver(state)
             }

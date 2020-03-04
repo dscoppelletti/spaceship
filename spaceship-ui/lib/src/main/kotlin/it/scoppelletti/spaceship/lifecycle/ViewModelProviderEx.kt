@@ -18,10 +18,9 @@
 
 package it.scoppelletti.spaceship.lifecycle
 
-import android.os.Bundle
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStoreOwner
-import androidx.savedstate.SavedStateRegistryOwner
 
 /**
  * Provides `ViewModel` objects accessing and contributing to a saved state via
@@ -52,9 +51,12 @@ public interface ViewModelProviderEx {
      */
     public interface Factory {
 
-        fun <T : ViewModel?> create(
-                owner: SavedStateRegistryOwner,
-                defaultArgs: Bundle?
-        ): T
+        /**
+         * Creates the `ViewModel` object.
+         *
+         * @param  handle Handle to the saved state.
+         * @return        The new object.
+         */
+        fun <T : ViewModel?> create(handle: SavedStateHandle): T
     }
 }

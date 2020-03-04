@@ -36,7 +36,6 @@ import it.scoppelletti.spaceship.ExceptionLogger
 import it.scoppelletti.spaceship.content.res.ResourcesExt
 import it.scoppelletti.spaceship.lifecycle.ExceptionActivityModel
 import it.scoppelletti.spaceship.lifecycle.ExceptionDialogModel
-import it.scoppelletti.spaceship.lifecycle.ExceptionDialogState
 import it.scoppelletti.spaceship.lifecycle.ViewModelProviderEx
 import it.scoppelletti.spaceship.widget.ExceptionListAdapter
 
@@ -93,7 +92,7 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
                 ExceptionDialogModel::class.java)
 
         @Suppress("FragmentLiveDataObserve")
-        viewModel.state.observe(this, Observer<ExceptionDialogState> { state ->
+        viewModel.state.observe(this, Observer { state ->
             if (state != null) {
                 adapter.addAll(state.exList)
             }

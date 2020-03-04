@@ -20,7 +20,6 @@ import it.scoppelletti.spaceship.lifecycle.ViewModelProviderEx
 import it.scoppelletti.spaceship.security.sample.databinding.CipherFragmentBinding
 import it.scoppelletti.spaceship.security.sample.lifecycle.CipherForm
 import it.scoppelletti.spaceship.security.sample.lifecycle.CipherViewModel
-import it.scoppelletti.spaceship.security.sample.lifecycle.MainState
 import it.scoppelletti.spaceship.security.sample.lifecycle.MainViewModel
 
 class CipherFragment : Fragment() {
@@ -54,12 +53,11 @@ class CipherFragment : Fragment() {
         cipherModel = viewModelProvider.get(this, CipherViewModel::class.java)
         binding.model = cipherModel.form
 
-        cipherModel.state.observe(viewLifecycleOwner,
-                Observer<MainState> { state ->
-                    if (state != null) {
-                        mainModel.setState(state)
-                    }
-                })
+        cipherModel.state.observe(viewLifecycleOwner, Observer { state ->
+            if (state != null) {
+                mainModel.setState(state)
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -18,16 +18,12 @@
 
 package it.scoppelletti.spaceship.preference.lifecycle
 
-import android.os.Bundle
 import androidx.annotation.XmlRes
-import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.savedstate.SavedStateRegistryOwner
 import it.scoppelletti.spaceship.lifecycle.SingleEvent
 import it.scoppelletti.spaceship.lifecycle.ViewModelProviderEx
 import it.scoppelletti.spaceship.preference.CreditsActivity
@@ -113,7 +109,7 @@ public data class CreditsState(
 }
 
 /**
- * Implementation of `SavedStateViewModelProvider.Factory` interface for
+ * Implementation of `ViewModelProviderEx.Factory` interface for
  * [CreditsViewModel] class.
  *
  * @since 1.0.0
@@ -123,27 +119,6 @@ public class CreditsViewModelFactory @Inject constructor(
 ) : ViewModelProviderEx.Factory {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(
-            owner: SavedStateRegistryOwner,
-            defaultArgs: Bundle?
-    ): T {
-        val delegate: ViewModelProvider.Factory
-
-        delegate = CreditsViewModelFactory.Delegate(owner, defaultArgs, loader)
-        return delegate.create(CreditsViewModel::class.java) as T
-    }
-
-    private class Delegate(
-            owner: SavedStateRegistryOwner,
-            defaultArgs: Bundle?,
-            private val loader: CreditsLoader
-    ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
-
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel?> create(
-                key: String,
-                modelClass: Class<T>,
-                handle: SavedStateHandle
-        ): T = CreditsViewModel(loader) as T
-    }
+    override fun <T : ViewModel?> create(handle: SavedStateHandle): T =
+            CreditsViewModel(loader) as T
 }

@@ -16,7 +16,6 @@ import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.app.tryFinish
 import it.scoppelletti.spaceship.gms.app.gmsComponent
 import it.scoppelletti.spaceship.gms.i18n.GmsMessages
-import it.scoppelletti.spaceship.lifecycle.SingleEvent
 
 class MainActivity : AppCompatActivity(), OnDialogResultListener {
 
@@ -30,12 +29,11 @@ class MainActivity : AppCompatActivity(), OnDialogResultListener {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         gmsMessages = gmsComponent().gmsMessages()
 
-        viewModel.state.observe(this,
-                Observer<SingleEvent<GoogleApiState>> { state ->
-                    state?.poll()?.let {
-                        stateObserver(it)
-                    }
-                })
+        viewModel.state.observe(this, Observer { state ->
+            state?.poll()?.let {
+                stateObserver(it)
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

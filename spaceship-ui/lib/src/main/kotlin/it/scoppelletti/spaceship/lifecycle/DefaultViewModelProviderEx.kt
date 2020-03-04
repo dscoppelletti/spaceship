@@ -19,7 +19,11 @@
 
 package it.scoppelletti.spaceship.lifecycle
 
+import android.os.Bundle
+import androidx.lifecycle.AbstractSavedStateViewModelFactory
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.savedstate.SavedStateRegistryOwner
 import javax.inject.Inject
@@ -43,10 +47,31 @@ public class DefaultViewModelProviderEx @Inject constructor(
             owner: ViewModelStoreOwner,
             modelClass: Class<T>
     ): T {
-        val factory: ViewModelProviderEx.Factory
+        val provider: ViewModelProvider
+        val factory: ViewModelProvider.Factory
+        val delegate: ViewModelProviderEx.Factory
 
-        factory = creators[modelClass]?.get() ?: throw IllegalArgumentException(
-                    "Unknown model class $modelClass.")
-        return factory.create(owner as SavedStateRegistryOwner, null)
+        delegate = creators[modelClass]?.get() ?:
+                throw IllegalArgumentException(
+                        "Unknown model class $modelClass.")
+        factory = ViewModelFactory(owner as SavedStateRegistryOwner,
+                delegate, null)
+        provider = ViewModelProvider(owner, factory)
+
+        return provider.get(modelClass)
     }
+}
+
+private class ViewModelFactory(
+        owner: SavedStateRegistryOwner,
+        private val delegate: ViewModelProviderEx.Factory,
+        defaultArgs: Bundle?
+) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
+
+    @Suppress("RemoveExplicitTypeArguments")
+    override fun <T : ViewModel?> create(
+            key: String,
+            modelClass: Class<T>,
+            handle: SavedStateHandle
+    ): T = delegate.create<T>(handle)
 }

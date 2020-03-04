@@ -35,6 +35,16 @@
         parent="Widget.MaterialComponents.ChipGroup">
         <item name="materialThemeOverlay">@style/ThemeOverlay.Scoppelletti.ChipGroup.Filter</item>
     </style>
+    <!-- Primary title -->
+    <style name="Widget.Scoppelletti.TextView.PrimaryTitle"
+        parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAppearance">?attr/textAppearanceHeadline5</item>
+    </style>
+    <!-- Secondary title -->
+    <style name="Widget.Scoppelletti.TextView.SecondaryTitle"
+        parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
+    </style>
     <!-- Primary text -->
     <style name="Widget.Scoppelletti.TextView.PrimaryText"
         parent="Widget.MaterialComponents.TextView">

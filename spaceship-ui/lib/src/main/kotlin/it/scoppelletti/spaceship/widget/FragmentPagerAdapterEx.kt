@@ -41,6 +41,7 @@ public abstract class FragmentPagerAdapterEx(
         fragmentMgr: FragmentManager
 ) : FragmentPagerAdapter(fragmentMgr,
         FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+
     private val fragments: SparseArray<Fragment> = SparseArray(1)
 
     /**
@@ -50,7 +51,6 @@ public abstract class FragmentPagerAdapterEx(
      * @return          The object. If the fragment has never been instantiated
      *                  or if it has been destroyed, returns {@code null}.
      */
-    @Suppress("unused")
     public fun getFragmentByPosition(position: Int): Fragment? =
             fragments[position]
 

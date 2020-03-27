@@ -57,12 +57,22 @@ public class PrintConfigurationsTask extends DefaultTask {
                         dep.getGroup(), dep.getName(),
                         dep.getVersion(), dep.getReason(),
                         dep.getTargetConfiguration());
+
+                //noinspection UnstableApiUsage
+                System.out.printf("\t\tVersionConstraint(branch=%1$s," +
+                                "preferred=%2$s,required=%3$s,strict=%4$s)%n",
+                    dep.getVersionConstraint().getBranch(),
+                    dep.getVersionConstraint().getPreferredVersion(),
+                    dep.getVersionConstraint().getRequiredVersion(),
+                    dep.getVersionConstraint().getStrictVersion());
+
                 for (DependencyArtifact artifact : dep.getArtifacts()) {
                     System.out.printf("\t\tArtifact(name=%1$s,type=%2$s," +
                                     "extension=%3$s,classifier=%4$s)%n",
                             artifact.getName(), artifact.getType(),
                             artifact.getExtension(), artifact.getClassifier());
                 }
+
                 System.out.printf("\t}%n");
             }
 

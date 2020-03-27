@@ -22,7 +22,7 @@
  * Suppress warnings.
  * Add Javadoc.
  * Porting to Android X and Material Design Components.
- * Upgrade to androidx.coordinatorlayout:coordinatorlayout:1.1.0
+ * Upgrade to androidx.coordinatorlayout:coordinatorlayout:1.1.0.
  *
  * - Genymotion 2.11.0
  * FAB never hides likely because "pixel perfect" is disabled.

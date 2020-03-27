@@ -20,10 +20,10 @@
     <dimen name="it_scoppelletti_dialog_margin">24dp</dimen>
     <dimen name="it_scoppelletti_dialog_padding">20dp</dimen>
     <dimen name="it_scoppelletti_divider_height">1dp</dimen>
+    <dimen name="it_scoppelletti_fab_margin">16dp</dimen>
     <dimen name="it_scoppelletti_fab_normalSize">56dp</dimen>
     <dimen name="it_scoppelletti_fab_miniSize">40dp</dimen>
     <dimen name="it_scoppelletti_fabIcon_size">24dp</dimen>
-    <dimen name="it_scoppelletti_fab_margin">16dp</dimen>
     <dimen name="it_scoppelletti_imageButton_size">40dp</dimen>
     <dimen name="it_scoppelletti_imageButton_padding">8dp</dimen>
     <dimen name="it_scoppelletti_imageButton_cornerRadius">20dp</dimen>

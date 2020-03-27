@@ -51,7 +51,7 @@ final class DependencySpec {
      * Gets the version.
      */
     @Getter
-    @Nonnull
+    @Nullable
     private final String myVersion;
 
     /**
@@ -60,6 +60,14 @@ final class DependencySpec {
     @Getter
     @Nullable
     private final String myClassifier;
+
+    /**
+     * Gets the type.
+     */
+    @Getter
+    @Nullable
+    @EqualsAndHashCode.Exclude
+    private final String myType;
 
     /**
      * Gets the scope.
@@ -76,7 +84,7 @@ final class DependencySpec {
      * @param scope  Scope.
      */
     public DependencySpec(@Nonnull ExternalDependency source,
-            @Nonnull String scope) {
+            @Nullable String type, @Nonnull String scope) {
         Objects.requireNonNull(source, "Argument source is null.");
         if (StringUtils.isBlank(scope)) {
             throw new NullPointerException("Argument scope is null.");
@@ -85,9 +93,9 @@ final class DependencySpec {
         myGroupId = Objects.requireNonNull(source.getGroup(),
             "Argument source.group is null.");
         myArtifactId = source.getName();
-        myVersion = Objects.requireNonNull(source.getVersion(),
-            "Argument source.version is null.");
+        myVersion = source.getVersion();
         myClassifier = DependencySpec.initClassifier(source);
+        myType = type;
         myScope = scope;
     }
 

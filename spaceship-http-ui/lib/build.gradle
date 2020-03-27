@@ -10,13 +10,12 @@ description 'Spaceship for HTTP'
 archivesBaseName = 'spaceship-http-ui'
 
 android {
-    compileSdkVersion versionMap.sdk_target
-    buildToolsVersion versionMap.build_tools
+    compileSdkVersion sdk_target
     defaultConfig {
-        minSdkVersion versionMap.sdk_min
-        targetSdkVersion versionMap.sdk_target
+        minSdkVersion sdk_min
+        targetSdkVersion sdk_target
         versionCode 1
-        versionName versionMap.spaceship
+        versionName '1.0.0'
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -47,26 +46,27 @@ spaceship {
     inceptionYear = '2017-2018'
 }
 
+configurations {
+    bom
+    api.extendsFrom(bom)
+    kapt.extendsFrom(bom)
+}
+
 dependencies {
-    api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
-    api "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
-    api "androidx.constraintlayout:constraintlayout:${versionMap.androidx_constraint}"
-    api "com.google.android.material:material:${versionMap.material}"
-    api "com.google.dagger:dagger:${versionMap.dagger}"
-    kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
-    api "com.squareup.okhttp3:okhttp:${versionMap.okhttp}"
-    api "com.squareup.retrofit2:retrofit:${versionMap.retrofit}"
-    api("it.scoppelletti.spaceship:spaceship-http:${versionMap.spaceship}") {
-        changing = true
-    }
-    api("it.scoppelletti.spaceship:spaceship-stdlib:${versionMap.spaceship}") {
-        changing = true
-    }
-    api("it.scoppelletti.spaceship:spaceship-ui:${versionMap.spaceship}") {
-        changing = true
-    }
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
-    implementation "com.squareup.okio:okio:${versionMap.okio}"
-    implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
-    implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
+    bom platform(BOM)
+    api 'androidx.annotation:annotation'
+    api 'androidx.appcompat:appcompat'
+    api 'androidx.constraintlayout:constraintlayout'
+    api 'com.google.android.material:material'
+    api 'com.google.dagger:dagger'
+    kapt 'com.google.dagger:dagger-compiler'
+    api 'com.squareup.okhttp3:okhttp'
+    api 'com.squareup.retrofit2:retrofit'
+    api 'it.scoppelletti.spaceship:spaceship-http'
+    api 'it.scoppelletti.spaceship:spaceship-stdlib'
+    api 'it.scoppelletti.spaceship:spaceship-ui'
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
+    implementation 'com.squareup.okio:okio'
+    implementation 'io.github.microutils:kotlin-logging'
+    implementation 'org.slf4j:slf4j-api'
 }

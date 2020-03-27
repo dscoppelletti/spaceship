@@ -3,8 +3,13 @@
 apply plugin: 'com.github.ben-manes.versions'
 
 buildscript {
-    apply from: '../gradle-plugins/versionMap.gradle'
-    ext.kotlin_version = versionMap.kotlin
+    ext.BOM = 'it.scoppelletti.spaceship:spaceship-bom:1.0.0'
+    ext.android_gradle_version = '3.6.1'
+    ext.bc_version = '1.64'
+    ext.kotlin_version = '1.3.71'
+    ext.sdk_min = 18
+    ext.sdk_target = 29
+
     repositories {
         google()
         jcenter()
@@ -16,11 +21,12 @@ buildscript {
         }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:${versionMap.android_gradle}"
-        classpath "com.github.ben-manes:gradle-versions-plugin:${versionMap.gradle_versions}"
-        classpath "it.scoppelletti.spaceship:spaceship-gradle-android:${versionMap.spaceship}"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${versionMap.dokka}"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versionMap.kotlin}"
+        classpath platform(BOM)
+        classpath "com.android.tools.build:gradle:${android_gradle_version}"
+        classpath 'com.github.ben-manes:gradle-versions-plugin'
+        classpath 'it.scoppelletti.spaceship:spaceship-gradle-android'
+        classpath 'org.jetbrains.dokka:dokka-gradle-plugin'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

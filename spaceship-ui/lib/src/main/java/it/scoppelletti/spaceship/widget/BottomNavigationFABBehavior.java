@@ -40,6 +40,8 @@ import com.google.android.material.snackbar.Snackbar;
  * @see   <a href="http://medium.com/@tonythompsoncmu/integrate-coordinatorlayout-bottomnavigationview-toolbar-tablayout-viewpager-fragment-e4268e83b475"
  *        target="_top">Integrate CoordinatorLayout + BottomNavigationView +
  *        Toolbar + TabLayout + ViewPager + Fragment + DrawerLayout</a>
+ * @see   <a href="http://medium.com/@rusinikita/simple-view-dodging-with-coordinatorlayout-f13cc32e0de6"
+ *        target="_top">Simple view dodging with CoordinatorLayout</a>
  * @since 1.0.0
  */
 @SuppressWarnings("unused")

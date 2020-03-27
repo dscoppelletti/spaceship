@@ -17,6 +17,7 @@
 package it.scoppelletti.spaceship.gradle.android;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -34,6 +35,13 @@ final class DependencyConfig {
     @Getter
     @Nonnull
     private final String myName;
+
+    /**
+     * Gets the dependencies type.
+     */
+    @Getter
+    @Nullable
+    private final String myType;
 
     /**
      * Gets the dependencies scope.

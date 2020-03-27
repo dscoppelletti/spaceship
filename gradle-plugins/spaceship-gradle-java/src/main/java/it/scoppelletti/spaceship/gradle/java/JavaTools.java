@@ -37,6 +37,7 @@ import org.gradle.api.tasks.bundling.Jar;
  */
 final class JavaTools extends PlatformTools {
     private static final String COMPONENT_JAVA = "java";
+    private static final String PACKAGING = "jar";
     private final Project myProject;
 
     /**
@@ -45,7 +46,7 @@ final class JavaTools extends PlatformTools {
      * @param project Project.
      */
     JavaTools(@Nonnull Project project) {
-        super(project, new JavaTaskNames(project));
+        super(project, JavaTools.PACKAGING, new JavaTaskNames(project));
 
         myProject = project;
     }

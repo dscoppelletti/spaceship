@@ -31,6 +31,10 @@ public class DefaultUIMessages @Inject constructor(
         private val resources: Resources
 ) : UIMessages {
 
+    override fun errorClipboardNotSupported(): MessageSpec =
+            AndroidResourceMessageSpec.of(resources,
+                    R.string.it_scoppelletti_err_clipoardNotSupported)
+
     override fun errorPackageNotFound(name: String): MessageSpec =
             AndroidResourceMessageSpec.of(resources,
                     R.string.it_scoppelletti_err_packageNotFound, name)

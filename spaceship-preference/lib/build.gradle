@@ -10,13 +10,12 @@ description 'Spaceship for Preferences'
 archivesBaseName = 'spaceship-preference'
 
 android {
-    compileSdkVersion versionMap.sdk_target
-    buildToolsVersion versionMap.build_tools
+    compileSdkVersion sdk_target
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion versionMap.sdk_target
+        minSdkVersion sdk_min
+        targetSdkVersion sdk_target
         versionCode 1
-        versionName versionMap.spaceship
+        versionName '1.0.0'
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -46,33 +45,34 @@ spaceship {
     inceptionYear = '2018-2020'
 }
 
+configurations {
+    bom
+    api.extendsFrom(bom)
+    kapt.extendsFrom(bom)
+}
+
 dependencies {
-    api "androidx.activity:activity-ktx:${versionMap.androidx_activity}"
-    api "androidx.annotation:annotation:${versionMap.androidx_annotation}"
-    api "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
-    api "androidx.constraintlayout:constraintlayout:${versionMap.androidx_constraint}"
-    api "androidx.fragment:fragment-ktx:${versionMap.androidx_fragment}"
-    api "androidx.lifecycle:lifecycle-common-java8:${versionMap.androidx_lifecycle}"
-    api "androidx.lifecycle:lifecycle-livedata-ktx:${versionMap.androidx_lifecycle}"
-    api "androidx.lifecycle:lifecycle-runtime-ktx:${versionMap.androidx_lifecycle}"
-    api "androidx.lifecycle:lifecycle-viewmodel-ktx:${versionMap.androidx_lifecycle}"
-    api "androidx.preference:preference-ktx:${versionMap.androidx_preference}"
-    api "androidx.recyclerview:recyclerview:${versionMap.androidx_recyclerview}"
-    api "androidx.swiperefreshlayout:swiperefreshlayout:${versionMap.androidx_swiperefresh}"
-    api "com.google.android.material:material:${versionMap.material}"
-    api "com.google.dagger:dagger:${versionMap.dagger}"
-    kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
-    api("it.scoppelletti.spaceship:spaceship-html:${versionMap.spaceship}") {
-        changing = true
-    }
-    api("it.scoppelletti.spaceship:spaceship-stdlib:${versionMap.spaceship}") {
-        changing = true
-    }
-    api("it.scoppelletti.spaceship:spaceship-ui:${versionMap.spaceship}") {
-        changing = true
-    }
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versionMap.kotlinx_coroutines}"
-    implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
-    implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
+    bom platform(BOM)
+    api 'androidx.activity:activity-ktx'
+    api 'androidx.annotation:annotation'
+    api 'androidx.appcompat:appcompat'
+    api 'androidx.constraintlayout:constraintlayout'
+    api 'androidx.fragment:fragment-ktx'
+    api 'androidx.lifecycle:lifecycle-common-java8'
+    api 'androidx.lifecycle:lifecycle-livedata-ktx'
+    api 'androidx.lifecycle:lifecycle-runtime-ktx'
+    api 'androidx.lifecycle:lifecycle-viewmodel-ktx'
+    api 'androidx.preference:preference-ktx'
+    api 'androidx.recyclerview:recyclerview'
+    api 'androidx.swiperefreshlayout:swiperefreshlayout'
+    api 'com.google.android.material:material'
+    api 'com.google.dagger:dagger'
+    kapt 'com.google.dagger:dagger-compiler'
+    api 'it.scoppelletti.spaceship:spaceship-html'
+    api 'it.scoppelletti.spaceship:spaceship-stdlib'
+    api 'it.scoppelletti.spaceship:spaceship-ui'
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core'
+    implementation 'io.github.microutils:kotlin-logging'
+    implementation 'org.slf4j:slf4j-api'
 }

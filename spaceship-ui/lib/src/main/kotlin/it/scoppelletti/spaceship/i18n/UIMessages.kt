@@ -25,6 +25,8 @@ package it.scoppelletti.spaceship.i18n
  */
 public interface UIMessages {
 
+    fun errorClipboardNotSupported(): MessageSpec
+
     fun errorPackageNotFound(name: String): MessageSpec
 
     fun errorStartActivity(): MessageSpec

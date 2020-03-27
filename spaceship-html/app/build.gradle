@@ -4,14 +4,13 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion versionMap.sdk_target
-    buildToolsVersion versionMap.build_tools
+    compileSdkVersion sdk_target
     defaultConfig {
-        applicationId "it.scoppelletti.spaceship.html.sample"
-        minSdkVersion 16
-        targetSdkVersion versionMap.sdk_target
+        applicationId 'it.scoppelletti.spaceship.html.sample'
+        minSdkVersion sdk_min
+        targetSdkVersion sdk_target
         versionCode 1
-        versionName versionMap.spaceship
+        versionName '1.0.0'
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -32,20 +31,23 @@ android {
     }
 }
 
+configurations {
+    bom
+    implementation.extendsFrom(bom)
+    kapt.extendsFrom(bom)
+}
+
 dependencies {
+    bom platform(BOM)
     implementation project(':lib')
-    implementation "androidx.activity:activity-ktx:${versionMap.androidx_activity}"
-    implementation "androidx.annotation:annotation:${versionMap.androidx_annotation}"
-    implementation "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
-    implementation "com.google.android.material:material:${versionMap.material}"
-    implementation "com.google.dagger:dagger:${versionMap.dagger}"
-    kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
-    implementation("it.scoppelletti.spaceship:spaceship-stdlib:${versionMap.spaceship}") {
-        changing = true
-    }
-    implementation("it.scoppelletti.spaceship:spaceship-ui:${versionMap.spaceship}") {
-        changing = true
-    }
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
-    runtimeOnly "com.noveogroup.android:android-logger:${versionMap.android_logger}"
+    implementation 'androidx.activity:activity-ktx'
+    implementation 'androidx.annotation:annotation'
+    implementation 'androidx.appcompat:appcompat'
+    implementation 'com.google.android.material:material'
+    implementation 'com.google.dagger:dagger'
+    kapt 'com.google.dagger:dagger-compiler'
+    implementation 'it.scoppelletti.spaceship:spaceship-stdlib'
+    implementation 'it.scoppelletti.spaceship:spaceship-ui'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
+    runtimeOnly 'com.noveogroup.android:android-logger'
 }

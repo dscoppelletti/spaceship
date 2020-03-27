@@ -39,6 +39,7 @@ import org.gradle.api.artifacts.ExternalDependency;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
+import org.gradle.api.publish.maven.MavenPom;
 import org.gradle.api.publish.maven.MavenPublication;
 import org.gradle.api.tasks.Copy;
 import org.gradle.api.tasks.bundling.Jar;
@@ -49,10 +50,14 @@ import org.jetbrains.dokka.gradle.DokkaTask;
  */
 final class AndroidTools extends PlatformTools {
     private static final String CONFIG_API = "ApiElements";
+    private static final String CONFIG_BOM = "bom";
     private static final String CONFIG_RUNTIME = "RuntimeElements";
     private static final String DIR_TEST = "test";
+    private static final String PACKAGING = "aar";
     private static final String SCOPE_COMPILE = "compile";
+    private static final String SCOPE_IMPORT = "import";
     private static final String SCOPE_RUNTIME = "runtime";
+    private static final String TYPE_POM = "pom";
     private static final Logger myLogger = Logging.getLogger(
             AndroidTools.class);
     private final Project myProject;
@@ -68,7 +73,7 @@ final class AndroidTools extends PlatformTools {
      */
     AndroidTools(@Nonnull Project project, @Nonnull LibraryVariant variant,
             @Nonnull AndroidTaskNames taskNames) {
-        super(project, taskNames);
+        super(project, AndroidTools.PACKAGING, taskNames);
 
         myProject = project;
         myVariant = Objects.requireNonNull(variant,
@@ -86,8 +91,9 @@ final class AndroidTools extends PlatformTools {
 
         intoDir = myProject.getBuildDir().toPath()
                 .resolve("intermediates")
-                .resolve("sourceFolderJavaResources")
+                .resolve("java_res")
                 .resolve(myVariant.getName())
+                .resolve("out")
                 .resolve("META-INF");
 
         metainfTask = doGenerateMetainf(intoDir);
@@ -160,7 +166,17 @@ final class AndroidTools extends PlatformTools {
         }
 
         publ.setVersion(ver);
+        publ.pom(this::configurePom);
         publ.pom(pom -> pom.withXml(this::configureDependencies));
+    }
+
+    /**
+     * Configures the POM.
+     *
+     * @param pom POM.
+     */
+    private void configurePom(@Nonnull MavenPom pom) {
+        pom.setPackaging("aar");
     }
 
     /**
@@ -168,7 +184,7 @@ final class AndroidTools extends PlatformTools {
      *
      * @param xml Provides XML access to the POM.
      */
-    private void configureDependencies(XmlProvider xml) {
+    private void configureDependencies(@Nonnull XmlProvider xml) {
         // http://docs.gradle.org/current/userguide/java_library_plugin.html#sec:java_library_configurations_graph
         // The configurations "apiElements" and "runtimeElements" are the ones
         // used when a component compiles, or runs against the library, but the
@@ -178,21 +194,37 @@ final class AndroidTools extends PlatformTools {
         // Next I collect only the dependencies in the configuration
         // "runtimeElements" which are not collected yet, and I assign to them
         // the scope "runtime".
-        Node depsNode;
+        Node depManagementNode, depsNode, root;
 
-        depsNode = xml.asNode().appendNode(MavenXml.NODE_DEPENDENCIES);
+        root = xml.asNode();
+        depManagementNode = root.appendNode(MavenXml.NODE_DEPENDENCYMANAGENENT)
+                .appendNode(MavenXml.NODE_DEPENDENCIES);
+        depsNode = root.appendNode(MavenXml.NODE_DEPENDENCIES);
 
         listDeps().forEach(dep -> {
-            Node depNode;
+            Node depNode, parentNode;
 
-            depNode = depsNode.appendNode(MavenXml.NODE_DEPENDENCY);
+            if (dep.getScope().equals(AndroidTools.SCOPE_IMPORT)) {
+                parentNode = depManagementNode;
+            } else {
+                parentNode = depsNode;
+            }
+
+            depNode = parentNode.appendNode(MavenXml.NODE_DEPENDENCY);
             depNode.appendNode(MavenXml.NODE_GROUPID, dep.getGroupId());
             depNode.appendNode(MavenXml.NODE_ARTIFACTID, dep.getArtifactId());
-            depNode.appendNode(MavenXml.NODE_VERSION, dep.getVersion());
+
+            if (StringUtils.isNotBlank(dep.getVersion())) {
+                depNode.appendNode(MavenXml.NODE_VERSION, dep.getVersion());
+            }
 
             if (StringUtils.isNotBlank(dep.getClassifier())) {
                 depNode.appendNode(MavenXml.NODE_CLASSIFIER,
                         dep.getClassifier());
+            }
+
+            if (StringUtils.isNotBlank(dep.getType())) {
+                depNode.appendNode(MavenXml.NODE_TYPE, dep.getType());
             }
 
             depNode.appendNode(MavenXml.NODE_SCOPE, dep.getScope());
@@ -204,15 +236,18 @@ final class AndroidTools extends PlatformTools {
      *
      * @return Collection.
      */
-    private List<DependencyConfig> listConfig() {
+    private @Nonnull List<DependencyConfig> listConfig() {
         String varName = myVariant.getName();
         ArrayList<DependencyConfig> list;
 
         list = new ArrayList<>(2);
+        list.add(new DependencyConfig(AndroidTools.CONFIG_BOM,
+                AndroidTools.TYPE_POM, AndroidTools.SCOPE_IMPORT));
         list.add(new DependencyConfig(varName.concat(AndroidTools.CONFIG_API),
-                AndroidTools.SCOPE_COMPILE));
+                null, AndroidTools.SCOPE_COMPILE));
         list.add(new DependencyConfig(varName.concat(
-                AndroidTools.CONFIG_RUNTIME), AndroidTools.SCOPE_RUNTIME));
+                AndroidTools.CONFIG_RUNTIME), null,
+                AndroidTools.SCOPE_RUNTIME));
 
         return list;
     }
@@ -222,7 +257,7 @@ final class AndroidTools extends PlatformTools {
      *
      * @return Collection.
      */
-    private List<DependencySpec> listDeps() {
+    private @Nonnull List<DependencySpec> listDeps() {
         Set<DependencySpec> deps;
 
         deps = new LinkedHashSet<>();
@@ -247,7 +282,8 @@ final class AndroidTools extends PlatformTools {
                 .forEach(dep -> {
                     DependencySpec depSpec;
 
-                    depSpec = new DependencySpec(dep, depConfig.getScope());
+                    depSpec = new DependencySpec(dep, depConfig.getType(),
+                            depConfig.getScope());
                     if (deps.add(depSpec)) {
                         myLogger.debug("Added dependency {}.", depSpec);
                     } else {

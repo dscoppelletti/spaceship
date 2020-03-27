@@ -4,14 +4,14 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion versionMap.sdk_target
-    buildToolsVersion versionMap.build_tools
+    compileSdkVersion sdk_target
     defaultConfig {
-        applicationId "it.scoppelletti.spaceship.sample"
-        minSdkVersion 16
-        targetSdkVersion versionMap.sdk_target
+        applicationId 'it.scoppelletti.spaceship.sample'
+        minSdkVersion sdk_min
+        targetSdkVersion sdk_target
         versionCode 1
-        versionName versionMap.spaceship
+        versionName '1.0.0'
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -31,18 +31,25 @@ android {
     }
 }
 
+configurations {
+    bom
+    implementation.extendsFrom(bom)
+    kapt.extendsFrom(bom)
+}
+
 dependencies {
+    bom platform(BOM)
     implementation project(':lib')
-    implementation "androidx.activity:activity-ktx:${versionMap.androidx_activity}"
-    implementation "androidx.annotation:annotation:${versionMap.androidx_annotation}"
-    implementation "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
-    implementation "com.google.android.material:material:${versionMap.material}"
-    implementation "com.google.dagger:dagger:${versionMap.dagger}"
-    kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
-    implementation "com.jakewharton.threetenabp:threetenabp:${versionMap.threetenabp}"
-    implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
-    implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
-    implementation "org.threeten:threetenbp:${versionMap.threetenbp}:no-tzdb"
-    runtimeOnly "com.noveogroup.android:android-logger:${versionMap.android_logger}"
+    implementation 'androidx.activity:activity-ktx'
+    implementation 'androidx.annotation:annotation'
+    implementation 'androidx.appcompat:appcompat'
+    implementation 'com.google.android.material:material'
+    implementation 'com.google.dagger:dagger'
+    kapt 'com.google.dagger:dagger-compiler'
+    implementation 'com.jakewharton.threetenabp:threetenabp'
+    implementation 'io.github.microutils:kotlin-logging'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
+    implementation 'org.slf4j:slf4j-api'
+    implementation 'org.threeten:threetenbp::no-tzdb'
+    runtimeOnly 'com.noveogroup.android:android-logger'
 }

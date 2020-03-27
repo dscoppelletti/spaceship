@@ -1,5 +1,8 @@
+
 buildscript {
-    apply from: '../gradle-plugins/versionMap.gradle'
+    ext.BOM = 'it.scoppelletti.spaceship:spaceship-bom:1.0.0'
+    ext.kotlin_version = '1.3.71'
+
     repositories {
         jcenter()
 
@@ -10,15 +13,16 @@ buildscript {
         }
     }
     dependencies {
-        classpath "com.github.ben-manes:gradle-versions-plugin:${versionMap.gradle_versions}"
-        classpath "it.scoppelletti.spaceship:spaceship-gradle-java:${versionMap.spaceship}"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${versionMap.dokka}"
+        classpath platform(BOM)
+        classpath 'com.github.ben-manes:gradle-versions-plugin'
+        classpath 'it.scoppelletti.spaceship:spaceship-gradle-java'
+        classpath 'org.jetbrains.dokka:dokka-gradle-plugin'
     }
 }
 
 plugins {
     id 'java-library'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.61'
+    id 'org.jetbrains.kotlin.jvm' version "${kotlin_version}"
 }
 
 apply plugin: 'com.github.ben-manes.versions'
@@ -27,7 +31,7 @@ apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'it.scoppelletti.spaceship.spaceship-gradle-java'
 
 group 'it.scoppelletti.spaceship'
-version versionMap.spaceship
+version '1.0.0'
 description 'Spaceship for HTTP'
 archivesBaseName = 'spaceship-http'
 
@@ -35,10 +39,10 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
 }
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
 }
 
 spaceship {
@@ -57,6 +61,7 @@ repositories {
 }
 
 dependencies {
-    api "com.squareup.okhttp3:okhttp:${versionMap.okhttp}"
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
+    api platform(BOM)
+    api 'com.squareup.okhttp3:okhttp'
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
 }

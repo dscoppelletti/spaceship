@@ -10,6 +10,7 @@
     <string name="it_scoppelletti_cmd_open">Open</string>
     <string name="it_scoppelletti_cmd_save">Save</string>
     <string name="it_scoppelletti_cmd_update">Update</string>
+    <string name="it_scoppelletti_err_clipoardNotSupported">Clipboard not supported.</string>
     <string name="it_scoppelletti_err_dateFormat">The date must comply the format %1$s.</string>
     <string name="it_scoppelletti_err_decimalFormat">The value must be a decimal number.</string>
     <string name="it_scoppelletti_err_intFormat">The value must be an integer number.</string>

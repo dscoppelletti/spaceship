@@ -1,6 +1,8 @@
 
 buildscript {
-    apply from: '../versionMap.gradle'
+    ext.BOM = 'it.scoppelletti.spaceship:spaceship-bom:1.0.0'
+    ext.android_gradle_version = '3.6.1'
+
     repositories {
         jcenter()
 
@@ -11,8 +13,9 @@ buildscript {
         }
     }
     dependencies {
-        classpath "com.github.ben-manes:gradle-versions-plugin:${versionMap.gradle_versions}"
-        classpath "it.scoppelletti.spaceship:spaceship-gradle-java:${versionMap.spaceship}"
+        classpath platform(BOM)
+        classpath 'com.github.ben-manes:gradle-versions-plugin'
+        classpath 'it.scoppelletti.spaceship:spaceship-gradle-java'
     }
 }
 
@@ -58,12 +61,19 @@ repositories {
     }
 }
 
+configurations {
+    bom
+    api.extendsFrom(bom)
+    annotationProcessor.extendsFrom(bom)
+}
+
 dependencies {
+    bom platform(BOM)
     api gradleApi()
-    api "com.android.tools.build:gradle:${versionMap.android_gradle}"
-    api "it.scoppelletti.spaceship:spaceship-gradle:${versionMap.spaceship}"
-    api "org.jetbrains.dokka:dokka-gradle-plugin:${versionMap.dokka}"
-    implementation "org.apache.commons:commons-lang3:${versionMap.commons_lang}"
-    compileOnly "org.projectlombok:lombok:${versionMap.lombok}"
-    annotationProcessor "org.projectlombok:lombok:${versionMap.lombok}"
+    api "com.android.tools.build:gradle:${android_gradle_version}"
+    api 'it.scoppelletti.spaceship:spaceship-gradle'
+    api 'org.jetbrains.dokka:dokka-gradle-plugin'
+    implementation 'org.apache.commons:commons-lang3'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 }

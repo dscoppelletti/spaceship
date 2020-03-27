@@ -27,6 +27,7 @@ import javax.annotation.Nonnull;
 import it.scoppelletti.spaceship.gradle.model.Developer;
 import it.scoppelletti.spaceship.gradle.model.License;
 import it.scoppelletti.spaceship.gradle.model.SpaceshipExtension;
+import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.file.FileCollection;
@@ -59,9 +60,10 @@ public abstract class PlatformTools {
     private static final String PLATFORM_JVM = "JVM";
     private static final String PROTOCOL_SCM = "scm:git:";
     private final Project myProject;
+    private final String myPackaging;
+    private final TaskNames myTaskNames;
     private final BasePluginConvention myConvention;
     private final SpaceshipExtension mySpaceshipExt;
-    private final TaskNames myTaskNames;
     private final PublishingExtension myPublishExt;
 
     /**
@@ -71,11 +73,19 @@ public abstract class PlatformTools {
      * @param taskNames Provides name and description of the tasks.
      */
     protected PlatformTools(@Nonnull Project project,
+            @Nonnull String packaging,
             @Nonnull TaskNames taskNames) {
         myProject = Objects.requireNonNull(project,
                 "Argument project is null.");
+
+        if (StringUtils.isBlank(packaging)) {
+            throw new NullPointerException("Argument packaging is null.");
+        }
+
+        myPackaging = packaging;
         myTaskNames = Objects.requireNonNull(taskNames,
                 "Argument taskNames is null.");
+
         myConvention = myProject.getConvention().getPlugin(
                 BasePluginConvention.class);
         mySpaceshipExt = Objects.requireNonNull(
@@ -160,8 +170,8 @@ public abstract class PlatformTools {
                 () -> String.format("Task %1$s not found.",
                         myTaskNames.getGenerateMetainfName()));
 
-        jarTask = myProject.getTasks().create(myTaskNames.getPackageSourcesName(),
-                Jar.class);
+        jarTask = myProject.getTasks().create(
+                myTaskNames.getPackageSourcesName(), Jar.class);
         jarTask.setDescription(myTaskNames.getPackageSourcesDescription());
         jarTask.setGroup(PublishingPlugin.PUBLISH_TASK_GROUP);
 
@@ -286,8 +296,9 @@ public abstract class PlatformTools {
      * @param pom POM.
      */
     @SuppressWarnings("UnstableApiUsage")
-    private void configurePom(MavenPom pom) {
+    private void configurePom(@Nonnull MavenPom pom) {
         pom.getDescription().set(mySpaceshipExt.getDescription());
+        pom.setPackaging(myPackaging);
         pom.getUrl().set(mySpaceshipExt.getUrl());
         pom.getInceptionYear().set(mySpaceshipExt.getInceptionYear());
 
@@ -309,7 +320,7 @@ public abstract class PlatformTools {
      * @param developer Developer.
      */
     @SuppressWarnings("UnstableApiUsage")
-    private void configureDeveloper(MavenPomDeveloper pom,
+    private void configureDeveloper(@Nonnull MavenPomDeveloper pom,
             Developer developer) {
         pom.getName().set(developer.getName());
         pom.getEmail().set(developer.getEmail());
@@ -323,7 +334,8 @@ public abstract class PlatformTools {
      * @param license License.
      */
     @SuppressWarnings("UnstableApiUsage")
-    private void configureLicense(MavenPomLicense pom, License license) {
+    private void configureLicense(@Nonnull MavenPomLicense pom,
+            @Nonnull License license) {
         pom.getName().set(license.getName());
         pom.getUrl().set(license.getUrl());
     }
@@ -334,7 +346,7 @@ public abstract class PlatformTools {
      * @param pom POM.
      */
     @SuppressWarnings("UnstableApiUsage")
-    private void configureScm(MavenPomScm pom) {
+    private void configureScm(@Nonnull MavenPomScm pom) {
         String scm;
 
         scm = PlatformTools.PROTOCOL_SCM.concat(mySpaceshipExt.getScmUrl());

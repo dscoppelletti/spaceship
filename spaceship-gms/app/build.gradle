@@ -4,14 +4,13 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion versionMap.sdk_target
-    buildToolsVersion versionMap.build_tools
+    compileSdkVersion sdk_target
     defaultConfig {
-        applicationId "it.scoppelletti.spaceship.gms.sample"
-        minSdkVersion 16
-        targetSdkVersion versionMap.sdk_target
+        applicationId 'it.scoppelletti.spaceship.gms.sample'
+        minSdkVersion sdk_min
+        targetSdkVersion sdk_target
         versionCode 1
-        versionName versionMap.spaceship
+        versionName '1.0.0'
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -38,26 +37,29 @@ android {
     }
 }
 
+configurations {
+    bom
+    implementation.extendsFrom(bom)
+    kapt.extendsFrom(bom)
+}
+
 dependencies {
+    bom platform(BOM)
     implementation project(':lib')
-    api "androidx.activity:activity-ktx:${versionMap.androidx_activity}"
-    implementation "androidx.annotation:annotation:${versionMap.androidx_annotation}"
-    implementation "androidx.appcompat:appcompat:${versionMap.androidx_appcompat}"
-    api "androidx.lifecycle:lifecycle-common-java8:${versionMap.androidx_lifecycle}"
-    api "androidx.lifecycle:lifecycle-livedata-ktx:${versionMap.androidx_lifecycle}"
-    api "androidx.lifecycle:lifecycle-runtime-ktx:${versionMap.androidx_lifecycle}"
-    api "androidx.lifecycle:lifecycle-viewmodel-ktx:${versionMap.androidx_lifecycle}"
-    implementation "com.google.dagger:dagger:${versionMap.dagger}"
-    kapt "com.google.dagger:dagger-compiler:${versionMap.dagger}"
-    implementation "io.github.microutils:kotlin-logging:${versionMap.kotlin_logging}"
-    implementation("it.scoppelletti.spaceship:spaceship-stdlib:${versionMap.spaceship}") {
-        changing = true
-    }
-    implementation("it.scoppelletti.spaceship:spaceship-ui:${versionMap.spaceship}") {
-        changing = true
-    }
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionMap.kotlin}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versionMap.kotlinx_coroutines}"
-    implementation "org.slf4j:slf4j-api:${versionMap.slf4j}"
-    runtimeOnly "com.noveogroup.android:android-logger:${versionMap.android_logger}"
+    implementation 'androidx.activity:activity-ktx'
+    implementation 'androidx.annotation:annotation'
+    implementation 'androidx.appcompat:appcompat'
+    implementation 'androidx.lifecycle:lifecycle-common-java8'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx'
+    implementation 'com.google.dagger:dagger'
+    kapt 'com.google.dagger:dagger-compiler'
+    implementation 'io.github.microutils:kotlin-logging'
+    implementation 'it.scoppelletti.spaceship:spaceship-stdlib'
+    implementation 'it.scoppelletti.spaceship:spaceship-ui'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core'
+    implementation 'org.slf4j:slf4j-api'
+    runtimeOnly 'com.noveogroup.android:android-logger'
 }

@@ -25,7 +25,9 @@ final class MavenXml {
     static final String NODE_GROUPID = "groupId";
     static final String NODE_DEPENDENCIES = "dependencies";
     static final String NODE_DEPENDENCY = "dependency";
+    static final String NODE_DEPENDENCYMANAGENENT = "dependencyManagement";
     static final String NODE_SCOPE = "scope";
+    static final String NODE_TYPE = "type";
     static final String NODE_VERSION = "version";
 
     /**

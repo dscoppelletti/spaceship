@@ -19,7 +19,7 @@
     <string name="app_name">Spaceship for UI</string>
     <string name="it_scoppelletti_behavior_bottomNav">it.scoppelletti.spaceship.widget.BottomNavigationBehavior</string>
     <string name="it_scoppelletti_behavior_fabBottomNav">it.scoppelletti.spaceship.widget.BottomNavigationFABBehavior</string>
-    <string name="it_scoppelletti_behavior_fabScrollAware">it.scoppelletti.spaceship.widget.FABAwareScrollingBehavior</string>
+    <string name="it_scoppelletti_behavior_fabAwareScrollingView">it.scoppelletti.spaceship.widget.FABAwareScrollingViewBehavior</string>
     <string name="it_scoppelletti_field_hour12">hh</string>
     <string name="it_scoppelletti_field_hour24">HH</string>
     <string name="it_scoppelletti_field_minute">mm</string>

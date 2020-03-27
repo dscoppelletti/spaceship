@@ -1,11 +1,19 @@
 
 buildscript {
-    apply from: '../versionMap.gradle'
+    ext.BOM = 'it.scoppelletti.spaceship:spaceship-bom:1.0.0'
+
     repositories {
         jcenter()
+
+        if (project.hasProperty('it.scoppelletti.tools.devRepoUrl')) {
+            maven {
+                url project.property('it.scoppelletti.tools.devRepoUrl')
+            }
+        }
     }
     dependencies {
-        classpath "com.github.ben-manes:gradle-versions-plugin:${versionMap.gradle_versions}"
+        classpath platform(BOM)
+        classpath 'com.github.ben-manes:gradle-versions-plugin'
     }
 }
 
@@ -46,16 +54,18 @@ repositories {
 }
 
 dependencies {
+    api platform(BOM)
     api gradleApi()
-    api "it.scoppelletti.spaceship:spaceship-gradle:${versionMap.spaceship}"
-    api "org.jetbrains.dokka:dokka-gradle-plugin:${versionMap.dokka}"
-    implementation "org.apache.commons:commons-lang3:${versionMap.commons_lang}"
-    testImplementation "junit:junit:${versionMap.junit}"
+    api 'it.scoppelletti.spaceship:spaceship-gradle'
+    api 'org.jetbrains.dokka:dokka-gradle-plugin'
+    implementation 'org.apache.commons:commons-lang3'
+    testImplementation 'junit:junit'
 }
 
 if (project.hasProperty('it.scoppelletti.tools.devRepoUrl')) {
     publishing {
         publications {
+            // publishPluginPublicationToDevRepository
             plugin(MavenPublication) {
                 from components.java
 

@@ -58,6 +58,8 @@ dependencies {
     api 'androidx.constraintlayout:constraintlayout'
     api 'com.google.android.gms:play-services-base'
     api 'com.google.android.material:material'
+    api 'com.google.dagger:dagger'
+    kapt 'com.google.dagger:dagger-compiler'
     api 'com.google.firebase:firebase-messaging'
     api 'it.scoppelletti.spaceship:spaceship-stdlib'
     api 'it.scoppelletti.spaceship:spaceship-ui'

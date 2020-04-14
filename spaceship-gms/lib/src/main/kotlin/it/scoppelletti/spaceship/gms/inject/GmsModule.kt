@@ -18,16 +18,16 @@
 
 package it.scoppelletti.spaceship.gms.inject
 
+import com.google.android.gms.common.api.ApiException
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import dagger.multibindings.IntoSet
 import it.scoppelletti.spaceship.ExceptionLoggerHandler
 import it.scoppelletti.spaceship.gms.FirebaseExceptionLoggerHandler
-import it.scoppelletti.spaceship.gms.GmsException
 import it.scoppelletti.spaceship.gms.i18n.DefaultGmsMessages
 import it.scoppelletti.spaceship.gms.i18n.GmsMessages
-import it.scoppelletti.spaceship.gms.widget.GmsExceptionMapperHandler
+import it.scoppelletti.spaceship.gms.widget.ApiExceptionMapperHandler
 import it.scoppelletti.spaceship.inject.ExceptionMapperKey
 import it.scoppelletti.spaceship.inject.UIModule
 import it.scoppelletti.spaceship.widget.ExceptionMapperHandler
@@ -53,8 +53,8 @@ public abstract class GmsModule {
 
     @Binds
     @IntoMap
-    @ExceptionMapperKey(GmsException::class)
+    @ExceptionMapperKey(ApiException::class)
     public abstract fun bindExceptionMapperHandler(
-            adapter: GmsExceptionMapperHandler
+            adapter: ApiExceptionMapperHandler
     ): ExceptionMapperHandler<*>
 }

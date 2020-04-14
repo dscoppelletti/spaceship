@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="it_scoppelletti_gms_err_googleApiNotAvailable">I servizi di Google Play non sono disponibili.</string>
-    <string name="it_scoppelletti_gms_lbl_canceled">Annullato:</string>
-    <string name="it_scoppelletti_gms_lbl_interrupted">Interrotto:</string>
-    <string name="it_scoppelletti_gms_lbl_statusCode">Codice di stato:</string>
+    <string name="it_scoppelletti_gms_lbl_canceled">Annullato</string>
+    <string name="it_scoppelletti_gms_lbl_hasResolution">Possibile soluzione</string>
+    <string name="it_scoppelletti_gms_lbl_interrupted">Interrotto</string>
+    <string name="it_scoppelletti_gms_lbl_statusCode">Codice di stato</string>
+    <string name="it_scoppelletti_gms_lbl_statusMessage">Operazione</string>
 </resources>

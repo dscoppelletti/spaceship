@@ -56,6 +56,24 @@ public suspend fun <T, R> suspendTask(
 }
 
 /**
+ * Adapts a Google API that returns a `Task` to a supended coroutine that
+ * handles the callbacks raised by the task.
+ *
+ * @param  func Google API.
+ * @param  arg1 Argument of the Google API.
+ * @param  arg2 Argument of the Google API.
+ * @return      Result of the task.
+ * @since       1.0.0
+ */
+public suspend fun <T1, T2, R> suspendTask(
+        func: (T1, T2) -> Task<R>,
+        arg1: T1,
+        arg2: T2
+): R = suspendCoroutine { continuation ->
+    func(arg1, arg2).onComplete(continuation)
+}
+
+/**
  * Adapts the callbacks raised by this task to a suspended couroutine.
  *
  * @receiver              Task.

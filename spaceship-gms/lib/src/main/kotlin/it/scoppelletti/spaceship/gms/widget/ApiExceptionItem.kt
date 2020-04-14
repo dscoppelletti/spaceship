@@ -23,8 +23,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import it.scoppelletti.spaceship.gms.GmsException
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.CommonStatusCodes
 import it.scoppelletti.spaceship.gms.R
+import it.scoppelletti.spaceship.toMessage
 import it.scoppelletti.spaceship.widget.ExceptionAdapter
 import it.scoppelletti.spaceship.widget.ExceptionItem
 import it.scoppelletti.spaceship.widget.ExceptionMapperHandler
@@ -37,16 +39,21 @@ import javax.inject.Inject
  * @since 1.0.0
  *
  * @property statusCode    Status of the operation.
+ * @property message       Message.
  * @property statusMessage Descriptive status of the operation.
  * @property isCanceled    Indicates whether the operation is canceled
  * @property isInterrupted Indicates whether the operation is interrupted.
+ * @property hasResolution Indicates whether the operation has a resolution.
+ * @property className     Class of the exception.
  */
 @Parcelize
-public data class GmsExceptionItem(
+public data class ApiExceptionItem(
         public val statusCode: Int,
+        public val message: String,
         public val statusMessage: String,
         public val isCanceled: Boolean,
         public val isInterrupted: Boolean,
+        public val hasResolution: Boolean,
         public val className: String,
         override val adapter: ExceptionAdapter<*>
 ) : ExceptionItem
@@ -57,10 +64,10 @@ public data class GmsExceptionItem(
  * @since 1.0.0
  */
 @Parcelize
-public class GmsExceptionAdapter : ExceptionAdapter<GmsExceptionItem> {
+public class ApiExceptionAdapter : ExceptionAdapter<ApiExceptionItem> {
 
     override fun getView(
-            ex: GmsExceptionItem,
+            ex: ApiExceptionItem,
             parent: ViewGroup
     ): View {
         val itemView: View
@@ -71,7 +78,7 @@ public class GmsExceptionAdapter : ExceptionAdapter<GmsExceptionItem> {
         ctx = parent.context
         inflater = LayoutInflater.from(ctx)
         itemView = inflater.inflate(
-                R.layout.it_scoppelletti_gmsexception, parent, false)
+                R.layout.it_scoppelletti_apiexception, parent, false)
 
         textView = itemView.findViewById(R.id.txtStatusMessage)
         textView.text = ex.statusMessage
@@ -89,6 +96,11 @@ public class GmsExceptionAdapter : ExceptionAdapter<GmsExceptionItem> {
                 if (ex.isInterrupted) android.R.string.yes else
                     android.R.string.no)
 
+        textView = itemView.findViewById(R.id.txtHasResolution)
+        textView.text = ctx.getString(
+                if (ex.hasResolution) android.R.string.yes else
+                    android.R.string.no)
+
         textView = itemView.findViewById(R.id.txtClass)
         textView.text = ex.className
 
@@ -101,16 +113,20 @@ public class GmsExceptionAdapter : ExceptionAdapter<GmsExceptionItem> {
  *
  * @since 1.0.0
  */
-public class GmsExceptionMapperHandler @Inject constructor(
-): ExceptionMapperHandler<GmsException> {
+public class ApiExceptionMapperHandler @Inject constructor(
+): ExceptionMapperHandler<ApiException> {
 
-    override fun map(ex: GmsException) : ExceptionItem =
-            GmsExceptionItem(
+    override fun map(ex: ApiException) : ExceptionItem =
+            ApiExceptionItem(
+                    message =  ex.toMessage(),
                     statusCode = ex.statusCode,
-                    statusMessage = ex.statusMessage.orEmpty(),
-                    isCanceled = ex.isCanceled,
-                    isInterrupted = ex.isInterrupted,
+                    statusMessage =
+                        CommonStatusCodes.getStatusCodeString(ex.statusCode),
+                    isCanceled = ex.status.isCanceled,
+                    isInterrupted = ex.status.isInterrupted,
+                    hasResolution = ex.status.hasResolution(),
                     className = ex.javaClass.name,
-                    adapter = GmsExceptionAdapter())
+                    adapter = ApiExceptionAdapter()
+            )
 }
 

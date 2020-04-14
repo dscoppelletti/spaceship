@@ -34,6 +34,7 @@
         <androidx.activity.version>1.1.0</androidx.activity.version>
         <androidx.annotation.version>1.1.0</androidx.annotation.version>
         <androidx.appcompat.version>1.1.0</androidx.appcompat.version>
+        <androidx.browser.version>1.2.0</androidx.browser.version>
         <androidx.constraintlayout.version>1.1.3</androidx.constraintlayout.version>
         <androidx.coordinatorlayout.version>1.1.0</androidx.coordinatorlayout.version>
         <androidx.fragment.version>1.2.3</androidx.fragment.version>
@@ -42,17 +43,21 @@
         <androidx.preference.version>1.1.0</androidx.preference.version>
         <androidx.recyclerview.version>1.1.0</androidx.recyclerview.version>
         <androidx.swiperefreshlayout.version>1.0.0</androidx.swiperefreshlayout.version>
-        <androidx.viewpager.version>1.0.0</androidx.viewpager.version>
         <androidx.viewpager2.version>1.0.0</androidx.viewpager2.version>
         <commons.lang.version>3.9</commons.lang.version>
         <crashlytics.version>2.10.1</crashlytics.version>
         <dagger.version>2.27</dagger.version>
         <dokka.version>0.10.1</dokka.version>
+        <exoplayer.version>2.11.1</exoplayer.version>
         <fabric.tools.version>1.31.0</fabric.tools.version>
         <facebook.version>5.5.1</facebook.version>
+        <!-- com.facebook.android:facebook-common:5.5.1 => com.google.zxing:core:3.3.3 !!! -->
         <firebase.auth.version>19.3.0</firebase.auth.version>
         <firebase.core.version>17.2.3</firebase.core.version>
         <firebase.messaging.version>20.1.3</firebase.messaging.version>
+        <glide.version>4.9.0</glide.version>
+        <google.maps.utils.version>0.6.2</google.maps.utils.version>
+        <google.places.version>2.2.0</google.places.version>
         <google.services.version>4.3.3</google.services.version>
         <gradle.versions.version>0.28.0</gradle.versions.version>
         <junit.version>4.13</junit.version>
@@ -64,110 +69,29 @@
         <moshi.version>1.9.2</moshi.version>
         <okhttp.version>3.14.4</okhttp.version>
         <okio.version>1.17.3</okio.version>
+        <play.services.auth.version>17.0.0</play.services.auth.version>
         <play.services.base.version>17.2.0</play.services.base.version>
+        <play.services.location.version>17.0.0</play.services.location.version>
+        <play.services.maps.version>17.0.0</play.services.maps.version>
         <retrofit.version>2.7.1</retrofit.version>
         <slf4j.version>1.7.29</slf4j.version>
         <spaceship.version>1.0.0</spaceship.version>
+        <retrofit.version>2.7.1</retrofit.version>
         <threetenabp.version>1.2.1</threetenabp.version>
         <threetenbp.version>1.4.1</threetenbp.version>
+        <zxing.version>3.3.3</zxing.version>
+        <!-- 3.4.0 requires Android API level 24+ -->
+        <zxing.android.version>3.6.0</zxing.android.version>
+        <!-- 4.0.0 requires Android API level 24+ -->
     </properties>
     <dependencyManagement>
         <dependencies>
-            <!-- Spaceship -->
-            <dependency>
-                <groupId>it.scoppelletti.spaceship</groupId>
-                <artifactId>spaceship-gradle</artifactId>
-                <version>${spaceship.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>it.scoppelletti.spaceship</groupId>
-                <artifactId>spaceship-gradle-java</artifactId>
-                <version>${spaceship.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>it.scoppelletti.spaceship</groupId>
-                <artifactId>spaceship-gradle-android</artifactId>
-                <version>${spaceship.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>it.scoppelletti.spaceship</groupId>
-                <artifactId>spaceship-stdlib</artifactId>
-                <version>${spaceship.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>it.scoppelletti.spaceship</groupId>
-                <artifactId>spaceship-json</artifactId>
-                <version>${spaceship.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>it.scoppelletti.spaceship</groupId>
-                <artifactId>spaceship-http</artifactId>
-                <version>${spaceship.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>it.scoppelletti.spaceship</groupId>
-                <artifactId>spaceship-ui</artifactId>
-                <version>${spaceship.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>it.scoppelletti.spaceship</groupId>
-                <artifactId>spaceship-html</artifactId>
-                <version>${spaceship.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>it.scoppelletti.spaceship</groupId>
-                <artifactId>spaceship-preference</artifactId>
-                <version>${spaceship.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>it.scoppelletti.spaceship</groupId>
-                <artifactId>spaceship-security</artifactId>
-                <version>${spaceship.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>it.scoppelletti.spaceship</groupId>
-                <artifactId>spaceship-http-ui</artifactId>
-                <version>${spaceship.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>it.scoppelletti.spaceship</groupId>
-                <artifactId>spaceship-gms</artifactId>
-                <version>${spaceship.version}</version>
-            </dependency>
-            <!-- Kotlin -->
-            <dependency>
-                <groupId>org.jetbrains.kotlinx</groupId>
-                <artifactId>kotlinx-coroutines-core</artifactId>
-                <version>${kotlin.coroutines.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jetbrains.kotlinx</groupId>
-                <artifactId>kotlinx-coroutines-android</artifactId>
-                <version>${kotlin.coroutines.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jetbrains.dokka</groupId>
-                <artifactId>dokka-gradle-plugin</artifactId>
-                <version>${dokka.version}</version>
-            </dependency>
-            <!-- JSR-310 -->
-            <dependency>
-                <groupId>org.threeten</groupId>
-                <artifactId>threetenbp</artifactId>
-                <version>${threetenbp.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.jakewharton.threetenabp</groupId>
-                <artifactId>threetenabp</artifactId>
-                <version>${threetenabp.version}</version>
-            </dependency>
-            <!-- Apache Commons -->
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>${commons.lang.version}</version>
-            </dependency>
             <!-- AndroidX -->
+            <dependency>
+                <groupId>androidx.activity</groupId>
+                <artifactId>activity</artifactId>
+                <version>${androidx.activity.version}</version>
+            </dependency>
             <dependency>
                 <groupId>androidx.activity</groupId>
                 <artifactId>activity-ktx</artifactId>
@@ -184,6 +108,11 @@
                 <version>${androidx.appcompat.version}</version>
             </dependency>
             <dependency>
+                <groupId>androidx.browser</groupId>
+                <artifactId>browser</artifactId>
+                <version>${androidx.browser.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>androidx.constraintlayout</groupId>
                 <artifactId>constraintlayout</artifactId>
                 <version>${androidx.constraintlayout.version}</version>
@@ -192,6 +121,11 @@
                 <groupId>androidx.coordinatorlayout</groupId>
                 <artifactId>coordinatorlayout</artifactId>
                 <version>${androidx.coordinatorlayout.version}</version>
+            </dependency>
+             <dependency>
+                <groupId>androidx.fragment</groupId>
+                <artifactId>fragment</artifactId>
+                <version>${androidx.fragment.version}</version>
             </dependency>
             <dependency>
                 <groupId>androidx.fragment</groupId>
@@ -205,12 +139,27 @@
             </dependency>
             <dependency>
                 <groupId>androidx.lifecycle</groupId>
+                <artifactId>lifecycle-livedata</artifactId>
+                <version>${androidx.lifecycle.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>androidx.lifecycle</groupId>
                 <artifactId>lifecycle-livedata-ktx</artifactId>
                 <version>${androidx.lifecycle.version}</version>
             </dependency>
             <dependency>
                 <groupId>androidx.lifecycle</groupId>
+                <artifactId>lifecycle-runtime</artifactId>
+                <version>${androidx.lifecycle.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>androidx.lifecycle</groupId>
                 <artifactId>lifecycle-runtime-ktx</artifactId>
+                <version>${androidx.lifecycle.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>androidx.lifecycle</groupId>
+                <artifactId>lifecycle-viewmodel</artifactId>
                 <version>${androidx.lifecycle.version}</version>
             </dependency>
             <dependency>
@@ -254,20 +203,15 @@
                 <version>${androidx.swiperefreshlayout.version}</version>
             </dependency>
             <dependency>
-                <groupId>androidx.viewpager</groupId>
-                <artifactId>viewpager</artifactId>
-                <version>${androidx.viewpager.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>androidx.viewpager2</groupId>
                 <artifactId>viewpager2</artifactId>
                 <version>${androidx.viewpager2.version}</version>
             </dependency>
-            <!-- Material -->
+            <!-- Apache Commons -->
             <dependency>
-                <groupId>com.google.android.material</groupId>
-                <artifactId>material</artifactId>
-                <version>${material.version}</version>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons.lang.version}</version>
             </dependency>
             <!-- Dagger -->
             <dependency>
@@ -280,22 +224,29 @@
                 <artifactId>dagger-compiler</artifactId>
                 <version>${dagger.version}</version>
             </dependency>
+            <!-- ExoPlayer -->
+            <dependency>
+                <groupId>com.google.android.exoplayer</groupId>
+                <artifactId>exoplayer-core</artifactId>
+                <version>${exoplayer.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.android.exoplayer</groupId>
+                <artifactId>exoplayer-ui</artifactId>
+                <version>${exoplayer.version}</version>
+            </dependency>
+            <!-- Facebook -->
+            <dependency>
+                <groupId>com.facebook.android</groupId>
+                <artifactId>facebook-android-sdk</artifactId>
+                <version>${facebook.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.facebook.android</groupId>
+                <artifactId>facebook-login</artifactId>
+                <version>${facebook.version}</version>
+            </dependency>
             <!-- Firebase -->
-            <dependency>
-                <groupId>com.google.android.gms</groupId>
-                <artifactId>play-services-base</artifactId>
-                <version>${play.services.base.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.firebase</groupId>
-                <artifactId>firebase-core</artifactId>
-                <version>${firebase.core.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.gms</groupId>
-                <artifactId>google-services</artifactId>
-                <version>${google.services.version}</version>
-            </dependency>
             <dependency>
                 <groupId>com.crashlytics.sdk.android</groupId>
                 <artifactId>crashlytics</artifactId>
@@ -308,13 +259,186 @@
             </dependency>
             <dependency>
                 <groupId>com.google.firebase</groupId>
+                <artifactId>firebase-core</artifactId>
+                <version>${firebase.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.firebase</groupId>
                 <artifactId>firebase-messaging</artifactId>
                 <version>${firebase.messaging.version}</version>
+            </dependency>
+             <dependency>
+                <groupId>com.google.gms</groupId>
+                <artifactId>google-services</artifactId>
+                <version>${google.services.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.fabric.tools</groupId>
                 <artifactId>gradle</artifactId>
                 <version>${fabric.tools.version}</version>
+            </dependency>
+            <!-- Glide -->
+            <dependency>
+                <groupId>com.github.bumptech.glide</groupId>
+                <artifactId>annotations</artifactId>
+                <version>${glide.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.bumptech.glide</groupId>
+                <artifactId>compiler</artifactId>
+                <version>${glide.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.bumptech.glide</groupId>
+                <artifactId>glide</artifactId>
+                <version>${glide.version}</version>
+            </dependency>
+            <!-- Google API -->
+            <dependency>
+                <groupId>com.google.android.libraries.places</groupId>
+                <artifactId>places</artifactId>
+                <version>${google.places.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.maps.android</groupId>
+                <artifactId>android-maps-utils</artifactId>
+                <version>${google.maps.utils.version}</version>
+            </dependency>
+            <!-- JSR-310 -->
+            <dependency>
+                <groupId>com.jakewharton.threetenabp</groupId>
+                <artifactId>threetenabp</artifactId>
+                <version>${threetenabp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.threeten</groupId>
+                <artifactId>threetenbp</artifactId>
+                <version>${threetenbp.version}</version>
+            </dependency>
+            <!-- Kotlin -->
+            <dependency>
+                <groupId>org.jetbrains.kotlinx</groupId>
+                <artifactId>kotlinx-coroutines-android</artifactId>
+                <version>${kotlin.coroutines.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlinx</groupId>
+                <artifactId>kotlinx-coroutines-core</artifactId>
+                <version>${kotlin.coroutines.version}</version>
+            </dependency>
+            <!-- Logging -->
+            <dependency>
+                <groupId>com.noveogroup.android</groupId>
+                <artifactId>android-logger</artifactId>
+                <version>${android.logger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.microutils</groupId>
+                <artifactId>kotlin-logging</artifactId>
+                <version>${kotlin.logging.version}</version>
+            </dependency>
+             <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-nop</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <!-- Material -->
+            <dependency>
+                <groupId>com.google.android.material</groupId>
+                <artifactId>material</artifactId>
+                <version>${material.version}</version>
+            </dependency>
+            <!-- Play Services -->
+            <dependency>
+                <groupId>com.google.android.gms</groupId>
+                <artifactId>play-services-auth</artifactId>
+                <version>${play.services.auth.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.android.gms</groupId>
+                <artifactId>play-services-base</artifactId>
+                <version>${play.services.base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.android.gms</groupId>
+                <artifactId>play-services-location</artifactId>
+                <version>${play.services.location.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.android.gms</groupId>
+                <artifactId>play-services-maps</artifactId>
+                <version>${play.services.maps.version}</version>
+            </dependency>
+            <!-- Spaceship -->
+            <dependency>
+                <groupId>it.scoppelletti.spaceship</groupId>
+                <artifactId>spaceship-gms</artifactId>
+                <version>${spaceship.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.scoppelletti.spaceship</groupId>
+                <artifactId>spaceship-gradle</artifactId>
+                <version>${spaceship.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.scoppelletti.spaceship</groupId>
+                <artifactId>spaceship-gradle-android</artifactId>
+                <version>${spaceship.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.scoppelletti.spaceship</groupId>
+                <artifactId>spaceship-gradle-java</artifactId>
+                <version>${spaceship.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.scoppelletti.spaceship</groupId>
+                <artifactId>spaceship-html</artifactId>
+                <version>${spaceship.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.scoppelletti.spaceship</groupId>
+                <artifactId>spaceship-http</artifactId>
+                <version>${spaceship.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.scoppelletti.spaceship</groupId>
+                <artifactId>spaceship-http-ui</artifactId>
+                <version>${spaceship.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.scoppelletti.spaceship</groupId>
+                <artifactId>spaceship-json</artifactId>
+                <version>${spaceship.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.scoppelletti.spaceship</groupId>
+                <artifactId>spaceship-preference</artifactId>
+                <version>${spaceship.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.scoppelletti.spaceship</groupId>
+                <artifactId>spaceship-security</artifactId>
+                <version>${spaceship.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.scoppelletti.spaceship</groupId>
+                <artifactId>spaceship-stdlib</artifactId>
+                <version>${spaceship.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.scoppelletti.spaceship</groupId>
+                <artifactId>spaceship-ui</artifactId>
+                <version>${spaceship.version}</version>
             </dependency>
             <!-- SquareUp -->
             <dependency>
@@ -345,44 +469,7 @@
             <dependency>
                 <groupId>com.squareup.retrofit2</groupId>
                 <artifactId>converter-moshi</artifactId>
-                <version>${retrofit2.version}</version>
-            </dependency>
-            <!-- Facebook -->
-            <dependency>
-                <groupId>com.facebook.android</groupId>
-                <artifactId>facebook-android-sdk</artifactId>
-                <version>${facebook.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.facebook.android</groupId>
-                <artifactId>facebook-login</artifactId>
-                <version>${facebook.version}</version>
-            </dependency>
-            <!-- Logging -->
-            <dependency>
-                <groupId>com.noveogroup.android</groupId>
-                <artifactId>android-logger</artifactId>
-                <version>${android.logger.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.github.microutils</groupId>
-                <artifactId>kotlin-logging</artifactId>
-                <version>${kotlin.logging.version}</version>
-            </dependency>
-             <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-nop</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-simple</artifactId>
-                <version>${slf4j.version}</version>
+                <version>${retrofit.version}</version>
             </dependency>
             <!-- Test -->
             <dependency>
@@ -402,9 +489,25 @@
                 <version>${gradle.versions.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.jetbrains.dokka</groupId>
+                <artifactId>dokka-gradle-plugin</artifactId>
+                <version>${dokka.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
+            </dependency>
+            <!-- ZXIng -->
+            <dependency>
+                <groupId>com.google.zxing</groupId>
+                <artifactId>core</artifactId>
+                <version>${zxing.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.journeyapps</groupId>
+                <artifactId>zxing-android-embedded</artifactId>
+                <version>${zxing.android.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -417,7 +520,7 @@
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
-                <checksumPolicy>fails</checksumPolicy>
+                <checksumPolicy>fail</checksumPolicy>
             </releases>
             <snapshots>
                 <enabled>false</enabled>

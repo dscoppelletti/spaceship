@@ -68,7 +68,6 @@ dependencies {
     api 'androidx.lifecycle:lifecycle-viewmodel-ktx'
     api 'androidx.recyclerview:recyclerview'
     api 'androidx.swiperefreshlayout:swiperefreshlayout'
-    api 'androidx.viewpager:viewpager'
     api 'com.google.android.material:material'
     api 'com.google.dagger:dagger'
     kapt 'com.google.dagger:dagger-compiler'

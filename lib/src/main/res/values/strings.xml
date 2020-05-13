@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="it_scoppelletti_cmd_agree">Agree</string>
+    <string name="it_scoppelletti_cmd_back">Back</string>
+    <string name="it_scoppelletti_cmd_delete">Delete</string>
+    <string name="it_scoppelletti_cmd_dontSave">Do not save</string>
+    <string name="it_scoppelletti_cmd_edit">Edit</string>
+    <string name="it_scoppelletti_cmd_list">List</string>
+    <string name="it_scoppelletti_cmd_new">New</string>
+    <string name="it_scoppelletti_cmd_open">Open</string>
+    <string name="it_scoppelletti_cmd_save">Save</string>
+    <string name="it_scoppelletti_cmd_update">Update</string>
+    <string name="it_scoppelletti_err_clipoardNotSupported">Clipboard not supported.</string>
+    <string name="it_scoppelletti_err_dateFormat">The date must comply the format %1$s.</string>
+    <string name="it_scoppelletti_err_decimalFormat">The value must be a decimal number.</string>
+    <string name="it_scoppelletti_err_intFormat">The value must be an integer number.</string>
+    <string name="it_scoppelletti_err_packageNotFound">Package %1$s not found.</string>
+    <string name="it_scoppelletti_err_security">Security failure.</string>
+    <string name="it_scoppelletti_err_startActivity">Failed to start activity.</string>
+    <string name="it_scoppelletti_err_timeFormat">The time must comply the format %1$s.</string>
+    <string name="it_scoppelletti_field_day">dd</string>
+    <string name="it_scoppelletti_field_month">MM</string>
+    <string name="it_scoppelletti_field_year">yyyy</string>
+    <string name="it_scoppelletti_lbl_class">Class</string>
+    <string name="it_scoppelletti_lbl_message">Message</string>
+    <string name="it_scoppelletti_prompt_saveChanges">Do you want to save the changes?</string>
+    <string name="it_scoppelletti_url_privacy">http://policies.google.com/privacy</string>
+</resources>

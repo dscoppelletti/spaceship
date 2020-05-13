@@ -1,0 +1,48 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="108dp"
+        android:height="108dp"
+        android:viewportWidth="128"
+        android:viewportHeight="128">
+    <group android:translateX="32"
+            android:translateY="32">
+        <!-- nose -->
+        <path android:fillColor="#A4C639"
+            android:pathData="M24,13l8,-13l8,13z" />
+        <!-- windscreen -->
+        <path android:fillColor="#FFFFFF"
+            android:pathData="M28,11l4,-4l4,4z" />          
+        <!-- left antenna -->
+        <path android:fillColor="#A4C639"
+            android:pathData="M16,27v6a2,2 0 0,0 4,0v-6a2,2 1 0,0 -4,0" />
+        <!-- right antenna -->
+        <path android:fillColor="#A4C639"
+            android:pathData="M44,27v6a2,2 0 0,0 4,0v-6a2,2 1 0,0 -4,0" />
+        <!-- left head -->
+        <path android:fillColor="#A4C639"
+            android:pathData="M8,48a16,16 0 0,1 16,-16v16z" />
+        <!-- right head -->
+        <path android:fillColor="#A4C639"
+            android:pathData="M40,32a16,16 0 0,1 16,16h-16z" />
+        <!-- left eye -->
+        <path android:fillColor="#FFFFFF"
+            android:pathData="M16,38l4,0l0,4l-4,0z" />
+        <!-- right eye -->
+        <path android:fillColor="#FFFFFF"
+            android:pathData="M44,38l4,0l0,4l-4,0z" />
+        <!-- trunk -->
+        <path android:fillColor="#A4C639"
+            android:pathData="M24,15h16v44a4,4 0 0,1 -4,4h-8a4,4 0 0,1 -4,-4z" />
+        <!-- left arm -->
+        <path android:fillColor="#A4C639"
+            android:pathData="M0,32v18a4,4 0 0,0 8,0v-18a4,4 1 0,0 -8,0" />
+        <!-- right arm -->
+        <path android:fillColor="#A4C639"
+            android:pathData="M56,32v18a4,4 0 0,0 8,0v-18a4,4 1 0,0 -8,0" />    
+        <!-- left leg -->
+        <path android:fillColor="#A4C639"
+            android:pathData="M14,50v10a4,4 0 0,0 8,0v-10z" />
+        <!-- right leg -->
+        <path android:fillColor="#A4C639"
+            android:pathData="M42,50v10a4,4 0 0,0 8,0v-10z" />    
+    </group>
+</vector>

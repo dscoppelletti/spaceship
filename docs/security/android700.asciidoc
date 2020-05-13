@@ -1,0 +1,381 @@
+= Security Providers =
+
+Emulator::
+    Genymotion 2.12.1
+Device::
+    Samsung Galaxy S8
+System::
+    Android 7.0.0
+
+== Provider AndroidKeyStore ==
+
+=== Service KeyFactory ===
+
+* EC
+* RSA
+
+=== Service KeyGenerator ===
+
+* AES
+* HmacSHA1
+* HmacSHA224
+* HmacSHA256
+* HmacSHA384
+* HmacSHA512
+
+=== Service KeyPairGenerator ===
+
+* EC
+* RSA
+
+=== Service KeyStore ===
+
+* AndroidKeyStore
+
+=== Service SecretKeyFactory ===
+
+* AES
+* HmacSHA1
+* HmacSHA224
+* HmacSHA256
+* HmacSHA384
+* HmacSHA512
+
+== Provider AndroidKeyStoreBCWorkaround ==
+
+=== Service Cipher ===
+
+* AES/CBC/NoPadding
+* AES/CBC/PKCS7Padding
+* AES/CTR/NoPadding
+* AES/ECB/NoPadding
+* AES/ECB/PKCS7Padding
+* AES/GCM/NoPadding
+* RSA/ECB/NoPadding
+* RSA/ECB/OAEPPadding
+* RSA/ECB/OAEPWithSHA-1AndMGF1Padding
+* RSA/ECB/OAEPWithSHA-224AndMGF1Padding
+* RSA/ECB/OAEPWithSHA-256AndMGF1Padding
+* RSA/ECB/OAEPWithSHA-384AndMGF1Padding
+* RSA/ECB/OAEPWithSHA-512AndMGF1Padding
+* RSA/ECB/PKCS1Padding
+
+=== Service Mac ===
+
+* HmacSHA1
+* HmacSHA224
+* HmacSHA256
+* HmacSHA384
+* HmacSHA512
+
+=== Service Signature ===
+
+* MD5withRSA
+* NONEwithECDSA
+* NONEwithRSA
+* SHA1withECDSA
+* SHA1withRSA
+* SHA1withRSA/PSS
+* SHA224withECDSA
+* SHA224withRSA
+* SHA224withRSA/PSS
+* SHA256withECDSA
+* SHA256withRSA
+* SHA256withRSA/PSS
+* SHA384withECDSA
+* SHA384withRSA
+* SHA384withRSA/PSS
+* SHA512withECDSA
+* SHA512withRSA
+* SHA512withRSA/PSS
+
+== Provider AndroidNSSP ==
+
+=== Service TrustManagerFactory ===
+
+* PKIX
+
+== Provider AndroidOpenSSL ==
+
+=== Service CertificateFactory ===
+
+* X509
+
+=== Service Cipher ===
+
+* AES/CBC/NoPadding
+* AES/CBC/PKCS5Padding
+* AES/CTR/NoPadding
+* AES/ECB/NoPadding
+* AES/ECB/PKCS5Padding
+* AES/GCM/NoPadding
+* ARC4
+* DESEDE/CBC/NoPadding
+* DESEDE/CBC/PKCS5Padding
+* RSA/ECB/NoPadding
+* RSA/ECB/PKCS1Padding
+
+=== Service KeyAgreement ===
+
+* ECDH
+
+=== Service KeyFactory ===
+
+* EC
+* RSA
+
+=== Service KeyPairGenerator ===
+
+* EC
+* RSA
+
+=== Service Mac ===
+
+* HmacMD5
+* HmacSHA1
+* HmacSHA224
+* HmacSHA256
+* HmacSHA384
+* HmacSHA512
+
+=== Service MessageDigest ===
+
+* MD5
+* SHA-1
+* SHA-224
+* SHA-256
+* SHA-384
+* SHA-512
+
+=== Service SSLContext ===
+
+* Default
+* SSL
+* SSLv3
+* TLS
+* TLSv1
+* TLSv1.1
+* TLSv1.2
+
+=== Service SecureRandom ===
+
+* SHA1PRNG
+
+=== Service Signature ===
+
+* MD5WithRSA
+* NONEwithRSA
+* SHA1WithRSA
+* SHA1withECDSA
+* SHA1withRSA/PSS
+* SHA224WithRSA
+* SHA224withECDSA
+* SHA224withRSA/PSS
+* SHA256WithRSA
+* SHA256withECDSA
+* SHA256withRSA/PSS
+* SHA384WithRSA
+* SHA384withECDSA
+* SHA384withRSA/PSS
+* SHA512WithRSA
+* SHA512withECDSA
+* SHA512withRSA/PSS
+
+== Provider BC ==
+
+=== Service AlgorithmParameterGenerator ===
+
+* DH
+* DSA
+
+=== Service AlgorithmParameters ===
+
+* AES
+* BLOWFISH
+* DES
+* DESEDE
+* DH
+* DSA
+* GCM
+* OAEP
+* PKCS12PBE
+* PSS
+
+=== Service CertPathBuilder ===
+
+* PKIX
+
+=== Service CertPathValidator ===
+
+* PKIX
+
+=== Service CertStore ===
+
+* Collection
+
+=== Service CertificateFactory ===
+
+* X.509
+
+=== Service Cipher ===
+
+* AES
+* AES/GCM/NOPADDING
+* AESWRAP
+* ARC4
+* BLOWFISH
+* DES
+* DESEDE
+* DESEDEWRAP
+* PBEWITHMD5AND128BITAES-CBC-OPENSSL
+* PBEWITHMD5AND192BITAES-CBC-OPENSSL
+* PBEWITHMD5AND256BITAES-CBC-OPENSSL
+* PBEWITHMD5ANDDES
+* PBEWITHMD5ANDRC2
+* PBEWITHSHA1ANDDES
+* PBEWITHSHA1ANDRC2
+* PBEWITHSHA256AND128BITAES-CBC-BC
+* PBEWITHSHA256AND192BITAES-CBC-BC
+* PBEWITHSHA256AND256BITAES-CBC-BC
+* PBEWITHSHAAND128BITAES-CBC-BC
+* PBEWITHSHAAND128BITRC2-CBC
+* PBEWITHSHAAND128BITRC4
+* PBEWITHSHAAND192BITAES-CBC-BC
+* PBEWITHSHAAND2-KEYTRIPLEDES-CBC
+* PBEWITHSHAAND256BITAES-CBC-BC
+* PBEWITHSHAAND3-KEYTRIPLEDES-CBC
+* PBEWITHSHAAND40BITRC2-CBC
+* PBEWITHSHAAND40BITRC4
+* PBEWITHSHAANDTWOFISH-CBC
+* RSA
+
+=== Service KeyAgreement ===
+
+* DH
+* ECDH
+
+=== Service KeyFactory ===
+
+* DH
+* DSA
+* EC
+* RSA
+
+=== Service KeyGenerator ===
+
+* AES
+* ARC4
+* BLOWFISH
+* DES
+* DESEDE
+* HMACMD5
+* HMACSHA1
+* HMACSHA224
+* HMACSHA256
+* HMACSHA384
+* HMACSHA512
+
+=== Service KeyPairGenerator ===
+
+* DH
+* DSA
+* EC
+* RSA
+
+=== Service KeyStore ===
+
+* BKS
+* BouncyCastle
+* PKCS12
+
+=== Service Mac ===
+
+* HMACMD5
+* HMACSHA1
+* HMACSHA224
+* HMACSHA256
+* HMACSHA384
+* HMACSHA512
+* PBEWITHHMACSHA
+* PBEWITHHMACSHA1
+
+=== Service MessageDigest ===
+
+* MD5
+* SHA-1
+* SHA-224
+* SHA-256
+* SHA-384
+* SHA-512
+
+=== Service SecretKeyFactory ===
+
+* DES
+* DESEDE
+* PBEWITHHMACSHA1
+* PBEWITHMD5AND128BITAES-CBC-OPENSSL
+* PBEWITHMD5AND192BITAES-CBC-OPENSSL
+* PBEWITHMD5AND256BITAES-CBC-OPENSSL
+* PBEWITHMD5ANDDES
+* PBEWITHMD5ANDRC2
+* PBEWITHSHA1ANDDES
+* PBEWITHSHA1ANDRC2
+* PBEWITHSHA256AND128BITAES-CBC-BC
+* PBEWITHSHA256AND192BITAES-CBC-BC
+* PBEWITHSHA256AND256BITAES-CBC-BC
+* PBEWITHSHAAND128BITAES-CBC-BC
+* PBEWITHSHAAND128BITRC2-CBC
+* PBEWITHSHAAND128BITRC4
+* PBEWITHSHAAND192BITAES-CBC-BC
+* PBEWITHSHAAND2-KEYTRIPLEDES-CBC
+* PBEWITHSHAAND256BITAES-CBC-BC
+* PBEWITHSHAAND3-KEYTRIPLEDES-CBC
+* PBEWITHSHAAND40BITRC2-CBC
+* PBEWITHSHAAND40BITRC4
+* PBEWITHSHAANDTWOFISH-CBC
+* PBKDF2WithHmacSHA1
+* PBKDF2WithHmacSHA1And8BIT
+
+=== Service Signature ===
+
+* MD5WITHRSA
+* NONEWITHDSA
+* NONEwithECDSA
+* SHA1WITHRSA
+* SHA1withDSA
+* SHA1withECDSA
+* SHA224WITHDSA
+* SHA224WITHECDSA
+* SHA224WITHRSA
+* SHA256WITHDSA
+* SHA256WITHECDSA
+* SHA256WITHRSA
+* SHA384WITHECDSA
+* SHA384WITHRSA
+* SHA512WITHECDSA
+* SHA512WITHRSA
+
+== Provider CertPathProvider ==
+
+=== Service CertPathBuilder ===
+
+* PKIX
+
+=== Service CertPathValidator ===
+
+* PKIX
+
+== Provider HarmonyJSSE ==
+
+=== Service KeyManagerFactory ===
+
+* PKIX
+
+=== Service KeyStore ===
+
+* AndroidCAStore
+
+=== Service TrustManagerFactory ===
+
+* PKIX
+

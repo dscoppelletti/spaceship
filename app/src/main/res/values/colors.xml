@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <eat-comment />
+    <!-- Primary: Indigo (500, 700) -->
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryVariant">#303F9F</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <!-- Secondary: Pink (A200, A400) -->
+    <color name="colorSecondary">#FF4081</color>
+    <color name="colorSecondaryVariant">#F50057</color>
+    <color name="colorOnSecondary">#FFFFFF</color>
+</resources>

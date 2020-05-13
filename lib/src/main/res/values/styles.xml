@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2015 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <eat-comment />
+    <!-- Image button -->
+    <style name="Widget.Scoppelletti.Button.ImageButton"
+        parent="Widget.MaterialComponents.Button.TextButton.Icon">
+        <item name="android:minWidth">@dimen/it_scoppelletti_imageButton_size</item>
+        <item name="android:minHeight">@dimen/it_scoppelletti_imageButton_size</item>
+        <item name="android:paddingLeft">@dimen/it_scoppelletti_imageButton_padding</item>
+        <item name="android:paddingRight">@dimen/it_scoppelletti_imageButton_padding</item>
+        <item name="android:paddingTop">@dimen/it_scoppelletti_imageButton_padding</item>
+        <item name="android:paddingBottom">@dimen/it_scoppelletti_imageButton_padding</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="cornerRadius">@dimen/it_scoppelletti_imageButton_cornerRadius</item>
+        <item name="iconPadding">0dp</item>
+    </style>
+    <!-- Filter chip group -->
+    <style name="Widget.Scoppelletti.ChipGroup.Filter"
+        parent="Widget.MaterialComponents.ChipGroup">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Scoppelletti.ChipGroup.Filter</item>
+    </style>
+    <!-- Primary title -->
+    <style name="Widget.Scoppelletti.TextView.PrimaryTitle"
+        parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAppearance">?attr/textAppearanceHeadline5</item>
+    </style>
+    <!-- Secondary title -->
+    <style name="Widget.Scoppelletti.TextView.SecondaryTitle"
+        parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
+    </style>
+    <!-- Primary text -->
+    <style name="Widget.Scoppelletti.TextView.PrimaryText"
+        parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+    </style>
+    <!-- Secondary text -->
+    <style name="Widget.Scoppelletti.TextView.SecondaryText"
+        parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAppearance">?attr/textAppearanceBody2</item>
+    </style>
+    <!-- Overline -->
+    <style name="Widget.Scoppelletti.TextView.Overline"
+        parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAppearance">?attr/textAppearanceOverline</item>
+    </style>
+</resources>

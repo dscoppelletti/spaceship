@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingRight="@dimen/it_scoppelletti_marginHorz"
+    android:paddingLeft="@dimen/it_scoppelletti_marginHorz"
+    android:paddingTop="@dimen/it_scoppelletti_marginVert"
+    android:paddingBottom="@dimen/it_scoppelletti_marginVert"
+    tools:context=".BottomDialogFragment">
+    <TextView android:id="@+id/txtMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/it_scoppelletti_prompt_saveChanges"
+        style="@style/Widget.Scoppelletti.TextView.PrimaryText"
+        tools:text="Message." />
+</FrameLayout>

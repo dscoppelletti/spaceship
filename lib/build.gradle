@@ -1,0 +1,86 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'org.jetbrains.dokka'
+apply plugin: 'it.scoppelletti.spaceship.spaceship-gradle-android'
+
+group 'it.scoppelletti.spaceship'
+description 'Spaceship'
+archivesBaseName = 'spaceship'
+
+android {
+    compileSdkVersion sdk_target
+    defaultConfig {
+        minSdkVersion sdk_min
+        targetSdkVersion sdk_target
+        versionCode 1
+        versionName '1.0.0'
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            consumerProguardFiles 'consumer-rules.pro'
+            debuggable false
+        }
+        debug {
+            minifyEnabled false
+            debuggable true
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dataBinding {
+        enabled = true
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+spaceship {
+    url = 'http://github.com/dscoppelletti/spaceship'
+    scmUrl = 'git@github.com:dscoppelletti/spaceship.git'
+    inceptionYear = '2013-2020'
+}
+
+configurations {
+    bom
+    api.extendsFrom(bom)
+    kapt.extendsFrom(bom)
+}
+
+dependencies {
+    bom platform(BOM)
+    api 'androidx.activity:activity-ktx'
+    api 'androidx.annotation:annotation'
+    api 'androidx.appcompat:appcompat'
+    api 'androidx.constraintlayout:constraintlayout'
+    kapt "androidx.databinding:databinding-compiler:${android_gradle_version}"
+    api 'androidx.fragment:fragment-ktx'
+    api 'androidx.lifecycle:lifecycle-common-java8'
+    api 'androidx.lifecycle:lifecycle-livedata-ktx'
+    api 'androidx.lifecycle:lifecycle-runtime-ktx'
+    api 'androidx.lifecycle:lifecycle-viewmodel-ktx'
+    api 'androidx.recyclerview:recyclerview'
+    api 'androidx.swiperefreshlayout:swiperefreshlayout'
+    api 'com.google.android.material:material'
+    api 'com.google.dagger:dagger'
+    kapt 'com.google.dagger:dagger-compiler'
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core'
+    api 'org.threeten:threetenbp::no-tzdb'
+    api 'it.scoppelletti.spaceship:spaceship-stdlib'
+    implementation 'androidx.preference:preference'
+    implementation 'io.github.microutils:kotlin-logging'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android'
+    implementation 'org.slf4j:slf4j-api'
+}
+
+

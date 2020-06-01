@@ -18,7 +18,7 @@
 
 package it.scoppelletti.spaceship.inject
 
-import it.scoppelletti.spaceship.i18n.UIMessages
+import it.scoppelletti.spaceship.i18n.AppMessages
 import it.scoppelletti.spaceship.lifecycle.ViewModelProviderEx
 
 /**
@@ -26,9 +26,9 @@ import it.scoppelletti.spaceship.lifecycle.ViewModelProviderEx
  *
  * @since 1.0.0
  */
-public interface UIComponent {
+public interface AppComponent {
 
-    fun uiMessages(): UIMessages
+    fun appMessages(): AppMessages
 
     fun viewModelProvider(): ViewModelProviderEx
 }
@@ -38,7 +38,7 @@ public interface UIComponent {
  *
  * @since 1.0.0
  */
-public interface UIComponentProvider : StdlibComponentProvider {
+public interface AppComponentProvider : StdlibComponentProvider {
 
-    fun uiComponent(): UIComponent
+    fun appComponent(): AppComponent
 }

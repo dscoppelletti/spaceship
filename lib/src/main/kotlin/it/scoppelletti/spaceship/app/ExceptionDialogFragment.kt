@@ -85,7 +85,7 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
         super.onActivityCreated(savedInstanceState)
 
         activity = requireActivity()
-        viewModelProvider = activity.uiComponent().viewModelProvider()
+        viewModelProvider = activity.appComponent().viewModelProvider()
         activityModel = ViewModelProvider(activity)
                 .get(ExceptionActivityModel::class.java)
         viewModel = viewModelProvider.get(this,

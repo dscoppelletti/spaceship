@@ -18,6 +18,9 @@ android {
         versionName '1.0.0'
         vectorDrawables.useSupportLibrary = true
     }
+    buildFeatures {
+        dataBinding = true
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -32,9 +35,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-    dataBinding {
-        enabled = true
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
@@ -62,7 +62,6 @@ dependencies {
     api 'androidx.annotation:annotation'
     api 'androidx.appcompat:appcompat'
     api 'androidx.constraintlayout:constraintlayout'
-    kapt "androidx.databinding:databinding-compiler:${android_gradle_version}"
     api 'androidx.fragment:fragment-ktx'
     api 'androidx.lifecycle:lifecycle-common-java8'
     api 'androidx.lifecycle:lifecycle-livedata-ktx'
@@ -82,5 +81,3 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android'
     implementation 'org.slf4j:slf4j-api'
 }
-
-

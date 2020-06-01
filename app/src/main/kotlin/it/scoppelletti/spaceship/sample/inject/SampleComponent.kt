@@ -4,19 +4,19 @@ import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
 import it.scoppelletti.spaceship.inject.StdlibComponent
-import it.scoppelletti.spaceship.inject.UIComponent
-import it.scoppelletti.spaceship.inject.UIModule
+import it.scoppelletti.spaceship.inject.AppComponent
+import it.scoppelletti.spaceship.inject.AppModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [ UIModule::class ])
-interface AppComponent : StdlibComponent, UIComponent {
+@Component(modules = [ AppModule::class ])
+interface SampleComponent : StdlibComponent, AppComponent {
 
     @Component.Factory
     interface Factory {
         fun create(
                 @BindsInstance
                 application: Application
-        ): AppComponent
+        ): SampleComponent
     }
 }

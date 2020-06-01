@@ -102,7 +102,7 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
         super.onActivityCreated(savedInstanceState)
 
         activity = requireActivity()
-        viewModelProvider = activity.uiComponent().viewModelProvider()
+        viewModelProvider = activity.appComponent().viewModelProvider()
         activityModel = ViewModelProvider(activity)
                 .get(AlertActivityModel::class.java)
         viewModel = viewModelProvider.get(this, AlertDialogModel::class.java)

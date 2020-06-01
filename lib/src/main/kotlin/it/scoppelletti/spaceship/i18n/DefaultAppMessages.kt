@@ -27,9 +27,9 @@ import javax.inject.Inject
  *
  * @since 1.0.0
  */
-public class DefaultUIMessages @Inject constructor(
+public class DefaultAppMessages @Inject constructor(
         private val resources: Resources
-) : UIMessages {
+) : AppMessages {
 
     override fun errorClipboardNotSupported(): MessageSpec =
             AndroidResourceMessageSpec.of(resources,

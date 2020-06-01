@@ -23,7 +23,7 @@ package it.scoppelletti.spaceship.i18n
  *
  * @since 1.0.0
  */
-public interface UIMessages {
+public interface AppMessages {
 
     fun errorClipboardNotSupported(): MessageSpec
 

@@ -13,8 +13,8 @@ import it.scoppelletti.spaceship.app.showAlertDialog
 import it.scoppelletti.spaceship.app.showDateDialog
 import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.app.showTimeDialog
-import it.scoppelletti.spaceship.app.uiComponent
-import it.scoppelletti.spaceship.i18n.UIMessages
+import it.scoppelletti.spaceship.app.appComponent
+import it.scoppelletti.spaceship.i18n.AppMessages
 import kotlinx.android.synthetic.main.main_activity.*
 import mu.KotlinLogging
 import org.threeten.bp.LocalDate
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity(), OnDialogResultListener,
         DateDialogFragment.OnDateSetListener,
         TimeDialogFragment.OnTimeSetListener {
 
-    private lateinit var uiMessages: UIMessages
+    private lateinit var appMessages: AppMessages
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(), OnDialogResultListener,
         setContentView(R.layout.main_activity)
         setSupportActionBar(toolbar)
 
-        uiMessages = uiComponent().uiMessages()
+        appMessages = appComponent().appMessages()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity(), OnDialogResultListener,
             R.id.cmd_alertDialog -> {
                 showAlertDialog {
                     message {
-                        uiMessages.promptSaveChanges()
+                        appMessages.promptSaveChanges()
                     }
                     positiveActionTextId {
                         R.string.it_scoppelletti_cmd_save
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity(), OnDialogResultListener,
 
             R.id.cmd_error -> {
                 showExceptionDialog(
-                        ApplicationException(uiMessages.errorStartActivity(),
+                        ApplicationException(appMessages.errorStartActivity(),
                                 RuntimeException("Test exception.")))
                 return true
             }

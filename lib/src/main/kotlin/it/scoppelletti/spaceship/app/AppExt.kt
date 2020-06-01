@@ -24,8 +24,8 @@ import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.UiThread
-import it.scoppelletti.spaceship.inject.UIComponent
-import it.scoppelletti.spaceship.inject.UIComponentProvider
+import it.scoppelletti.spaceship.inject.AppComponent
+import it.scoppelletti.spaceship.inject.AppComponentProvider
 import it.scoppelletti.spaceship.inject.StdlibComponent
 import it.scoppelletti.spaceship.inject.StdlibComponentProvider
 
@@ -89,8 +89,8 @@ public object AppExt {
  * @return   The object.
  * @since    1.0.0
  */
-public fun Activity.uiComponent(): UIComponent =
-        (this.application as UIComponentProvider).uiComponent()
+public fun Activity.appComponent(): AppComponent =
+        (this.application as AppComponentProvider).appComponent()
 
 /**
  * Returns the `StdlibComponent` component.

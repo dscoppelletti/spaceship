@@ -25,9 +25,9 @@ import dagger.multibindings.IntoMap
 import it.scoppelletti.spaceship.ApplicationException
 import it.scoppelletti.spaceship.StdlibExt
 import it.scoppelletti.spaceship.i18n.AndroidI18NProvider
-import it.scoppelletti.spaceship.i18n.DefaultUIMessages
+import it.scoppelletti.spaceship.i18n.DefaultAppMessages
 import it.scoppelletti.spaceship.i18n.I18NProvider
-import it.scoppelletti.spaceship.i18n.UIMessages
+import it.scoppelletti.spaceship.i18n.AppMessages
 import it.scoppelletti.spaceship.io.DefaultIOProvider
 import it.scoppelletti.spaceship.io.IOProvider
 import it.scoppelletti.spaceship.lifecycle.AlertDialogModel
@@ -51,7 +51,7 @@ import javax.inject.Named
  * @since 1.0.0
  */
 @Module(includes = [ ContextModule::class, StdlibModule::class ])
-public abstract class UIModule {
+public abstract class AppModule {
 
     @Binds
     public abstract fun bindIOProvider(obj: DefaultIOProvider): IOProvider
@@ -60,7 +60,7 @@ public abstract class UIModule {
     public abstract fun bindI18NProvider(obj: AndroidI18NProvider): I18NProvider
 
     @Binds
-    public abstract fun bindUIMessages(obj: DefaultUIMessages): UIMessages
+    public abstract fun bindUIMessages(obj: DefaultAppMessages): AppMessages
 
     @Binds
     public abstract fun bindViewModelProvider(

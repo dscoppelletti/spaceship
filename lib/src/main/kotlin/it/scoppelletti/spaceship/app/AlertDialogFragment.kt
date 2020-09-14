@@ -31,7 +31,6 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import it.scoppelletti.spaceship.content.res.ResourcesExt
@@ -108,11 +107,11 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
         viewModel = viewModelProvider.get(this, AlertDialogModel::class.java)
 
         @Suppress("FragmentLiveDataObserve")
-        viewModel.message.observe(this, Observer { message ->
+        viewModel.message.observe(this) { message ->
             if (message != null) {
                 (dialog as AlertDialog).setMessage(message)
             }
-        })
+        }
 
         activityModel.message?.let {
             activityModel.message = null

@@ -29,7 +29,6 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import it.scoppelletti.spaceship.ExceptionLogger
@@ -92,11 +91,11 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
                 ExceptionDialogModel::class.java)
 
         @Suppress("FragmentLiveDataObserve")
-        viewModel.state.observe(this, Observer { state ->
+        viewModel.state.observe(this) { state ->
             if (state != null) {
                 adapter.addAll(state.exList)
             }
-        })
+        }
 
         activityModel.ex?.let {
             activityModel.ex = null

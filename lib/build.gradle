@@ -44,6 +44,10 @@ android {
     }
 }
 
+androidExtensions {
+    features = ['parcelize']
+}
+
 spaceship {
     url = 'http://github.com/dscoppelletti/spaceship'
     scmUrl = 'git@github.com:dscoppelletti/spaceship.git'

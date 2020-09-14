@@ -45,9 +45,7 @@ public class TimeDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val ctx = requireContext()
 
-        pickerDlg = TimePickerDialog(ctx,
-                TimePickerDialog.OnTimeSetListener
-                { _, hour, minute ->
+        pickerDlg = TimePickerDialog(ctx, { _, hour, minute ->
                     onTimeSet(hour, minute)
                 }, 0, 0, DateFormat.is24HourFormat(ctx))
 

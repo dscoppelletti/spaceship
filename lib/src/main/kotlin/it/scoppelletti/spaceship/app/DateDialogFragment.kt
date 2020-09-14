@@ -43,7 +43,6 @@ public class DateDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         pickerDlg = DatePickerDialog(requireContext(),
-                DatePickerDialog.OnDateSetListener
                 { _, year, month, dayOfMonth ->
                     onDateSet(year, month, dayOfMonth)
                 }, 1970, 0, 1)

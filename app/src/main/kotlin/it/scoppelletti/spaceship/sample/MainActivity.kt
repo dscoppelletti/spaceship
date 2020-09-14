@@ -15,7 +15,7 @@ import it.scoppelletti.spaceship.app.showExceptionDialog
 import it.scoppelletti.spaceship.app.showTimeDialog
 import it.scoppelletti.spaceship.app.appComponent
 import it.scoppelletti.spaceship.i18n.AppMessages
-import kotlinx.android.synthetic.main.main_activity.*
+import it.scoppelletti.spaceship.sample.databinding.MainActivityBinding
 import mu.KotlinLogging
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalTime
@@ -28,12 +28,14 @@ class MainActivity : AppCompatActivity(), OnDialogResultListener,
         TimeDialogFragment.OnTimeSetListener {
 
     private lateinit var appMessages: AppMessages
+    private lateinit var binding: MainActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.main_activity)
-        setSupportActionBar(toolbar)
+        binding = MainActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
 
         appMessages = appComponent().appMessages()
     }
@@ -46,9 +48,10 @@ class MainActivity : AppCompatActivity(), OnDialogResultListener,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.cmd_save -> {
-                progressIndicator.show()
-                contentFrame.postDelayed({ progressIndicator.hide() },
-                    PROGRESS_DURATION)
+                binding.progressIndicator.show()
+                binding.contentFrame.postDelayed({
+                    binding.progressIndicator.hide()
+                }, PROGRESS_DURATION)
             }
 
             R.id.cmd_alertDialog -> {

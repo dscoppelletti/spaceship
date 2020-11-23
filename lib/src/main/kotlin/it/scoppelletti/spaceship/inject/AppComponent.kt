@@ -34,7 +34,7 @@ public interface AppComponent {
 }
 
 /**
- * Provides the `UIComponent` component.
+ * Provides the `AppComponent` component.
  *
  * @since 1.0.0
  */

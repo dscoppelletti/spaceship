@@ -55,6 +55,11 @@
         parent="Widget.MaterialComponents.TextView">
         <item name="android:textAppearance">?attr/textAppearanceBody2</item>
     </style>
+    <!-- Caption -->
+    <style name="Widget.Scoppelletti.TextView.Caption"
+        parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAppearance">?attr/textAppearanceCaption</item>
+    </style>
     <!-- Overline -->
     <style name="Widget.Scoppelletti.TextView.Overline"
         parent="Widget.MaterialComponents.TextView">

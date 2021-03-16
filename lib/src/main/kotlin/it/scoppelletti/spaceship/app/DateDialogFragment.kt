@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2019 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ * Copyright (C) 2013-2021 Dario Scoppelletti, <http://www.scoppelletti.it/>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,10 +23,12 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
 import androidx.annotation.UiThread
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.setFragmentResult
 import it.scoppelletti.spaceship.i18n.I18NProvider
 import org.threeten.bp.LocalDate
 
@@ -39,24 +41,12 @@ import org.threeten.bp.LocalDate
  */
 public class DateDialogFragment : DialogFragment() {
 
-    private lateinit var pickerDlg: DatePickerDialog
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        pickerDlg = DatePickerDialog(requireContext(),
-                { _, year, month, dayOfMonth ->
-                    onDateSet(year, month, dayOfMonth)
-                }, 1970, 0, 1)
-
-        return pickerDlg
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
         val args: Bundle
         val i18nProvider: I18NProvider
         val epochDay: Long
         val date: LocalDate
-
-        super.onActivityCreated(savedInstanceState)
+        val pickerDlg: DatePickerDialog
 
         args = requireArguments()
         epochDay = args.getLong(DateDialogFragment.PROP_EPOCHDAY,
@@ -68,7 +58,12 @@ public class DateDialogFragment : DialogFragment() {
             LocalDate.ofEpochDay(epochDay)
         }
 
-        pickerDlg.updateDate(date.year, date.monthValue - 1, date.dayOfMonth)
+        pickerDlg = DatePickerDialog(requireContext(),
+                { _, year, month, dayOfMonth ->
+                    onDateSet(year, month, dayOfMonth)
+                }, date.year, date.monthValue - 1, date.dayOfMonth)
+
+        return pickerDlg
     }
 
     /**
@@ -80,11 +75,9 @@ public class DateDialogFragment : DialogFragment() {
      */
     private fun onDateSet(year: Int, month: Int, day: Int) {
         tag?.let { dialogTag ->
-            val parent: DateDialogFragment.OnDateSetListener?
-
-            parent = (parentFragment ?: activity) as?
-                    DateDialogFragment.OnDateSetListener
-            parent?.onDateSet(dialogTag, LocalDate.of(year, month + 1, day))
+            setFragmentResult(dialogTag, bundleOf(
+                    DateDialogFragment.PROP_RESULT to
+                            LocalDate.of(year, month + 1, day)))
         }
     }
 
@@ -95,24 +88,12 @@ public class DateDialogFragment : DialogFragment() {
          */
         public const val TAG: String = AppExt.TAG_DATEDIALOG
 
-        private const val PROP_EPOCHDAY = "1"
-    }
-
-    /**
-     * Handles the date set by the user.
-     *
-     * @since 1.0.0
-     */
-    public interface OnDateSetListener {
-
         /**
-         * This method will be invoked when the user is done filling in the
-         * date.
-         *
-         * @param tag   Fragment tag.
-         * @param value Date set by the user.
+         * Property containing the `LocalDate` object set by the user.
          */
-        fun onDateSet(tag: String, value: LocalDate)
+        public const val PROP_RESULT = AppExt.PROP_RESULT
+
+        private const val PROP_EPOCHDAY = "1"
     }
 
     /**

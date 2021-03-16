@@ -1,5 +1,6 @@
 package it.scoppelletti.spaceship.sample
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -7,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import it.scoppelletti.spaceship.ApplicationException
 import it.scoppelletti.spaceship.app.AlertDialogFragment
 import it.scoppelletti.spaceship.app.DateDialogFragment
-import it.scoppelletti.spaceship.app.OnDialogResultListener
 import it.scoppelletti.spaceship.app.TimeDialogFragment
 import it.scoppelletti.spaceship.app.showAlertDialog
 import it.scoppelletti.spaceship.app.showDateDialog
@@ -23,9 +23,7 @@ import java.lang.RuntimeException
 
 private const val PROGRESS_DURATION = 5000L
 
-class MainActivity : AppCompatActivity(), OnDialogResultListener,
-        DateDialogFragment.OnDateSetListener,
-        TimeDialogFragment.OnTimeSetListener {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var appMessages: AppMessages
     private lateinit var binding: MainActivityBinding
@@ -38,6 +36,27 @@ class MainActivity : AppCompatActivity(), OnDialogResultListener,
         setSupportActionBar(binding.toolbar)
 
         appMessages = appComponent().appMessages()
+
+        supportFragmentManager.setFragmentResultListener(
+                AlertDialogFragment.TAG, this) { _, bundle ->
+            val which = bundle.getInt(AlertDialogFragment.PROP_RESULT,
+                    DialogInterface.BUTTON_NEGATIVE)
+            logger.info { "Dialog result: $which." }
+        }
+
+        supportFragmentManager.setFragmentResultListener(
+                DateDialogFragment.TAG, this) { _, bundle ->
+            val value = bundle.getSerializable(
+                    DateDialogFragment.PROP_RESULT) as? LocalDate
+            logger.info { "Selected date: $value." }
+        }
+
+        supportFragmentManager.setFragmentResultListener(
+                TimeDialogFragment.TAG, this) { _, bundle ->
+            val value = bundle.getSerializable(
+                    DateDialogFragment.PROP_RESULT) as? LocalTime
+            logger.info { "Selected time: $value." }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -92,22 +111,6 @@ class MainActivity : AppCompatActivity(), OnDialogResultListener,
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onDialogResult(tag: String, which: Int) {
-        when (tag) {
-            AlertDialogFragment.TAG -> {
-                logger.info { "Dialog result: $which." }
-            }
-        }
-    }
-
-    override fun onDateSet(tag: String, value: LocalDate) {
-        logger.info { "Selected date: $value." }
-    }
-
-    override fun onTimeSet(tag: String, value: LocalTime) {
-        logger.info { "Selected time: $value." }
     }
 
     private companion object {

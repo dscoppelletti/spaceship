@@ -24,7 +24,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import it.scoppelletti.spaceship.R
 import it.scoppelletti.spaceship.toMessage
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 /**
  * Default implementation of the `ExceptionItem` interface.

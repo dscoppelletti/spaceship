@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2017 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ * Copyright (C) 2013-2021 Dario Scoppelletti, <http://www.scoppelletti.it/>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,6 +80,11 @@ public object AppExt {
      * Property containing a message.
      */
     public const val PROP_MESSAGE = "it.scoppelletti.spaceship.2"
+
+    /**
+     * Property containing a result.
+     */
+    public const val PROP_RESULT = "it.scoppelletti.spaceship.3"
 }
 
 /**

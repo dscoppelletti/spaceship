@@ -25,7 +25,7 @@ import android.widget.TextView
 import it.scoppelletti.spaceship.ApplicationException
 import it.scoppelletti.spaceship.R
 import it.scoppelletti.spaceship.i18n.I18NProvider
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 
 /**

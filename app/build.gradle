@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
@@ -32,10 +31,6 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
-}
-
-androidExtensions {
-    features = ['parcelize']
 }
 
 configurations {

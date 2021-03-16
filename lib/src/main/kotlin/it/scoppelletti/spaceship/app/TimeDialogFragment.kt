@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ * Copyright (C) 2019-2021 Dario Scoppelletti, <http://www.scoppelletti.it/>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,10 +24,12 @@ import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.format.DateFormat
 import androidx.annotation.UiThread
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.setFragmentResult
 import it.scoppelletti.spaceship.i18n.I18NProvider
 import org.threeten.bp.LocalTime
 
@@ -40,25 +42,13 @@ import org.threeten.bp.LocalTime
  */
 public class TimeDialogFragment : DialogFragment() {
 
-    private lateinit var pickerDlg: TimePickerDialog
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val ctx = requireContext()
-
-        pickerDlg = TimePickerDialog(ctx, { _, hour, minute ->
-                    onTimeSet(hour, minute)
-                }, 0, 0, DateFormat.is24HourFormat(ctx))
-
-        return pickerDlg
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
         val args: Bundle
         val i18nProvider: I18NProvider
         val secDay: Int
         val time: LocalTime
-
-        super.onActivityCreated(savedInstanceState)
+        val pickerDlg: TimePickerDialog
+        val ctx = requireContext()
 
         args = requireArguments()
         secDay = args.getInt(TimeDialogFragment.PROP_SECDAY, -1)
@@ -69,7 +59,11 @@ public class TimeDialogFragment : DialogFragment() {
             LocalTime.ofSecondOfDay(secDay.toLong())
         }
 
-        pickerDlg.updateTime(time.hour, time.minute)
+        pickerDlg = TimePickerDialog(ctx, { _, hour, minute ->
+                    onTimeSet(hour, minute)
+                }, time.hour, time.minute, DateFormat.is24HourFormat(ctx))
+
+        return pickerDlg
     }
 
     /**
@@ -80,11 +74,9 @@ public class TimeDialogFragment : DialogFragment() {
      */
     private fun onTimeSet(hour: Int, minute: Int) {
         tag?.let { dialogTag ->
-            val parent: TimeDialogFragment.OnTimeSetListener?
-
-            parent = (parentFragment ?: activity) as?
-                    TimeDialogFragment.OnTimeSetListener
-            parent?.onTimeSet(dialogTag, LocalTime.of(hour, minute))
+            setFragmentResult(dialogTag, bundleOf(
+                    TimeDialogFragment.PROP_RESULT to
+                            LocalTime.of(hour, minute)))
         }
     }
 
@@ -95,24 +87,12 @@ public class TimeDialogFragment : DialogFragment() {
          */
         public const val TAG: String = AppExt.TAG_TIMEDIALOG
 
-        private const val PROP_SECDAY = "1"
-    }
-
-    /**
-     * Handles the date set by the user.
-     *
-     * @since 1.0.0
-     */
-    public interface OnTimeSetListener {
-
         /**
-         * This method will be invoked when the user is done filling in the
-         * time.
-         *
-         * @param tag   Fragment tag.
-         * @param value Time set by the user.
+         * Property containing the `LocalTime` object set by the user.
          */
-        fun onTimeSet(tag: String, value: LocalTime)
+        public const val PROP_RESULT = AppExt.PROP_RESULT
+
+        private const val PROP_SECDAY = "1"
     }
 
     /**

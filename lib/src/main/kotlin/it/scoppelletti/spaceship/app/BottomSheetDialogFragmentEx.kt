@@ -15,18 +15,19 @@
  */
 
 @file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
-        "unused")
+        "RemoveRedundantQualifierName", "unused")
 
 package it.scoppelletti.spaceship.app
 
 import android.content.DialogInterface
 import androidx.annotation.UiThread
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 /**
  * Extended `BottomSheetDialogFragment` fragment.
  *
- * @see   it.scoppelletti.spaceship.app.OnDialogResultListener
  * @since 1.0.0
  */
 @UiThread
@@ -59,11 +60,11 @@ public abstract class BottomSheetDialogFragmentEx :
     private fun onDialogResult(
             @Suppress("UNUSED_PARAMETER") dialog: DialogInterface?,
             which: Int
-    ) = tag?.let { dialogTag ->
-        val parent: OnDialogResultListener?
-
-        parent = (parentFragment ?: activity) as? OnDialogResultListener
-        parent?.onDialogResult(dialogTag, which)
+    ) {
+        tag?.let { dialogTag ->
+            setFragmentResult(dialogTag, bundleOf(
+                    BottomSheetDialogFragmentEx.PROP_RESULT to which))
+        }
     }
 
     public companion object {
@@ -72,5 +73,12 @@ public abstract class BottomSheetDialogFragmentEx :
          * Fragment tag.
          */
         public const val TAG: String = AppExt.TAG_BOTTOMSHEETDIALOG
+
+        /**
+         * Property containing the ID of the button that was clicked (ex.
+         * `DialogInterface.BUTTON_POSITIVE`) or the position of the item
+         * clicked.
+         */
+        public const val PROP_RESULT = AppExt.PROP_RESULT
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2018 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ * Copyright (C) 2013-2021 Dario Scoppelletti, <http://www.scoppelletti.it/>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,10 +27,12 @@ import androidx.annotation.StringRes
 import androidx.annotation.UiThread
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.core.os.bundleOf
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import it.scoppelletti.spaceship.content.res.ResourcesExt
@@ -43,11 +45,10 @@ import it.scoppelletti.spaceship.types.StringExt
 /**
  * Alert dialog.
  *
- * @see   it.scoppelletti.spaceship.app.OnDialogResultListener
  * @since 1.0.0
  */
 @UiThread
-public class AlertDialogFragment : AppCompatDialogFragment() {
+public class AlertDialogFragment : DialogFragment() {
 
     private lateinit var viewModel: AlertDialogModel
 
@@ -56,6 +57,15 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
         val title: String?
         val builder: MaterialAlertDialogBuilder
         var resId: Int
+        val activity: FragmentActivity
+        val activityModel: AlertActivityModel
+        val viewModelProvider: ViewModelProviderEx
+
+        activity = requireActivity()
+        viewModelProvider = activity.appComponent().viewModelProvider()
+        activityModel = ViewModelProvider(activity)
+                .get(AlertActivityModel::class.java)
+        viewModel = viewModelProvider.get(this, AlertDialogModel::class.java)
 
         args = requireArguments()
         builder = MaterialAlertDialogBuilder(requireActivity())
@@ -90,22 +100,6 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
             builder.setIcon(resId)
         }
 
-        return builder.create()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        val activity: FragmentActivity
-        val activityModel: AlertActivityModel
-        val viewModelProvider: ViewModelProviderEx
-
-        super.onActivityCreated(savedInstanceState)
-
-        activity = requireActivity()
-        viewModelProvider = activity.appComponent().viewModelProvider()
-        activityModel = ViewModelProvider(activity)
-                .get(AlertActivityModel::class.java)
-        viewModel = viewModelProvider.get(this, AlertDialogModel::class.java)
-
         @Suppress("FragmentLiveDataObserve")
         viewModel.message.observe(this) { message ->
             if (message != null) {
@@ -117,6 +111,8 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
             activityModel.message = null
             viewModel.load(it)
         }
+
+        return builder.create()
     }
 
     override fun onCancel(dialog: DialogInterface) {
@@ -138,10 +134,8 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
             which: Int
     ) {
         tag?.let { dialogTag ->
-            val parent: OnDialogResultListener?
-
-            parent = (parentFragment ?: activity) as? OnDialogResultListener
-            parent?.onDialogResult(dialogTag, which)
+            setFragmentResult(dialogTag, bundleOf(
+                    AlertDialogFragment.PROP_RESULT to which))
         }
     }
 
@@ -151,6 +145,13 @@ public class AlertDialogFragment : AppCompatDialogFragment() {
          * Fragment tag.
          */
         public const val TAG: String = AppExt.TAG_ALERTDIALOG
+
+        /**
+         * Property containing the ID of the button that was clicked (ex.
+         * `DialogInterface.BUTTON_POSITIVE`) or the position of the item
+         * clicked.
+         */
+        public const val PROP_RESULT = AppExt.PROP_RESULT
 
         private const val PROP_TITLE = "1"
         private const val PROP_TITLEID = "2"

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ * Copyright (C) 2015-2021 Dario Scoppelletti, <http://www.scoppelletti.it/>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,10 +25,11 @@ import android.os.Bundle
 import androidx.annotation.StringRes
 import androidx.annotation.UiThread
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import it.scoppelletti.spaceship.ExceptionLogger
@@ -41,47 +42,26 @@ import it.scoppelletti.spaceship.widget.ExceptionListAdapter
 /**
  * Exception dialog.
  *
- * @see   it.scoppelletti.spaceship.app.OnDialogResultListener
  * @since 1.0.0
  */
 @UiThread
-public class ExceptionDialogFragment : AppCompatDialogFragment() {
+public class ExceptionDialogFragment : DialogFragment() {
 
     private lateinit var viewModel: ExceptionDialogModel
-    private lateinit var adapter: ExceptionListAdapter
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val args: Bundle
         val titleId: Int
         val title: String?
+        val adapter: ExceptionListAdapter
         val builder: MaterialAlertDialogBuilder
-
-        args = requireArguments()
-        title = args.getString(ExceptionDialogFragment.PROP_TITLE)
-        adapter = ExceptionListAdapter(requireContext())
-
-        builder = MaterialAlertDialogBuilder(requireContext())
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setAdapter(adapter, null)
-                .setNegativeButton(android.R.string.cancel, ::onDialogResult)
-
-        if (title.isNullOrBlank()) {
-            titleId = args.getInt(ExceptionDialogFragment.PROP_TITLEID,
-                    android.R.string.dialog_alert_title)
-            builder.setTitle(titleId)
-        } else {
-            builder.setTitle(title)
-        }
-
-        return builder.create()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
         val activity: FragmentActivity
         val activityModel: ExceptionActivityModel
         val viewModelProvider: ViewModelProviderEx
 
-        super.onActivityCreated(savedInstanceState)
+        args = requireArguments()
+        title = args.getString(ExceptionDialogFragment.PROP_TITLE)
+        adapter = ExceptionListAdapter(requireContext())
 
         activity = requireActivity()
         viewModelProvider = activity.appComponent().viewModelProvider()
@@ -101,6 +81,21 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
             activityModel.ex = null
             viewModel.load(it)
         }
+
+        builder = MaterialAlertDialogBuilder(requireContext())
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setAdapter(adapter, null)
+                .setNegativeButton(android.R.string.cancel, ::onDialogResult)
+
+        if (title.isNullOrBlank()) {
+            titleId = args.getInt(ExceptionDialogFragment.PROP_TITLEID,
+                    android.R.string.dialog_alert_title)
+            builder.setTitle(titleId)
+        } else {
+            builder.setTitle(title)
+        }
+
+        return builder.create()
     }
 
     override fun onCancel(dialog: DialogInterface) {
@@ -117,13 +112,10 @@ public class ExceptionDialogFragment : AppCompatDialogFragment() {
      */
     private fun onDialogResult(
             @Suppress("UNUSED_PARAMETER") dialog: DialogInterface?,
-            which: Int
+            @Suppress("UNUSED_PARAMETER") which: Int
     ) {
         tag?.let { dialogTag ->
-            val parent: OnDialogResultListener?
-
-            parent = (parentFragment ?: activity) as? OnDialogResultListener
-            parent?.onDialogResult(dialogTag, which)
+            setFragmentResult(dialogTag, Bundle.EMPTY)
         }
     }
 

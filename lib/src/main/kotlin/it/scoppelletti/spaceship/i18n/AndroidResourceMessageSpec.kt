@@ -43,7 +43,7 @@ public data class AndroidResourceMessageSpec(
 
         public val resourceName: String,
 
-        public val args: Array<Any?>
+        public val args: Array<out Any?>
 ) : MessageSpec {
 
     override fun hashCode(): Int {
@@ -120,7 +120,7 @@ public data class AndroidResourceMessageSpec(
                 stringId.toString()
             }
 
-            return AndroidResourceMessageSpec(stringId, resName, arrayOf(args))
+            return AndroidResourceMessageSpec(stringId, resName, args)
         }
     }
 }

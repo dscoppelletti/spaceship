@@ -7,9 +7,11 @@
     <string name="it_scoppelletti_cmd_edit">Edit</string>
     <string name="it_scoppelletti_cmd_list">List</string>
     <string name="it_scoppelletti_cmd_new">New</string>
+    <string name="it_scoppelletti_cmd_no">No</string>
     <string name="it_scoppelletti_cmd_open">Open</string>
     <string name="it_scoppelletti_cmd_save">Save</string>
     <string name="it_scoppelletti_cmd_update">Update</string>
+    <string name="it_scoppelletti_cmd_yes">Yes</string>
     <string name="it_scoppelletti_err_clipoardNotSupported">Clipboard not supported.</string>
     <string name="it_scoppelletti_err_dateFormat">The date must comply the format %1$s.</string>
     <string name="it_scoppelletti_err_decimalFormat">The value must be a decimal number.</string>

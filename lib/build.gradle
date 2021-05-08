@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'org.jetbrains.dokka'
-apply plugin: 'it.scoppelletti.spaceship.spaceship-gradle-android'
+apply plugin: 'it.scoppelletti.spaceship.android-library'
 
 group 'it.scoppelletti.spaceship'
 description 'Spaceship'
@@ -33,6 +33,7 @@ android {
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -54,6 +55,7 @@ configurations {
     bom
     api.extendsFrom(bom)
     kapt.extendsFrom(bom)
+    coreLibraryDesugaring.extendsFrom(bom)
 }
 
 dependencies {
@@ -74,10 +76,10 @@ dependencies {
     kapt 'com.google.dagger:dagger-compiler'
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-core'
-    api 'org.threeten:threetenbp::no-tzdb'
     api 'it.scoppelletti.spaceship:spaceship-stdlib'
     implementation 'androidx.preference:preference'
     implementation 'io.github.microutils:kotlin-logging'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android'
     implementation 'org.slf4j:slf4j-api'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs'
 }

@@ -1,7 +1,6 @@
 package it.scoppelletti.spaceship.sample
 
 import android.app.Application
-import com.jakewharton.threetenabp.AndroidThreeTen
 import it.scoppelletti.spaceship.inject.AppComponent
 import it.scoppelletti.spaceship.inject.StdlibComponent
 import it.scoppelletti.spaceship.inject.AppComponentProvider
@@ -16,7 +15,6 @@ class MainApp : Application(), AppComponentProvider {
     override fun onCreate() {
         super.onCreate()
 
-        AndroidThreeTen.init(this)
         _sampleComponent = DaggerSampleComponent.factory()
                 .create(this)
     }

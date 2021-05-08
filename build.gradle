@@ -4,16 +4,15 @@ apply plugin: 'com.github.ben-manes.versions'
 
 buildscript {
     ext.BOM = 'it.scoppelletti.spaceship:spaceship-bom:1.0.0'
-    ext.android_gradle_version = '4.1.2'
-    ext.kotlin_version = '1.4.31'
-    ext.sdk_min = 16
-    ext.sdk_target = 29
+    ext.android_gradle_version = '4.2.0'
+    ext.kotlin_version = '1.5.0'
+    ext.sdk_min = 21
+    ext.sdk_target = 30
 
     repositories {
         google()
         mavenCentral()
         gradlePluginPortal()
-        jcenter()
 
         if (project.hasProperty('it.scoppelletti.tools.devRepoUrl')) {
             maven {
@@ -38,7 +37,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter()
 
         if (project.hasProperty('it.scoppelletti.tools.devRepoUrl')) {
             maven {

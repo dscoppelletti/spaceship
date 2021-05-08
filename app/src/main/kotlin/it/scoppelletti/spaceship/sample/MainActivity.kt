@@ -17,9 +17,9 @@ import it.scoppelletti.spaceship.app.appComponent
 import it.scoppelletti.spaceship.i18n.AppMessages
 import it.scoppelletti.spaceship.sample.databinding.MainActivityBinding
 import mu.KotlinLogging
-import org.threeten.bp.LocalDate
-import org.threeten.bp.LocalTime
 import java.lang.RuntimeException
+import java.time.LocalDate
+import java.time.LocalTime
 
 private const val PROGRESS_DURATION = 5000L
 

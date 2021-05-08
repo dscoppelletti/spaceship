@@ -7,9 +7,11 @@
     <string name="it_scoppelletti_cmd_edit">Modifica</string>
     <string name="it_scoppelletti_cmd_list">Elenco</string>
     <string name="it_scoppelletti_cmd_new">Nuovo</string>
+    <string name="it_scoppelletti_cmd_no">No</string>
     <string name="it_scoppelletti_cmd_open">Apri</string>
     <string name="it_scoppelletti_cmd_save">Salva</string>
     <string name="it_scoppelletti_cmd_update">Aggiorna</string>
+    <string name="it_scoppelletti_cmd_yes">Sì</string>
     <string name="it_scoppelletti_err_clipoardNotSupported">Il copia &amp; incolla non è supportato.</string>
     <string name="it_scoppelletti_err_dateFormat">La data deve essere nel formato %1$s.</string>
     <string name="it_scoppelletti_err_decimalFormat">Il valore deve essere un numero decimale.</string>

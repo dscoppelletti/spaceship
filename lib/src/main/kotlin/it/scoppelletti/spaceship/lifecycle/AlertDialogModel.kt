@@ -56,7 +56,7 @@ public class AlertDialogModel(
      * @param messageSpec Message specification.
      */
     public fun load(messageSpec: MessageSpec) = viewModelScope.launch {
-        val msg: String?
+        val msg: String
 
         msg = messageSpec.buildMessage(i18nProvider)
         handle.set(AlertDialogModel.PROP_MSG, msg)

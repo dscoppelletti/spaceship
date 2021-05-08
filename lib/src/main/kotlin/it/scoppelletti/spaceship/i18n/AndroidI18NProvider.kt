@@ -25,7 +25,7 @@ import it.scoppelletti.spaceship.types.AndroidDateConverter
 import it.scoppelletti.spaceship.types.AndroidTimeConverter
 import it.scoppelletti.spaceship.types.DateConverter
 import it.scoppelletti.spaceship.types.TimeConverter
-import org.threeten.bp.ZoneId
+import java.time.ZoneId
 import java.util.Locale
 import javax.inject.Inject
 

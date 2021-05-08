@@ -42,7 +42,7 @@ import it.scoppelletti.spaceship.widget.ExceptionMapper
 import it.scoppelletti.spaceship.widget.ExceptionMapperHandler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import org.threeten.bp.Clock
+import java.time.Clock
 import javax.inject.Named
 
 /**

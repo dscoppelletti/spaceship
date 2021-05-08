@@ -24,7 +24,7 @@ import android.text.format.DateFormat
 import androidx.annotation.StringRes
 import it.scoppelletti.spaceship.R
 import it.scoppelletti.spaceship.i18n.I18NProvider
-import org.threeten.bp.temporal.ChronoField
+import java.time.temporal.ChronoField
 
 private const val DATE_SEP = '/'
 
@@ -59,7 +59,7 @@ public class AndroidDateConverter(
     override fun getDateFormatOrder(): Array<ChronoField> =
             DateFormat.getDateFormatOrder(context)
                     .map { c ->
-                        when (c.toLowerCase()) {
+                        when (c.lowercaseChar()) {
                             'y' -> ChronoField.YEAR
                             'm' -> ChronoField.MONTH_OF_YEAR
                             'd' -> ChronoField.DAY_OF_MONTH

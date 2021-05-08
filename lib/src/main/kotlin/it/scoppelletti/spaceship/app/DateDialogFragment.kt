@@ -30,7 +30,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResult
 import it.scoppelletti.spaceship.i18n.I18NProvider
-import org.threeten.bp.LocalDate
+import java.time.LocalDate
 
 /**
  * Date picker dialog.

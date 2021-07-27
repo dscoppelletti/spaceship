@@ -1,9 +1,12 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-parcelize'
-apply plugin: 'org.jetbrains.dokka'
-apply plugin: 'it.scoppelletti.spaceship.android-library'
+
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+    id 'org.jetbrains.dokka'
+    id 'it.scoppelletti.spaceship.android-library'
+}
 
 group 'it.scoppelletti.spaceship'
 description 'Spaceship'

@@ -4,7 +4,7 @@ apply plugin: 'com.github.ben-manes.versions'
 
 buildscript {
     ext.BOM = 'it.scoppelletti.spaceship:spaceship-bom:1.0.0'
-    ext.android_gradle_version = '4.2.2'
+    ext.android_gradle_version = '7.0.0'
     ext.kotlin_version = '1.5.21'
     ext.sdk_min = 21
     ext.sdk_target = 30

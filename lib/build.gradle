@@ -4,11 +4,12 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
-    id 'org.jetbrains.dokka'
+    // id 'org.jetbrains.dokka'
     id 'it.scoppelletti.spaceship.android-library'
 }
 
 group 'it.scoppelletti.spaceship'
+version '1.0.0'
 description 'Spaceship'
 archivesBaseName = 'spaceship'
 
@@ -17,8 +18,6 @@ android {
     defaultConfig {
         minSdkVersion sdk_min
         targetSdkVersion sdk_target
-        versionCode 1
-        versionName '1.0.0'
         vectorDrawables.useSupportLibrary = true
     }
     buildFeatures {
@@ -28,11 +27,9 @@ android {
         release {
             minifyEnabled false
             consumerProguardFiles 'consumer-rules.pro'
-            debuggable false
         }
         debug {
             minifyEnabled false
-            debuggable true
         }
     }
     compileOptions {

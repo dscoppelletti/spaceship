@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+    <style type="text/css" ><![CDATA[
+        .eye {
+            stroke: none;
+            fill: #FFFFFF;
+        }
+        .primary {
+            stroke: none;
+            fill: #A4C639;
+        }
+    ]]></style>
+    <!-- nose -->
+    <path d="M24,13l8,-13l8,13z" class="primary" />
+    <!-- windscreen -->
+    <path d="M28,11l4,-4l4,4z" class="eye" />
+    <!-- left antenna -->
+    <rect x="16" y="25" width="4" height="10" rx="2" ry="2"
+        class="primary" />
+    <!-- right antenna -->
+    <rect x="44" y="25" width="4" height="10" rx="2" ry="2"
+        class="primary" />
+    <!-- left head -->
+    <path d="M8,48a16,16 0 0,1 16,-16v16z" class="primary" />
+    <!-- right head -->
+    <path d="M40,32a16,16 0 0,1 16,16h-16z" class="primary" />
+    <!-- left eye -->
+    <rect x="16" y="38" width="4" height="4" class="eye" />
+    <!-- right eye -->
+    <rect x="44" y="38" width="4" height="4" class="eye" />
+    <!-- trunk -->
+    <path d="M24,15h16v44a4,4 0 0,1 -4,4h-8a4,4 0 0,1 -4,-4z"
+        class="primary" />
+    <!-- left arm -->
+    <rect x="0" y="28" width="8" height="26" rx="4" ry="4"
+        class="primary" />
+    <!-- right arm -->
+    <rect x="56" y="28" width="8" height="26" rx="4" ry="4"
+        class="primary" />
+    <!-- left leg -->
+    <path d="M14,50v10a4,4 0 0,0 8,0v-10z" class="primary" />
+    <!-- right leg -->
+    <path d="M42,50v10a4,4 0 0,0 8,0v-10z" class="primary" />
+</svg>

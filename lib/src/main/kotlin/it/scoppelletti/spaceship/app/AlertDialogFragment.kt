@@ -63,8 +63,7 @@ public class AlertDialogFragment : DialogFragment() {
 
         activity = requireActivity()
         viewModelProvider = activity.appComponent().viewModelProvider()
-        activityModel = ViewModelProvider(activity)
-                .get(AlertActivityModel::class.java)
+        activityModel = ViewModelProvider(activity)[AlertActivityModel::class.java]
         viewModel = viewModelProvider.get(this, AlertDialogModel::class.java)
 
         args = requireArguments()
@@ -295,8 +294,8 @@ public class AlertDialogFragment : DialogFragment() {
                 args.putInt(AlertDialogFragment.PROP_ICONID, _iconId)
             }
 
-            viewModel = ViewModelProvider(activity)
-                    .get(AlertActivityModel::class.java)
+            viewModel =
+                ViewModelProvider(activity)[AlertActivityModel::class.java]
             viewModel.message = msg
 
             AlertDialogFragment()

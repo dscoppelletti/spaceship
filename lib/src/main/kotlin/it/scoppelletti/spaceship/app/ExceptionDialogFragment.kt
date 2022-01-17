@@ -65,8 +65,8 @@ public class ExceptionDialogFragment : DialogFragment() {
 
         activity = requireActivity()
         viewModelProvider = activity.appComponent().viewModelProvider()
-        activityModel = ViewModelProvider(activity)
-                .get(ExceptionActivityModel::class.java)
+        activityModel =
+            ViewModelProvider(activity)[ExceptionActivityModel::class.java]
         viewModel = viewModelProvider.get(this,
                 ExceptionDialogModel::class.java)
 
@@ -190,8 +190,8 @@ public class ExceptionDialogFragment : DialogFragment() {
                 args.putInt(ExceptionDialogFragment.PROP_TITLEID, _titleId)
             }
 
-            viewModel = ViewModelProvider(activity)
-                    .get(ExceptionActivityModel::class.java)
+            viewModel =
+                ViewModelProvider(activity)[ExceptionActivityModel::class.java]
             viewModel.ex = ex
 
             ExceptionDialogFragment()

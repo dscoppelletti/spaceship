@@ -58,7 +58,7 @@ public class DefaultViewModelProviderEx @Inject constructor(
                 delegate, null)
         provider = ViewModelProvider(owner, factory)
 
-        return provider.get(modelClass)
+        return provider[modelClass]
     }
 }
 

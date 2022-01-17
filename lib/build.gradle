@@ -4,7 +4,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
-    // id 'org.jetbrains.dokka'
+    id 'org.jetbrains.dokka'
     id 'it.scoppelletti.spaceship.android-library'
 }
 

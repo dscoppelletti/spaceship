@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/cmd_save"
         android:title="@string/it_scoppelletti_cmd_save"
-        android:icon="@drawable/ic_menu_done"
+        android:icon="@drawable/ic_done"
         app:showAsAction="ifRoom" />
     <item android:id="@+id/cmd_delete_disabled"
         android:title="@string/it_scoppelletti_cmd_delete"
-        android:icon="@drawable/ic_menu_delete"
+        android:icon="@drawable/ic_delete"
         android:enabled="false"
         app:showAsAction="ifRoom" />
     <item android:id="@+id/cmd_save_disabled"

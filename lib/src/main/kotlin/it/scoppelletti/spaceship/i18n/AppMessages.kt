@@ -27,9 +27,13 @@ public interface AppMessages {
 
     fun errorClipboardNotSupported(): MessageSpec
 
+    fun errorDateFormat(pattern: String): MessageSpec
+
     fun errorPackageNotFound(name: String): MessageSpec
 
     fun errorStartActivity(): MessageSpec
+
+    fun errorTimeFormat(pattern: String): MessageSpec
 
     fun promptSaveChanges(): MessageSpec
 }

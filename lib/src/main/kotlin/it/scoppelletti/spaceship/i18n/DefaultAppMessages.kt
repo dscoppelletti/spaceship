@@ -35,6 +35,10 @@ public class DefaultAppMessages @Inject constructor(
             AndroidResourceMessageSpec.of(resources,
                     R.string.it_scoppelletti_err_clipoardNotSupported)
 
+    override fun errorDateFormat(pattern: String): MessageSpec =
+            AndroidResourceMessageSpec.of(resources,
+                R.string.it_scoppelletti_err_dateFormat, pattern)
+
     override fun errorPackageNotFound(name: String): MessageSpec =
             AndroidResourceMessageSpec.of(resources,
                     R.string.it_scoppelletti_err_packageNotFound, name)
@@ -42,6 +46,10 @@ public class DefaultAppMessages @Inject constructor(
     override fun errorStartActivity(): MessageSpec =
             AndroidResourceMessageSpec.of(resources,
                     R.string.it_scoppelletti_err_startActivity)
+
+    override fun errorTimeFormat(pattern: String): MessageSpec =
+        AndroidResourceMessageSpec.of(resources,
+            R.string.it_scoppelletti_err_timeFormat, pattern)
 
     override fun promptSaveChanges(): MessageSpec =
             AndroidResourceMessageSpec.of(resources,

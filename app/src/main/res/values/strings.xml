@@ -3,7 +3,5 @@
     tools:ignore="MissingTranslation">
     <string name="cmd_alertDialog">Alert dialog</string>
     <string name="cmd_bottomDialog">Bottom dialog</string>
-    <string name="cmd_date">Date</string>
     <string name="cmd_error">Error</string>
-    <string name="cmd_time">Time</string>
 </resources>

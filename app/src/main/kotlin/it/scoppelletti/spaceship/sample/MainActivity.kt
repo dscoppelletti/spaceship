@@ -7,19 +7,13 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import it.scoppelletti.spaceship.ApplicationException
 import it.scoppelletti.spaceship.app.AlertDialogFragment
-import it.scoppelletti.spaceship.app.DateDialogFragment
-import it.scoppelletti.spaceship.app.TimeDialogFragment
 import it.scoppelletti.spaceship.app.showAlertDialog
-import it.scoppelletti.spaceship.app.showDateDialog
 import it.scoppelletti.spaceship.app.showExceptionDialog
-import it.scoppelletti.spaceship.app.showTimeDialog
 import it.scoppelletti.spaceship.app.appComponent
 import it.scoppelletti.spaceship.i18n.AppMessages
 import it.scoppelletti.spaceship.sample.databinding.MainActivityBinding
 import mu.KotlinLogging
 import java.lang.RuntimeException
-import java.time.LocalDate
-import java.time.LocalTime
 
 private const val PROGRESS_DURATION = 5000L
 
@@ -42,20 +36,6 @@ class MainActivity : AppCompatActivity() {
             val which = bundle.getInt(AlertDialogFragment.PROP_RESULT,
                     DialogInterface.BUTTON_NEGATIVE)
             logger.info { "Dialog result: $which." }
-        }
-
-        supportFragmentManager.setFragmentResultListener(
-                DateDialogFragment.TAG, this) { _, bundle ->
-            val value = bundle.getSerializable(
-                    DateDialogFragment.PROP_RESULT) as? LocalDate
-            logger.info { "Selected date: $value." }
-        }
-
-        supportFragmentManager.setFragmentResultListener(
-                TimeDialogFragment.TAG, this) { _, bundle ->
-            val value = bundle.getSerializable(
-                    DateDialogFragment.PROP_RESULT) as? LocalTime
-            logger.info { "Selected time: $value." }
         }
     }
 
@@ -91,16 +71,6 @@ class MainActivity : AppCompatActivity() {
                 showExceptionDialog(
                         ApplicationException(appMessages.errorStartActivity(),
                                 RuntimeException("Test exception.")))
-                return true
-            }
-
-            R.id.cmd_date -> {
-                showDateDialog()
-                return true
-            }
-
-            R.id.cmd_time -> {
-                showTimeDialog()
                 return true
             }
 

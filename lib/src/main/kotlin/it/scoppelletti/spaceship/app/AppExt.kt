@@ -58,20 +58,6 @@ public object AppExt {
     public const val TAG_BOTTOMSHEETDIALOG = "it.scoppelletti.spaceship.3"
 
     /**
-     * Tag of `DateDialogFragment` fragment.
-     *
-     * @see it.scoppelletti.spaceship.app.DateDialogFragment
-     */
-    public const val TAG_DATEDIALOG = "it.scoppelletti.spaceship.4"
-
-    /**
-     * Tag of `TimeDialogFragment` fragment.
-     *
-     * @see it.scoppelletti.spaceship.app.TimeDialogFragment
-     */
-    public const val TAG_TIMEDIALOG = "it.scoppelletti.spaceship.5"
-
-    /**
      * Property containing an item.
      */
     public const val PROP_ITEM = "it.scoppelletti.spaceship.1"

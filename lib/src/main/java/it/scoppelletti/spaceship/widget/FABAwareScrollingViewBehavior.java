@@ -26,6 +26,9 @@
  *
  * - Genymotion 2.11.0
  * FAB never hides likely because "pixel perfect" is disabled.
+ *
+ * - Dario Scoppelletti, 2022
+ * Handle extended FABs, too.
  */
 package it.scoppelletti.spaceship.widget;
 
@@ -37,6 +40,7 @@ import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
@@ -65,8 +69,10 @@ public class FABAwareScrollingViewBehavior extends
     @Override
     public boolean layoutDependsOn(CoordinatorLayout parent, View child,
             View dependency) {
-        return super.layoutDependsOn(parent, child, dependency) ||
-                dependency instanceof FloatingActionButton;
+        // Original implementation does not handle extended FABs
+        return dependency instanceof FloatingActionButton ||
+                dependency instanceof ExtendedFloatingActionButton ||
+                super.layoutDependsOn(parent, child, dependency);
     }
 
     @Override
@@ -87,12 +93,17 @@ public class FABAwareScrollingViewBehavior extends
             @NonNull int[] consumed) {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed,
                 dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed);
+        // Original implementation handles all the dependencies which are
+        // FAB but not extended FAB
         if (dyConsumed > 0) {
             // User scrolled down -> hide the FAB
             List<View> dependencies = coordinatorLayout.getDependencies(child);
             for (View view : dependencies) {
                 if (view instanceof FloatingActionButton) {
                     ((FloatingActionButton) view).hide();
+                }
+                if (view instanceof ExtendedFloatingActionButton) {
+                    ((ExtendedFloatingActionButton) view).hide();
                 }
             }
         } else if (dyConsumed < 0) {
@@ -101,6 +112,9 @@ public class FABAwareScrollingViewBehavior extends
             for (View view : dependencies) {
                 if (view instanceof FloatingActionButton) {
                     ((FloatingActionButton) view).show();
+                }
+                if (view instanceof ExtendedFloatingActionButton) {
+                    ((ExtendedFloatingActionButton) view).show();
                 }
             }
         }

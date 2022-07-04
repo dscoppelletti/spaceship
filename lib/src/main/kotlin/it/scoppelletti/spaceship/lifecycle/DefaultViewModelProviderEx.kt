@@ -69,7 +69,7 @@ private class ViewModelFactory(
 ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
 
     @Suppress("RemoveExplicitTypeArguments")
-    override fun <T : ViewModel?> create(
+    override fun <T : ViewModel> create(
             key: String,
             modelClass: Class<T>,
             handle: SavedStateHandle

@@ -1,49 +1,23 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-apply plugin: 'com.github.ben-manes.versions'
-
 buildscript {
-    ext.BOM = 'it.scoppelletti.spaceship:spaceship-bom:1.0.0'
-    ext.android_gradle_version = '7.1.2'
-    ext.kotlin_version = '1.6.10'
     ext.sdk_min = 21
     ext.sdk_target = 31
+    ext.KOTLIN_BOM = 'org.jetbrains.kotlin:kotlin-bom:1.6.21'
+    ext.SPACESHIP_BOM = 'it.scoppelletti.spaceship:spaceship-bom:1.0.0'
 
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-
-        if (project.hasProperty('it.scoppelletti.tools.devRepoUrl')) {
-            maven {
-                url project.property('it.scoppelletti.tools.devRepoUrl')
-            }
-        }
-    }
     dependencies {
-        classpath platform(BOM)
-        classpath "com.android.tools.build:gradle:${android_gradle_version}"
-        classpath 'com.github.ben-manes:gradle-versions-plugin'
+        classpath platform(SPACESHIP_BOM)
         classpath 'it.scoppelletti.spaceship:spaceship-gradle-android'
-        classpath 'org.jetbrains.dokka:dokka-gradle-plugin'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-
-        if (project.hasProperty('it.scoppelletti.tools.devRepoUrl')) {
-            maven {
-                url project.property('it.scoppelletti.tools.devRepoUrl')
-            }
-        }
-    }
+plugins {
+    id 'com.android.application' version '7.2.1' apply false
+    id 'com.android.library' version '7.2.1' apply false
+    id 'org.jetbrains.kotlin.android' version '1.6.21' apply false
+    id 'org.jetbrains.dokka' version '1.6.21' apply false
+    id 'com.github.ben-manes.versions' version '0.42.0'
 }
 
 task clean(type: Delete) {

@@ -1,2 +1,28 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+
+        if (settings["it.scoppelletti.tools.devRepoUrl"]) {
+            maven {
+                url settings["it.scoppelletti.tools.devRepoUrl"]
+            }
+        }
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+
+        if (settings["it.scoppelletti.tools.devRepoUrl"]) {
+            maven {
+                url settings["it.scoppelletti.tools.devRepoUrl"]
+            }
+        }
+    }
+}
 include ':app', ':lib'
-rootProject.name = "Spaceship"
+rootProject.name = "spaceship"

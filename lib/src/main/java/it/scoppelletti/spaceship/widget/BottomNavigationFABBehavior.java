@@ -37,16 +37,19 @@ import com.google.android.material.snackbar.Snackbar;
  * Behavior to make a {@code FloatingActionButton} supports
  * {@code BottomNavigationView}s.
  *
- * @see   <a href="http://medium.com/@tonythompsoncmu/integrate-coordinatorlayout-bottomnavigationview-toolbar-tablayout-viewpager-fragment-e4268e83b475"
- *        target="_top">Integrate CoordinatorLayout + BottomNavigationView +
- *        Toolbar + TabLayout + ViewPager + Fragment + DrawerLayout</a>
- * @see   <a href="http://medium.com/@rusinikita/simple-view-dodging-with-coordinatorlayout-f13cc32e0de6"
- *        target="_top">Simple view dodging with CoordinatorLayout</a>
  * @since 1.0.0
  */
 @SuppressWarnings("unused")
 public final class BottomNavigationFABBehavior extends
         CoordinatorLayout.Behavior<FloatingActionButton> {
+    // Integrate CoordinatorLayout + BottomNavigationView + Toolbar + TabLayout
+    // + ViewPager + Fragment + DrawerLayout
+    // Tony Thompson - May 29, 2018
+    // http://medium.com/@tonythompsoncmu/integrate-coordinatorlayout-bottomnavigationview-toolbar-tablayout-viewpager-fragment-e4268e83b475
+    //
+    // Simple view dodging with CoordinatorLayout
+    // Nikita Rusin - Jul 31, 2017
+    // http://medium.com/@rusinikita/simple-view-dodging-with-coordinatorlayout-f13cc32e0de6
 
     /**
      * Constructor.

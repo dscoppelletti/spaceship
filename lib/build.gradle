@@ -4,8 +4,9 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
-    // id 'org.jetbrains.dokka'
+    id 'maven-publish'
     id 'it.scoppelletti.spaceship.android-library'
+    id 'org.jetbrains.dokka'
 }
 
 group 'it.scoppelletti.spaceship'
@@ -14,11 +15,15 @@ description 'Spaceship'
 archivesBaseName = 'spaceship'
 
 android {
-    compileSdkVersion sdk_target
+    namespace 'it.scoppelletti.spaceship'
+    compileSdk sdk_target
     defaultConfig {
-        minSdkVersion sdk_min
-        targetSdkVersion sdk_target
+        minSdk sdk_min
+        targetSdk sdk_target
         vectorDrawables.useSupportLibrary = true
+        aarMetadata {
+            minCompileSdk = sdk_min
+        }
     }
     buildFeatures {
         dataBinding = true
@@ -40,8 +45,10 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+        }
     }
 }
 
@@ -59,7 +66,8 @@ configurations {
 }
 
 dependencies {
-    bom platform(BOM)
+    bom platform(KOTLIN_BOM)
+    bom platform(SPACESHIP_BOM)
     api 'androidx.activity:activity-ktx'
     api 'androidx.annotation:annotation'
     api 'androidx.appcompat:appcompat'
@@ -74,7 +82,6 @@ dependencies {
     api 'com.google.android.material:material'
     api 'com.google.dagger:dagger'
     kapt 'com.google.dagger:dagger-compiler'
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-core'
     api 'it.scoppelletti.spaceship:spaceship-stdlib'
     implementation 'androidx.preference:preference'

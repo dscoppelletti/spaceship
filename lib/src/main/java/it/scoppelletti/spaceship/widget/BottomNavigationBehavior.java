@@ -39,14 +39,15 @@ import com.google.android.material.snackbar.Snackbar;
  * Behavior to make a {@code BottomNavigationView} supports the
  * {@code Snackbar}s.
  *
- * @see   <a href="http://medium.com/@tonythompsoncmu/integrate-coordinatorlayout-bottomnavigationview-toolbar-tablayout-viewpager-fragment-e4268e83b475"
- *        target="_top">Integrate CoordinatorLayout + BottomNavigationView +
- *        Toolbar + TabLayout + ViewPager + Fragment + DrawerLayout</a>
  * @since 1.0.0
  */
 @SuppressWarnings("unused")
 public final class BottomNavigationBehavior extends
         CoordinatorLayout.Behavior<BottomNavigationView> {
+    // Integrate CoordinatorLayout + BottomNavigationView + Toolbar + TabLayout
+    // + ViewPager + Fragment + DrawerLayout
+    // Tony Thompson - May 29, 2018
+    // http://medium.com/@tonythompsoncmu/integrate-coordinatorlayout-bottomnavigationview-toolbar-tablayout-viewpager-fragment-e4268e83b475
 
     /**
      * Constructor

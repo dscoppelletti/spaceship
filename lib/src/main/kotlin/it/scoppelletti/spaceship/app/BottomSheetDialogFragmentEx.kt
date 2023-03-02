@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
-        "RemoveRedundantQualifierName", "unused")
-
 package it.scoppelletti.spaceship.app
 
 import android.content.DialogInterface
@@ -62,8 +59,7 @@ public abstract class BottomSheetDialogFragmentEx :
             which: Int
     ) {
         tag?.let { dialogTag ->
-            setFragmentResult(dialogTag, bundleOf(
-                    BottomSheetDialogFragmentEx.PROP_RESULT to which))
+            setFragmentResult(dialogTag, bundleOf(PROP_RESULT to which))
         }
     }
 
@@ -79,6 +75,6 @@ public abstract class BottomSheetDialogFragmentEx :
          * `DialogInterface.BUTTON_POSITIVE`) or the position of the item
          * clicked.
          */
-        public const val PROP_RESULT = AppExt.PROP_RESULT
+        public const val PROP_RESULT: String = AppExt.PROP_RESULT
     }
 }

@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "unused")
-
 package it.scoppelletti.spaceship.databinding
 
 import android.text.InputType
@@ -36,22 +34,22 @@ public object DataBindingExt {
     /**
      * Indicates whether a widget is enabled or not.
      */
-    public const val ATTR_ENABLED = "it_scoppelletti_enabled"
+    public const val ATTR_ENABLED: String = "it_scoppelletti_enabled"
 
     /**
      * Error message as a string resource ID.
      */
-    public const val ATTR_ERROR = "it_scoppelletti_error"
+    public const val ATTR_ERROR: String = "it_scoppelletti_error"
 
     /**
      * Input type for a text widget.
      */
-    public const val ATTR_INPUTTYPE = "it_scoppelletti_inputType"
+    public const val ATTR_INPUTTYPE: String = "it_scoppelletti_inputType"
 
     /**
      * Validator for a widget.
      */
-    public const val ATTR_VALIDATOR = "it_scoppelletti_validator"
+    public const val ATTR_VALIDATOR: String = "it_scoppelletti_validator"
 }
 
 /**

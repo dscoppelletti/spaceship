@@ -1,12 +1,12 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        google()
         mavenCentral()
+        google()
 
-        if (settings["it.scoppelletti.tools.devRepoUrl"]) {
+        if (settings.hasProperty('it.scoppelletti.spaceship.repository.url')) {
             maven {
-                url settings["it.scoppelletti.tools.devRepoUrl"]
+                url settings['it.scoppelletti.spaceship.repository.url']
             }
         }
     }
@@ -14,12 +14,12 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        google()
         mavenCentral()
+        google()
 
-        if (settings["it.scoppelletti.tools.devRepoUrl"]) {
+        if (settings.hasProperty('it.scoppelletti.spaceship.repository.url')) {
             maven {
-                url settings["it.scoppelletti.tools.devRepoUrl"]
+                url settings['it.scoppelletti.spaceship.repository.url']
             }
         }
     }

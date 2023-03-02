@@ -1,5 +1,3 @@
-@file:Suppress("JoinDeclarationAndAssignment", "RemoveRedundantQualifierName")
-
 package it.scoppelletti.spaceship.sample
 
 import android.os.Bundle
@@ -22,8 +20,7 @@ class BottomDialogFragment : BottomSheetDialogFragmentEx() {
     companion object {
 
         fun show(activity: FragmentActivity) {
-            BottomDialogFragment().show(activity.supportFragmentManager,
-                    BottomSheetDialogFragmentEx.TAG)
+            BottomDialogFragment().show(activity.supportFragmentManager, TAG)
         }
     }
 }

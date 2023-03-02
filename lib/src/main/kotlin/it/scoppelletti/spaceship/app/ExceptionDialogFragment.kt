@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
-        "RemoveRedundantQualifierName", "unused")
-
 package it.scoppelletti.spaceship.app
 
 import android.app.Dialog
@@ -49,6 +46,7 @@ public class ExceptionDialogFragment : DialogFragment() {
 
     private lateinit var viewModel: ExceptionDialogModel
 
+    @Suppress("JoinDeclarationAndAssignment")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val args: Bundle
         val titleId: Int
@@ -60,7 +58,7 @@ public class ExceptionDialogFragment : DialogFragment() {
         val viewModelProvider: ViewModelProviderEx
 
         args = requireArguments()
-        title = args.getString(ExceptionDialogFragment.PROP_TITLE)
+        title = args.getString(PROP_TITLE)
         adapter = ExceptionListAdapter(requireContext())
 
         activity = requireActivity()
@@ -70,7 +68,6 @@ public class ExceptionDialogFragment : DialogFragment() {
         viewModel = viewModelProvider.get(this,
                 ExceptionDialogModel::class.java)
 
-        @Suppress("FragmentLiveDataObserve")
         viewModel.state.observe(this) { state ->
             if (state != null) {
                 adapter.addAll(state.exList)
@@ -88,7 +85,7 @@ public class ExceptionDialogFragment : DialogFragment() {
                 .setNegativeButton(android.R.string.cancel, ::onDialogResult)
 
         if (title.isNullOrBlank()) {
-            titleId = args.getInt(ExceptionDialogFragment.PROP_TITLEID,
+            titleId = args.getInt(PROP_TITLEID,
                     android.R.string.dialog_alert_title)
             builder.setTitle(titleId)
         } else {
@@ -135,13 +132,13 @@ public class ExceptionDialogFragment : DialogFragment() {
      *
      * @since 1.0.0
      */
-    @ExceptionDialogFragment.Dsl
+    @Dsl
     public class Builder internal constructor(
             private val activity: AppCompatActivity,
             private val fragmentMgr: FragmentManager,
             private val ex: Throwable
     ) {
-        private var _tag: String = ExceptionDialogFragment.TAG
+        private var _tag: String = TAG
 
         @StringRes
         private var _titleId: Int = ResourcesExt.ID_NULL
@@ -175,6 +172,7 @@ public class ExceptionDialogFragment : DialogFragment() {
             _title = init()
         }
 
+        @Suppress("JoinDeclarationAndAssignment")
         internal fun show() {
             val args: Bundle
             val viewModel: ExceptionActivityModel
@@ -185,9 +183,9 @@ public class ExceptionDialogFragment : DialogFragment() {
 
             args = Bundle()
             if (!_title.isNullOrBlank()) {
-                args.putString(ExceptionDialogFragment.PROP_TITLE, _title)
+                args.putString(PROP_TITLE, _title)
             } else if (_titleId != ResourcesExt.ID_NULL) {
-                args.putInt(ExceptionDialogFragment.PROP_TITLEID, _titleId)
+                args.putInt(PROP_TITLEID, _titleId)
             }
 
             viewModel =
@@ -223,7 +221,7 @@ public class ExceptionDialogFragment : DialogFragment() {
 public fun AppCompatActivity.showExceptionDialog(
         ex: Throwable,
         init: ExceptionDialogFragment.Builder.() -> Unit = { }
-) = ExceptionDialogFragment.Builder(this, this.supportFragmentManager, ex)
+): Unit = ExceptionDialogFragment.Builder(this, this.supportFragmentManager, ex)
         .apply(init)
         .show()
 
@@ -238,7 +236,7 @@ public fun AppCompatActivity.showExceptionDialog(
 public fun Fragment.showExceptionDialog(
         ex: Throwable,
         init: ExceptionDialogFragment.Builder.() -> Unit = { }
-) = ExceptionDialogFragment.Builder(this.requireActivity() as AppCompatActivity,
+): Unit = ExceptionDialogFragment.Builder(this.requireActivity() as AppCompatActivity,
         this.childFragmentManager, ex)
         .apply(init)
         .show()

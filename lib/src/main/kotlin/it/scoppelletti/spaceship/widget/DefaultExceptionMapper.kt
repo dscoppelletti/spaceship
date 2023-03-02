@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
-
 package it.scoppelletti.spaceship.widget
 
 import javax.inject.Inject
@@ -35,9 +33,8 @@ public class DefaultExceptionMapper @Inject constructor(
 
     override fun map(ex: Throwable) : ExceptionItem {
         val handler: ExceptionMapperHandler<Throwable>
-        val provider: Provider<ExceptionMapperHandler<*>>?
 
-        provider = handlers[ex.javaClass] ?:
+        val provider = handlers[ex.javaClass] ?:
                 handlers.entries.firstOrNull {
                     it.key.isAssignableFrom(ex.javaClass)
                 }?.value

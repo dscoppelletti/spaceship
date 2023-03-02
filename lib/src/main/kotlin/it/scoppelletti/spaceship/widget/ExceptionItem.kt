@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier")
-
 package it.scoppelletti.spaceship.widget
 
 import android.os.Parcelable
@@ -30,7 +28,7 @@ import android.view.ViewGroup
  * @property adapter Renders an exception as an item in a `ListView` control.
  */
 public interface ExceptionItem : Parcelable {
-    val adapter: ExceptionAdapter<*>
+    public val adapter: ExceptionAdapter<*>
 }
 
 /**
@@ -48,7 +46,7 @@ public interface ExceptionAdapter<in T : ExceptionItem> : Parcelable {
      * @param parent The parent that the returned view will be eventually
      *               attached to.
      */
-    fun getView(ex: T, parent: ViewGroup): View
+    public fun getView(ex: T, parent: ViewGroup): View
 }
 
 /**
@@ -64,7 +62,7 @@ public interface ExceptionMapper {
      * @param  ex Exception.
      * @return    The new object.
      */
-    fun map(ex: Throwable): ExceptionItem
+    public fun map(ex: Throwable): ExceptionItem
 }
 
 /**
@@ -82,5 +80,5 @@ public interface ExceptionMapperHandler<T: Throwable> {
      * @param  ex Exception.
      * @return    The new object.
      */
-    fun map(ex: T): ExceptionItem
+    public fun map(ex: T): ExceptionItem
 }

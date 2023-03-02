@@ -14,13 +14,9 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
-        "unused")
-
 package it.scoppelletti.spaceship.widget
 
 import android.content.Context
-import android.content.res.TypedArray
 import android.util.AttributeSet
 import androidx.annotation.UiThread
 import androidx.core.content.res.getColorOrThrow
@@ -44,9 +40,7 @@ public class SwipeRefreshLayoutEx @JvmOverloads constructor(
 
     init {
         val color: Int
-        val v: TypedArray
-
-        v = ctx.obtainStyledAttributes(intArrayOf(R.attr.colorSecondary))
+        val v = ctx.obtainStyledAttributes(intArrayOf(R.attr.colorSecondary))
 
         color = try {
             v.getColorOrThrow(0)

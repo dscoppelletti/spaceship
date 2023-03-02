@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
-
 package it.scoppelletti.spaceship.widget
 
 import android.content.Context
@@ -41,11 +39,8 @@ public class ExceptionListAdapter(
             convertView: View?,
             parent: ViewGroup
     ): View {
-        val item: ExceptionItem
-        val adapter: ExceptionAdapter<ExceptionItem>
-
-        item = getItem(position)!!
-        adapter = item.adapter as ExceptionAdapter<ExceptionItem>
+        val item = getItem(position)!!
+        val adapter = item.adapter as ExceptionAdapter<ExceptionItem>
 
         return adapter.getView(item, parent)
     }

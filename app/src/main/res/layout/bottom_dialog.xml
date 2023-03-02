@@ -12,7 +12,7 @@
     <TextView android:id="@+id/txtMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/it_scoppelletti_prompt_saveChanges"
+        android:text="@string/lbl_message"
         style="@style/Widget.Scoppelletti.TextView.PrimaryText"
         tools:text="Message." />
 </FrameLayout>

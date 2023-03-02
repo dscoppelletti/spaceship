@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
-
 package it.scoppelletti.spaceship.widget
 
 import android.view.LayoutInflater
@@ -55,14 +53,12 @@ public class ApplicationExceptionAdapter :
             parent: ViewGroup
     ): View {
         val itemView: View
-        val textView: TextView
-        val inflater: LayoutInflater
 
-        inflater = LayoutInflater.from(parent.context)
+        val inflater = LayoutInflater.from(parent.context)
         itemView = inflater.inflate(
                 R.layout.it_scoppelletti_applicationexception, parent, false)
 
-        textView = itemView.findViewById(R.id.txtMessage)
+        val textView = itemView.findViewById<TextView>(R.id.txtMessage)
         textView.text = ex.message
 
         return itemView

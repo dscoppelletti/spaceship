@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "unused")
-
 package it.scoppelletti.spaceship.i18n
 
 import android.content.res.Resources

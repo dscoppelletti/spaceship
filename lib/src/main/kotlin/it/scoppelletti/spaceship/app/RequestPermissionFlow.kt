@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
-        "unused")
-
 package it.scoppelletti.spaceship.app
 
 import android.content.DialogInterface
@@ -51,6 +48,7 @@ public class RequestPermissionFlow private constructor(
         private val callback: ActivityResultCallback<Boolean>
 ) {
 
+    @Suppress("JoinDeclarationAndAssignment")
     private val launcher: ActivityResultLauncher<String>
 
     init {

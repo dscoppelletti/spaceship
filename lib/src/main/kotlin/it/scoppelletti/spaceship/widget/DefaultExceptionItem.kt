@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
-
 package it.scoppelletti.spaceship.widget
 
 import android.view.LayoutInflater
@@ -51,10 +49,11 @@ public class DefaultExceptionAdapter : ExceptionAdapter<DefaultExceptionItem> {
 
     override fun getView(ex: DefaultExceptionItem, parent: ViewGroup): View {
         val itemView: View
-        val inflater: LayoutInflater
+
+        @Suppress("JoinDeclarationAndAssignment")
         var textView: TextView
 
-        inflater = LayoutInflater.from(parent.context)
+        val inflater = LayoutInflater.from(parent.context)
         itemView = inflater.inflate(R.layout.it_scoppelletti_exception, parent,
                 false)
 

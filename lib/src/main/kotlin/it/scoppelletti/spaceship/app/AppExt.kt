@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2021 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ * Copyright (C) 2013-2023 Dario Scoppelletti, <http://www.scoppelletti.it/>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
-        "unused")
-
 package it.scoppelletti.spaceship.app
 
-import android.app.Activity
-import android.content.Context
-import android.view.View
-import android.view.inputmethod.InputMethodManager
-import androidx.annotation.UiThread
-import it.scoppelletti.spaceship.inject.AppComponent
-import it.scoppelletti.spaceship.inject.AppComponentProvider
-import it.scoppelletti.spaceship.inject.StdlibComponent
-import it.scoppelletti.spaceship.inject.StdlibComponentProvider
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.annotation.RequiresApi
 
 /**
  * Application model extensions.
@@ -41,91 +34,122 @@ public object AppExt {
      *
      * @see it.scoppelletti.spaceship.app.AlertDialogFragment
      */
-    public const val TAG_ALERTDIALOG = "it.scoppelletti.spaceship.1"
+    public const val TAG_ALERTDIALOG: String = "it.scoppelletti.spaceship.1"
 
     /**
      * Tag of `ExceptionDialogFragment` fragment.
      *
      * @see it.scoppelletti.spaceship.app.ExceptionDialogFragment
      */
-    public const val TAG_EXCEPTIONDIALOG = "it.scoppelletti.spaceship.2"
+    public const val TAG_EXCEPTIONDIALOG: String = "it.scoppelletti.spaceship.2"
 
     /**
      * Tag of `BottomSheetDialogFragmentEx` fragment.
      *
      * @see it.scoppelletti.spaceship.app.BottomSheetDialogFragmentEx
      */
-    public const val TAG_BOTTOMSHEETDIALOG = "it.scoppelletti.spaceship.3"
+    public const val TAG_BOTTOMSHEETDIALOG: String =
+        "it.scoppelletti.spaceship.3"
 
     /**
      * Property containing an item.
      */
-    public const val PROP_ITEM = "it.scoppelletti.spaceship.1"
+    public const val PROP_ITEM: String = "it.scoppelletti.spaceship.1"
 
     /**
      * Property containing a message.
      */
-    public const val PROP_MESSAGE = "it.scoppelletti.spaceship.2"
+    public const val PROP_MESSAGE: String = "it.scoppelletti.spaceship.2"
 
     /**
      * Property containing a result.
      */
-    public const val PROP_RESULT = "it.scoppelletti.spaceship.3"
-}
+    public const val PROP_RESULT: String = "it.scoppelletti.spaceship.3"
 
-/**
- * Returns the `UIComponent` component.
- *
- * @receiver Activity.
- * @return   The object.
- * @since    1.0.0
- */
-public fun Activity.appComponent(): AppComponent =
-        (this.application as AppComponentProvider).appComponent()
+    /**
+     * Returns information about an application.
+     *
+     * @param  packageManager PackageManager instance.
+     * @param  packageName    Package name.
+     * @param  flags          Info combination to retrieve.
+     * @return                Application info.
+     * @since                 1.1.0
+     */
+    @Throws(PackageManager.NameNotFoundException::class)
+    public fun getApplicationInfo(
+        packageManager: PackageManager,
+        packageName: String,
+        flags: Int
+    ): ApplicationInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        getApplicationInfoTiramisu(packageManager, packageName, flags)
+    else
+        getApplicationInfoDeprecated(packageManager, packageName, flags)
 
-/**
- * Returns the `StdlibComponent` component.
- *
- * @receiver Activity.
- * @return   The object.
- * @since    1.0.0
- */
-public fun Activity.stdlibComponent(): StdlibComponent =
-        (this.application as StdlibComponentProvider).stdlibComponent()
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    @Throws(PackageManager.NameNotFoundException::class)
+    private fun getApplicationInfoTiramisu(
+        packageManager: PackageManager,
+        packageName: String,
+        flags: Int
+    ): ApplicationInfo = packageManager.getApplicationInfo(packageName,
+        PackageManager.ApplicationInfoFlags.of(flags.toLong()))
 
-/**
- * Tries to finish an activity.
- *
- * @receiver Activity.
- * @return   Returns `true` if the finish process has been started, `false` if
- *           this activity was already finishing.
- * @since    1.0.0
- */
-@UiThread
-public fun Activity.tryFinish(): Boolean {
-    if (this.isFinishing) {
-        return false
-    }
+    @Suppress("deprecation")
+    @Throws(PackageManager.NameNotFoundException::class)
+    private fun getApplicationInfoDeprecated(
+        packageManager: PackageManager,
+        packageName: String,
+        flags: Int
+    ): ApplicationInfo = packageManager.getApplicationInfo(packageName, flags)
 
-    this.finish()
-    return true
-}
+    /**
+     * Returns information about a package.
+     *
+     * @param  packageManager PackageManager instance.
+     * @param  packageName    Package name.
+     * @param  flags          Info combination to retrieve.
+     * @return                Package info.
+     * @since                 1.1.0
+     */
+    @Throws(PackageManager.NameNotFoundException::class)
+    public fun getPackageInfo(
+        packageManager: PackageManager,
+        packageName: String,
+        flags: Int
+    ): PackageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        getPackageInfoTiramisu(packageManager, packageName, flags)
+    else
+        getPackageInfoDeprecated(packageManager, packageName, flags)
 
-/**
- * Hides the soft keyboard.
- *
- * @receiver Activity.
- * @since    1.0.0
- */
-@UiThread
-public fun Activity.hideSoftKeyboard() {
-    val view: View?
-    val inputMgr: InputMethodManager
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    @Throws(PackageManager.NameNotFoundException::class)
+    private fun getPackageInfoTiramisu(
+        packageManager: PackageManager,
+        packageName: String,
+        flags: Int
+    ): PackageInfo = packageManager.getPackageInfo(packageName,
+        PackageManager.PackageInfoFlags.of(flags.toLong()))
 
-    view = this.currentFocus
-    if (view != null) {
-        inputMgr = this.getSystemService(Context.INPUT_METHOD_SERVICE) as
-                InputMethodManager
-        inputMgr.hideSoftInputFromWindow(view.windowToken, 0)
-    }
+    @Suppress("deprecation")
+    @Throws(PackageManager.NameNotFoundException::class)
+    private fun getPackageInfoDeprecated(
+        packageManager: PackageManager,
+        packageName: String,
+        flags: Int
+    ): PackageInfo = packageManager.getPackageInfo(packageName, flags)
+
+    /**
+     * Returns the version of a package.
+     *
+     * @param  packageInfo Package info.
+     * @return             Version.
+     * @since              1.1.0
+     */
+    public fun getVersion(packageInfo: PackageInfo): Long =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+            packageInfo.longVersionCode else getVersionDeprecated(packageInfo)
+
+    @Suppress("deprecation")
+    private fun getVersionDeprecated(packageInfo: PackageInfo): Long =
+        packageInfo.versionCode.toLong()
 }

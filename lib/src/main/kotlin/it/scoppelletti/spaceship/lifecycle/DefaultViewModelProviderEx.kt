@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
-
 package it.scoppelletti.spaceship.lifecycle
 
 import android.os.Bundle
@@ -49,9 +46,8 @@ public class DefaultViewModelProviderEx @Inject constructor(
     ): T {
         val provider: ViewModelProvider
         val factory: ViewModelProvider.Factory
-        val delegate: ViewModelProviderEx.Factory
 
-        delegate = creators[modelClass]?.get() ?:
+        val delegate = creators[modelClass]?.get() ?:
                 throw IllegalArgumentException(
                         "Unknown model class $modelClass.")
         factory = ViewModelFactory(owner as SavedStateRegistryOwner,

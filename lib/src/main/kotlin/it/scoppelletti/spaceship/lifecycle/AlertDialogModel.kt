@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
-        "RemoveRedundantQualifierName")
-
 package it.scoppelletti.spaceship.lifecycle
 
 import androidx.lifecycle.LiveData
@@ -28,6 +25,7 @@ import it.scoppelletti.spaceship.app.AlertDialogFragment
 import it.scoppelletti.spaceship.app.AppExt
 import it.scoppelletti.spaceship.i18n.I18NProvider
 import it.scoppelletti.spaceship.i18n.MessageSpec
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -47,7 +45,7 @@ public class AlertDialogModel(
     public val message: LiveData<String> = _message
 
     init {
-        _message.value = handle[AlertDialogModel.PROP_MSG]
+        _message.value = handle[PROP_MSG]
     }
 
     /**
@@ -55,11 +53,9 @@ public class AlertDialogModel(
      *
      * @param messageSpec Message specification.
      */
-    public fun load(messageSpec: MessageSpec) = viewModelScope.launch {
-        val msg: String
-
-        msg = messageSpec.buildMessage(i18nProvider)
-        handle.set(AlertDialogModel.PROP_MSG, msg)
+    public fun load(messageSpec: MessageSpec): Job = viewModelScope.launch {
+        val msg = messageSpec.buildMessage(i18nProvider)
+        handle[PROP_MSG] = msg
 
         _message.value = msg
     }

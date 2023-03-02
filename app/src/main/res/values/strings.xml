@@ -4,4 +4,5 @@
     <string name="cmd_alertDialog">Alert dialog</string>
     <string name="cmd_bottomDialog">Bottom dialog</string>
     <string name="cmd_error">Error</string>
+    <string name="lbl_message">Message.</string>
 </resources>

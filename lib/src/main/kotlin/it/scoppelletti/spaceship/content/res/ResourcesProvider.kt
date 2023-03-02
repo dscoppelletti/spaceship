@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier")
-
 package it.scoppelletti.spaceship.content.res
 
 import android.content.res.Resources
@@ -29,5 +27,5 @@ import android.content.res.Resources
  */
 public interface ResourcesProvider {
 
-    val resources: Resources
+    public val resources: Resources
 }

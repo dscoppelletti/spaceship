@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier")
-
 package it.scoppelletti.spaceship.lifecycle
 
 import androidx.lifecycle.SavedStateHandle
@@ -38,7 +36,7 @@ public interface ViewModelProviderEx {
      * @param  T          The `ViewModel` class.
      * @return            The `ViewModel` object.
      */
-    fun <T : ViewModel> get(
+    public fun <T : ViewModel> get(
             owner: ViewModelStoreOwner,
             modelClass : Class<T>
     ): T
@@ -57,6 +55,6 @@ public interface ViewModelProviderEx {
          * @param  handle Handle to the saved state.
          * @return        The new object.
          */
-        fun <T : ViewModel?> create(handle: SavedStateHandle): T
+        public fun <T : ViewModel?> create(handle: SavedStateHandle): T
     }
 }

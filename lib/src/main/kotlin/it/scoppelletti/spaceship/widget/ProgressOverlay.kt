@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
-        "RemoveRedundantQualifierName", "unused")
-
 package it.scoppelletti.spaceship.widget
 
 import android.content.Context
@@ -58,13 +55,10 @@ public class ProgressOverlay @JvmOverloads constructor(
     private val indicator: ProgressBar
 
     init {
-        val color: Int
-        val layout: FrameLayout.LayoutParams
-
         visibility = View.GONE
         isClickable = true
 
-        color = Color.argb(ALPHA_GONE, 0, 0, 0)
+        val color = Color.argb(ALPHA_GONE, 0, 0, 0)
         setBackgroundColor(color)
 
         indicator = ProgressBar(context).apply {
@@ -72,7 +66,7 @@ public class ProgressOverlay @JvmOverloads constructor(
             visibility = View.GONE
         }
 
-        layout = FrameLayout.LayoutParams(
+        val layout = LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER)
         addView(indicator, layout)
@@ -108,10 +102,8 @@ public class ProgressOverlay @JvmOverloads constructor(
      * Shows this progress indicator.
      */
     private fun doShow() {
-        val color: Int
-
         visibility = View.VISIBLE
-        color = Color.argb(ALPHA_VISIBLE, 0, 0, 0)
+        val color = Color.argb(ALPHA_VISIBLE, 0, 0, 0)
         setBackgroundColor(color)
         indicator.visibility = View.VISIBLE
     }
@@ -129,10 +121,8 @@ public class ProgressOverlay @JvmOverloads constructor(
      * Hides this progress indicator.
      */
     private fun doHide() {
-        val color: Int
-
         indicator.visibility = View.GONE
-        color = Color.argb(ALPHA_GONE, 0, 0, 0)
+        val color = Color.argb(ALPHA_GONE, 0, 0, 0)
         setBackgroundColor(color)
         visibility = View.GONE
     }
@@ -154,21 +144,16 @@ public class ProgressOverlay @JvmOverloads constructor(
     }
 
     override fun onSaveInstanceState(): Parcelable? {
-        val superState: Parcelable?
+        val superState = super.onSaveInstanceState() ?: return null
 
-        superState = super.onSaveInstanceState()
-        if (superState == null) {
-            return null
-        }
-
-        return ProgressOverlay.SavedState(superState)
+        return SavedState(superState)
                 .apply {
                     running = isRunning
                 }
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {
-        if (state is ProgressOverlay.SavedState) {
+        if (state is SavedState) {
             super.onRestoreInstanceState(state.superState)
 
             if (state.running) {
@@ -184,7 +169,7 @@ public class ProgressOverlay @JvmOverloads constructor(
     /**
      * Component state.
      */
-    public class SavedState : View.BaseSavedState {
+    public class SavedState : BaseSavedState {
 
         /**
          * Indicates whether the progress indicator is running or not.
@@ -205,11 +190,9 @@ public class ProgressOverlay @JvmOverloads constructor(
             running = ParcelableExt.readBoolean(source)
         }
 
-        override fun writeToParcel(out: Parcel?, flags: Int) {
+        override fun writeToParcel(out: Parcel, flags: Int) {
             super.writeToParcel(out, flags)
-            out?.let {
-                ParcelableExt.writeBoolean(it, running)
-            }
+            ParcelableExt.writeBoolean(out, running)
         }
 
         public companion object {
@@ -218,8 +201,8 @@ public class ProgressOverlay @JvmOverloads constructor(
              * The `Parcelable` support.
              */
             @JvmField
-            @Suppress("unused")
-            public val CREATOR = parcelableCreator(::SavedState)
+            public val CREATOR: Parcelable.Creator<SavedState> =
+                parcelableCreator(::SavedState)
         }
     }
 }

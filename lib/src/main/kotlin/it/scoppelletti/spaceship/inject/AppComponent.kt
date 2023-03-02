@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "unused")
-
 package it.scoppelletti.spaceship.inject
 
 import it.scoppelletti.spaceship.i18n.AppMessages
@@ -28,9 +26,9 @@ import it.scoppelletti.spaceship.lifecycle.ViewModelProviderEx
  */
 public interface AppComponent {
 
-    fun appMessages(): AppMessages
+    public fun appMessages(): AppMessages
 
-    fun viewModelProvider(): ViewModelProviderEx
+    public fun viewModelProvider(): ViewModelProviderEx
 }
 
 /**
@@ -40,5 +38,5 @@ public interface AppComponent {
  */
 public interface AppComponentProvider : StdlibComponentProvider {
 
-    fun appComponent(): AppComponent
+    public fun appComponent(): AppComponent
 }

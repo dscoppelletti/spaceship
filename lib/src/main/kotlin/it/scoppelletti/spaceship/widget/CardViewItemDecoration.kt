@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
-
 package it.scoppelletti.spaceship.widget
 
 import android.content.Context
@@ -37,7 +35,6 @@ import it.scoppelletti.spaceship.R
  * @constructor     Constructor.
  * @param       ctx Context.
  */
-@Suppress("unused")
 public class CardViewItemDecoration(
         ctx: Context,
         private val orientation: Int

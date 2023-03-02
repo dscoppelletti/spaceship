@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
-
 package it.scoppelletti.spaceship.i18n
 
 import android.content.res.Resources
@@ -111,9 +109,7 @@ public data class AndroidResourceMessageSpec(
 
                 vararg args: Any?
         ): MessageSpec {
-            val resName: String
-
-            resName = try {
+            val resName = try {
                 resources.getResourceName(stringId)
             } catch (ex: Resources.NotFoundException) {
                 logger.error(ex) { "Resource $stringId not found." }

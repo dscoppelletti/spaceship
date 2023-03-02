@@ -14,13 +14,9 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
-        "unused")
-
 package it.scoppelletti.spaceship.widget
 
 import android.content.Context
-import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
@@ -51,14 +47,12 @@ public class HorizontalDividerItemDecoration(
     private val divider: Drawable
 
     init {
-        val attrs: TypedArray
-
         marginHorz = ctx.resources.getDimensionPixelOffset(
                 R.dimen.it_scoppelletti_marginHorz)
         marginVert = ctx.resources.getDimensionPixelOffset(
                 R.dimen.it_scoppelletti_spacingVert)
 
-        attrs = ctx.obtainStyledAttributes(IntArray(1) {
+        val attrs = ctx.obtainStyledAttributes(IntArray(1) {
             android.R.attr.listDivider
         })
 
@@ -71,7 +65,6 @@ public class HorizontalDividerItemDecoration(
         }
     }
 
-    @Suppress("FoldInitializerAndIfToElvis")
     override fun onDraw(
             c: Canvas,
             parent: RecyclerView,

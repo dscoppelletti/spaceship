@@ -10,7 +10,7 @@ plugins {
 }
 
 group 'it.scoppelletti.spaceship'
-version '1.0.0'
+version '1.1.0'
 description 'Spaceship'
 archivesBaseName = 'spaceship'
 
@@ -44,6 +44,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
+        freeCompilerArgs += '-Xexplicit-api=strict'
     }
     publishing {
         singleVariant('release') {

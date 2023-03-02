@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
-        "RemoveRedundantQualifierName")
-
 package it.scoppelletti.spaceship.lifecycle
 
 import androidx.lifecycle.LiveData
@@ -29,6 +26,7 @@ import it.scoppelletti.spaceship.app.ExceptionDialogFragment
 import it.scoppelletti.spaceship.widget.ExceptionItem
 import it.scoppelletti.spaceship.widget.ExceptionMapper
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -50,9 +48,7 @@ public class ExceptionDialogModel(
     public val state: LiveData<ExceptionDialogState> = _state
 
     init {
-        val item: ExceptionItem?
-
-        item = handle[ExceptionDialogModel.PROP_ITEM]
+        val item: ExceptionItem? = handle[PROP_ITEM]
         if (item != null) {
             _state.value = ExceptionDialogState(listOf(item))
         }
@@ -63,14 +59,12 @@ public class ExceptionDialogModel(
      *
      * @param source Exception.
      */
-    public fun load(source: Throwable) = viewModelScope.launch {
+    public fun load(source: Throwable): Job = viewModelScope.launch {
         val exList: List<ExceptionItem>
 
         exList = withContext(Dispatchers.Default) {
-            val list: MutableList<ExceptionItem>
+            val list = mutableListOf<ExceptionItem>()
             var ex: Throwable? = source
-
-            list = mutableListOf()
 
             while (ex != null) {
                 if (!isActive) {
@@ -85,7 +79,7 @@ public class ExceptionDialogModel(
         }
 
         if (exList.isNotEmpty()) {
-            handle.set(ExceptionDialogModel.PROP_ITEM, exList[0])
+            handle[PROP_ITEM] = exList[0]
         }
 
         _state.value = ExceptionDialogState(exList)

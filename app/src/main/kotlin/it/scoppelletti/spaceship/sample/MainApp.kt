@@ -7,7 +7,6 @@ import it.scoppelletti.spaceship.inject.AppComponentProvider
 import it.scoppelletti.spaceship.sample.inject.DaggerSampleComponent
 import it.scoppelletti.spaceship.sample.inject.SampleComponent
 
-@Suppress("unused")
 class MainApp : Application(), AppComponentProvider {
 
     private lateinit var _sampleComponent: SampleComponent

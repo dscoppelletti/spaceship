@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
-        "RemoveRedundantQualifierName", "unused")
-
 package it.scoppelletti.spaceship.app
 
 import android.app.Dialog
@@ -52,6 +49,7 @@ public class AlertDialogFragment : DialogFragment() {
 
     private lateinit var viewModel: AlertDialogModel
 
+    @Suppress("JoinDeclarationAndAssignment")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val args: Bundle
         val title: String?
@@ -70,36 +68,31 @@ public class AlertDialogFragment : DialogFragment() {
         builder = MaterialAlertDialogBuilder(requireActivity())
                 .setMessage(StringExt.EMPTY)
 
-        title = args.getString(AlertDialogFragment.PROP_TITLE)
+        title = args.getString(PROP_TITLE)
         if (title.isNullOrBlank()) {
-            resId = args.getInt(AlertDialogFragment.PROP_TITLEID,
-                    android.R.string.dialog_alert_title)
+            resId = args.getInt(PROP_TITLEID,
+                android.R.string.dialog_alert_title)
             builder.setTitle(resId)
         } else {
             builder.setTitle(title)
         }
 
-        resId = args.getInt(AlertDialogFragment.PROP_POSITIVEID,
-                android.R.string.ok)
+        resId = args.getInt(PROP_POSITIVEID, android.R.string.ok)
         builder.setPositiveButton(resId, ::onDialogResult)
 
-        resId = args.getInt(AlertDialogFragment.PROP_NEGATIVEID,
-                android.R.string.cancel)
+        resId = args.getInt(PROP_NEGATIVEID, android.R.string.cancel)
         builder.setNegativeButton(resId, ::onDialogResult)
 
-        resId = args.getInt(AlertDialogFragment.PROP_NEUTRALID,
-                ResourcesExt.ID_NULL)
+        resId = args.getInt(PROP_NEUTRALID, ResourcesExt.ID_NULL)
         if (resId != ResourcesExt.ID_NULL) {
             builder.setNeutralButton(resId, ::onDialogResult)
         }
 
-        resId = args.getInt(AlertDialogFragment.PROP_ICONID,
-                ResourcesExt.ID_NULL)
+        resId = args.getInt(PROP_ICONID, ResourcesExt.ID_NULL)
         if (resId != ResourcesExt.ID_NULL) {
             builder.setIcon(resId)
         }
 
-        @Suppress("FragmentLiveDataObserve")
         viewModel.message.observe(this) { message ->
             if (message != null) {
                 (dialog as AlertDialog).setMessage(message)
@@ -133,8 +126,7 @@ public class AlertDialogFragment : DialogFragment() {
             which: Int
     ) {
         tag?.let { dialogTag ->
-            setFragmentResult(dialogTag, bundleOf(
-                    AlertDialogFragment.PROP_RESULT to which))
+            setFragmentResult(dialogTag, bundleOf(PROP_RESULT to which))
         }
     }
 
@@ -150,7 +142,7 @@ public class AlertDialogFragment : DialogFragment() {
          * `DialogInterface.BUTTON_POSITIVE`) or the position of the item
          * clicked.
          */
-        public const val PROP_RESULT = AppExt.PROP_RESULT
+        public const val PROP_RESULT: String = AppExt.PROP_RESULT
 
         private const val PROP_TITLE = "1"
         private const val PROP_TITLEID = "2"
@@ -165,12 +157,12 @@ public class AlertDialogFragment : DialogFragment() {
      *
      * @since 1.0.0
      */
-    @AlertDialogFragment.Dsl
+    @Dsl
     public class Builder(
             private val activity: AppCompatActivity,
             private val fragmentMgr: FragmentManager
     ) {
-        private var _tag: String = AlertDialogFragment.TAG
+        private var _tag: String = TAG
         private var _msg: MessageSpec? = null
 
         @StringRes
@@ -262,6 +254,7 @@ public class AlertDialogFragment : DialogFragment() {
             _iconId = init()
         }
 
+        @Suppress("JoinDeclarationAndAssignment")
         internal fun show() {
             val args: Bundle
             val viewModel: AlertActivityModel
@@ -273,25 +266,22 @@ public class AlertDialogFragment : DialogFragment() {
             args = Bundle()
 
             if (!_title.isNullOrBlank()) {
-                args.putString(AlertDialogFragment.PROP_TITLE, _title)
+                args.putString(PROP_TITLE, _title)
             } else if (_titleId != ResourcesExt.ID_NULL) {
-                args.putInt(AlertDialogFragment.PROP_TITLEID, _titleId)
+                args.putInt(PROP_TITLEID, _titleId)
             }
 
             if (_positiveActionTextId != ResourcesExt.ID_NULL) {
-                args.putInt(AlertDialogFragment.PROP_POSITIVEID,
-                        _positiveActionTextId)
+                args.putInt(PROP_POSITIVEID, _positiveActionTextId)
             }
             if (_negativeActionTextId != ResourcesExt.ID_NULL) {
-                args.putInt(AlertDialogFragment.PROP_NEGATIVEID,
-                        _negativeActionTextId)
+                args.putInt(PROP_NEGATIVEID, _negativeActionTextId)
             }
             if (_neutralActionTextId != ResourcesExt.ID_NULL) {
-                args.putInt(AlertDialogFragment.PROP_NEUTRALID,
-                        _neutralActionTextId)
+                args.putInt(PROP_NEUTRALID, _neutralActionTextId)
             }
             if (_iconId != ResourcesExt.ID_NULL) {
-                args.putInt(AlertDialogFragment.PROP_ICONID, _iconId)
+                args.putInt(PROP_ICONID, _iconId)
             }
 
             viewModel =
@@ -325,7 +315,7 @@ public class AlertDialogFragment : DialogFragment() {
 @UiThread
 public fun AppCompatActivity.showAlertDialog(
         init: AlertDialogFragment.Builder.() -> Unit = { }
-) = AlertDialogFragment.Builder(this, this.supportFragmentManager)
+): Unit = AlertDialogFragment.Builder(this, this.supportFragmentManager)
         .apply(init)
         .show()
 
@@ -339,7 +329,7 @@ public fun AppCompatActivity.showAlertDialog(
 @UiThread
 public fun Fragment.showAlertDialog(
         init: AlertDialogFragment.Builder.() -> Unit = { }
-) = AlertDialogFragment.Builder(this.requireActivity() as AppCompatActivity,
+): Unit = AlertDialogFragment.Builder(this.requireActivity() as AppCompatActivity,
         this.childFragmentManager)
         .apply(init)
         .show()

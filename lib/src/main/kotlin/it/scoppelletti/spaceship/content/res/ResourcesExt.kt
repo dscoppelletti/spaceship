@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier")
-
 package it.scoppelletti.spaceship.content.res
 
 /**
  * Operations on the application resources.
+ *
+ * @since 1.0.0
  */
 public object ResourcesExt {
 
     /**
      * The null resource ID.
      */
-    public const val ID_NULL = 0
+    public const val ID_NULL: Int = 0
 }

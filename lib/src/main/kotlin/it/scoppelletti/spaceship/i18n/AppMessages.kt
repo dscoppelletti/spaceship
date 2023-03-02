@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "unused")
-
 package it.scoppelletti.spaceship.i18n
 
 /**
@@ -25,15 +23,15 @@ package it.scoppelletti.spaceship.i18n
  */
 public interface AppMessages {
 
-    fun errorClipboardNotSupported(): MessageSpec
+    public fun errorClipboardNotSupported(): MessageSpec
 
-    fun errorDateFormat(pattern: String): MessageSpec
+    public fun errorDateFormat(pattern: String): MessageSpec
 
-    fun errorPackageNotFound(name: String): MessageSpec
+    public fun errorPackageNotFound(name: String): MessageSpec
 
-    fun errorStartActivity(): MessageSpec
+    public fun errorStartActivity(): MessageSpec
 
-    fun errorTimeFormat(pattern: String): MessageSpec
+    public fun errorTimeFormat(pattern: String): MessageSpec
 
-    fun promptSaveChanges(): MessageSpec
+    public fun promptSaveChanges(): MessageSpec
 }

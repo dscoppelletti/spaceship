@@ -43,8 +43,8 @@ configurations {
 }
 
 dependencies {
-    bom platform(KOTLIN_BOM)
-    bom platform(SPACESHIP_BOM)
+    bom platform(libs.bom.kotlin)
+    bom platform(libs.bom.spaceship)
     implementation project(':lib')
     implementation 'androidx.activity:activity-ktx'
     implementation 'androidx.annotation:annotation'

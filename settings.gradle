@@ -23,6 +23,11 @@ dependencyResolutionManagement {
             }
         }
     }
+    versionCatalogs {
+        libs {
+            from('it.scoppelletti.spaceship:spaceship-catalog:1.1.0')
+        }
+    }
 }
 include ':app', ':lib'
 rootProject.name = "spaceship"
